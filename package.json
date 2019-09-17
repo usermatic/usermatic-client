@@ -1,0 +1,27 @@
+{
+  "name": "usermatic",
+  "version": "0.0.1",
+  "description": "React components for usermatic applications",
+  "main": "index.js",
+  "repository": "https://github.com/mlogan/usermatic-module",
+  "author": "Mark Logan",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "yarn tsc"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^8.3.3",
+    "@types/react": "^16.9.2",
+    "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "apollo-boost": "^0.4.4",
+    "graphql": "^14.5.6",
+    "graphql-tag": "^2.10.1",
+    "isomorphic-unfetch": "^3.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "react": "^16.9.0",
+    "react-apollo": "^3.1.1"
+  }
+}
