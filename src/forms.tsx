@@ -1,5 +1,5 @@
 
-import { useState, ReactNode, FormEvent, ChangeEvent, createContext } from 'react'
+import React, { useState, ReactNode, FormEvent, ChangeEvent, createContext } from 'react'
 
 type InputOptions = {
   id: string,

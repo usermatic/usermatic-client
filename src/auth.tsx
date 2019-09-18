@@ -1,6 +1,10 @@
 
+import React, { ReactNode, createContext, useContext } from 'react'
 
-import { ReactNode, createContext, useContext } from 'react'
+if (typeof window != 'undefined') {
+  const w = window as any
+  w.React1 = React
+}
 
 import jwt from 'jsonwebtoken'
 import fetch from 'isomorphic-unfetch'
@@ -41,7 +45,7 @@ export const makeClient = (uri: string): ClientType => {
 // ApolloProvider (if they are using apollo).
 export const UMApolloContext = createContext<ClientType | undefined>(undefined)
 
-const UMTokenContext = createContext<AuthTokenData | undefined>(undefined)
+export const UMTokenContext = createContext<AuthTokenData | undefined>(undefined)
 export const UMTokenConsumer = UMTokenContext.Consumer
 
 export const UMSiteIdContext = createContext<string | undefined>(undefined)
