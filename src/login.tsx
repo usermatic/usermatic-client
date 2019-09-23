@@ -9,8 +9,23 @@ import { LOGIN_MUT, LOGOUT_MUT, CREATE_ACCOUNT_MUT, SESSION_QUERY } from './frag
 
 type MutationCallback = (data: any) => void
 
-export const UMLoginForm: React.FC<{onLogin?: MutationCallback}> = ({onLogin}) => {
+export const useLogout = () => {
+  const client = useContext(UMApolloContext)
+  const siteId = useContext(UMSiteIdContext)
 
+  const [submit, {loading, error, data} ] =
+    useMutation(
+      LOGOUT_MUT,
+      {
+        client,
+        refetchQueries: [{ query: SESSION_QUERY, variables: { siteId } }]
+      }
+    )
+
+  return { submit, loading, error, data }
+}
+
+export const useLogin = () => {
   const client = useContext(UMApolloContext)
   const siteId = useContext(UMSiteIdContext)
 
@@ -26,6 +41,25 @@ export const UMLoginForm: React.FC<{onLogin?: MutationCallback}> = ({onLogin}) =
   const submit = (values: InputValueMap) => {
     submitLogin({ variables: values })
   }
+
+  return { submit, loading, error, data }
+}
+
+export const useCreateAccount = () => {
+  const client = useContext(UMApolloContext)
+  const [submitCreateAccount, {loading, error, data} ] =
+    useMutation(CREATE_ACCOUNT_MUT, { client })
+
+  const submit = (values: InputValueMap) => {
+    submitCreateAccount({ variables: values })
+  }
+
+  return { submit, loading, error, data }
+}
+
+export const UMLoginForm: React.FC<{onLogin?: MutationCallback}> = ({onLogin}) => {
+
+  const { submit, loading, error, data } = useLogin()
 
   const form = useForm(submit)
 
@@ -56,13 +90,8 @@ export const UMLoginForm: React.FC<{onLogin?: MutationCallback}> = ({onLogin}) =
 
 export const UMAccountCreationForm: React.FC<{onCreated?: MutationCallback}> = ({onCreated}) => {
 
-  const client = useContext(UMApolloContext)
-  const [submitCreateAccount, {loading, error, data} ] =
-    useMutation(CREATE_ACCOUNT_MUT, { client })
+  const { submit, loading, error, data } = useCreateAccount()
 
-  const submit = (values: InputValueMap) => {
-    submitCreateAccount({ variables: values })
-  }
   const form = useForm(submit)
 
   if (!loading && !error && onCreated) {
@@ -90,23 +119,9 @@ export const UMAccountCreationForm: React.FC<{onCreated?: MutationCallback}> = (
 
 export const UMLogoutForm: React.FC<{onLogout?: MutationCallback}> = ({onLogout}) => {
 
-  const client = useContext(UMApolloContext)
-  const siteId = useContext(UMSiteIdContext)
+  const { submit, loading, error, data } = useLogout()
 
-  const [submitLogout, {loading, error, data} ] =
-    useMutation(
-      LOGOUT_MUT,
-      {
-        client,
-        refetchQueries: [{ query: SESSION_QUERY, variables: { siteId } }]
-      }
-    )
-
-  const logout = (values: InputValueMap) => {
-    submitLogout({ variables: values })
-  }
-
-  const form = useForm(logout)
+  const form = useForm(submit)
 
   if (!loading && !error && onLogout) {
     onLogout(data)
