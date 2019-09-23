@@ -3,13 +3,13 @@ import gql from 'graphql-tag'
 
 export const SESSION_QUERY = gql`
 query svcGetSessionJWT($siteId: String!) {
-  svcGetSessionJWT(siteId: $siteId) { user_jwt }
+  svcGetSessionJWT(siteId: $siteId) { auth { userJwt } csrfToken }
 }
 `
 export const LOGIN_MUT = gql`
   mutation login($email: String!, $password: String!) {
     svcLogin(email: $email, password: $password) {
-      user_jwt
+      userJwt
     }
   }
 `

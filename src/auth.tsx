@@ -1,4 +1,5 @@
 
+import url  from 'url'
 import React, { ReactNode, createContext, useContext } from 'react'
 
 if (typeof window != 'undefined') {
@@ -27,17 +28,15 @@ export type AuthTokenData = {
   userJwt?: string,
 }
 
-const clientCache: Record<string, ClientType> = {}
-
-export const makeClient = (uri: string): ClientType => {
-  if (!(uri in clientCache)) {
-    console.log('makeClient for ', uri)
-    clientCache[uri] = new ApolloClient({
-      link: createHttpLink({ uri, fetch, credentials: 'include' }),
-      cache: new InMemoryCache()
-    })
-  }
-  return clientCache[uri]
+export const makeClient = (uri: string, siteId: string, csrfToken?: string): ClientType => {
+  const headers = csrfToken && { 'x-csrf-token': csrfToken }
+  const parsed = url.parse(uri, true)
+  delete parsed.search
+  parsed.query.siteId = siteId
+  return new ApolloClient({
+    link: createHttpLink({ uri: url.format(parsed), fetch, credentials: 'include', headers }),
+    cache: new InMemoryCache()
+  })
 }
 
 // We want to provide an apollo client to everything in the app, but
@@ -49,9 +48,19 @@ export const UMTokenContext = createContext<AuthTokenData | undefined>(undefined
 export const UMTokenConsumer = UMTokenContext.Consumer
 
 export const UMSiteIdContext = createContext<string | undefined>(undefined)
+export const UMUriContext = createContext<string | undefined>(undefined)
+
+export const useCredentials = (): AuthTokenData => {
+  const tokenData = useContext(UMTokenContext)
+  if (!tokenData) {
+    throw new Error("useCredentials must be called inside a UMTokenContext.Provider")
+  }
+  return tokenData
+}
 
 const WrappedUsermaticAuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
+  const uri = useContext(UMUriContext)
   const client = useContext(UMApolloContext)
   const siteId = useContext(UMSiteIdContext)
 
@@ -59,16 +68,36 @@ const WrappedUsermaticAuthProvider: React.FC<{children: ReactNode}> = ({children
     { variables: { siteId }, client })
 
   const tokenValue: AuthTokenData = { error, loading }
+  let csrfToken
   if (!loading && !error && data.svcGetSessionJWT) {
-    const { user_jwt } = data.svcGetSessionJWT
-    const { id } = jwt.decode(user_jwt) as Record<string, string>
-    tokenValue.id = id
-    tokenValue.userJwt = user_jwt
+    csrfToken = data.svcGetSessionJWT.csrfToken
+    // TODO: if csrfToken is missing, most/all subsequent requests will fail. the graphql
+    // schema should ensure we have it however.
+    const { auth } = data.svcGetSessionJWT
+    if (auth) {
+      const { userJwt } = auth
+      const { id } = jwt.decode(userJwt) as Record<string, string>
+      tokenValue.id = id
+      tokenValue.userJwt = userJwt
+    }
   }
 
-  return <UMTokenContext.Provider value={tokenValue}>
-    {children}
-  </UMTokenContext.Provider>
+  if (!uri) {
+    throw new Error("WrappedUsermaticAuthProvider must be inside a UMUriContext")
+  }
+  if (!siteId) {
+    throw new Error("WrappedUsermaticAuthProvider must be inside a UMSiteIdContext")
+  }
+
+  // Now that we have a csrfToken, we need to mask the previous client with one that will
+  // always send the csrf token as a header.
+  const csrfClient = makeClient(uri, siteId, csrfToken)
+
+  return <UMApolloContext.Provider value={csrfClient}>
+    <UMTokenContext.Provider value={tokenValue}>
+      {children}
+    </UMTokenContext.Provider>
+  </UMApolloContext.Provider>
 }
 
 type UsermaticAuthProviderProps = {
@@ -81,9 +110,10 @@ export const UsermaticAuthProvider: React.FC<UsermaticAuthProviderProps> = ({chi
 
   // creating the client in the same component that uses it can cause an infinite render() loop,
   // so we put the uses of the client in a wrapper component.
-  const client = makeClient(uri)
+  const client = makeClient(uri, siteId)
 
   return (
+    <UMUriContext.Provider value={uri}>
     <UMSiteIdContext.Provider value={siteId}>
     <UMApolloContext.Provider value={client}>
       <WrappedUsermaticAuthProvider>
@@ -91,5 +121,6 @@ export const UsermaticAuthProvider: React.FC<UsermaticAuthProviderProps> = ({chi
       </WrappedUsermaticAuthProvider>
     </UMApolloContext.Provider>
     </UMSiteIdContext.Provider>
+    </UMUriContext.Provider>
   )
 }
