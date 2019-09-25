@@ -17,7 +17,13 @@ export const LOGIN_MUT = gql`
 export const LOGOUT_MUT = gql`mutation logout { svcLogout }`
 
 export const CREATE_ACCOUNT_MUT = gql`
-  mutation createAccount($email: String!, $password: String!) {
-    svcCreateAccount(email: $email, password: $password)
+  mutation createAccount($email: String!, $password: String!,
+                         $loginAfterCreation: Boolean = false, $stayLoggedIn: Boolean = false) {
+    svcCreateAccount(
+      email: $email,
+      password: $password,
+      loginAfterCreation: $loginAfterCreation,
+      stayLoggedIn: $stayLoggedIn
+    ) { userJwt }
   }
 `

@@ -47,8 +47,14 @@ export const useLogin = () => {
 
 export const useCreateAccount = () => {
   const client = useContext(UMApolloContext)
+  const siteId = useContext(UMSiteIdContext)
   const [submitCreateAccount, {loading, error, data} ] =
-    useCsrfMutation(CREATE_ACCOUNT_MUT, { client })
+    useCsrfMutation(
+      CREATE_ACCOUNT_MUT,
+      {
+        client,
+        refetchQueries: [{ query: SESSION_QUERY, variables: { siteId } }]
+      })
 
   const submit = (values: InputValueMap) => {
     submitCreateAccount({ variables: values })
