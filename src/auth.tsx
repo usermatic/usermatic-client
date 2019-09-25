@@ -17,6 +17,7 @@ import { ApolloError } from 'apollo-client'
 import { useQuery } from '@apollo/react-hooks'
 
 import { SESSION_QUERY } from './fragments'
+import { UMCsrfContext } from './hooks'
 
 export type ClientType = ApolloClient<NormalizedCacheObject>
 
@@ -28,15 +29,22 @@ export type AuthTokenData = {
   userJwt?: string,
 }
 
-export const makeClient = (uri: string, siteId: string, csrfToken?: string): ClientType => {
-  const headers = csrfToken && { 'x-csrf-token': csrfToken }
+const clientCache: Record<string, any> = {}
+
+export const makeClient = (uri: string, siteId: string): ClientType => {
   const parsed = url.parse(uri, true)
   delete parsed.search
   parsed.query.siteId = siteId
-  return new ApolloClient({
-    link: createHttpLink({ uri: url.format(parsed), fetch, credentials: 'include', headers }),
-    cache: new InMemoryCache()
-  })
+
+  const finalUri = url.format(parsed)
+  if (!(finalUri in clientCache)) {
+    clientCache[finalUri] = new ApolloClient({
+      link: createHttpLink({ uri: finalUri, fetch, credentials: 'include' }),
+      cache: new InMemoryCache()
+    })
+  }
+
+  return clientCache[finalUri]
 }
 
 // We want to provide an apollo client to everything in the app, but
@@ -89,15 +97,11 @@ const WrappedUsermaticAuthProvider: React.FC<{children: ReactNode}> = ({children
     throw new Error("WrappedUsermaticAuthProvider must be inside a UMSiteIdContext")
   }
 
-  // Now that we have a csrfToken, we need to mask the previous client with one that will
-  // always send the csrf token as a header.
-  const csrfClient = makeClient(uri, siteId, csrfToken)
-
-  return <UMApolloContext.Provider value={csrfClient}>
+  return <UMCsrfContext.Provider value={csrfToken}>
     <UMTokenContext.Provider value={tokenValue}>
       {children}
     </UMTokenContext.Provider>
-  </UMApolloContext.Provider>
+  </UMCsrfContext.Provider>
 }
 
 type UsermaticAuthProviderProps = {

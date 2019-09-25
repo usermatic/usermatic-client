@@ -1,8 +1,8 @@
 
 import React, { useContext } from 'react'
-import { useMutation } from '@apollo/react-hooks'
 
 import { UMApolloContext, UMSiteIdContext } from './auth'
+import { useCsrfMutation } from './hooks'
 import { useForm, Form, Input, InputValueMap } from './forms'
 
 import { LOGIN_MUT, LOGOUT_MUT, CREATE_ACCOUNT_MUT, SESSION_QUERY } from './fragments'
@@ -14,7 +14,7 @@ export const useLogout = () => {
   const siteId = useContext(UMSiteIdContext)
 
   const [submit, {loading, error, data} ] =
-    useMutation(
+    useCsrfMutation(
       LOGOUT_MUT,
       {
         client,
@@ -30,7 +30,7 @@ export const useLogin = () => {
   const siteId = useContext(UMSiteIdContext)
 
   const [submitLogin, {loading, error, data} ] =
-    useMutation(
+    useCsrfMutation(
       LOGIN_MUT,
       {
         client,
@@ -48,7 +48,7 @@ export const useLogin = () => {
 export const useCreateAccount = () => {
   const client = useContext(UMApolloContext)
   const [submitCreateAccount, {loading, error, data} ] =
-    useMutation(CREATE_ACCOUNT_MUT, { client })
+    useCsrfMutation(CREATE_ACCOUNT_MUT, { client })
 
   const submit = (values: InputValueMap) => {
     submitCreateAccount({ variables: values })
