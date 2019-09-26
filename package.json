@@ -10,7 +10,7 @@
   "private": false,
   "scripts": {
     "build": "yarn tsc",
-    "prepublish": "yarn build"
+    "prepare": "yarn build"
   },
   "peerDependencies": {
     "react": "^16.9.0"
