@@ -1,15 +1,16 @@
 {
-  "name": "usermatic",
+  "name": "@usermatic/client",
   "version": "0.0.1",
   "description": "React components for usermatic applications",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "repository": "https://github.com/mlogan/usermatic-module",
+  "repository": "https://github.com/mlogan/usermatic",
   "author": "Mark Logan",
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "yarn tsc"
+    "build": "yarn tsc",
+    "prepublish": "yarn build"
   },
   "peerDependencies": {
     "react": "^16.9.0"
