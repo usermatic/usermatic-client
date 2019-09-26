@@ -106,11 +106,15 @@ const WrappedUsermaticAuthProvider: React.FC<{children: ReactNode}> = ({children
 
 type UsermaticAuthProviderProps = {
   children: ReactNode,
-  uri: string,
+  uri?: string,
   siteId: string
 }
 
 export const UsermaticAuthProvider: React.FC<UsermaticAuthProviderProps> = ({children, uri, siteId}) => {
+
+  if (!uri) {
+    uri = 'https://api.usermatic.com/.netlify/functions/service-graphql'
+  }
 
   // creating the client in the same component that uses it can cause an infinite render() loop,
   // so we put the uses of the client in a wrapper component.

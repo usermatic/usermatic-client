@@ -22,7 +22,8 @@ export const useLogout = () => {
       }
     )
 
-  return { submit, loading, error, data }
+  const success = !loading && !error && data
+  return { submit, loading, error, data, success }
 }
 
 export const useLogin = () => {
@@ -42,7 +43,8 @@ export const useLogin = () => {
     submitLogin({ variables: values })
   }
 
-  return { submit, loading, error, data }
+  const success = !loading && !error && data
+  return { submit, loading, error, data, success }
 }
 
 export const useCreateAccount = () => {
@@ -60,7 +62,8 @@ export const useCreateAccount = () => {
     submitCreateAccount({ variables: values })
   }
 
-  return { submit, loading, error, data }
+  const success = !loading && !error && data
+  return { submit, loading, error, data, success }
 }
 
 export const UMLoginForm: React.FC<{onLogin?: MutationCallback}> = ({onLogin}) => {
