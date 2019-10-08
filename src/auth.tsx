@@ -113,7 +113,7 @@ type UsermaticAuthProviderProps = {
 export const UsermaticAuthProvider: React.FC<UsermaticAuthProviderProps> = ({children, uri, siteId}) => {
 
   if (!uri) {
-    uri = 'https://api.usermatic.com/.netlify/functions/service-graphql'
+    uri = 'https://api.usermatic.com/graphql'
   }
 
   // creating the client in the same component that uses it can cause an infinite render() loop,
