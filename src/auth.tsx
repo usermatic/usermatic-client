@@ -26,6 +26,7 @@ export type AuthTokenData = {
   loading: boolean,
 
   id?: string,
+  email?: string,
   userJwt?: string,
 }
 
@@ -84,8 +85,9 @@ const WrappedUsermaticAuthProvider: React.FC<{children: ReactNode}> = ({children
     const { auth } = data.svcGetSessionJWT
     if (auth) {
       const { userJwt } = auth
-      const { id } = jwt.decode(userJwt) as Record<string, string>
+      const { id, email } = jwt.decode(userJwt) as Record<string, string>
       tokenValue.id = id
+      tokenValue.email = email
       tokenValue.userJwt = userJwt
     }
   }
