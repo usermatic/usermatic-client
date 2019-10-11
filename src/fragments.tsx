@@ -2,7 +2,7 @@
 import gql from 'graphql-tag'
 
 export const SESSION_QUERY = gql`
-query svcGetSessionJWT($siteId: String!) {
+query svcGetSessionJWT($siteId: ID!) {
   svcGetSessionJWT(siteId: $siteId) { auth { userJwt } csrfToken }
 }
 `
