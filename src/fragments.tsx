@@ -27,3 +27,9 @@ export const CREATE_ACCOUNT_MUT = gql`
     ) { userJwt }
   }
 `
+
+export const VERIFY_EMAIL_MUT = gql`
+  mutation verifyEmail($token: String!) {
+    svcVerifyEmail(token: $token) { verificationUri }
+  }
+`
