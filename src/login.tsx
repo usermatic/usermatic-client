@@ -7,8 +7,6 @@ import { useForm, Form, Input, InputValueMap } from './forms'
 
 import { LOGIN_MUT, LOGOUT_MUT, CREATE_ACCOUNT_MUT, SESSION_QUERY } from './fragments'
 
-type MutationCallback = (data: any) => void
-
 export const useLogout = () => {
   const client = useContext(UMApolloContext)
   const siteId = useContext(UMSiteIdContext)
@@ -66,15 +64,11 @@ export const useCreateAccount = () => {
   return { submit, loading, error, data, success }
 }
 
-export const UMLoginForm: React.FC<{onLogin?: MutationCallback}> = ({onLogin}) => {
+export const UMLoginForm: React.FC<{}> = () => {
 
-  const { submit, loading, error, data } = useLogin()
+  const { submit } = useLogin()
 
   const form = useForm(submit)
-
-  if (!loading && !error && onLogin) {
-    onLogin(data)
-  }
 
   return (
     <div>
@@ -97,15 +91,11 @@ export const UMLoginForm: React.FC<{onLogin?: MutationCallback}> = ({onLogin}) =
   )
 }
 
-export const UMAccountCreationForm: React.FC<{onCreated?: MutationCallback}> = ({onCreated}) => {
+export const UMAccountCreationForm: React.FC<{}> = () => {
 
-  const { submit, loading, error, data } = useCreateAccount()
+  const { submit } = useCreateAccount()
 
   const form = useForm(submit)
-
-  if (!loading && !error && onCreated) {
-    onCreated(data)
-  }
 
   return <div>
     <Form formHook={form}>
@@ -126,15 +116,11 @@ export const UMAccountCreationForm: React.FC<{onCreated?: MutationCallback}> = (
   </div>
 }
 
-export const UMLogoutForm: React.FC<{onLogout?: MutationCallback}> = ({onLogout}) => {
+export const UMLogoutForm: React.FC<{}> = () => {
 
-  const { submit, loading, error, data } = useLogout()
+  const { submit } = useLogout()
 
   const form = useForm(submit)
-
-  if (!loading && !error && onLogout) {
-    onLogout(data)
-  }
 
   return <div>
     <Form formHook={form}>
