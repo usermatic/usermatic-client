@@ -16,8 +16,8 @@ import { InMemoryCache } from "apollo-cache-inmemory"
 import { ApolloError } from 'apollo-client'
 import { useQuery } from '@apollo/react-hooks'
 
-import { SESSION_QUERY } from './fragments'
-import { UMCsrfContext } from './hooks'
+import { SESSION_QUERY, PROFILE_QUERY } from './fragments'
+import { UMCsrfContext, useCsrfQuery } from './hooks'
 
 export type ClientType = ApolloClient<NormalizedCacheObject>
 
@@ -118,8 +118,6 @@ export const UsermaticAuthProvider: React.FC<UsermaticAuthProviderProps> = ({chi
     uri = 'https://api.usermatic.com/graphql'
   }
 
-  // creating the client in the same component that uses it can cause an infinite render() loop,
-  // so we put the uses of the client in a wrapper component.
   const client = makeClient(uri, siteId)
 
   return (
@@ -133,4 +131,9 @@ export const UsermaticAuthProvider: React.FC<UsermaticAuthProviderProps> = ({chi
     </UMSiteIdContext.Provider>
     </UMUriContext.Provider>
   )
+}
+
+export const useProfile = () => {
+  const client = useContext(UMApolloContext)
+  return useCsrfQuery(PROFILE_QUERY, { client })
 }

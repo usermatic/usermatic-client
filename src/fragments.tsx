@@ -1,11 +1,27 @@
 
 import gql from 'graphql-tag'
 
+export const USER_FRAGMENT = gql`
+  fragment UserParts on SvcUser {
+    id
+    email
+    emailIsVerified
+  }
+`
+
 export const SESSION_QUERY = gql`
 query svcGetSessionJWT($siteId: ID!) {
   svcGetSessionJWT(siteId: $siteId) { auth { userJwt } csrfToken }
 }
 `
+
+export const PROFILE_QUERY = gql`
+  query getProfile {
+    svcGetAuthenticatedUser { ...UserParts }
+  }
+  ${USER_FRAGMENT}
+`
+
 export const LOGIN_MUT = gql`
   mutation login($email: String!, $password: String!) {
     svcLogin(email: $email, password: $password) {
@@ -30,6 +46,12 @@ export const CREATE_ACCOUNT_MUT = gql`
 
 export const VERIFY_EMAIL_MUT = gql`
   mutation verifyEmail($token: String!) {
-    svcVerifyEmail(token: $token) { verificationUri }
+    svcVerifyEmail(token: $token) { redirectUri }
+  }
+`
+
+export const SEND_VERIFICATION_EMAIL_MUT = gql`
+  mutation sendVerificationEmail {
+    svcSendVerificationEmail
   }
 `
