@@ -5,7 +5,14 @@ import { UMApolloContext, UMSiteIdContext } from './auth'
 import { useCsrfMutation } from './hooks'
 import { useForm, Form, Input, InputValueMap } from './forms'
 
-import { LOGIN_MUT, LOGOUT_MUT, CREATE_ACCOUNT_MUT, SESSION_QUERY } from './fragments'
+import {
+  LOGIN_MUT,
+  LOGOUT_MUT,
+  CREATE_ACCOUNT_MUT,
+  SESSION_QUERY,
+  CHANGE_PW_MUT,
+  RESET_PW_MUT
+} from './fragments'
 
 export const useLogout = () => {
   const client = useContext(UMApolloContext)
@@ -39,6 +46,32 @@ export const useLogin = () => {
 
   const submit = (values: InputValueMap) => {
     submitLogin({ variables: values })
+  }
+
+  const success = !loading && !error && data
+  return { submit, loading, error, data, success }
+}
+
+export const useChangePassword = () => {
+  const client = useContext(UMApolloContext)
+  const [submitChangePassword, {loading, error, data} ] =
+    useCsrfMutation(CHANGE_PW_MUT, { client })
+
+  const submit = (values: InputValueMap) => {
+    submitChangePassword({ variables: values })
+  }
+
+  const success = !loading && !error && data
+  return { submit, loading, error, data, success }
+}
+
+export const useResetPassword = () => {
+  const client = useContext(UMApolloContext)
+  const [submitResetPassword, {loading, error, data} ] =
+    useCsrfMutation(RESET_PW_MUT, { client })
+
+  const submit = (values: InputValueMap) => {
+    submitResetPassword({ variables: values })
   }
 
   const success = !loading && !error && data

@@ -30,6 +30,24 @@ export const LOGIN_MUT = gql`
   }
 `
 
+export const RESET_PW_MUT = gql`
+  mutation resetPassword($token: String!, $newPassword: String!) {
+    svcResetPassword(token: $token, newPassword: $newPassword)
+  }
+`
+
+export const REQUEST_PW_RESET_EMAIL = gql`
+  mutation requestPwResetEmail($email: String!, $password: String!) {
+    svcRequestPasswordResetEmail(email: $email)
+  }
+`
+
+export const CHANGE_PW_MUT = gql`
+  mutation changePw($oldPassword: String!, $newPassword: String!) {
+    svcChangePassword(email: $email)
+  }
+`
+
 export const LOGOUT_MUT = gql`mutation logout { svcLogout }`
 
 export const CREATE_ACCOUNT_MUT = gql`

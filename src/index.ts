@@ -1,7 +1,8 @@
 
 import { UsermaticAuthProvider, UMTokenContext, useCredentials, useProfile } from './auth'
 import { UMLoginForm, UMLogoutForm, UMAccountCreationForm,
-         useLogin, useCreateAccount, useLogout } from './login'
+         useLogin, useCreateAccount, useLogout, useResetPassword,
+         useChangePassword } from './login'
 
 import { UMEmailVerifier, useEmailVerifier, useSendVerificationEmail } from './verifyemail'
 
@@ -18,5 +19,7 @@ export {
   useCredentials,
   useEmailVerifier,
   useProfile,
-  useSendVerificationEmail
+  useSendVerificationEmail,
+  useResetPassword,
+  useChangePassword
 }
