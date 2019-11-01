@@ -11,7 +11,8 @@ import {
   CREATE_ACCOUNT_MUT,
   SESSION_QUERY,
   CHANGE_PW_MUT,
-  RESET_PW_MUT
+  RESET_PW_MUT,
+  REQUEST_PW_RESET_EMAIL
 } from './fragments'
 
 export const useLogout = () => {
@@ -65,13 +66,26 @@ export const useChangePassword = () => {
   return { submit, loading, error, data, success }
 }
 
-export const useResetPassword = () => {
+export const useRequestPasswordResetEmail = () => {
+  const client = useContext(UMApolloContext)
+  const [submitPasswordResetRequest, {loading, error, data} ] =
+    useCsrfMutation(REQUEST_PW_RESET_EMAIL, { client })
+
+  const submit = (values: InputValueMap) => {
+    submitPasswordResetRequest({ variables: values })
+  }
+
+  const success = !loading && !error && data
+  return { submit, loading, error, data, success }
+}
+
+export const useResetPassword = (token: string) => {
   const client = useContext(UMApolloContext)
   const [submitResetPassword, {loading, error, data} ] =
     useCsrfMutation(RESET_PW_MUT, { client })
 
   const submit = (values: InputValueMap) => {
-    submitResetPassword({ variables: values })
+    submitResetPassword({ variables: { ...values, token } })
   }
 
   const success = !loading && !error && data

@@ -37,14 +37,14 @@ export const RESET_PW_MUT = gql`
 `
 
 export const REQUEST_PW_RESET_EMAIL = gql`
-  mutation requestPwResetEmail($email: String!, $password: String!) {
+  mutation requestPwResetEmail($email: String!) {
     svcRequestPasswordResetEmail(email: $email)
   }
 `
 
 export const CHANGE_PW_MUT = gql`
   mutation changePw($oldPassword: String!, $newPassword: String!) {
-    svcChangePassword(email: $email)
+    svcChangePassword(oldPassword: $oldPassword, newPassword: $newPassword)
   }
 `
 
