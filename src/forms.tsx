@@ -1,12 +1,5 @@
 
-import React, { useState, ReactNode, FormEvent, ChangeEvent, createContext } from 'react'
-
-type InputOptions = {
-  id: string,
-  inputType: string,
-  initialValue: string,
-  children: ReactNode,
-}
+import { useState, FormEvent, ChangeEvent } from 'react'
 
 export interface InputValueMap {
     [key: string]: string;
@@ -14,68 +7,40 @@ export interface InputValueMap {
 
 interface FormHook {
   values: InputValueMap,
-  handleChange: (event: ChangeEvent<HTMLInputElement>) => void,
-  handleSubmit: (event: FormEvent<HTMLFormElement>) => void,
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void,
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  clear: () => void
 }
 
-const FormContext = createContext<FormHook | null>(null)
-
-export const useForm = (submit: (values: InputValueMap) => void): FormHook => {
+export const useForm = (submit: (values: InputValueMap) => void, hiddenValues: {} = {}): FormHook => {
   const [values, setValues] = useState({})
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     if (event) event.preventDefault();
-    submit(values);
+
+    for (const k in hiddenValues) {
+      if (values.hasOwnProperty(k)) {
+        console.warn(`hiddenValue ${k} overridden by form data`)
+      }
+    }
+
+    submit({...hiddenValues, ...values});
   };
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    event.persist(); // XXX
-    setValues(values => ({ ...values, [event.target.id]: event.target.value }));
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    event.persist();
+    const val = event.target.type == 'checkbox' ? event.target.checked : event.target.value
+    setValues(values => ({ ...values, [event.target.id]: val }));
   };
+
+  const clear = () => {
+    setValues({})
+  }
 
   return {
-    handleChange,
-    handleSubmit,
+    onChange,
+    onSubmit,
     values,
+    clear
   }
 }
-
-export const Input: React.FC<InputOptions> = ({inputType, initialValue, children, id}) => (
-  <FormContext.Consumer>
-    {(formHook): ReactNode => formHook && (
-      <>
-      <label>
-        {children}
-      </label>
-      <input
-        id={id}
-        type={inputType}
-        value={formHook.values[id] || ""}
-        onChange={e => formHook.handleChange(e)}
-      />
-      </>
-    )}
-  </FormContext.Consumer>
-)
-
-type FormOptions = {
-  formHook: FormHook,
-  children: ReactNode,
-}
-
-export const Form: React.FC<FormOptions> = ({formHook, children}) => {
-  return (
-    <FormContext.Provider value={formHook}>
-      <form
-        onSubmit={e => {
-          e.preventDefault()
-          formHook.handleSubmit(e)
-          e.persist()
-        }}
-      >
-        {children}
-      </form>
-    </FormContext.Provider>
-  );
-}
-

@@ -1,10 +1,33 @@
 
-import { UsermaticAuthProvider, UMTokenContext, useCredentials, useProfile } from './auth'
-import { UMLoginForm, UMLogoutForm, UMAccountCreationForm,
-         useLogin, useCreateAccount, useLogout, useResetPassword,
-         useChangePassword, useRequestPasswordResetEmail } from './login'
+import {
+  UsermaticAuthProvider,
+  UMTokenContext,
+  useCredentials,
+  useProfile
+} from './auth'
 
-import { UMEmailVerifier, useEmailVerifier, useSendVerificationEmail } from './verifyemail'
+import {
+  UMLoginForm,
+  UMLogoutForm,
+  UMAccountCreationForm,
+  useLogin,
+  useCreateAccount,
+  useLogout
+} from './login'
+
+import {
+  useResetPassword,
+  useChangePassword,
+  useRequestPasswordResetEmail,
+  UMRequestPasswordResetForm,
+  UMResetPasswordForm
+} from './passwords'
+
+import {
+  UMEmailVerifier,
+  useEmailVerifier,
+  useSendVerificationEmail
+} from './verifyemail'
 
 export {
   UsermaticAuthProvider,
@@ -13,6 +36,8 @@ export {
   UMLogoutForm,
   UMAccountCreationForm,
   UMEmailVerifier,
+  UMRequestPasswordResetForm,
+  UMResetPasswordForm,
   useLogin,
   useLogout,
   useCreateAccount,

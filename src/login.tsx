@@ -3,16 +3,14 @@ import React, { useContext } from 'react'
 
 import { UMApolloContext, UMSiteIdContext } from './auth'
 import { useCsrfMutation } from './hooks'
-import { useForm, Form, Input, InputValueMap } from './forms'
+import { useForm, InputValueMap } from './forms'
+import { ErrorMessage } from './errors'
 
 import {
   LOGIN_MUT,
   LOGOUT_MUT,
   CREATE_ACCOUNT_MUT,
-  SESSION_QUERY,
-  CHANGE_PW_MUT,
-  RESET_PW_MUT,
-  REQUEST_PW_RESET_EMAIL
+  SESSION_QUERY
 } from './fragments'
 
 export const useLogout = () => {
@@ -53,45 +51,6 @@ export const useLogin = () => {
   return { submit, loading, error, data, success }
 }
 
-export const useChangePassword = () => {
-  const client = useContext(UMApolloContext)
-  const [submitChangePassword, {loading, error, data} ] =
-    useCsrfMutation(CHANGE_PW_MUT, { client })
-
-  const submit = (values: InputValueMap) => {
-    submitChangePassword({ variables: values })
-  }
-
-  const success = !loading && !error && data
-  return { submit, loading, error, data, success }
-}
-
-export const useRequestPasswordResetEmail = () => {
-  const client = useContext(UMApolloContext)
-  const [submitPasswordResetRequest, {loading, error, data} ] =
-    useCsrfMutation(REQUEST_PW_RESET_EMAIL, { client })
-
-  const submit = (values: InputValueMap) => {
-    submitPasswordResetRequest({ variables: values })
-  }
-
-  const success = !loading && !error && data
-  return { submit, loading, error, data, success }
-}
-
-export const useResetPassword = (token: string) => {
-  const client = useContext(UMApolloContext)
-  const [submitResetPassword, {loading, error, data} ] =
-    useCsrfMutation(RESET_PW_MUT, { client })
-
-  const submit = (values: InputValueMap) => {
-    submitResetPassword({ variables: { ...values, token } })
-  }
-
-  const success = !loading && !error && data
-  return { submit, loading, error, data, success }
-}
-
 export const useCreateAccount = () => {
   const client = useContext(UMApolloContext)
   const siteId = useContext(UMSiteIdContext)
@@ -113,67 +72,64 @@ export const useCreateAccount = () => {
 
 export const UMLoginForm: React.FC<{}> = () => {
 
-  const { submit } = useLogin()
+  const { submit, error } = useLogin()
 
-  const form = useForm(submit)
+  const { onSubmit, onChange, values } = useForm(submit)
 
-  return (
-    <div>
-      <Form formHook={form}>
-        <div>
-          <Input id='email' inputType="text" initialValue="">
-            Email
-          </Input>
-        </div>
-        <div>
-          <Input id='password' inputType="text" initialValue="">
-            Password
-          </Input>
-        </div>
-        <div>
-          <button type="submit">Login</button>
-        </div>
-      </Form>
+  return <form className="um-form-signin" onSubmit={onSubmit}>
+    <div className="um-form-label-group">
+      <input type="email" id="email" className="um-form-control"
+             value={values.email || ''} onChange={onChange}
+             placeholder="Enter your email address" required autoFocus />
+      <label htmlFor="newPassword">Enter your email address</label>
     </div>
-  )
+
+    <div className="um-form-label-group">
+      <input type="password" id="password" className="um-form-control"
+             value={values.password || ''} onChange={onChange}
+             placeholder="Enter your password" required />
+      <label htmlFor="password">Enter your password</label>
+    </div>
+
+    <button className="btn btn-lg btn-primary" type="submit">Login</button>
+    <ErrorMessage error={error} />
+  </form>
 }
 
 export const UMAccountCreationForm: React.FC<{}> = () => {
 
-  const { submit } = useCreateAccount()
+  const { submit, error } = useCreateAccount()
 
-  const form = useForm(submit)
+  const { onSubmit, onChange, values } = useForm(submit)
 
-  return <div>
-    <Form formHook={form}>
-      <div>
-        <Input id='email' inputType="text" initialValue="">
-          Email
-        </Input>
-      </div>
-      <div>
-        <Input id='password' inputType="text" initialValue="">
-          Password
-        </Input>
-      </div>
-      <div>
-        <button type="submit">Create Account</button>
-      </div>
-    </Form>
-  </div>
+  return <form className="um-form-signin" onSubmit={onSubmit}>
+    <div className="um-form-label-group">
+      <input type="email" id="email" className="um-form-control"
+             value={values.email || ''} onChange={onChange}
+             placeholder="Enter your email address" required autoFocus />
+      <label htmlFor="newPassword">Enter your email address</label>
+    </div>
+
+    <div className="um-form-label-group">
+      <input type="password" id="password" className="um-form-control"
+             value={values.password || ''} onChange={onChange}
+             placeholder="Enter your password" required />
+      <label htmlFor="password">Enter your password</label>
+    </div>
+
+    <button className="btn btn-lg btn-primary" type="submit">Login</button>
+    <ErrorMessage error={error} />
+  </form>
 }
 
 export const UMLogoutForm: React.FC<{}> = () => {
 
-  const { submit } = useLogout()
+  const { submit, error } = useLogout()
 
-  const form = useForm(submit)
+  const { onSubmit } = useForm(submit)
 
-  return <div>
-    <Form formHook={form}>
-      <div>
-        <button type="submit">Logout</button>
-      </div>
-    </Form>
-  </div>
+  return <form className="um-form-logout" onSubmit={onSubmit} >
+    <button className="btn btn-lg btn-primary" type="submit">Logout</button>
+    <ErrorMessage error={error} />
+  </form>
 }
