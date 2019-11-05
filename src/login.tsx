@@ -1,7 +1,9 @@
 
 import React, { useContext, useEffect, useState } from 'react'
+import { ApolloError } from 'apollo-client'
+import { GraphQLError } from 'graphql'
 
-import { UMApolloContext, UMSiteIdContext } from './auth'
+import { useCredentials, UMApolloContext, UMSiteIdContext } from './auth'
 import { useCsrfMutation } from './hooks'
 import { useForm, InputValueMap } from './forms'
 import { ErrorMessage } from './errors'
@@ -125,30 +127,85 @@ export const UMLoginForm: React.FC<LoginFormProps> = ({onLogin}) => {
   </form>
 }
 
-export const UMAccountCreationForm: React.FC<{}> = () => {
 
-  const { submit, error } = useCreateAccount()
+// User creation error messages are likely to occur in normal situations,
+// so they get a bit more attention than ErrorMessage can give.
+const UserCreateError: React.FC<{error?: ApolloError}> = ({error}) => {
+  if (!error) { return null }
 
-  const { onSubmit, onChange, values } = useForm(submit)
+  const formatMsg = (e: GraphQLError) => {
+    if (e.extensions == null) {
+      return null
+    }
+    const { exception } = e.extensions
+    if (exception) {
+      switch (exception.code) {
+        case 'EMAIL_EXISTS':
+          return <>
+            An account with the email address {e.extensions.email} already exists.
+          </>
+      }
+    }
 
-  return <form className="um-form-signin" onSubmit={onSubmit}>
-    <div className="um-form-label-group">
-      <input type="email" id="email" className="um-form-control"
-             value={values.email || ''} onChange={onChange}
-             placeholder="Enter your email address" required autoFocus />
-      <label htmlFor="newPassword">Enter your email address</label>
-    </div>
+    return e.message
+  }
 
-    <div className="um-form-label-group">
-      <input type="password" id="password" className="um-form-control"
-             value={values.password || ''} onChange={onChange}
-             placeholder="Enter your password" required />
-      <label htmlFor="password">Enter your password</label>
-    </div>
+  return <>
+    {error.graphQLErrors.map((e, i) => (
+      <div className="alert alert-danger" role="alert" key={i}>
+        {formatMsg(e) || 'uknown error'}
+      </div>
+    ))}
+  </>
+}
 
-    <button className="btn btn-lg btn-primary" type="submit">Login</button>
-    <ErrorMessage error={error} />
-  </form>
+type AccountCreationProps = {
+  loginAfterCreation: boolean
+  onLogin?: () => void
+}
+
+export const UMAccountCreationForm: React.FC<AccountCreationProps> =
+  ({loginAfterCreation, onLogin}) => {
+
+  const { id } = useCredentials()
+  const { submit, error, success } = useCreateAccount()
+
+  const { onSubmit, onChange, values } = useForm(submit,
+    { loginAfterCreation }
+  )
+
+  useEffect(() => {
+    if (success && id && onLogin) {
+      onLogin()
+    }
+  })
+
+  return <>
+    <form className="um-form-signin" onSubmit={onSubmit}>
+      <div className="um-form-label-group">
+        <input type="email" id="email" className="um-form-control"
+               value={values.email || ''} onChange={onChange}
+               placeholder="Enter your email address" required autoFocus />
+        <label htmlFor="newPassword">Enter your email address</label>
+      </div>
+
+      <div className="um-form-label-group">
+        <input type="password" id="password" className="um-form-control"
+               value={values.password || ''} onChange={onChange}
+               placeholder="Enter your password" required />
+        <label htmlFor="password">Enter your password</label>
+      </div>
+
+      <div className="custom-control custom-checkbox mb-3">
+        <input type="checkbox" className="custom-control-input" id="stayLoggedIn"
+               onChange={onChange} checked={Boolean(values.stayLoggedIn)} />
+        <label className="custom-control-label" htmlFor="stayLoggedIn">Remember me</label>
+      </div>
+
+      <button className="btn btn-lg btn-primary" type="submit">Create Account</button>
+    </form>
+    <UserCreateError error={error} />
+  </>
 }
 
 export const UMLogoutForm: React.FC<{}> = () => {
