@@ -30,9 +30,7 @@ function getConciseErrors(error: ApolloError | undefined): Array<ConciseError> {
   return []
 }
 
-
 const ErrorMessage: React.FC<ErrorProps> = ({error}) => {
-
   const errors = getConciseErrors(error)
 
   if (errors.length === 0) {

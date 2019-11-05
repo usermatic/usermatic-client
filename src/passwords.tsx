@@ -60,6 +60,33 @@ type LoginState = {
   stayLoggedIn: string
 }
 
+export const UMChangePasswordForm: React.FC<{}> = () => {
+
+  const { submit: submitChangePassword, loading, error } = useChangePassword()
+  const { onSubmit, onChange, values } = useForm(submitChangePassword)
+
+  return <form onSubmit={onSubmit}>
+    <div className="form-label-group">
+      <input type="password" id="oldPassword" className="form-control"
+             value={values.oldPassword || ''} onChange={onChange}
+             placeholder="Old Password" required autoFocus />
+      <label htmlFor="oldPassword">Old Password</label>
+    </div>
+
+    <div className="form-label-group">
+      <input type="password" id="newPassword" className="form-control"
+             value={values.newPassword || ''} onChange={onChange}
+             placeholder="New Password" required />
+      <label htmlFor="newPassword">New Password</label>
+    </div>
+
+    <button className={`btn btn-lg btn-primary ${ loading ? 'disabled' : '' }`} type="submit">
+      { loading ? 'Please wait...' : 'Change Password' }
+    </button>
+    <ErrorMessage error={error} />
+  </form>
+}
+
 export const UMResetPasswordForm: React.FC<{token: string, onLogin: () => void}> = ({token, onLogin}) => {
 
   const [loginData, setLoginData] = useState<LoginState | undefined>()

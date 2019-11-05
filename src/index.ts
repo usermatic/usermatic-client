@@ -20,7 +20,8 @@ import {
   useChangePassword,
   useRequestPasswordResetEmail,
   UMRequestPasswordResetForm,
-  UMResetPasswordForm
+  UMResetPasswordForm,
+  UMChangePasswordForm
 } from './passwords'
 
 import {
@@ -38,6 +39,7 @@ export {
   UMEmailVerifier,
   UMRequestPasswordResetForm,
   UMResetPasswordForm,
+  UMChangePasswordForm,
   useLogin,
   useLogout,
   useCreateAccount,
