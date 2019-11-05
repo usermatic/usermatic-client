@@ -1,10 +1,11 @@
 
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { UMApolloContext, UMSiteIdContext } from './auth'
 import { useCsrfMutation } from './hooks'
 import { useForm, InputValueMap } from './forms'
 import { ErrorMessage } from './errors'
+import { UMRequestPasswordResetForm } from './passwords'
 
 import {
   LOGIN_MUT,
@@ -70,28 +71,56 @@ export const useCreateAccount = () => {
   return { submit, loading, error, data, success }
 }
 
-export const UMLoginForm: React.FC<{}> = () => {
+type LoginFormProps = {
+  onLogin: (() => void) | undefined
+}
 
-  const { submit, error } = useLogin()
+export const UMLoginForm: React.FC<LoginFormProps> = ({onLogin}) => {
+
+  const [isForgotPasswordMode, setForgotPasswordMode] = useState(false)
+
+  const { submit, loading, data, error } = useLogin()
 
   const { onSubmit, onChange, values } = useForm(submit)
 
-  return <form className="um-form-signin" onSubmit={onSubmit}>
-    <div className="um-form-label-group">
-      <input type="email" id="email" className="um-form-control"
+  useEffect(() => {
+    if (!loading && !error && data && data.svcLogin && onLogin) {
+      onLogin()
+    }
+  })
+
+  if (isForgotPasswordMode) {
+    return <UMRequestPasswordResetForm/>
+  }
+
+  return <form className="form-signin" onSubmit={onSubmit}>
+    <div className="form-label-group">
+      <input type="email" id="email" className="form-control"
              value={values.email || ''} onChange={onChange}
-             placeholder="Enter your email address" required autoFocus />
-      <label htmlFor="newPassword">Enter your email address</label>
+             placeholder="Email address" required autoFocus />
+      <label htmlFor="email">Email address</label>
     </div>
 
-    <div className="um-form-label-group">
-      <input type="password" id="password" className="um-form-control"
+    <div className="form-label-group">
+      <input type="password" id="password" className="form-control"
              value={values.password || ''} onChange={onChange}
-             placeholder="Enter your password" required />
-      <label htmlFor="password">Enter your password</label>
+             placeholder="Password" required />
+      <label htmlFor="password">Password</label>
     </div>
 
-    <button className="btn btn-lg btn-primary" type="submit">Login</button>
+    <div className="custom-control custom-checkbox mb-3 justify-content-between d-flex">
+      <input type="checkbox" className="custom-control-input" id="stayLoggedIn"
+             onChange={onChange} checked={Boolean(values.stayLoggedIn)} />
+      <label className="custom-control-label" htmlFor="stayLoggedIn">Remember me</label>
+    </div>
+
+    <div className="mb-3 justify-content-between d-flex">
+      <button className="btn btn-lg btn-primary" type="submit">Sign in</button>
+      <button className="btn btn-secondary" type="button"
+              onClick={(e) => { e.preventDefault(); setForgotPasswordMode(true); }}>
+        Forgot Password?
+      </button>
+    </div>
     <ErrorMessage error={error} />
   </form>
 }
