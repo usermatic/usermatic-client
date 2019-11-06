@@ -37,7 +37,7 @@ export const useLogin = () => {
   const client = useContext(UMApolloContext)
   const siteId = useContext(UMSiteIdContext)
 
-  const [submitLogin, {loading, error, data} ] =
+  const [submitLogin, {loading, error, data, called} ] =
     useCsrfMutation(
       LOGIN_MUT,
       {
@@ -51,7 +51,7 @@ export const useLogin = () => {
   }
 
   const success = !loading && !error && data
-  return { submit, loading, error, data, success }
+  return { submit, loading, error, data, success, called }
 }
 
 export const useCreateAccount = () => {
@@ -81,12 +81,18 @@ export const UMLoginForm: React.FC<LoginFormProps> = ({onLogin}) => {
 
   const [isForgotPasswordMode, setForgotPasswordMode] = useState(false)
 
-  const { submit, loading, data, error } = useLogin()
+  const { submit, loading, error, called } = useLogin()
 
   const { onSubmit, onChange, values } = useForm(submit)
 
+  const { id: credentialId, loading: credentialLoading } = useCredentials()
+
   useEffect(() => {
-    if (!loading && !error && data && data.svcLogin && onLogin) {
+    // We need to wait until the credential context is reporting that we are logged in,
+    // (in addition to waiting for useLogin() mutation to finish). Otherwise there's a window
+    // during which other components might think we aren't logged in, even though we are
+    // about to be.
+    if (called && !loading && !error && credentialId && !credentialLoading && onLogin) {
       onLogin()
     }
   })
