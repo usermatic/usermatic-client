@@ -28,7 +28,7 @@ export const useEmailVerifier = () => {
 
 export const UMEmailVerifier: React.FC<{token: string}> = ({token}) => {
 
-  const { submit, loading, error, success, called, data } = useEmailVerifier()
+  const { submit, error, success, called, data } = useEmailVerifier()
   const csrfToken = useContext(UMCsrfContext)
 
   useEffect(() => {
@@ -40,13 +40,11 @@ export const UMEmailVerifier: React.FC<{token: string}> = ({token}) => {
       const { redirectUri } = data.svcVerifyEmail
       setTimeout(() => {
         window.location.replace(redirectUri)
-      }, 3000)
+      }, 1000)
     }
   })
 
-  if (loading) {
-    return <div>Verifying email, please wait...</div>
-  } else if (success) {
+  if (success) {
     const { redirectUri } = data.svcVerifyEmail
     return <div>Your email is now verified! You will be automatically
       redirected to <a href={redirectUri}>{redirectUri}</a>.
@@ -55,5 +53,11 @@ export const UMEmailVerifier: React.FC<{token: string}> = ({token}) => {
   } else if (error) {
     return <div>We could not verify your email address - The link you clicked may be expired.</div>
   }
-  return null
+
+  return <>
+    <div><h4>Verifying email, please wait...</h4></div>
+    <div className="spinner-border" role="status">
+      <span className="sr-only">Loading...</span>
+    </div>
+  </>
 }

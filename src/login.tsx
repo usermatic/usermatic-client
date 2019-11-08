@@ -142,7 +142,6 @@ export const UMLoginForm: React.FC<LoginFormProps> = ({onLogin}) => {
   </form>
 }
 
-
 // User creation error messages are likely to occur in normal situations,
 // so they get a bit more attention than ErrorMessage can give.
 const UserCreateError: React.FC<{error?: ApolloError}> = ({error}) => {
