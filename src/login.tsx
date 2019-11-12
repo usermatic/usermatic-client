@@ -74,7 +74,7 @@ export const useCreateAccount = () => {
 }
 
 type LoginFormProps = {
-  onLogin: (() => void) | undefined
+  onLogin?: () => void
 }
 
 export const UMLoginForm: React.FC<LoginFormProps> = ({onLogin}) => {
