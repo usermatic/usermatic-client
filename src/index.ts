@@ -8,7 +8,7 @@ import {
 
 import {
   UMLoginForm,
-  UMLogoutForm,
+  UMLogoutButton,
   UMAccountCreationForm,
   useLogin,
   useCreateAccount,
@@ -34,7 +34,7 @@ export {
   UsermaticAuthProvider,
   UMTokenContext,
   UMLoginForm,
-  UMLogoutForm,
+  UMLogoutButton,
   UMAccountCreationForm,
   UMEmailVerifier,
   UMRequestPasswordResetForm,

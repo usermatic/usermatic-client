@@ -30,7 +30,7 @@ export const useForm = (submit: (values: InputValueMap) => void, hiddenValues: {
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.persist();
     const val = event.target.type == 'checkbox' ? event.target.checked : event.target.value
-    setValues(values => ({ ...values, [event.target.id]: val }));
+    setValues(values => ({ ...values, [event.target.getAttribute('data-var') as string]: val }));
   };
 
   const clear = () => {

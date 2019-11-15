@@ -15,6 +15,16 @@ import {
   REQUEST_PW_RESET_EMAIL
 } from './fragments'
 
+const getId = (prefix: string | undefined, suffix: string) => {
+  if (prefix) {
+    return `${prefix}-${suffix}`
+  } else {
+    // add some random goobledygook to avoid conflicts with other component
+    // libraries.
+    return `um9akc83a-${suffix}`
+  }
+}
+
 export const useChangePassword = () => {
   const client = useContext(UMApolloContext)
   const [submitChangePassword, {loading, error, data} ] =
@@ -60,24 +70,26 @@ type LoginState = {
   stayLoggedIn: string
 }
 
-export const UMChangePasswordForm: React.FC<{}> = () => {
+export const UMChangePasswordForm: React.FC<{idPrefix?: string}> = ({idPrefix}) => {
 
   const { submit: submitChangePassword, loading, error } = useChangePassword()
   const { onSubmit, onChange, values } = useForm(submitChangePassword)
 
   return <form onSubmit={onSubmit}>
     <div className="form-label-group">
-      <input type="password" id="oldPassword" className="form-control"
+      <input type="password" data-var="oldPassword" className="form-control"
              value={values.oldPassword || ''} onChange={onChange}
+             id={getId(idPrefix, "change-password-old-password")}
              placeholder="Old Password" required autoFocus />
-      <label htmlFor="oldPassword">Old Password</label>
+      <label htmlFor={getId(idPrefix, "change-password-old-password")}>Old Password</label>
     </div>
 
     <div className="form-label-group">
-      <input type="password" id="newPassword" className="form-control"
+      <input type="password" data-var="newPassword" className="form-control"
              value={values.newPassword || ''} onChange={onChange}
+             id={getId(idPrefix, "change-password-new-password")}
              placeholder="New Password" required />
-      <label htmlFor="newPassword">New Password</label>
+      <label htmlFor={getId(idPrefix, "change-password-new-password")}>New Password</label>
     </div>
 
     <button className={`btn btn-lg btn-primary ${ loading ? 'disabled' : '' }`} type="submit">
@@ -87,7 +99,13 @@ export const UMChangePasswordForm: React.FC<{}> = () => {
   </form>
 }
 
-export const UMResetPasswordForm: React.FC<{token: string, onLogin: () => void}> = ({token, onLogin}) => {
+type UMRequestPasswordResetFormProps = {
+  token: string
+  onLogin: () => void
+  idPrefix?: string
+}
+
+export const UMResetPasswordForm: React.FC<UMRequestPasswordResetFormProps> = ({token, onLogin, idPrefix}) => {
 
   const [loginData, setLoginData] = useState<LoginState | undefined>()
 
@@ -126,26 +144,32 @@ export const UMResetPasswordForm: React.FC<{token: string, onLogin: () => void}>
 
   return <form className="form-signin" onSubmit={onSubmit}>
     <div className="form-label-group">
-      <input type="password" id="newPassword" className="form-control"
+      <input type="password" data-var="newPassword" className="form-control"
              value={values.newPassword || ''} onChange={onChange}
+             id={getId(idPrefix, "reset-password-new-password")}
              placeholder="New Password" required autoFocus />
-      <label htmlFor="newPassword">New Password</label>
+      <label htmlFor={getId(idPrefix, "reset-password-new-password")}>New Password</label>
     </div>
 
     <div className="custom-control custom-checkbox mb-3 justify-content-between d-flex">
-      <input type="checkbox" className="custom-control-input" id="loginAfterReset"
+      <input type="checkbox" className="custom-control-input" data-var="loginAfterReset"
+             id={getId(idPrefix, "reset-password-login-after-reset")}
              onChange={onChange} checked={Boolean(values.loginAfterReset)} />
-      <label className="custom-control-label" htmlFor="loginAfterReset">Log in now?</label>
+      <label className="custom-control-label" htmlFor={getId(idPrefix, "reset-password-login-after-reset")}>
+        Log in now?
+      </label>
     </div>
 
     { Boolean(values.loginAfterReset) ?
       <div className="custom-control custom-checkbox mb-3 justify-content-between d-flex">
-        <input type="checkbox" className="custom-control-input" id="stayLoggedIn"
+        <input type="checkbox" className="custom-control-input" data-var="stayLoggedIn"
+               id={getId(idPrefix, "reset-password-stay-logged-in")}
                onChange={onChange} checked={Boolean(values.stayLoggedIn)} />
-        <label className="custom-control-label" htmlFor="stayLoggedIn">Remember me</label>
+        <label className="custom-control-label" htmlFor={getId(idPrefix, "reset-password-stay-logged-in")}>
+          Remember me
+        </label>
       </div>
-      : null
-    }
+      : null }
 
     <button className="btn btn-lg btn-primary" type="submit">Reset Password</button>
     <ErrorMessage error={error} />
@@ -153,7 +177,7 @@ export const UMResetPasswordForm: React.FC<{token: string, onLogin: () => void}>
   </form>
 }
 
-export const UMRequestPasswordResetForm: React.FC<{}> = () => {
+export const UMRequestPasswordResetForm: React.FC<{idPrefix?: string}> = ({idPrefix}) => {
   const { submit, loading, error, success } = useRequestPasswordResetEmail()
 
   const [submittedEmail, setSubmittedEmail] = useState('')
@@ -163,10 +187,11 @@ export const UMRequestPasswordResetForm: React.FC<{}> = () => {
   return <>
     <form className="form-signin" onSubmit={(e) => {onSubmit(e); setSubmittedEmail(values.email)}}>
       <div className="form-label-group">
-        <input type="email" id="email" className="form-control"
+        <input type="email" data-var="email" className="form-control"
                value={values.email || ''} onChange={onChange}
+               id={getId(idPrefix, "request-password-reset-email")}
                placeholder="Enter your email address" required autoFocus />
-        <label htmlFor="newPassword">Enter your email address</label>
+        <label htmlFor={getId(idPrefix, "request-password-reset-email")}>Enter your email address</label>
       </div>
 
       <button className={`btn btn-lg btn-primary ${ loading ? 'disabled' : ''}`}
