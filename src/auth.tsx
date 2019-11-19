@@ -40,7 +40,12 @@ export const makeClient = (uri: string, siteId: string): ClientType => {
   const finalUri = url.format(parsed)
   if (!(finalUri in clientCache)) {
     clientCache[finalUri] = new ApolloClient({
-      link: createHttpLink({ uri: finalUri, fetch, credentials: 'include' }),
+      link: createHttpLink({
+        uri: finalUri,
+        fetch,
+        credentials: 'include',
+        headers: { 'X-Usermatic': 'Usermatic' }
+      }),
       cache: new InMemoryCache()
     })
   }
