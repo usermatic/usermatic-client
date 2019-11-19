@@ -153,8 +153,8 @@ export const UMLoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix}) => {
     </div>
 
     <div className="mb-3 justify-content-between d-flex">
-      <button className="btn btn-lg btn-primary" type="submit">Sign in</button>
-      <button className="btn btn-secondary" type="button"
+      <button className="btn btn-primary" type="submit">Sign in</button>
+      <button className="btn btn-outline-primary" type="button"
               onClick={(e) => { e.preventDefault(); setForgotPasswordMode(true); }}>
         Forgot Password?
       </button>
