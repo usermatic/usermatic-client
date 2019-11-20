@@ -62,7 +62,6 @@ export const UMTokenContext = createContext<AuthTokenData | undefined>(undefined
 export const UMTokenConsumer = UMTokenContext.Consumer
 
 export const UMSiteIdContext = createContext<string | undefined>(undefined)
-export const UMUriContext = createContext<string | undefined>(undefined)
 
 export const useCredentials = (): AuthTokenData => {
   const tokenData = useContext(UMTokenContext)
@@ -72,9 +71,57 @@ export const useCredentials = (): AuthTokenData => {
   return tokenData
 }
 
-const WrappedUsermaticAuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
+const formatSiteId = (siteId: string | undefined) => {
+  if (!siteId) { return 'undefined' }
+  return siteId
+}
 
-  const uri = useContext(UMUriContext)
+const isValidSiteId = (siteId: string | undefined) => {
+  if (!siteId) {
+    return false
+  }
+
+  const re = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+  return re.test(siteId)
+}
+
+const Diagnostics: React.FC<{siteId: string | undefined}> = ({siteId}) => {
+
+  return <div className="usermatic-diagnostics alert alert-danger p-4">
+    <strong>Usermatic is not configured correctly.</strong>
+    <p/>
+    { isValidSiteId(siteId)
+      ? <>
+          You've provided the valid-looking <code>siteId</code> property <code>{formatSiteId(siteId)}</code>
+          {' '}to <code>&lt;UsermaticAuthProvider&gt;</code>, but
+          it is either not a known siteId, or the site to which it refers is not configured to accept
+          authentication requests from the current origin, which is <code>{document.location.origin}</code>.
+        </>
+      : <>
+          It appears that you have not provided a valid <code>siteId</code> property to
+          the <code>&lt;UsermaticAuthProvider&gt;</code> component.
+          <p/>
+          The <code>siteId</code> propertry should be a UUID such as <code>e3ede2c8-2809-498c-a047-4994e4fee393</code>.
+          <p/>
+          You provided <code>{formatSiteId(siteId)}</code>
+        </>
+    }
+    <p/>
+    Please visit the <a href="https://usermatic.io/dashboard">Usermatic Dashboard</a> to
+    get the correct site ID for your application, or to configure the application to work with
+    the current origin.
+    <p/>
+    <a className="font-italic" href="https://usermatic.io/docs#hideDiagnostics">I want to hide this message permanently</a>
+  </div>
+}
+
+const WrappedUsermaticAuthProvider: React.FC<{children: ReactNode, showDiagnostics?: boolean}> =
+  ({children, showDiagnostics}) => {
+
+  if (showDiagnostics == null) {
+    showDiagnostics = true
+  }
+
   const client = useContext(UMApolloContext)
   const siteId = useContext(UMSiteIdContext)
 
@@ -85,8 +132,7 @@ const WrappedUsermaticAuthProvider: React.FC<{children: ReactNode}> = ({children
   let csrfToken
   if (!loading && !error && data.svcGetSessionJWT) {
     csrfToken = data.svcGetSessionJWT.csrfToken
-    // TODO: if csrfToken is missing, most/all subsequent requests will fail. the graphql
-    // schema should ensure we have it however.
+    // TODO: if csrfToken is missing, most/all subsequent requests will fail.
     const { auth } = data.svcGetSessionJWT
     if (auth) {
       const { userJwt } = auth
@@ -97,15 +143,9 @@ const WrappedUsermaticAuthProvider: React.FC<{children: ReactNode}> = ({children
     }
   }
 
-  if (!uri) {
-    throw new Error("WrappedUsermaticAuthProvider must be inside a UMUriContext")
-  }
-  if (!siteId) {
-    throw new Error("WrappedUsermaticAuthProvider must be inside a UMSiteIdContext")
-  }
-
   return <UMCsrfContext.Provider value={csrfToken}>
     <UMTokenContext.Provider value={tokenValue}>
+      {error && showDiagnostics && <Diagnostics siteId={siteId} />}
       {children}
     </UMTokenContext.Provider>
   </UMCsrfContext.Provider>
@@ -114,10 +154,12 @@ const WrappedUsermaticAuthProvider: React.FC<{children: ReactNode}> = ({children
 type UsermaticAuthProviderProps = {
   children: ReactNode,
   uri?: string,
-  siteId: string
+  siteId: string,
+  showDiagnostics?: boolean
 }
 
-export const UsermaticAuthProvider: React.FC<UsermaticAuthProviderProps> = ({children, uri, siteId}) => {
+export const UsermaticAuthProvider: React.FC<UsermaticAuthProviderProps> =
+  ({children, uri, siteId, showDiagnostics}) => {
 
   if (!uri) {
     uri = 'https://api.usermatic.com/graphql'
@@ -126,15 +168,13 @@ export const UsermaticAuthProvider: React.FC<UsermaticAuthProviderProps> = ({chi
   const client = makeClient(uri, siteId)
 
   return (
-    <UMUriContext.Provider value={uri}>
     <UMSiteIdContext.Provider value={siteId}>
     <UMApolloContext.Provider value={client}>
-      <WrappedUsermaticAuthProvider>
+      <WrappedUsermaticAuthProvider showDiagnostics={showDiagnostics}>
         {children}
       </WrappedUsermaticAuthProvider>
     </UMApolloContext.Provider>
     </UMSiteIdContext.Provider>
-    </UMUriContext.Provider>
   )
 }
 
