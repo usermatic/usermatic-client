@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 
 import { UMApolloContext } from './auth'
 import { useCsrfMutation } from './hooks'
-import { useForm, InputValueMap } from './forms'
+import { useForm, InputValueMap, InputLabel } from './forms'
 import { ErrorMessage } from './errors'
 import { useLogin } from './login'
 
@@ -70,26 +70,35 @@ type LoginState = {
   stayLoggedIn: string
 }
 
-export const UMChangePasswordForm: React.FC<{idPrefix?: string}> = ({idPrefix}) => {
+export const UMChangePasswordForm: React.FC<{idPrefix?: string, labelsFirst?: boolean}> =
+  ({idPrefix, labelsFirst}) => {
+
+  if (labelsFirst == null) {
+    labelsFirst = true
+  }
 
   const { submit: submitChangePassword, loading, error } = useChangePassword()
   const { onSubmit, onChange, values } = useForm(submitChangePassword)
 
   return <form onSubmit={onSubmit}>
     <div className="form-label-group">
-      <input type="password" data-var="oldPassword" className="form-control"
-             value={values.oldPassword || ''} onChange={onChange}
-             id={getId(idPrefix, "change-password-old-password")}
-             placeholder="Old Password" required autoFocus />
-      <label htmlFor={getId(idPrefix, "change-password-old-password")}>Old Password</label>
+      <InputLabel flip={labelsFirst}>
+        <input type="password" data-var="oldPassword" className="form-control"
+               value={values.oldPassword || ''} onChange={onChange}
+               id={getId(idPrefix, "change-password-old-password")}
+               placeholder="Old Password" required autoFocus />
+        <label htmlFor={getId(idPrefix, "change-password-old-password")}>Old Password</label>
+      </InputLabel>
     </div>
 
     <div className="form-label-group">
-      <input type="password" data-var="newPassword" className="form-control"
-             value={values.newPassword || ''} onChange={onChange}
-             id={getId(idPrefix, "change-password-new-password")}
-             placeholder="New Password" required />
-      <label htmlFor={getId(idPrefix, "change-password-new-password")}>New Password</label>
+      <InputLabel flip={labelsFirst}>
+        <input type="password" data-var="newPassword" className="form-control"
+               value={values.newPassword || ''} onChange={onChange}
+               id={getId(idPrefix, "change-password-new-password")}
+               placeholder="New Password" required />
+        <label htmlFor={getId(idPrefix, "change-password-new-password")}>New Password</label>
+      </InputLabel>
     </div>
 
     <button className={`btn btn-lg btn-primary ${ loading ? 'disabled' : '' }`} type="submit">
@@ -103,9 +112,15 @@ type UMRequestPasswordResetFormProps = {
   token: string
   onLogin: () => void
   idPrefix?: string
+  labelsFirst?: boolean
 }
 
-export const UMResetPasswordForm: React.FC<UMRequestPasswordResetFormProps> = ({token, onLogin, idPrefix}) => {
+export const UMResetPasswordForm: React.FC<UMRequestPasswordResetFormProps> =
+  ({token, onLogin, idPrefix, labelsFirst}) => {
+
+  if (labelsFirst == null) {
+    labelsFirst = true
+  }
 
   const [loginData, setLoginData] = useState<LoginState | undefined>()
 
@@ -144,11 +159,13 @@ export const UMResetPasswordForm: React.FC<UMRequestPasswordResetFormProps> = ({
 
   return <form className="form-signin" onSubmit={onSubmit}>
     <div className="form-label-group">
-      <input type="password" data-var="newPassword" className="form-control"
-             value={values.newPassword || ''} onChange={onChange}
-             id={getId(idPrefix, "reset-password-new-password")}
-             placeholder="New Password" required autoFocus />
-      <label htmlFor={getId(idPrefix, "reset-password-new-password")}>New Password</label>
+      <InputLabel flip={labelsFirst}>
+        <input type="password" data-var="newPassword" className="form-control"
+               value={values.newPassword || ''} onChange={onChange}
+               id={getId(idPrefix, "reset-password-new-password")}
+               placeholder="New Password" required autoFocus />
+        <label htmlFor={getId(idPrefix, "reset-password-new-password")}>New Password</label>
+      </InputLabel>
     </div>
 
     <div className="custom-control custom-checkbox mb-3 justify-content-between d-flex">
@@ -177,7 +194,13 @@ export const UMResetPasswordForm: React.FC<UMRequestPasswordResetFormProps> = ({
   </form>
 }
 
-export const UMRequestPasswordResetForm: React.FC<{idPrefix?: string}> = ({idPrefix}) => {
+export const UMRequestPasswordResetForm: React.FC<{idPrefix?: string, labelsFirst?: boolean}> =
+  ({idPrefix, labelsFirst}) => {
+
+  if (labelsFirst == null) {
+    labelsFirst = true
+  }
+
   const { submit, loading, error, success } = useRequestPasswordResetEmail()
 
   const [submittedEmail, setSubmittedEmail] = useState('')
@@ -187,14 +210,16 @@ export const UMRequestPasswordResetForm: React.FC<{idPrefix?: string}> = ({idPre
   return <>
     <form className="form-signin" onSubmit={(e) => {onSubmit(e); setSubmittedEmail(values.email)}}>
       <div className="form-label-group">
-        <input type="email" data-var="email" className="form-control"
-               value={values.email || ''} onChange={onChange}
-               id={getId(idPrefix, "request-password-reset-email")}
-               placeholder="Enter your email address" required autoFocus />
-        <label htmlFor={getId(idPrefix, "request-password-reset-email")}>Enter your email address</label>
+        <InputLabel flip={labelsFirst}>
+          <input type="email" data-var="email" className="form-control"
+                 value={values.email || ''} onChange={onChange}
+                 id={getId(idPrefix, "request-password-reset-email")}
+                 placeholder="Enter your email address" required autoFocus />
+          <label htmlFor={getId(idPrefix, "request-password-reset-email")}>Email address</label>
+        </InputLabel>
       </div>
 
-      <button className={`btn btn-lg btn-primary ${ loading ? 'disabled' : ''}`}
+      <button className={`btn btn-primary ${ loading ? 'disabled' : ''}`}
               type="submit">
         { loading ? 'Please wait...' : 'Submit' }
       </button>

@@ -5,7 +5,7 @@ import { GraphQLError } from 'graphql'
 
 import { useCredentials, UMApolloContext, UMSiteIdContext } from './auth'
 import { useCsrfMutation } from './hooks'
-import { useForm, InputValueMap } from './forms'
+import { useForm, InputValueMap, InputLabel } from './forms'
 import { ErrorMessage } from './errors'
 import { UMRequestPasswordResetForm } from './passwords'
 
@@ -91,9 +91,16 @@ type LoginFormProps = {
   // This can also be useful if you need to embed more than one UMAccountCreationForm
   // in the same page.
   idPrefix?: string
+
+  // Render labels before inputs in the form (default true)
+  labelsFirst?: boolean
 }
 
-export const UMLoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix}) => {
+export const UMLoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFirst}) => {
+
+  if (labelsFirst == null) {
+    labelsFirst = true
+  }
 
   const [isForgotPasswordMode, setForgotPasswordMode] = useState(false)
 
@@ -114,36 +121,40 @@ export const UMLoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix}) => {
   })
 
   if (isForgotPasswordMode) {
-    return <>
-      <div>
-        Enter your email to get a password-reset link
+    return <div>
+      <div className="p-2">
+        Enter your email to get a password-reset link{' '}
         <button className="btn btn-secondary" type="button"
                 onClick={(e) => { e.preventDefault(); setForgotPasswordMode(false); }}>
           Cancel
         </button>
       </div>
       <UMRequestPasswordResetForm/>
-    </>
+    </div>
   }
 
   return <form className="form-signin" onSubmit={onSubmit}>
-    <div className="form-label-group">
-      <input type="email" data-var="email" className="form-control"
-             value={values.email || ''} onChange={onChange}
-             id={getId(idPrefix, "login-email")}
-             placeholder="Email address" required autoFocus />
-      <label htmlFor={getId(idPrefix, "login-email")}>Email address</label>
+    <div className="form-label-group mb-2">
+      <InputLabel flip={labelsFirst}>
+        <input type="email" data-var="email" className="form-control"
+               value={values.email || ''} onChange={onChange}
+               id={getId(idPrefix, "login-email")}
+               placeholder="Email address" required autoFocus />
+        <label htmlFor={getId(idPrefix, "login-email")}>Email address</label>
+      </InputLabel>
     </div>
 
-    <div className="form-label-group">
-      <input type="password" data-var="password" className="form-control"
-             value={values.password || ''} onChange={onChange}
-             id={getId(idPrefix, "login-password")}
-             placeholder="Password" required />
-      <label htmlFor={getId(idPrefix, "login-password")}>Password</label>
+    <div className="form-label-group mb-2">
+      <InputLabel flip={labelsFirst}>
+        <input type="password" data-var="password" className="form-control"
+               value={values.password || ''} onChange={onChange}
+               id={getId(idPrefix, "login-password")}
+               placeholder="Password" required />
+        <label htmlFor={getId(idPrefix, "login-password")}>Password</label>
+      </InputLabel>
     </div>
 
-    <div className="custom-control custom-checkbox mb-3 justify-content-between d-flex">
+    <div className="custom-control custom-checkbox mb-2">
       <input type="checkbox" className="custom-control-input" data-var="stayLoggedIn"
              id={getId(idPrefix, "login-stay-logged-in")}
              onChange={onChange} checked={Boolean(values.stayLoggedIn)} />
@@ -203,10 +214,17 @@ type AccountCreationProps = {
   // This can also be useful if you need to embed more than one UMAccountCreationForm
   // in the same page.
   idPrefix?: string
+
+  // Render labels before inputs in the form (default true)
+  labelsFirst?: boolean
 }
 
 export const UMAccountCreationForm: React.FC<AccountCreationProps> =
-  ({loginAfterCreation, onLogin, idPrefix}) => {
+  ({loginAfterCreation, onLogin, idPrefix, labelsFirst}) => {
+
+  if (labelsFirst == null) {
+    labelsFirst = true
+  }
 
   if (loginAfterCreation == null) {
     loginAfterCreation = true
@@ -227,24 +245,28 @@ export const UMAccountCreationForm: React.FC<AccountCreationProps> =
 
   return <>
     <form className="form-signin" onSubmit={onSubmit}>
-      <div className="form-label-group">
-        <input type="email" data-var="email" className="form-control"
-               id={getId(idPrefix, "account-creation-email")}
-               value={values.email || ''} onChange={onChange}
-               placeholder="Email address" required autoFocus />
-        <label htmlFor={getId(idPrefix, "account-creation-email")}>Email address</label>
+      <div className="form-label-group mb-2">
+        <InputLabel flip={labelsFirst}>
+          <input type="email" data-var="email" className="form-control"
+                 id={getId(idPrefix, "account-creation-email")}
+                 value={values.email || ''} onChange={onChange}
+                 placeholder="Email address" required autoFocus />
+          <label htmlFor={getId(idPrefix, "account-creation-email")}>Email address</label>
+        </InputLabel>
       </div>
 
-      <div className="form-label-group">
-        <input type="password" data-var="password" className="form-control"
-               id={getId(idPrefix, "account-creation-password")}
-               value={values.password || ''} onChange={onChange}
-               placeholder="Password" required />
-        <label htmlFor={getId(idPrefix, "account-creation-password")}>Password</label>
+      <div className="form-label-group mb-2">
+        <InputLabel flip={labelsFirst}>
+          <input type="password" data-var="password" className="form-control"
+                 id={getId(idPrefix, "account-creation-password")}
+                 value={values.password || ''} onChange={onChange}
+                 placeholder="Password" required />
+          <label htmlFor={getId(idPrefix, "account-creation-password")}>Password</label>
+        </InputLabel>
       </div>
 
       { loginAfterCreation &&
-      <div className="custom-control custom-checkbox mb-3">
+      <div className="custom-control custom-checkbox mb-2">
         <input type="checkbox" className="custom-control-input" data-var="stayLoggedIn"
                id={getId(idPrefix, "account-creation-stay-logged-in")}
                onChange={onChange} checked={Boolean(values.stayLoggedIn)} />
@@ -253,7 +275,9 @@ export const UMAccountCreationForm: React.FC<AccountCreationProps> =
         </label>
       </div> }
 
-      <button className="btn btn-lg btn-primary" type="submit">Create Account</button>
+      <div className="mb-3">
+        <button className="btn btn-primary" type="submit">Create Account</button>
+      </div>
     </form>
     <UserCreateError error={error} />
   </>
@@ -269,7 +293,7 @@ export const UMLogoutButton: React.FC<{}> = () => {
   }
 
   return <>
-    <button className="btn btn-lg btn-primary" type="button" onClick={onClick}>Logout</button>
+    <button className="btn btn-outline-primary" type="button" onClick={onClick}>Logout</button>
     <ErrorMessage error={error} />
   </>
 }
