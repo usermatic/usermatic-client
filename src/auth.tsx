@@ -1,6 +1,6 @@
 
 import url  from 'url'
-import React, { ReactNode, createContext, useContext } from 'react'
+import React, { ReactNode, createContext, useContext, useState } from 'react'
 
 if (typeof window != 'undefined') {
   const w = window as any
@@ -87,8 +87,17 @@ const isValidSiteId = (siteId: string | undefined) => {
 
 const Diagnostics: React.FC<{siteId: string | undefined}> = ({siteId}) => {
 
+  const [dismissed, setDismissed] = useState(false)
+  if (dismissed) {
+    return null
+  }
+
   return <div className="usermatic-diagnostics alert alert-danger p-4">
     <strong>Usermatic is not configured correctly.</strong>
+    <button type="button" className="close" aria-label="Close"
+            onClick={(e) => { e.preventDefault(); setDismissed(true) }}>
+      <span aria-hidden="true">&times;</span>
+    </button>
     <p/>
     { isValidSiteId(siteId)
       ? <>

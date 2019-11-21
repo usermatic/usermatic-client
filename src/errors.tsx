@@ -37,11 +37,10 @@ const ErrorMessage: React.FC<ErrorProps> = ({error}) => {
     return null
   }
 
-  return <div className="um-error-container">
+  return <div>
     {errors.map((e, i) =>
-      <div key={i} className="um-error">
-        <span className="um-error-code">{e.code}</span>
-        <span className="um-error-message">{e.message}</span>
+      <div key={i} className="alert alert-danger">
+        {e.message}
       </div>
     )}
   </div>
