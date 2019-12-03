@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState, MouseEvent } from 'react'
 import { ApolloError } from 'apollo-client'
 import { GraphQLError } from 'graphql'
 
-import { useCredentials, UMApolloContext, UMSiteIdContext } from './auth'
+import { useCredentials, UMApolloContext, UMAppIdContext } from './auth'
 import { useCsrfMutation } from './hooks'
 import { useForm, InputValueMap, InputLabel } from './forms'
 import { ErrorMessage } from './errors'
@@ -28,14 +28,14 @@ const getId = (prefix: string | undefined, suffix: string) => {
 
 export const useLogout = () => {
   const client = useContext(UMApolloContext)
-  const siteId = useContext(UMSiteIdContext)
+  const appId = useContext(UMAppIdContext)
 
   const [submit, {loading, error, data} ] =
     useCsrfMutation(
       LOGOUT_MUT,
       {
         client,
-        refetchQueries: [{ query: SESSION_QUERY, variables: { siteId } }]
+        refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }]
       }
     )
 
@@ -45,14 +45,14 @@ export const useLogout = () => {
 
 export const useLogin = () => {
   const client = useContext(UMApolloContext)
-  const siteId = useContext(UMSiteIdContext)
+  const appId = useContext(UMAppIdContext)
 
   const [submitLogin, {loading, error, data, called} ] =
     useCsrfMutation(
       LOGIN_MUT,
       {
         client,
-        refetchQueries: [{ query: SESSION_QUERY, variables: { siteId } }]
+        refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }]
       }
     )
 
@@ -66,13 +66,13 @@ export const useLogin = () => {
 
 export const useCreateAccount = () => {
   const client = useContext(UMApolloContext)
-  const siteId = useContext(UMSiteIdContext)
+  const appId = useContext(UMAppIdContext)
   const [submitCreateAccount, {loading, error, data} ] =
     useCsrfMutation(
       CREATE_ACCOUNT_MUT,
       {
         client,
-        refetchQueries: [{ query: SESSION_QUERY, variables: { siteId } }]
+        refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }]
       })
 
   const submit = (values: InputValueMap) => {

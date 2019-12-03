@@ -32,10 +32,10 @@ export type AuthTokenData = {
 
 const clientCache: Record<string, any> = {}
 
-export const makeClient = (uri: string, siteId: string): ClientType => {
+export const makeClient = (uri: string, appId: string): ClientType => {
   const parsed = url.parse(uri, true)
   delete parsed.search
-  parsed.query.siteId = siteId
+  parsed.query.appId = appId
 
   const finalUri = url.format(parsed)
   if (!(finalUri in clientCache)) {
@@ -61,7 +61,7 @@ export const UMApolloContext = createContext<ClientType | undefined>(undefined)
 export const UMTokenContext = createContext<AuthTokenData | undefined>(undefined)
 export const UMTokenConsumer = UMTokenContext.Consumer
 
-export const UMSiteIdContext = createContext<string | undefined>(undefined)
+export const UMAppIdContext = createContext<string | undefined>(undefined)
 
 export const useCredentials = (): AuthTokenData => {
   const tokenData = useContext(UMTokenContext)
@@ -71,21 +71,21 @@ export const useCredentials = (): AuthTokenData => {
   return tokenData
 }
 
-const formatSiteId = (siteId: string | undefined) => {
-  if (!siteId) { return 'undefined' }
-  return siteId
+const formatAppId = (appId: string | undefined) => {
+  if (!appId) { return 'undefined' }
+  return appId
 }
 
-const isValidSiteId = (siteId: string | undefined) => {
-  if (!siteId) {
+const isValidAppId = (appId: string | undefined) => {
+  if (!appId) {
     return false
   }
 
   const re = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-  return re.test(siteId)
+  return re.test(appId)
 }
 
-const Diagnostics: React.FC<{siteId: string | undefined}> = ({siteId}) => {
+const Diagnostics: React.FC<{appId: string | undefined}> = ({appId}) => {
 
   const [dismissed, setDismissed] = useState(false)
   if (dismissed) {
@@ -99,25 +99,25 @@ const Diagnostics: React.FC<{siteId: string | undefined}> = ({siteId}) => {
       <span aria-hidden="true">&times;</span>
     </button>
     <p/>
-    { isValidSiteId(siteId)
+    { isValidAppId(appId)
       ? <>
-          You've provided the valid-looking <code>siteId</code> property <code>{formatSiteId(siteId)}</code>
+          You've provided the valid-looking <code>appId</code> property <code>{formatAppId(appId)}</code>
           {' '}to <code>&lt;UsermaticAuthProvider&gt;</code>, but
-          it is either not a known siteId, or the site to which it refers is not configured to accept
+          it is either not a known appId, or the app to which it refers is not configured to accept
           authentication requests from the current origin, which is <code>{document.location.origin}</code>.
         </>
       : <>
-          It appears that you have not provided a valid <code>siteId</code> property to
+          It appears that you have not provided a valid <code>appId</code> property to
           the <code>&lt;UsermaticAuthProvider&gt;</code> component.
           <p/>
-          The <code>siteId</code> propertry should be a UUID such as <code>e3ede2c8-2809-498c-a047-4994e4fee393</code>.
+          The <code>appId</code> propertry should be a UUID such as <code>e3ede2c8-2809-498c-a047-4994e4fee393</code>.
           <p/>
-          You provided <code>{formatSiteId(siteId)}</code>
+          You provided <code>{formatAppId(appId)}</code>
         </>
     }
     <p/>
     Please visit the <a href="https://usermatic.io/dashboard">Usermatic Dashboard</a> to
-    get the correct site ID for your application, or to configure the application to work with
+    get the correct app ID for your application, or to configure the application to work with
     the current origin.
     <p/>
     <a className="font-italic" href="https://usermatic.io/docs#hideDiagnostics">I want to hide this message permanently</a>
@@ -132,10 +132,10 @@ const WrappedUsermaticAuthProvider: React.FC<{children: ReactNode, showDiagnosti
   }
 
   const client = useContext(UMApolloContext)
-  const siteId = useContext(UMSiteIdContext)
+  const appId = useContext(UMAppIdContext)
 
   const {data, error, loading} = useQuery(SESSION_QUERY,
-    { variables: { siteId }, client })
+    { variables: { appId }, client })
 
   const tokenValue: AuthTokenData = { error, loading }
   let csrfToken
@@ -154,7 +154,7 @@ const WrappedUsermaticAuthProvider: React.FC<{children: ReactNode, showDiagnosti
 
   return <UMCsrfContext.Provider value={csrfToken}>
     <UMTokenContext.Provider value={tokenValue}>
-      {error && showDiagnostics && <Diagnostics siteId={siteId} />}
+      {error && showDiagnostics && <Diagnostics appId={appId} />}
       {children}
     </UMTokenContext.Provider>
   </UMCsrfContext.Provider>
@@ -163,27 +163,27 @@ const WrappedUsermaticAuthProvider: React.FC<{children: ReactNode, showDiagnosti
 type UsermaticAuthProviderProps = {
   children: ReactNode,
   uri?: string,
-  siteId: string,
+  appId: string,
   showDiagnostics?: boolean
 }
 
 export const UsermaticAuthProvider: React.FC<UsermaticAuthProviderProps> =
-  ({children, uri, siteId, showDiagnostics}) => {
+  ({children, uri, appId, showDiagnostics}) => {
 
   if (!uri) {
     uri = 'https://api.usermatic.com/graphql'
   }
 
-  const client = makeClient(uri, siteId)
+  const client = makeClient(uri, appId)
 
   return (
-    <UMSiteIdContext.Provider value={siteId}>
+    <UMAppIdContext.Provider value={appId}>
     <UMApolloContext.Provider value={client}>
       <WrappedUsermaticAuthProvider showDiagnostics={showDiagnostics}>
         {children}
       </WrappedUsermaticAuthProvider>
     </UMApolloContext.Provider>
-    </UMSiteIdContext.Provider>
+    </UMAppIdContext.Provider>
   )
 }
 

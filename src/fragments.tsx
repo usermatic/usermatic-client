@@ -10,8 +10,8 @@ export const USER_FRAGMENT = gql`
 `
 
 export const SESSION_QUERY = gql`
-query svcGetSessionJWT($siteId: ID!) {
-  svcGetSessionJWT(siteId: $siteId) { auth { userJwt } csrfToken }
+query svcGetSessionJWT($appId: ID!) {
+  svcGetSessionJWT(appId: $appId) { auth { userJwt } csrfToken }
 }
 `
 
