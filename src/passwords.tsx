@@ -108,14 +108,14 @@ export const UMChangePasswordForm: React.FC<{idPrefix?: string, labelsFirst?: bo
   </form>
 }
 
-type UMRequestPasswordResetFormProps = {
+type UMResetPasswordFormProps = {
   token: string
   onLogin: () => void
   idPrefix?: string
   labelsFirst?: boolean
 }
 
-export const UMResetPasswordForm: React.FC<UMRequestPasswordResetFormProps> =
+export const UMResetPasswordForm: React.FC<UMResetPasswordFormProps> =
   ({token, onLogin, idPrefix, labelsFirst}) => {
 
   if (labelsFirst == null) {
@@ -194,8 +194,14 @@ export const UMResetPasswordForm: React.FC<UMRequestPasswordResetFormProps> =
   </form>
 }
 
-export const UMRequestPasswordResetForm: React.FC<{idPrefix?: string, labelsFirst?: boolean}> =
-  ({idPrefix, labelsFirst}) => {
+type UMRequestPasswordResetFormProps = {
+  idPrefix?: string,
+  labelsFirst?: boolean,
+  onCancel?: () => void,
+}
+
+export const UMRequestPasswordResetForm: React.FC<UMRequestPasswordResetFormProps> =
+  ({idPrefix, labelsFirst, onCancel}) => {
 
   if (labelsFirst == null) {
     labelsFirst = true
@@ -208,22 +214,30 @@ export const UMRequestPasswordResetForm: React.FC<{idPrefix?: string, labelsFirs
   const {onSubmit, onChange, values} = useForm(submit)
 
   return <>
+    <ErrorMessage error={error} />
     <form className="form-signin" onSubmit={(e) => {onSubmit(e); setSubmittedEmail(values.email)}}>
       <div className="form-label-group">
         <InputLabel flip={labelsFirst}>
           <input type="email" data-var="email" className="form-control"
                  value={values.email || ''} onChange={onChange}
                  id={getId(idPrefix, "request-password-reset-email")}
-                 placeholder="Enter your email address" required autoFocus />
+                 placeholder="Email address" required autoFocus />
           <label htmlFor={getId(idPrefix, "request-password-reset-email")}>Email address</label>
         </InputLabel>
       </div>
 
-      <button className={`btn btn-primary ${ loading ? 'disabled' : ''}`}
-              type="submit">
-        { loading ? 'Please wait...' : 'Submit' }
-      </button>
-      <ErrorMessage error={error} />
+      <div className="d-flex justify-content-between">
+        <button className={`btn btn-primary ${ loading ? 'disabled' : ''}`}
+                type="submit">
+          { loading ? 'Please wait...' : 'Submit' }
+        </button>
+        {onCancel &&
+          <button className="btn btn-outline-secondary" type="button"
+                  onClick={(e) => { e.preventDefault(); onCancel(); }}>
+            Cancel
+          </button>
+        }
+      </div>
     </form>
 
     {success

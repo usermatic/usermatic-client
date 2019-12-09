@@ -121,16 +121,13 @@ export const UMLoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labels
   })
 
   if (isForgotPasswordMode) {
-    return <div>
+    return <>
       <div className="p-2">
-        Enter your email to get a password-reset link{' '}
-        <button className="btn btn-secondary" type="button"
-                onClick={(e) => { e.preventDefault(); setForgotPasswordMode(false); }}>
-          Cancel
-        </button>
+        Enter your email to get a password reset link.
       </div>
-      <UMRequestPasswordResetForm/>
-    </div>
+      <UMRequestPasswordResetForm labelsFirst={false}
+        onCancel={() => { setForgotPasswordMode(false)}} />
+    </>
   }
 
   return <form className="form-signin" onSubmit={onSubmit}>
