@@ -32,7 +32,7 @@ export const LOGIN_MUT = gql`
 
 export const RESET_PW_MUT = gql`
   mutation resetPassword($token: String!, $newPassword: String!) {
-    svcResetPassword(token: $token, newPassword: $newPassword)
+    svcResetPassword(token: $token, newPassword: $newPassword) { redirectUri }
   }
 `
 

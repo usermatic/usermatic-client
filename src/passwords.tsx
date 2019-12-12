@@ -110,32 +110,53 @@ export const UMChangePasswordForm: React.FC<{idPrefix?: string, labelsFirst?: bo
 
 type UMResetPasswordFormProps = {
   token: string
-  onLogin: () => void
+  onLogin?: () => void
   idPrefix?: string
   labelsFirst?: boolean
+  allowLoginAfterReset?: boolean
+  redirectAfterReset?: boolean
 }
 
 export const UMResetPasswordForm: React.FC<UMResetPasswordFormProps> =
-  ({token, onLogin, idPrefix, labelsFirst}) => {
+  ({token, onLogin, idPrefix, labelsFirst, allowLoginAfterReset,
+    redirectAfterReset}) => {
 
-  if (labelsFirst == null) {
-    labelsFirst = true
+  if (labelsFirst == null) { labelsFirst = true }
+  if (allowLoginAfterReset == null) { allowLoginAfterReset = true }
+  if (redirectAfterReset == null) { redirectAfterReset = false }
+
+  if (redirectAfterReset && allowLoginAfterReset) {
+    throw new Error(`
+      The \`redirectAfterReset\` and \`allowLoginAfterReset\`
+      properties are mutually exclusive.
+    `)
   }
 
   const [loginData, setLoginData] = useState<LoginState | undefined>()
 
-  const { submit, error, success } = useResetPassword(token)
+  const { submit, error, success, data } = useResetPassword(token)
 
   const { submit: submitLogin, error: loginError, success: loginSuccess } = useLogin()
 
   useEffect(() => {
-    if (success && loginData) {
-      setLoginData(undefined)
-      submitLogin(loginData)
+    if (success) {
+      if (redirectAfterReset) {
+        const { redirectUri } = data.svcResetPassword
+        setTimeout(() => {
+         window.location.replace(redirectUri)
+        }, 1000)
+      } else {
+        if (loginData) {
+          setLoginData(undefined)
+          submitLogin(loginData)
+        }
+      }
     }
 
     if (loginSuccess) {
-      onLogin()
+      if (onLogin != null) {
+        onLogin()
+      }
     }
   })
 
@@ -149,7 +170,7 @@ export const UMResetPasswordForm: React.FC<UMResetPasswordFormProps> =
 
     const { email } = decoded
     const { newPassword, stayLoggedIn } = values
-    if (Boolean(values.loginAfterReset)) {
+    if (allowLoginAfterReset && Boolean(values.loginAfterReset)) {
       setLoginData({ password: newPassword, stayLoggedIn, email })
     }
     submit({ newPassword })
@@ -157,41 +178,55 @@ export const UMResetPasswordForm: React.FC<UMResetPasswordFormProps> =
 
   const {onSubmit, onChange, values} = useForm(submitWrapper)
 
-  return <form className="form-signin" onSubmit={onSubmit}>
-    <div className="form-label-group">
-      <InputLabel flip={labelsFirst}>
-        <input type="password" data-var="newPassword" className="form-control"
-               value={values.newPassword || ''} onChange={onChange}
-               id={getId(idPrefix, "reset-password-new-password")}
-               placeholder="New Password" required autoFocus />
-        <label htmlFor={getId(idPrefix, "reset-password-new-password")}>New Password</label>
-      </InputLabel>
+  if (success) {
+    const redirectUri = data.resetPassword && data.resetPassword.redirectUri
+    return <div className="alert alert-success">
+      Your password has been reset successfully.
+      { redirectUri &&
+        <>You will be redirected to <a href="{redirectUri}">{redirectUri}</a> shortly.</>
+      }
     </div>
+  }
 
-    <div className="custom-control custom-checkbox mb-3 justify-content-between d-flex">
-      <input type="checkbox" className="custom-control-input" data-var="loginAfterReset"
-             id={getId(idPrefix, "reset-password-login-after-reset")}
-             onChange={onChange} checked={Boolean(values.loginAfterReset)} />
-      <label className="custom-control-label" htmlFor={getId(idPrefix, "reset-password-login-after-reset")}>
-        Log in now?
-      </label>
-    </div>
-
-    { Boolean(values.loginAfterReset) ?
-      <div className="custom-control custom-checkbox mb-3 justify-content-between d-flex">
-        <input type="checkbox" className="custom-control-input" data-var="stayLoggedIn"
-               id={getId(idPrefix, "reset-password-stay-logged-in")}
-               onChange={onChange} checked={Boolean(values.stayLoggedIn)} />
-        <label className="custom-control-label" htmlFor={getId(idPrefix, "reset-password-stay-logged-in")}>
-          Remember me
-        </label>
-      </div>
-      : null }
-
-    <button className="btn btn-lg btn-primary" type="submit">Reset Password</button>
+  return <div>
     <ErrorMessage error={error} />
     <ErrorMessage error={loginError} />
-  </form>
+    <form className="form-signin" onSubmit={onSubmit}>
+      <div className="form-label-group">
+        <InputLabel flip={labelsFirst}>
+          <input type="password" data-var="newPassword" className="form-control"
+                 value={values.newPassword || ''} onChange={onChange}
+                 id={getId(idPrefix, "reset-password-new-password")}
+                 placeholder="New Password" required autoFocus />
+          <label htmlFor={getId(idPrefix, "reset-password-new-password")}>New Password</label>
+        </InputLabel>
+      </div>
+
+      { allowLoginAfterReset &&
+
+      <div className="custom-control custom-checkbox mb-3 justify-content-between d-flex">
+        <input type="checkbox" className="custom-control-input" data-var="loginAfterReset"
+               id={getId(idPrefix, "reset-password-login-after-reset")}
+               onChange={onChange} checked={Boolean(values.loginAfterReset)} />
+        <label className="custom-control-label" htmlFor={getId(idPrefix, "reset-password-login-after-reset")}>
+          Log in now?
+        </label>
+      </div> }
+
+      { Boolean(values.loginAfterReset) ?
+        <div className="custom-control custom-checkbox mb-3 justify-content-between d-flex">
+          <input type="checkbox" className="custom-control-input" data-var="stayLoggedIn"
+                 id={getId(idPrefix, "reset-password-stay-logged-in")}
+                 onChange={onChange} checked={Boolean(values.stayLoggedIn)} />
+          <label className="custom-control-label" htmlFor={getId(idPrefix, "reset-password-stay-logged-in")}>
+            Remember me
+          </label>
+        </div>
+        : null }
+
+      <button className="btn btn-primary" type="submit">Reset Password</button>
+    </form>
+  </div>
 }
 
 type UMRequestPasswordResetFormProps = {
