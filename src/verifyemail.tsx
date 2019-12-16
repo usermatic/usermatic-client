@@ -9,26 +9,27 @@ import { VERIFY_EMAIL_MUT, SEND_VERIFICATION_EMAIL_MUT } from './fragments'
 export const useSendVerificationEmail = () => {
   const client = useContext(UMApolloContext)
 
-  const [submit, {loading, error, data, called} ] =
-    useCsrfMutation(SEND_VERIFICATION_EMAIL_MUT, { client })
-
+  const [submit, ret] = useCsrfMutation(SEND_VERIFICATION_EMAIL_MUT, { client })
+  const { loading, error, data } = ret
   const success = !loading && !error && data
-  return { submit, loading, error, data, success, called }
+  const retObj = { ...ret, success }
+  return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
 export const useEmailVerifier = () => {
   const client = useContext(UMApolloContext)
 
-  const [submit, {loading, error, data, called} ] =
-    useCsrfMutation(VERIFY_EMAIL_MUT, { client })
+  const [submit, ret] = useCsrfMutation(VERIFY_EMAIL_MUT, { client })
+  const { loading, error, data } = ret
 
   const success = !loading && !error && data
-  return { submit, loading, error, data, success, called }
+  const retObj = { ...ret, success }
+  return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
 export const UMEmailVerifier: React.FC<{token: string}> = ({token}) => {
 
-  const { submit, error, success, called, data } = useEmailVerifier()
+  const [submit, { error, success, called, data }] = useEmailVerifier()
   const csrfToken = useContext(UMCsrfContext)
 
   useEffect(() => {

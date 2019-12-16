@@ -27,41 +27,41 @@ const getId = (prefix: string | undefined, suffix: string) => {
 
 export const useChangePassword = () => {
   const client = useContext(UMApolloContext)
-  const [submitChangePassword, {loading, error, data} ] =
-    useCsrfMutation(CHANGE_PW_MUT, { client })
-
+  const [submitChangePassword, ret] = useCsrfMutation(CHANGE_PW_MUT, { client })
+  const {loading, error, data} = ret
   const submit = (values: InputValueMap) => {
     submitChangePassword({ variables: values })
   }
 
   const success = !loading && !error && data
-  return { submit, loading, error, data, success }
+  const retObj = { ...ret, success }
+  return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
 export const useRequestPasswordResetEmail = () => {
   const client = useContext(UMApolloContext)
-  const [submitPasswordResetRequest, {loading, error, data} ] =
-    useCsrfMutation(REQUEST_PW_RESET_EMAIL, { client })
-
+  const [submitPasswordResetRequest, ret] = useCsrfMutation(REQUEST_PW_RESET_EMAIL, { client })
+  const {loading, error, data} = ret
   const submit = (values: InputValueMap) => {
     submitPasswordResetRequest({ variables: values })
   }
 
   const success = !loading && !error && data
-  return { submit, loading, error, data, success }
+  const retObj = { ...ret, success }
+  return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
 export const useResetPassword = (token: string) => {
   const client = useContext(UMApolloContext)
-  const [submitResetPassword, {loading, error, data} ] =
-    useCsrfMutation(RESET_PW_MUT, { client })
-
+  const [submitResetPassword, ret] = useCsrfMutation(RESET_PW_MUT, { client })
+  const {loading, error, data} = ret
   const submit = (values: InputValueMap) => {
     submitResetPassword({ variables: { ...values, token } })
   }
 
   const success = !loading && !error && data
-  return { submit, loading, error, data, success }
+  const retObj = { ...ret, success }
+  return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
 type LoginState = {
@@ -77,7 +77,7 @@ export const UMChangePasswordForm: React.FC<{idPrefix?: string, labelsFirst?: bo
     labelsFirst = true
   }
 
-  const { submit: submitChangePassword, loading, error } = useChangePassword()
+  const [submitChangePassword, { loading, error }] = useChangePassword()
   const { onSubmit, onChange, values } = useForm(submitChangePassword)
 
   return <form onSubmit={onSubmit}>
@@ -134,9 +134,9 @@ export const UMResetPasswordForm: React.FC<UMResetPasswordFormProps> =
 
   const [loginData, setLoginData] = useState<LoginState | undefined>()
 
-  const { submit, error, success, data } = useResetPassword(token)
+  const [submit, { error, success, data }] = useResetPassword(token)
 
-  const { submit: submitLogin, error: loginError, success: loginSuccess } = useLogin()
+  const [submitLogin, { error: loginError, success: loginSuccess }] = useLogin()
 
   useEffect(() => {
     if (success) {
@@ -242,7 +242,7 @@ export const UMRequestPasswordResetForm: React.FC<UMRequestPasswordResetFormProp
     labelsFirst = true
   }
 
-  const { submit, loading, error, success } = useRequestPasswordResetEmail()
+  const [submit, { loading, error, success }] = useRequestPasswordResetEmail()
 
   const [submittedEmail, setSubmittedEmail] = useState('')
 

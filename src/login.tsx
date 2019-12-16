@@ -30,7 +30,7 @@ export const useLogout = () => {
   const client = useContext(UMApolloContext)
   const appId = useContext(UMAppIdContext)
 
-  const [submit, {loading, error, data} ] =
+  const [submit, ret] =
     useCsrfMutation(
       LOGOUT_MUT,
       {
@@ -39,15 +39,18 @@ export const useLogout = () => {
       }
     )
 
+  const { loading, error, data } = ret
+
   const success = !loading && !error && data
-  return { submit, loading, error, data, success }
+  const retObj = { ...ret, success }
+  return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
 export const useLogin = () => {
   const client = useContext(UMApolloContext)
   const appId = useContext(UMAppIdContext)
 
-  const [submitLogin, {loading, error, data, called} ] =
+  const [submitLogin, ret] =
     useCsrfMutation(
       LOGIN_MUT,
       {
@@ -56,18 +59,22 @@ export const useLogin = () => {
       }
     )
 
+  const { loading, error, data } = ret
+
   const submit = (values: InputValueMap) => {
     submitLogin({ variables: values })
   }
 
   const success = !loading && !error && data
-  return { submit, loading, error, data, success, called }
+  const retObj = { ...ret, success }
+  // typescript can't infer tuples :(
+  return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
 export const useCreateAccount = () => {
   const client = useContext(UMApolloContext)
   const appId = useContext(UMAppIdContext)
-  const [submitCreateAccount, {loading, error, data} ] =
+  const [submitCreateAccount, ret] =
     useCsrfMutation(
       CREATE_ACCOUNT_MUT,
       {
@@ -75,12 +82,16 @@ export const useCreateAccount = () => {
         refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }]
       })
 
+  const { loading, error, data } = ret
+
   const submit = (values: InputValueMap) => {
     submitCreateAccount({ variables: values })
   }
 
   const success = !loading && !error && data
-  return { submit, loading, error, data, success }
+  const retObj = { ...ret, success }
+  // typescript can't infer tuples :(
+  return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
 type LoginFormProps = {
@@ -104,7 +115,7 @@ export const UMLoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labels
 
   const [isForgotPasswordMode, setForgotPasswordMode] = useState(false)
 
-  const { submit, loading, error, called } = useLogin()
+  const [submit, { loading, error, called }] = useLogin()
 
   const { onSubmit, onChange, values } = useForm(submit)
 
@@ -228,7 +239,7 @@ export const UMAccountCreationForm: React.FC<AccountCreationProps> =
   }
 
   const { id } = useCredentials()
-  const { submit, error, success } = useCreateAccount()
+  const [submit, { error, success }] = useCreateAccount()
 
   const { onSubmit, onChange, values } = useForm(submit,
     { loginAfterCreation }
@@ -282,7 +293,7 @@ export const UMAccountCreationForm: React.FC<AccountCreationProps> =
 
 export const UMLogoutButton: React.FC<{}> = () => {
 
-  const { submit, error } = useLogout()
+  const [submit, { error }] = useLogout()
 
   const onClick = (e: MouseEvent) => {
     e.preventDefault()
