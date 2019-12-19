@@ -2,7 +2,7 @@
 import React, { useContext, useEffect } from 'react'
 
 import { UMApolloContext } from './auth'
-import { useCsrfMutation, UMCsrfContext } from './hooks'
+import { useCsrfMutation, CsrfContext } from './hooks'
 
 import { VERIFY_EMAIL_MUT, SEND_VERIFICATION_EMAIL_MUT } from './fragments'
 
@@ -27,10 +27,10 @@ export const useEmailVerifier = () => {
   return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
-export const UMEmailVerifier: React.FC<{token: string}> = ({token}) => {
+export const EmailVerifier: React.FC<{token: string}> = ({token}) => {
 
   const [submit, { error, success, called, data }] = useEmailVerifier()
-  const csrfToken = useContext(UMCsrfContext)
+  const csrfToken = useContext(CsrfContext)
 
   useEffect(() => {
     if (!called && csrfToken) {

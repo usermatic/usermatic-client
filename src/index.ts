@@ -1,15 +1,15 @@
 
 import {
-  UsermaticAuthProvider,
-  UMTokenContext,
+  AuthProvider,
+  CredentialConsumer,
   useCredentials,
   useProfile
 } from './auth'
 
 import {
-  UMLoginForm,
-  UMLogoutButton,
-  UMAccountCreationForm,
+  LoginForm,
+  LogoutButton,
+  AccountCreationForm,
   useLogin,
   useCreateAccount,
   useLogout
@@ -19,27 +19,27 @@ import {
   useResetPassword,
   useChangePassword,
   useRequestPasswordResetEmail,
-  UMRequestPasswordResetForm,
-  UMResetPasswordForm,
-  UMChangePasswordForm
+  RequestPasswordResetForm,
+  ResetPasswordForm,
+  ChangePasswordForm
 } from './passwords'
 
 import {
-  UMEmailVerifier,
+  EmailVerifier,
   useEmailVerifier,
   useSendVerificationEmail
 } from './verifyemail'
 
 export {
-  UsermaticAuthProvider,
-  UMTokenContext,
-  UMLoginForm,
-  UMLogoutButton,
-  UMAccountCreationForm,
-  UMEmailVerifier,
-  UMRequestPasswordResetForm,
-  UMResetPasswordForm,
-  UMChangePasswordForm,
+  AuthProvider,
+  CredentialConsumer,
+  LoginForm,
+  LogoutButton,
+  AccountCreationForm,
+  EmailVerifier,
+  RequestPasswordResetForm,
+  ResetPasswordForm,
+  ChangePasswordForm,
   useLogin,
   useLogout,
   useCreateAccount,

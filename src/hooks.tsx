@@ -3,10 +3,10 @@ import { createContext, useContext } from 'react'
 import { DocumentNode } from 'graphql'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 
-export const UMCsrfContext = createContext<string | undefined>(undefined)
+export const CsrfContext = createContext<string | undefined>(undefined)
 
 export const useCsrfMutation = (doc: DocumentNode, options: Record<string, any>) => {
-  const csrfToken = useContext(UMCsrfContext)
+  const csrfToken = useContext(CsrfContext)
   if (options.context) {
     throw new Error("TODO: merge context object")
   }
@@ -25,7 +25,7 @@ export const useCsrfMutation = (doc: DocumentNode, options: Record<string, any>)
 }
 
 export const useCsrfQuery = (doc: DocumentNode, options: Record<string, any>) => {
-  const csrfToken = useContext(UMCsrfContext)
+  const csrfToken = useContext(CsrfContext)
   if (!csrfToken) {
     console.warn("calling csrf query before csrfToken is ready")
   }

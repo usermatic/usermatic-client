@@ -17,7 +17,7 @@ import { ApolloError } from 'apollo-client'
 import { useQuery } from '@apollo/react-hooks'
 
 import { SESSION_QUERY, PROFILE_QUERY } from './fragments'
-import { UMCsrfContext, useCsrfQuery } from './hooks'
+import { CsrfContext, useCsrfQuery } from './hooks'
 
 export type ClientType = ApolloClient<NormalizedCacheObject>
 
@@ -58,15 +58,15 @@ export const makeClient = (uri: string, appId: string): ClientType => {
 // ApolloProvider (if they are using apollo).
 export const UMApolloContext = createContext<ClientType | undefined>(undefined)
 
-export const UMTokenContext = createContext<AuthTokenData | undefined>(undefined)
-export const UMTokenConsumer = UMTokenContext.Consumer
+const CredentialContext = createContext<AuthTokenData | undefined>(undefined)
+export const CredentialConsumer = CredentialContext.Consumer
 
-export const UMAppIdContext = createContext<string | undefined>(undefined)
+export const AppIdContext = createContext<string | undefined>(undefined)
 
 export const useCredentials = (): AuthTokenData => {
-  const tokenData = useContext(UMTokenContext)
+  const tokenData = useContext(CredentialContext)
   if (!tokenData) {
-    throw new Error("useCredentials must be called inside a UMTokenContext.Provider")
+    throw new Error("useCredentials must be called inside a CredentialContext.Provider")
   }
   return tokenData
 }
@@ -102,13 +102,13 @@ const Diagnostics: React.FC<{appId: string | undefined}> = ({appId}) => {
     { isValidAppId(appId)
       ? <>
           You've provided the valid-looking <code>appId</code> property <code>{formatAppId(appId)}</code>
-          {' '}to <code>&lt;UsermaticAuthProvider&gt;</code>, but
+          {' '}to <code>&lt;AuthProvider&gt;</code>, but
           it is either not a known appId, or the app to which it refers is not configured to accept
           authentication requests from the current origin, which is <code>{document.location.origin}</code>.
         </>
       : <>
           It appears that you have not provided a valid <code>appId</code> property to
-          the <code>&lt;UsermaticAuthProvider&gt;</code> component.
+          the <code>&lt;AuthProvider&gt;</code> component.
           <p/>
           The <code>appId</code> propertry should be a UUID such as <code>e3ede2c8-2809-498c-a047-4994e4fee393</code>.
           <p/>
@@ -124,7 +124,7 @@ const Diagnostics: React.FC<{appId: string | undefined}> = ({appId}) => {
   </div>
 }
 
-const WrappedUsermaticAuthProvider: React.FC<{children: ReactNode, showDiagnostics?: boolean}> =
+const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics?: boolean}> =
   ({children, showDiagnostics}) => {
 
   if (showDiagnostics == null) {
@@ -132,7 +132,7 @@ const WrappedUsermaticAuthProvider: React.FC<{children: ReactNode, showDiagnosti
   }
 
   const client = useContext(UMApolloContext)
-  const appId = useContext(UMAppIdContext)
+  const appId = useContext(AppIdContext)
 
   const {data, error, loading} = useQuery(SESSION_QUERY,
     { variables: { appId }, client })
@@ -152,22 +152,22 @@ const WrappedUsermaticAuthProvider: React.FC<{children: ReactNode, showDiagnosti
     }
   }
 
-  return <UMCsrfContext.Provider value={csrfToken}>
-    <UMTokenContext.Provider value={tokenValue}>
+  return <CsrfContext.Provider value={csrfToken}>
+    <CredentialContext.Provider value={tokenValue}>
       {error && showDiagnostics && <Diagnostics appId={appId} />}
       {children}
-    </UMTokenContext.Provider>
-  </UMCsrfContext.Provider>
+    </CredentialContext.Provider>
+  </CsrfContext.Provider>
 }
 
-type UsermaticAuthProviderProps = {
+type AuthProviderProps = {
   children: ReactNode,
   uri?: string,
   appId: string,
   showDiagnostics?: boolean
 }
 
-export const UsermaticAuthProvider: React.FC<UsermaticAuthProviderProps> =
+export const AuthProvider: React.FC<AuthProviderProps> =
   ({children, uri, appId, showDiagnostics}) => {
 
   if (!uri) {
@@ -177,13 +177,13 @@ export const UsermaticAuthProvider: React.FC<UsermaticAuthProviderProps> =
   const client = makeClient(uri, appId)
 
   return (
-    <UMAppIdContext.Provider value={appId}>
+    <AppIdContext.Provider value={appId}>
     <UMApolloContext.Provider value={client}>
-      <WrappedUsermaticAuthProvider showDiagnostics={showDiagnostics}>
+      <WrappedAuthProvider showDiagnostics={showDiagnostics}>
         {children}
-      </WrappedUsermaticAuthProvider>
+      </WrappedAuthProvider>
     </UMApolloContext.Provider>
-    </UMAppIdContext.Provider>
+    </AppIdContext.Provider>
   )
 }
 

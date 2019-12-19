@@ -70,7 +70,7 @@ type LoginState = {
   stayLoggedIn: string
 }
 
-export const UMChangePasswordForm: React.FC<{idPrefix?: string, labelsFirst?: boolean}> =
+export const ChangePasswordForm: React.FC<{idPrefix?: string, labelsFirst?: boolean}> =
   ({idPrefix, labelsFirst}) => {
 
   if (labelsFirst == null) {
@@ -108,7 +108,7 @@ export const UMChangePasswordForm: React.FC<{idPrefix?: string, labelsFirst?: bo
   </form>
 }
 
-type UMResetPasswordFormProps = {
+type ResetPasswordFormProps = {
   token: string
   onLogin?: () => void
   idPrefix?: string
@@ -117,7 +117,7 @@ type UMResetPasswordFormProps = {
   redirectAfterReset?: boolean
 }
 
-export const UMResetPasswordForm: React.FC<UMResetPasswordFormProps> =
+export const ResetPasswordForm: React.FC<ResetPasswordFormProps> =
   ({token, onLogin, idPrefix, labelsFirst, allowLoginAfterReset,
     redirectAfterReset}) => {
 
@@ -229,13 +229,13 @@ export const UMResetPasswordForm: React.FC<UMResetPasswordFormProps> =
   </div>
 }
 
-type UMRequestPasswordResetFormProps = {
+type RequestPasswordResetFormProps = {
   idPrefix?: string,
   labelsFirst?: boolean,
   onCancel?: () => void,
 }
 
-export const UMRequestPasswordResetForm: React.FC<UMRequestPasswordResetFormProps> =
+export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> =
   ({idPrefix, labelsFirst, onCancel}) => {
 
   if (labelsFirst == null) {
