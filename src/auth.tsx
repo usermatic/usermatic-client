@@ -189,5 +189,12 @@ export const AuthProvider: React.FC<AuthProviderProps> =
 
 export const useProfile = () => {
   const client = useContext(UMApolloContext)
-  return useCsrfQuery(PROFILE_QUERY, { client })
+  const ret = useCsrfQuery(PROFILE_QUERY, { client })
+
+  const { loading, error, data } = ret
+  let profile
+  if (!loading && !error && data.svcGetAuthenticatedUser) {
+    profile = data.svcGetAuthenticatedUser
+  }
+  return { loading, profile, error }
 }
