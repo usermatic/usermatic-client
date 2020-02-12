@@ -21,7 +21,8 @@ import {
   useRequestPasswordResetEmail,
   RequestPasswordResetForm,
   ResetPasswordForm,
-  ChangePasswordForm
+  ChangePasswordForm,
+  PasswordScore
 } from './passwords'
 
 import {
@@ -40,6 +41,7 @@ export {
   RequestPasswordResetForm,
   ResetPasswordForm,
   ChangePasswordForm,
+  PasswordScore,
   useLogin,
   useLogout,
   useCreateAccount,

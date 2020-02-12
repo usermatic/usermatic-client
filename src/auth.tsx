@@ -30,6 +30,10 @@ export type AuthTokenData = {
   userJwt?: string,
 }
 
+export type AppConfig = {
+  minPasswordStrength?: number
+}
+
 const clientCache: Record<string, any> = {}
 
 export const makeClient = (uri: string, appId: string): ClientType => {
@@ -60,6 +64,9 @@ export const UMApolloContext = createContext<ClientType | undefined>(undefined)
 
 const CredentialContext = createContext<AuthTokenData | undefined>(undefined)
 export const CredentialConsumer = CredentialContext.Consumer
+
+const AppConfigContext = createContext<AppConfig | undefined>(undefined)
+export const AppConfigConsumer = AppConfigContext.Consumer
 
 export const AppIdContext = createContext<string | undefined>(undefined)
 
@@ -137,12 +144,13 @@ const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics?: bool
   const {data, error, loading} = useQuery(SESSION_QUERY,
     { variables: { appId }, client })
 
+  let appConfig
   const tokenValue: AuthTokenData = { error, loading }
   let csrfToken
   if (!loading && !error && data.svcGetSessionJWT) {
     csrfToken = data.svcGetSessionJWT.csrfToken
     // TODO: if csrfToken is missing, most/all subsequent requests will fail.
-    const { auth } = data.svcGetSessionJWT
+    const { auth, config } = data.svcGetSessionJWT
     if (auth) {
       const { userJwt } = auth
       const { id, email } = jwt.decode(userJwt) as Record<string, string>
@@ -150,13 +158,16 @@ const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics?: bool
       tokenValue.email = email
       tokenValue.userJwt = userJwt
     }
+    appConfig = config
   }
 
   return <CsrfContext.Provider value={csrfToken}>
-    <CredentialContext.Provider value={tokenValue}>
-      {error && showDiagnostics && <Diagnostics appId={appId} />}
-      {children}
-    </CredentialContext.Provider>
+    <AppConfigContext.Provider value={appConfig}>
+      <CredentialContext.Provider value={tokenValue}>
+        {error && showDiagnostics && <Diagnostics appId={appId} />}
+        {children}
+      </CredentialContext.Provider>
+    </AppConfigContext.Provider>
   </CsrfContext.Provider>
 }
 
@@ -197,4 +208,8 @@ export const useProfile = () => {
     profile = data.svcGetAuthenticatedUser
   }
   return { loading, profile, error }
+}
+
+export const useAppConfig = () => {
+  return useContext(AppConfigContext)
 }

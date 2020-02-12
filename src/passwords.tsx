@@ -2,12 +2,17 @@
 import React, { useContext, useState, useEffect } from 'react'
 
 import jwt from 'jsonwebtoken'
+import classNames from 'classnames'
 
-import { UMApolloContext } from './auth'
+import { useCredentials, UMApolloContext, useAppConfig } from './auth'
 import { useCsrfMutation } from './hooks'
 import { useForm, InputValueMap, InputLabel } from './forms'
 import { ErrorMessage } from './errors'
 import { useLogin } from './login'
+import { useDebounce } from './use-debounce'
+
+// @ts-ignore
+import zxcvbnAsync from 'zxcvbn-async'
 
 import {
   CHANGE_PW_MUT,
@@ -77,8 +82,12 @@ export const ChangePasswordForm: React.FC<{idPrefix?: string, labelsFirst?: bool
     labelsFirst = true
   }
 
+  const { email } = useCredentials()
+
   const [submitChangePassword, { loading, error }] = useChangePassword()
   const { onSubmit, onChange, values } = useForm(submitChangePassword)
+
+  const debouncedPw = useDebounce(values.newPassword, 300)
 
   return <form onSubmit={onSubmit}>
     <div className="form-label-group">
@@ -100,6 +109,7 @@ export const ChangePasswordForm: React.FC<{idPrefix?: string, labelsFirst?: bool
         <label htmlFor={getId(idPrefix, "change-password-new-password")}>New Password</label>
       </InputLabel>
     </div>
+    <PasswordScore password={debouncedPw} username={email} />
 
     <button className={`btn btn-lg btn-primary ${ loading ? 'disabled' : '' }`} type="submit">
       { loading ? 'Please wait...' : 'Change Password' }
@@ -281,5 +291,99 @@ export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> =
         </h5>
       : null }
   </>
+}
+
+type PwScoreRecord = Record<string, any>
+
+const PasswordStrengthText: React.FC<{pwScore: PwScoreRecord}> = ({pwScore}) => {
+  const { score } = pwScore
+  const scoreDisplay = (() => {
+    switch (score) {
+      case 0: return 'Very weak'
+      case 1: return 'Very weak'
+      case 2: return 'Weak'
+      case 3: return 'Moderate'
+      case 4: return 'Strong'
+      case 5: return 'Very strong'
+      default:
+        console.error(`unexpected password score ${score}`)
+        return '???'
+    }
+  })()
+
+  const classes = ['badge']
+  if (score > 3) {
+    classes.push('badge-success')
+  } else if (score > 2) {
+    classes.push('badge-warning')
+  } else {
+    classes.push('badge-danger')
+  }
+
+  return <div className="small p-1">
+    Password Strength <span className={classNames(classes)}>{scoreDisplay}</span>
+  </div>
+}
+
+const PasswordStrengthCheck: React.FC<{pwScore: PwScoreRecord}> = ({pwScore}) => {
+
+  const config = useAppConfig()
+  console.log('hay config', config)
+  if (config == null) {
+    return null
+  }
+  let { minPasswordStrength } = config
+  if (minPasswordStrength == null) {
+    minPasswordStrength = 0
+  }
+
+  if (pwScore.score >= minPasswordStrength || pwScore.feedback == null) {
+    return null
+  }
+
+  return <div className="alert alert-warning">
+    <div>Please choose a stronger password.</div>
+    <div>{pwScore.feedback.warning}</div>
+    {pwScore.feedback.suggestions && pwScore.feedback.suggestions.length > 0 &&
+    <>
+      <div>Suggestions:</div>
+      <ul>
+        { pwScore.feedback.suggestions.map((s: string, i: number) => (
+          <li key={i}>{s}</li>
+        ))}
+      </ul>
+    </>}
+  </div>
+}
+
+export const PasswordScore: React.FC<{password?: string, username?: string}> =
+  ({password, username}) => {
+
+  const [passwordScore, setPasswordScore] = useState({} as Record<string, any>)
+
+  useEffect(() => {
+    if (password == null) {
+      return
+    }
+    const scorePassword = async () => {
+      const loaded = await zxcvbnAsync.load({})
+      const dict = ['usermatic']
+      if (username) {
+        dict.push(username)
+      }
+      const results = loaded(password, dict)
+      setPasswordScore(results)
+    }
+    scorePassword()
+  }, [password, username])
+
+  if (password == null || passwordScore.score == null) {
+    return null
+  }
+
+  return <div className="text-muted mb-2">
+    <PasswordStrengthText pwScore={passwordScore} />
+    <PasswordStrengthCheck pwScore={passwordScore} />
+  </div>
 }
 

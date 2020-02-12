@@ -9,10 +9,21 @@ export const USER_FRAGMENT = gql`
   }
 `
 
+export const APP_CONFIG_FRAGMENT = gql`
+  fragment AppConfigParts on AppConfig {
+    minPasswordStrength
+  }
+`
+
 export const SESSION_QUERY = gql`
 query svcGetSessionJWT($appId: ID!) {
-  svcGetSessionJWT(appId: $appId) { auth { userJwt } csrfToken }
+  svcGetSessionJWT(appId: $appId) {
+    auth { userJwt }
+    csrfToken
+    config { ...AppConfigParts }
+  }
 }
+${APP_CONFIG_FRAGMENT}
 `
 
 export const PROFILE_QUERY = gql`
