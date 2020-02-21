@@ -70,6 +70,10 @@ export const AppConfigConsumer = AppConfigContext.Consumer
 
 export const AppIdContext = createContext<string | undefined>(undefined)
 
+export const useAppId = (): string | undefined => {
+  return useContext(AppIdContext)
+}
+
 export const useCredentials = (): AuthTokenData => {
   const tokenData = useContext(CredentialContext)
   if (!tokenData) {

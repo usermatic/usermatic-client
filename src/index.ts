@@ -3,7 +3,8 @@ import {
   AuthProvider,
   CredentialConsumer,
   useCredentials,
-  useProfile
+  useProfile,
+  useAppId
 } from './auth'
 
 import {
@@ -51,5 +52,6 @@ export {
   useSendVerificationEmail,
   useResetPassword,
   useChangePassword,
-  useRequestPasswordResetEmail
+  useRequestPasswordResetEmail,
+  useAppId
 }
