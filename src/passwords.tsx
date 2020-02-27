@@ -286,9 +286,9 @@ export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> =
     </form>
 
     {success
-      ? <h5>A password reset link was sent to {submittedEmail}. Please look for it in your
+      ? <div className="alert alert-success m-3">A password reset link was sent to {submittedEmail}. Please look for it in your
             inbox, and click the link to reset your password.
-        </h5>
+        </div>
       : null }
   </>
 }
