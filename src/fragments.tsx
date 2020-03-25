@@ -4,14 +4,18 @@ import gql from 'graphql-tag'
 export const USER_FRAGMENT = gql`
   fragment UserParts on SvcUser {
     id
-    email
-    emailIsVerified
+    primaryEmail
+    credentials { type email emailIsVerified provider providerID photoURL }
   }
 `
 
 export const APP_CONFIG_FRAGMENT = gql`
   fragment AppConfigParts on AppConfig {
     minPasswordStrength
+    fbLoginEnabled
+    fbLoginUrl
+    googleLoginEnabled
+    googleLoginUrl
   }
 `
 
@@ -35,7 +39,15 @@ export const PROFILE_QUERY = gql`
 
 export const LOGIN_MUT = gql`
   mutation login($email: String!, $password: String!) {
-    svcLogin(email: $email, password: $password) {
+    loginPassword(email: $email, password: $password) {
+      userJwt
+    }
+  }
+`
+
+export const OAUTH_LOGIN_MUT = gql`
+  mutation login($oauthToken: String!, $stayLoggedIn: Boolean) {
+    loginOauth(oauthToken: $oauthToken, stayLoggedIn: $stayLoggedIn) {
       userJwt
     }
   }
@@ -59,7 +71,7 @@ export const CHANGE_PW_MUT = gql`
   }
 `
 
-export const LOGOUT_MUT = gql`mutation logout { svcLogout }`
+export const LOGOUT_MUT = gql`mutation logout { logout }`
 
 export const CREATE_ACCOUNT_MUT = gql`
   mutation createAccount($email: String!, $password: String!,

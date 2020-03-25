@@ -2,11 +2,6 @@
 import url  from 'url'
 import React, { ReactNode, createContext, useContext, useState } from 'react'
 
-if (typeof window != 'undefined') {
-  const w = window as any
-  w.React1 = React
-}
-
 import jwt from 'jsonwebtoken'
 import fetch from 'isomorphic-unfetch'
 import { createHttpLink } from "apollo-link-http"
@@ -16,8 +11,8 @@ import { InMemoryCache } from "apollo-cache-inmemory"
 import { ApolloError } from 'apollo-client'
 import { useQuery } from '@apollo/react-hooks'
 
-import { SESSION_QUERY, PROFILE_QUERY } from './fragments'
-import { CsrfContext, useCsrfQuery } from './hooks'
+import { SESSION_QUERY } from './fragments'
+import { CsrfContext } from './hooks'
 
 export type ClientType = ApolloClient<NormalizedCacheObject>
 
@@ -26,12 +21,22 @@ export type AuthTokenData = {
   loading: boolean,
 
   id?: string,
-  email?: string,
   userJwt?: string,
 }
 
 export type AppConfig = {
   minPasswordStrength?: number
+  fbLoginEnabled: boolean
+  fbLoginUrl: string
+  googleLoginEnabled: boolean
+  googleLoginUrl: string
+}
+
+const defaultAppConfig = {
+  fbLoginEnabled: false,
+  fbLoginUrl: 'https://usermatic.io/auth/facebook',
+  googleLoginEnabled: false,
+  googleLoginUrl: 'https://usermatic.io/auth/google'
 }
 
 const clientCache: Record<string, any> = {}
@@ -62,10 +67,11 @@ export const makeClient = (uri: string, appId: string): ClientType => {
 // ApolloProvider (if they are using apollo).
 export const UMApolloContext = createContext<ClientType | undefined>(undefined)
 
-const CredentialContext = createContext<AuthTokenData | undefined>(undefined)
-export const CredentialConsumer = CredentialContext.Consumer
+const TokenContext = createContext<AuthTokenData | undefined>(undefined)
+export const CredentialConsumer = TokenContext.Consumer
 
-const AppConfigContext = createContext<AppConfig | undefined>(undefined)
+const AppConfigContext = createContext<AppConfig>(defaultAppConfig)
+
 export const AppConfigConsumer = AppConfigContext.Consumer
 
 export const AppIdContext = createContext<string | undefined>(undefined)
@@ -74,10 +80,10 @@ export const useAppId = (): string | undefined => {
   return useContext(AppIdContext)
 }
 
-export const useCredentials = (): AuthTokenData => {
-  const tokenData = useContext(CredentialContext)
+export const useToken = (): AuthTokenData => {
+  const tokenData = useContext(TokenContext)
   if (!tokenData) {
-    throw new Error("useCredentials must be called inside a CredentialContext.Provider")
+    throw new Error("useToken must be called inside a TokenContext.Provider")
   }
   return tokenData
 }
@@ -148,7 +154,8 @@ const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics?: bool
   const {data, error, loading} = useQuery(SESSION_QUERY,
     { variables: { appId }, client })
 
-  let appConfig
+  let appConfig = { ...defaultAppConfig }
+
   const tokenValue: AuthTokenData = { error, loading }
   let csrfToken
   if (!loading && !error && data.svcGetSessionJWT) {
@@ -157,9 +164,8 @@ const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics?: bool
     const { auth, config } = data.svcGetSessionJWT
     if (auth) {
       const { userJwt } = auth
-      const { id, email } = jwt.decode(userJwt) as Record<string, string>
+      const { id } = jwt.decode(userJwt) as Record<string, string>
       tokenValue.id = id
-      tokenValue.email = email
       tokenValue.userJwt = userJwt
     }
     appConfig = config
@@ -167,10 +173,10 @@ const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics?: bool
 
   return <CsrfContext.Provider value={csrfToken}>
     <AppConfigContext.Provider value={appConfig}>
-      <CredentialContext.Provider value={tokenValue}>
+      <TokenContext.Provider value={tokenValue}>
         {error && showDiagnostics && <Diagnostics appId={appId} />}
         {children}
-      </CredentialContext.Provider>
+      </TokenContext.Provider>
     </AppConfigContext.Provider>
   </CsrfContext.Provider>
 }
@@ -200,18 +206,6 @@ export const AuthProvider: React.FC<AuthProviderProps> =
     </UMApolloContext.Provider>
     </AppIdContext.Provider>
   )
-}
-
-export const useProfile = () => {
-  const client = useContext(UMApolloContext)
-  const ret = useCsrfQuery(PROFILE_QUERY, { client })
-
-  const { loading, error, data } = ret
-  let profile
-  if (!loading && !error && data.svcGetAuthenticatedUser) {
-    profile = data.svcGetAuthenticatedUser
-  }
-  return { loading, profile, error }
 }
 
 export const useAppConfig = () => {

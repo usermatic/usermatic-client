@@ -1,16 +1,22 @@
 
-import React, { useContext, useEffect, useState, MouseEvent } from 'react'
+import url  from 'url'
+import React, { ReactNode, useContext, useEffect, useState, MouseEvent } from 'react'
 import { ApolloError } from 'apollo-client'
 import { GraphQLError } from 'graphql'
+import classNames from 'classnames'
+import jwt from 'jsonwebtoken'
 
-import { useCredentials, UMApolloContext, AppIdContext } from './auth'
-import { useCsrfMutation } from './hooks'
+import { useToken, UMApolloContext, AppIdContext, useAppConfig, useAppId } from './auth'
+import { useCsrfMutation, CsrfContext } from './hooks'
 import { useForm, InputValueMap, InputLabel } from './forms'
 import { ErrorMessage } from './errors'
 import { RequestPasswordResetForm } from './passwords'
 
+import { FaFacebookSquare as FbLogo, FaGoogle as GoogleLogo } from 'react-icons/fa'
+
 import {
   LOGIN_MUT,
+  OAUTH_LOGIN_MUT,
   LOGOUT_MUT,
   CREATE_ACCOUNT_MUT,
   SESSION_QUERY
@@ -94,6 +100,76 @@ export const useCreateAccount = () => {
   return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
+const singleString = (s?: string | string[]): string | undefined => {
+  if (s == null) {
+    return
+  }
+  if (Array.isArray(s)) {
+    if (s.length !== 1) {
+      throw new Error("array arg must have length 1")
+    }
+    return s[0]
+  } else {
+    return s
+  }
+}
+
+const useOauthToken = () => {
+  if (typeof window === 'undefined') {
+    return
+  }
+
+  const [token, setToken] = useState<string | undefined>()
+
+  useEffect(() => {
+    if (token != null) { return }
+
+    const parsed = url.parse(location.href, true)
+    const umOauthToken = singleString(parsed.query.umOauthToken)
+    if (umOauthToken == null) {
+      return
+    }
+
+    const { nonce } = jwt.decode(umOauthToken) as Record<string, string>
+
+    const { umAuthNonce } = window.localStorage
+
+    if (umAuthNonce == null || nonce == null || umAuthNonce !== nonce) {
+      // TODO: give up and redirect somewhere
+      return
+    }
+
+    setToken(umOauthToken)
+  })
+
+  return token
+}
+
+const useOauthLogin = () => {
+  const client = useContext(UMApolloContext)
+  const oauthToken = useOauthToken()
+  const csrfToken = useContext(CsrfContext)
+
+  const [submit, { called, data, loading, error }] = useCsrfMutation(
+    OAUTH_LOGIN_MUT, { client }
+  )
+
+  useEffect(() => {
+    if (oauthToken == null || csrfToken == null) { return }
+    submit({ variables: { oauthToken } })
+  }, [oauthToken, csrfToken])
+
+  if (called && !loading && !error && data) {
+    // we've logged in successfully, remove the token from the url.
+    const parsed = url.parse(location.href, true)
+    delete parsed.search
+    delete parsed.query.umOauthToken
+    location.href = url.format(parsed)
+  }
+
+  return { error, loading, data }
+}
+
 type LoginFormProps = {
   onLogin?: () => void
 
@@ -105,6 +181,106 @@ type LoginFormProps = {
 
   // Render labels before inputs in the form (default true)
   labelsFirst?: boolean
+}
+
+const SocialLoginButton: React.FC<{
+  onClick: (e: MouseEvent) => void,
+  buttonClasses: string,
+  children: ReactNode
+}> = ({onClick, buttonClasses, children}) => (
+  <div className="d-flex justify-content-center my-2">
+    <button className={classNames("btn btn-block btn-outline-primary d-flex align-items-center justify-content-between", buttonClasses)}
+      onClick={onClick}>
+      {children}
+    </button>
+  </div>
+)
+
+const makeNonce = () => {
+  // @ts-ignore
+  const crypto = window.crypto || window.msCrypto
+
+  if (crypto == null) {
+    throw new Error("Error: No crypto implementation available")
+  }
+
+  const arr = new Uint8Array(16)
+  crypto.getRandomValues(arr)
+
+  const ret = []
+  for (let i = 0; i < arr.length; i++) {
+    ret.push(arr[i].toString(16))
+  }
+  return ret
+}
+
+const SocialButtons: React.FC<{}> = ({}) => {
+
+  const appId = useAppId()
+
+  const {
+    fbLoginEnabled,
+    fbLoginUrl,
+    googleLoginEnabled,
+    googleLoginUrl
+  } = useAppConfig()
+
+  const loginWithFacebook = (e: MouseEvent) => {
+    e.preventDefault()
+    const nonce = makeNonce()
+    window.localStorage.umAuthNonce = nonce
+    location.href = `${fbLoginUrl}?appId=${appId}&nonce=${nonce}`
+  }
+
+  const loginWithGoogle = (e: MouseEvent) => {
+    e.preventDefault()
+    const nonce = makeNonce()
+    window.localStorage.umAuthNonce = nonce
+    location.href = `${googleLoginUrl}?appId=${appId}&nonce=${nonce}`
+  }
+
+  if (!fbLoginEnabled && !googleLoginEnabled) {
+    return null
+  } else {
+    return <div className="my-5">
+      <style>{`
+          .fb-login-btn {
+            color: #4267b2 !important;
+            border-color: #4267b2 !important;
+          }
+          .fb-login-btn:hover {
+            background-color: #4267b2 !important;
+            color: white !important;
+          }
+
+          .google-login-btn {
+            color: #ea4335 !important;
+            border-color: #ea4335 !important;
+          }
+          .google-login-btn:hover {
+            background-color: #ea4335 !important;
+            color: white !important;
+          }
+      `}</style>
+      { fbLoginEnabled &&
+        <SocialLoginButton onClick={loginWithFacebook} buttonClasses="fb-login-btn">
+          <FbLogo size="2em" color="#4267B2"/>
+          <div className="flex-grow-1 font-weight-bold">Login with Facebook</div>
+        </SocialLoginButton>
+      }
+      { googleLoginEnabled &&
+        <SocialLoginButton onClick={loginWithGoogle} buttonClasses="google-login-btn">
+          <GoogleLogo size="2em" color="#ea4335"/>
+          <div className="flex-grow-1 font-weight-bold">Login with Google</div>
+        </SocialLoginButton>
+      }
+    </div>
+  }
+}
+
+export const OauthLogin: React.FC<{}> = ({}) => {
+  const { error } = useOauthLogin()
+  return <ErrorMessage error={error}/>
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFirst}) => {
@@ -119,14 +295,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFi
 
   const { onSubmit, onChange, values } = useForm(submit)
 
-  const { id: credentialId, loading: credentialLoading } = useCredentials()
+  const { id, loading: tokenLoading } = useToken()
 
   useEffect(() => {
     // We need to wait until the credential context is reporting that we are logged in,
     // (in addition to waiting for useLogin() mutation to finish). Otherwise there's a window
     // during which other components might think we aren't logged in, even though we are
     // about to be.
-    if (called && !loading && !error && credentialId && !credentialLoading && onLogin) {
+    if (called && !loading && !error && id && !tokenLoading && onLogin) {
       onLogin()
     }
   })
@@ -141,45 +317,49 @@ export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFi
     </>
   }
 
-  return <form className="form-signin" onSubmit={onSubmit}>
-    <div className="form-label-group mb-2">
-      <InputLabel flip={labelsFirst}>
-        <input type="email" data-var="email" className="form-control"
-               value={values.email || ''} onChange={onChange}
-               id={getId(idPrefix, "login-email")}
-               placeholder="Email address" required autoFocus />
-        <label htmlFor={getId(idPrefix, "login-email")}>Email address</label>
-      </InputLabel>
-    </div>
+  return <>
+    <OauthLogin/>
+    <SocialButtons/>
+    <form className="form-signin" onSubmit={onSubmit}>
+      <div className="form-label-group mb-2">
+        <InputLabel flip={labelsFirst}>
+          <input type="email" data-var="email" className="form-control"
+                 value={values.email || ''} onChange={onChange}
+                 id={getId(idPrefix, "login-email")}
+                 placeholder="Email address" required autoFocus />
+          <label htmlFor={getId(idPrefix, "login-email")}>Email address</label>
+        </InputLabel>
+      </div>
 
-    <div className="form-label-group mb-2">
-      <InputLabel flip={labelsFirst}>
-        <input type="password" data-var="password" className="form-control"
-               value={values.password || ''} onChange={onChange}
-               id={getId(idPrefix, "login-password")}
-               placeholder="Password" required />
-        <label htmlFor={getId(idPrefix, "login-password")}>Password</label>
-      </InputLabel>
-    </div>
+      <div className="form-label-group mb-2">
+        <InputLabel flip={labelsFirst}>
+          <input type="password" data-var="password" className="form-control"
+                 value={values.password || ''} onChange={onChange}
+                 id={getId(idPrefix, "login-password")}
+                 placeholder="Password" required />
+          <label htmlFor={getId(idPrefix, "login-password")}>Password</label>
+        </InputLabel>
+      </div>
 
-    <div className="custom-control custom-checkbox mb-2">
-      <input type="checkbox" className="custom-control-input" data-var="stayLoggedIn"
-             id={getId(idPrefix, "login-stay-logged-in")}
-             onChange={onChange} checked={Boolean(values.stayLoggedIn)} />
-      <label className="custom-control-label" htmlFor={getId(idPrefix, "login-stay-logged-in")}>
-        Remember me
-      </label>
-    </div>
+      <div className="custom-control custom-checkbox mb-2">
+        <input type="checkbox" className="custom-control-input" data-var="stayLoggedIn"
+               id={getId(idPrefix, "login-stay-logged-in")}
+               onChange={onChange} checked={Boolean(values.stayLoggedIn)} />
+        <label className="custom-control-label" htmlFor={getId(idPrefix, "login-stay-logged-in")}>
+          Remember me
+        </label>
+      </div>
 
-    <div className="mb-3 justify-content-between d-flex">
-      <button className="btn btn-primary" type="submit">Sign in</button>
-      <button className="btn btn-outline-primary" type="button"
-              onClick={(e) => { e.preventDefault(); setForgotPasswordMode(true); }}>
-        Forgot Password?
-      </button>
-    </div>
-    <ErrorMessage error={error} />
-  </form>
+      <div className="mb-3 justify-content-between d-flex">
+        <button className="btn btn-primary" type="submit">Sign in</button>
+        <button className="btn btn-outline-primary" type="button"
+                onClick={(e) => { e.preventDefault(); setForgotPasswordMode(true); }}>
+          Forgot Password?
+        </button>
+      </div>
+      <ErrorMessage error={error} />
+    </form>
+  </>
 }
 
 // User creation error messages are likely to occur in normal situations,
@@ -238,7 +418,7 @@ export const AccountCreationForm: React.FC<AccountCreationProps> =
     loginAfterCreation = true
   }
 
-  const { id } = useCredentials()
+  const { id } = useToken()
   const [submit, { error, success }] = useCreateAccount()
 
   const { onSubmit, onChange, values } = useForm(submit,

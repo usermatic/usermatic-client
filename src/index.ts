@@ -2,10 +2,22 @@
 import {
   AuthProvider,
   CredentialConsumer,
-  useCredentials,
-  useProfile,
+  useToken,
   useAppId
 } from './auth'
+
+import {
+  useProfile,
+  usePrimaryEmail,
+  useCredentials,
+  usePasswordCredential,
+  useProfilePhotos,
+  isPasswordCredential,
+  isOauthCredential,
+  Credential,
+  PasswordCredential,
+  OauthCredential
+} from './user'
 
 import {
   LoginForm,
@@ -46,12 +58,23 @@ export {
   useLogin,
   useLogout,
   useCreateAccount,
-  useCredentials,
+  useToken,
   useEmailVerifier,
   useProfile,
+  usePrimaryEmail,
+  useProfilePhotos,
+  useCredentials,
+  usePasswordCredential,
+  isPasswordCredential,
+  isOauthCredential,
   useSendVerificationEmail,
   useResetPassword,
   useChangePassword,
   useRequestPasswordResetEmail,
-  useAppId
+  useAppId,
+
+  // types
+  Credential,
+  PasswordCredential,
+  OauthCredential
 }

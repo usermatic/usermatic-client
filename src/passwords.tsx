@@ -4,7 +4,8 @@ import React, { useContext, useState, useEffect } from 'react'
 import jwt from 'jsonwebtoken'
 import classNames from 'classnames'
 
-import { useCredentials, UMApolloContext, useAppConfig } from './auth'
+import { UMApolloContext, useAppConfig } from './auth'
+import { usePasswordCredential } from './user'
 import { useCsrfMutation } from './hooks'
 import { useForm, InputValueMap, InputLabel } from './forms'
 import { ErrorMessage } from './errors'
@@ -82,7 +83,20 @@ export const ChangePasswordForm: React.FC<{idPrefix?: string, labelsFirst?: bool
     labelsFirst = true
   }
 
-  const { email } = useCredentials()
+  const { loading: emailLoading, error: emailError, passwordCredential } = usePasswordCredential()
+  if (emailLoading) { return null }
+  if (emailError) { return <ErrorMessage error={emailError}/> }
+
+  if (!passwordCredential) {
+    // if the user doesn't have a password credential, we can't change their
+    // password, can we?
+    // TODO: Provide link to place where they can add one.
+    return <div className="alert alert-warning">
+      There is no password set for your account.
+    </div>
+  }
+
+  const { email } = passwordCredential
 
   const [submitChangePassword, { loading, error }] = useChangePassword()
   const { onSubmit, onChange, values } = useForm(submitChangePassword)
