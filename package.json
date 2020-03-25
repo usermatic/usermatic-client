@@ -20,7 +20,7 @@
     "@types/jsonwebtoken": "^8.3.3",
     "@types/react": "^16.9.2",
     "react": "^16.9.0",
-    "typescript": "^3.6.3"
+    "typescript": "^3.8.3"
   },
   "dependencies": {
     "apollo-boost": "^0.4.4",
