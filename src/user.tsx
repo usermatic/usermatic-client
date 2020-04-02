@@ -48,12 +48,14 @@ export const usePrimaryEmail = (): {
 
 export type PasswordCredential = {
   type: string,
+  id: string,
   email: string,
   emailIsVerified: boolean
 }
 
 export type OauthCredential = {
   type: string,
+  id: string,
   provider: string,
   providerID: string,
   photoURL?: string
@@ -80,20 +82,22 @@ export const useCredentials = (): {
     return {
       loading,
       error,
-      credentials: profile.credentials.map(c => {
+      credentials: profile.credentials.map((c): Credential => {
         if (c.type === 'PASSWORD') {
           return {
             type: c.type,
-            email: c.email,
-            emailIsVerified: c.emailIsVerified
-          } as PasswordCredential
+            id: c.id,
+            email: c.email ?? '<unknown>',
+            emailIsVerified: Boolean(c.emailIsVerified)
+          }
         } else {
           return {
             type: c.type,
-            provider: c.provider,
-            providerID: c.providerID,
+            id: c.id,
+            provider: c.provider ?? '<unknown>',
+            providerID: c.providerID ?? '<unknown>',
             photoURL: c.photoURL
-          } as OauthCredential
+          }
         }
       })
     }

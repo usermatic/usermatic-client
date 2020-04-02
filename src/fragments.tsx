@@ -16,6 +16,8 @@ export const APP_CONFIG_FRAGMENT = gql`
     fbLoginUrl
     googleLoginEnabled
     googleLoginUrl
+    githubLoginEnabled
+    githubLoginUrl
   }
 `
 

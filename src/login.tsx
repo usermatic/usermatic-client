@@ -13,6 +13,7 @@ import { ErrorMessage } from './errors'
 import { RequestPasswordResetForm } from './passwords'
 
 import { FaFacebookSquare as FbLogo, FaGoogle as GoogleLogo } from 'react-icons/fa'
+import { GoMarkGithub as GithubLogo } from 'react-icons/go'
 
 import {
   LOGIN_MUT,
@@ -145,27 +146,35 @@ const useOauthToken = () => {
   return token
 }
 
-const useOauthLogin = () => {
+const useOauthLogin = ({onLogin}: { onLogin?: () => void }) => {
   const client = useContext(UMApolloContext)
   const oauthToken = useOauthToken()
   const csrfToken = useContext(CsrfContext)
 
-  const [submit, { called, data, loading, error }] = useCsrfMutation(
-    OAUTH_LOGIN_MUT, { client }
+  const [submit, { data, loading, error }] = useCsrfMutation(
+    OAUTH_LOGIN_MUT,
+    {
+      client,
+      onCompleted: () => {
+        if (onLogin != null) {
+          onLogin()
+        }
+        // we've logged in successfully, remove the token from the url if onLogin
+        // hasn't already done so for us.
+        const parsed = url.parse(location.href, true)
+        if (parsed.query.umOauthToken) {
+          delete parsed.search
+          delete parsed.query.umOauthToken
+          location.href = url.format(parsed)
+        }
+      }
+    }
   )
 
   useEffect(() => {
     if (oauthToken == null || csrfToken == null) { return }
     submit({ variables: { oauthToken } })
   }, [oauthToken, csrfToken])
-
-  if (called && !loading && !error && data) {
-    // we've logged in successfully, remove the token from the url.
-    const parsed = url.parse(location.href, true)
-    delete parsed.search
-    delete parsed.query.umOauthToken
-    location.href = url.format(parsed)
-  }
 
   return { error, loading, data }
 }
@@ -211,66 +220,85 @@ const makeNonce = () => {
   for (let i = 0; i < arr.length; i++) {
     ret.push(arr[i].toString(16))
   }
-  return ret
+  return ret.join('')
 }
+
+const makeLoginFn = (appId: string, url: string) => (
+  (e: MouseEvent) => {
+    e.preventDefault()
+    const nonce = makeNonce()
+    window.localStorage.umAuthNonce = nonce
+    location.href = `${url}?appId=${appId}&nonce=${nonce}`
+  }
+)
 
 const SocialButtons: React.FC<{}> = ({}) => {
 
-  const appId = useAppId()
+  const appId = useAppId() as string
 
   const {
     fbLoginEnabled,
     fbLoginUrl,
     googleLoginEnabled,
-    googleLoginUrl
+    googleLoginUrl,
+    githubLoginEnabled,
+    githubLoginUrl,
   } = useAppConfig()
 
-  const loginWithFacebook = (e: MouseEvent) => {
-    e.preventDefault()
-    const nonce = makeNonce()
-    window.localStorage.umAuthNonce = nonce
-    location.href = `${fbLoginUrl}?appId=${appId}&nonce=${nonce}`
-  }
+  const loginWithFacebook = makeLoginFn(appId, fbLoginUrl)
+  const loginWithGoogle = makeLoginFn(appId, googleLoginUrl)
+  const loginWithGithub = makeLoginFn(appId, githubLoginUrl)
 
-  const loginWithGoogle = (e: MouseEvent) => {
-    e.preventDefault()
-    const nonce = makeNonce()
-    window.localStorage.umAuthNonce = nonce
-    location.href = `${googleLoginUrl}?appId=${appId}&nonce=${nonce}`
-  }
-
-  if (!fbLoginEnabled && !googleLoginEnabled) {
+  if (!fbLoginEnabled && !googleLoginEnabled && !githubLoginEnabled) {
     return null
   } else {
     return <div className="my-5">
       <style>{`
           .fb-login-btn {
-            color: #4267b2 !important;
+            color: white !important;
+            background-color: #4267b2 !important;
             border-color: #4267b2 !important;
           }
           .fb-login-btn:hover {
-            background-color: #4267b2 !important;
-            color: white !important;
+            color: #4267b2 !important;
+            background-color: white !important;
           }
 
           .google-login-btn {
-            color: #ea4335 !important;
+            color: white !important;
+            background-color: #ea4335 !important;
             border-color: #ea4335 !important;
           }
           .google-login-btn:hover {
-            background-color: #ea4335 !important;
+            color: #ea4335 !important;
+            background-color: white !important;
+          }
+
+          .github-login-btn {
             color: white !important;
+            background-color: rgb(21, 20, 19) !important;
+            border-color: rgb(21, 20, 19) !important;
+          }
+          .github-login-btn:hover {
+            color: rgb(21, 20, 19) !important;
+            background-color: white !important;
           }
       `}</style>
+      { githubLoginEnabled &&
+        <SocialLoginButton onClick={loginWithGithub} buttonClasses="github-login-btn">
+          <GithubLogo size="2em"/>
+          <div className="flex-grow-1 font-weight-bold">Login with GitHub</div>
+        </SocialLoginButton>
+      }
       { fbLoginEnabled &&
         <SocialLoginButton onClick={loginWithFacebook} buttonClasses="fb-login-btn">
-          <FbLogo size="2em" color="#4267B2"/>
+          <FbLogo size="2em"/>
           <div className="flex-grow-1 font-weight-bold">Login with Facebook</div>
         </SocialLoginButton>
       }
       { googleLoginEnabled &&
         <SocialLoginButton onClick={loginWithGoogle} buttonClasses="google-login-btn">
-          <GoogleLogo size="2em" color="#ea4335"/>
+          <GoogleLogo size="2em"/>
           <div className="flex-grow-1 font-weight-bold">Login with Google</div>
         </SocialLoginButton>
       }
@@ -278,8 +306,8 @@ const SocialButtons: React.FC<{}> = ({}) => {
   }
 }
 
-export const OauthLogin: React.FC<{}> = ({}) => {
-  const { error } = useOauthLogin()
+export const OauthLogin: React.FC<{onLogin?: () => void}> = ({onLogin}) => {
+  const { error } = useOauthLogin({ onLogin })
   return <ErrorMessage error={error}/>
 }
 

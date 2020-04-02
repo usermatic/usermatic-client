@@ -30,13 +30,17 @@ export type AppConfig = {
   fbLoginUrl: string
   googleLoginEnabled: boolean
   googleLoginUrl: string
+  githubLoginEnabled: boolean
+  githubLoginUrl: string
 }
 
 const defaultAppConfig = {
   fbLoginEnabled: false,
   fbLoginUrl: 'https://usermatic.io/auth/facebook',
   googleLoginEnabled: false,
-  googleLoginUrl: 'https://usermatic.io/auth/google'
+  googleLoginUrl: 'https://usermatic.io/auth/google',
+  githubLoginEnabled: false,
+  githubLoginUrl: 'https://usermatic.io/auth/github',
 }
 
 const clientCache: Record<string, any> = {}
