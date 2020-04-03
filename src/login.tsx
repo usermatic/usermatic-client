@@ -131,7 +131,7 @@ const useOauthToken = () => {
       return
     }
 
-    const { nonce } = jwt.decode(umOauthToken) as Record<string, string>
+    const { nonce } = jwt.decode(umOauthToken) as { nonce: string }
 
     const { umAuthNonce } = window.localStorage
 
@@ -146,12 +146,11 @@ const useOauthToken = () => {
   return token
 }
 
-const useOauthLogin = ({onLogin}: { onLogin?: () => void }) => {
+const useOauthLogin = ({onLogin, oauthToken}: { onLogin?: () => void, oauthToken?: string }) => {
   const client = useContext(UMApolloContext)
-  const oauthToken = useOauthToken()
   const csrfToken = useContext(CsrfContext)
 
-  const [submit, { data, loading, error }] = useCsrfMutation(
+  const [submit, { data, loading, error, called }] = useCsrfMutation(
     OAUTH_LOGIN_MUT,
     {
       client,
@@ -172,9 +171,9 @@ const useOauthLogin = ({onLogin}: { onLogin?: () => void }) => {
   )
 
   useEffect(() => {
-    if (oauthToken == null || csrfToken == null) { return }
+    if (oauthToken == null || csrfToken == null || called) { return }
     submit({ variables: { oauthToken } })
-  }, [oauthToken, csrfToken])
+  }, [oauthToken, csrfToken, called])
 
   return { error, loading, data }
 }
@@ -306,9 +305,19 @@ const SocialButtons: React.FC<{}> = ({}) => {
   }
 }
 
-export const OauthLogin: React.FC<{onLogin?: () => void}> = ({onLogin}) => {
-  const { error } = useOauthLogin({ onLogin })
-  return <ErrorMessage error={error}/>
+export const OauthLogin: React.FC<{onLogin?: () => void, children: ReactNode}> = ({onLogin, children}) => {
+  const oauthToken = useOauthToken()
+  const { error, loading } = useOauthLogin({ onLogin, oauthToken })
+  if (oauthToken == null) {
+    return <>{children}</>
+  } else {
+    return <>
+      <ErrorMessage error={error}/>
+      { loading && <div className="alert alert-info">
+        Please wait while we process your login...
+      </div> }
+    </>
+  }
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFirst}) => {
@@ -345,8 +354,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFi
     </>
   }
 
-  return <>
-    <OauthLogin/>
+  return <OauthLogin>
     <SocialButtons/>
     <form className="form-signin" onSubmit={onSubmit}>
       <div className="form-label-group mb-2">
@@ -387,7 +395,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFi
       </div>
       <ErrorMessage error={error} />
     </form>
-  </>
+  </OauthLogin>
 }
 
 // User creation error messages are likely to occur in normal situations,
