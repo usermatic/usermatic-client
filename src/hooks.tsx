@@ -34,7 +34,7 @@ export const useCsrfQuery = (doc: DocumentNode, options: Record<string, any>) =>
     throw new Error("TODO: merge context object")
   }
 
-  const skip = !csrfToken
+  const skip = !csrfToken || options.skip
   const ret = useQuery(doc, {
     ...options,
     // Once the crsfToken is ready, the query will be fired.
@@ -44,5 +44,5 @@ export const useCsrfQuery = (doc: DocumentNode, options: Record<string, any>) =>
     }
   })
 
-  return { ...ret, loading: skip || ret.loading }
+  return { ...ret, loading: !csrfToken || ret.loading }
 }

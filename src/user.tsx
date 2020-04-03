@@ -32,7 +32,7 @@ export const useProfile = (): {
 
   const { loading, error, data } = ret
   let profile
-  if (!loading && !error && data.svcGetAuthenticatedUser) {
+  if (!loading && !error && data?.svcGetAuthenticatedUser) {
     profile = data.svcGetAuthenticatedUser
   }
   return { loading, profile, error }
