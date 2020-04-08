@@ -59,7 +59,8 @@ export type OauthCredential = {
   id: string,
   provider: string,
   providerID: string,
-  photoURL?: string
+  photoURL?: string,
+  email?: string
 }
 
 export type Credential = PasswordCredential | OauthCredential
@@ -97,7 +98,8 @@ export const useCredentials = (): {
             id: c.id,
             provider: c.provider ?? '<unknown>',
             providerID: c.providerID ?? '<unknown>',
-            photoURL: c.photoURL
+            photoURL: c.photoURL,
+            email: c.email
           }
         }
       })

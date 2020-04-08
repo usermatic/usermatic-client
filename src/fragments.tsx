@@ -5,7 +5,7 @@ export const USER_FRAGMENT = gql`
   fragment UserParts on SvcUser {
     id
     primaryEmail
-    credentials { type email emailIsVerified provider providerID photoURL }
+    credentials { id type email emailIsVerified provider providerID photoURL }
   }
 `
 

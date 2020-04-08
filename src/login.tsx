@@ -251,52 +251,58 @@ const SocialButtons: React.FC<{}> = ({}) => {
   if (!fbLoginEnabled && !googleLoginEnabled && !githubLoginEnabled) {
     return null
   } else {
+    // poor man's name mangling... We just need to avoid
+    // conflicting with apps that use this library.
+    const nonce = '3kdic7az9'
+    const buttonClass = (provider: string) => {
+      return `${provider}-login-btn-${nonce}`
+    }
     return <div className="my-5">
       <style>{`
-          .fb-login-btn {
+          .facebook-login-btn-${nonce} {
             color: white !important;
             background-color: #4267b2 !important;
             border-color: #4267b2 !important;
           }
-          .fb-login-btn:hover {
+          .facebook-login-btn-${nonce}:hover {
             color: #4267b2 !important;
             background-color: white !important;
           }
 
-          .google-login-btn {
+          .google-login-btn-${nonce} {
             color: white !important;
             background-color: #ea4335 !important;
             border-color: #ea4335 !important;
           }
-          .google-login-btn:hover {
+          .google-login-btn-${nonce}:hover {
             color: #ea4335 !important;
             background-color: white !important;
           }
 
-          .github-login-btn {
+          .github-login-btn-${nonce} {
             color: white !important;
             background-color: rgb(21, 20, 19) !important;
             border-color: rgb(21, 20, 19) !important;
           }
-          .github-login-btn:hover {
+          .github-login-btn-${nonce}:hover {
             color: rgb(21, 20, 19) !important;
             background-color: white !important;
           }
       `}</style>
       { githubLoginEnabled &&
-        <SocialLoginButton onClick={loginWithGithub} buttonClasses="github-login-btn">
+        <SocialLoginButton onClick={loginWithGithub} buttonClasses={buttonClass('github')}>
           <GithubLogo size="2em"/>
           <div className="flex-grow-1 font-weight-bold">Login with GitHub</div>
         </SocialLoginButton>
       }
       { fbLoginEnabled &&
-        <SocialLoginButton onClick={loginWithFacebook} buttonClasses="fb-login-btn">
+        <SocialLoginButton onClick={loginWithFacebook} buttonClasses={buttonClass('facebook')}>
           <FbLogo size="2em"/>
           <div className="flex-grow-1 font-weight-bold">Login with Facebook</div>
         </SocialLoginButton>
       }
       { googleLoginEnabled &&
-        <SocialLoginButton onClick={loginWithGoogle} buttonClasses="google-login-btn">
+        <SocialLoginButton onClick={loginWithGoogle} buttonClasses={buttonClass('google')}>
           <GoogleLogo size="2em"/>
           <div className="flex-grow-1 font-weight-bold">Login with Google</div>
         </SocialLoginButton>
