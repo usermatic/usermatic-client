@@ -24,6 +24,11 @@ export const useProfile = (): {
     id: string
     primaryEmail: string
     credentials: CredentialType[]
+    name: {
+      family?: string,
+      given?: string,
+      full?: string
+    }
   }
 } => {
   const client = useContext(UMApolloContext)
@@ -125,6 +130,23 @@ export const usePasswordCredential = (): {
   }
 
   return { loading, error }
+}
+
+export const usePersonalDetails = (): {
+  loading: boolean,
+  error?: ApolloError,
+  name: {
+    family?: string,
+    given?: string,
+    full?: string
+  }
+}  => {
+
+  const { loading, error, profile } = useProfile()
+
+  const name = (profile != null) ? profile.name : {}
+
+  return { loading, error, name }
 }
 
 export const useProfilePhotos = (): {
