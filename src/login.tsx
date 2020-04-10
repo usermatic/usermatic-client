@@ -1,5 +1,5 @@
 
-import url  from 'url'
+import urllib from 'url'
 import React, { ReactNode, useContext, useEffect, useState, MouseEvent } from 'react'
 import { ApolloError } from 'apollo-client'
 import { GraphQLError } from 'graphql'
@@ -7,7 +7,7 @@ import classNames from 'classnames'
 import jwt from 'jsonwebtoken'
 
 import { useToken, UMApolloContext, AppIdContext, useAppConfig, useAppId } from './auth'
-import { useCsrfMutation, CsrfContext } from './hooks'
+import { useCrsfToken, useCsrfMutation } from './hooks'
 import { useForm, InputValueMap, InputLabel } from './forms'
 import { ErrorMessage } from './errors'
 import { RequestPasswordResetForm } from './passwords'
@@ -125,7 +125,7 @@ const useOauthToken = () => {
   useEffect(() => {
     if (token != null) { return }
 
-    const parsed = url.parse(location.href, true)
+    const parsed = urllib.parse(location.href, true)
     const umOauthToken = singleString(parsed.query.umOauthToken)
     if (umOauthToken == null) {
       return
@@ -148,27 +148,40 @@ const useOauthToken = () => {
 
 const useOauthLogin = ({onLogin, oauthToken}: { onLogin?: () => void, oauthToken?: string }) => {
   const client = useContext(UMApolloContext)
-  const csrfToken = useContext(CsrfContext)
+  const { csrfToken } = useCrsfToken()
+  const appId = useAppId() as string
+  const { id, loading: tokenLoading } = useToken()
 
   const [submit, { data, loading, error, called }] = useCsrfMutation(
     OAUTH_LOGIN_MUT,
     {
       client,
-      onCompleted: () => {
-        if (onLogin != null) {
-          onLogin()
-        }
-        // we've logged in successfully, remove the token from the url if onLogin
-        // hasn't already done so for us.
-        const parsed = url.parse(location.href, true)
+      refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }]
+    }
+  )
+
+  useEffect(() => {
+    // need to wait until the login mutation is complete *and* we've updated the
+    // token.
+    if (called && !loading && !error && id && !tokenLoading) {
+      if (onLogin != null) {
+        onLogin()
+      }
+
+      // we've logged in successfully, remove the token from the url if onLogin
+      // hasn't already done so for us.
+      // We need a short delay as applications may be using an asynchronous method
+      // to update the URL, e.g. router.replace() in nextjs.
+      setTimeout(() => {
+        const parsed = urllib.parse(location.href, true)
         if (parsed.query.umOauthToken) {
           delete parsed.search
           delete parsed.query.umOauthToken
-          location.href = url.format(parsed)
+          location.href = urllib.format(parsed)
         }
-      }
+      }, 500)
     }
-  )
+  }, [called, loading, error, id, tokenLoading, onLogin])
 
   useEffect(() => {
     if (oauthToken == null || csrfToken == null || called) { return }
@@ -222,16 +235,100 @@ const makeNonce = () => {
   return ret.join('')
 }
 
-const makeLoginFn = (appId: string, url: string) => (
+type ChildWindow = {
+  open: (url: string) => void
+  close: () => void
+}
+
+const useChildWindow = (name: string, callback: (msg: any) => void): ChildWindow => {
+
+  const [prevUrl, setPrevUrl] = useState<string | null>(null)
+  const [childWindow, setChildWindow] = useState<Window | null>(null)
+  const [curCallback, setCurCallback] = useState<((event: any) => void) | null>(null)
+
+  const close = () => {
+    if (childWindow != null) {
+      childWindow.close()
+      setChildWindow(null)
+      setPrevUrl(null)
+    }
+  }
+
+  const open = (url: string) => {
+    const top = window.screenY + (window.screen.height - 700) / 2
+    const left = window.screenX + (window.screen.width - 600) / 2
+
+    const features =
+     `toolbar=no, menubar=no, width=600, height=700, top=${top}, left=${left}`
+
+    let newWindow: Window | null = null
+    if (childWindow === null || childWindow.closed) {
+      // if the pointer to the window object in memory does not exist
+      // or if such pointer exists but the window was closed
+      newWindow = window.open(url, name, features)
+    } else if (prevUrl !== url) {
+      // if the resource to load is different,
+      // then we load it in the already opened secondary window and then
+      // we bring such window back on top/in front of its parent window. */
+      newWindow = window.open(url, name, features)
+      newWindow?.focus()
+    } else {
+      // else the window reference must exist and the window
+      // is not closed; therefore, we can bring it back on top of any other
+      // window with the focus() method. There would be no need to re-create
+      // the window or to reload the referenced resource. */
+      childWindow.focus()
+    }
+
+    if (newWindow != null) {
+      if (curCallback != null) {
+        window.removeEventListener('message', curCallback, false)
+      }
+
+      const callbackWrapper = (event: any) => {
+        // We get null events sometimes, i have no idea why
+        if (event == null) { return }
+        if (event.origin !== window.origin) {
+          console.error(`ignored cross-origin message from ${event.origin}`)
+          return
+        }
+        // event.source is documented here at
+        // https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent
+        // It matches the WindowProxy we got from window.open, whereas
+        // event.srcElement matches the current window, and isn't what we
+        // want.
+        // TODO: this apparently won't work on IE11. find a workaround
+        if (event.source !== newWindow) {
+          return
+        }
+        callback(event.data)
+      }
+
+      window.addEventListener('message', callbackWrapper, false)
+
+      setChildWindow(newWindow)
+      setPrevUrl(url)
+      setCurCallback(callbackWrapper)
+    }
+  }
+
+  return { open, close }
+}
+
+const makeLoginFn = (childWindow: ChildWindow, appId: string, url: string) => (
   (e: MouseEvent) => {
     e.preventDefault()
     const nonce = makeNonce()
     window.localStorage.umAuthNonce = nonce
-    location.href = `${url}?appId=${appId}&nonce=${nonce}`
+    const childUrl = `${url}?appId=${appId}&nonce=${nonce}`
+
+    childWindow.open(childUrl)
   }
 )
 
-const SocialButtons: React.FC<{}> = ({}) => {
+
+
+const SocialButtons: React.FC<{popupWindow: ChildWindow}> = ({popupWindow}) => {
 
   const appId = useAppId() as string
 
@@ -244,9 +341,9 @@ const SocialButtons: React.FC<{}> = ({}) => {
     githubLoginUrl,
   } = useAppConfig()
 
-  const loginWithFacebook = makeLoginFn(appId, fbLoginUrl)
-  const loginWithGoogle = makeLoginFn(appId, googleLoginUrl)
-  const loginWithGithub = makeLoginFn(appId, githubLoginUrl)
+  const loginWithFacebook = makeLoginFn(popupWindow, appId, fbLoginUrl)
+  const loginWithGoogle = makeLoginFn(popupWindow, appId, googleLoginUrl)
+  const loginWithGithub = makeLoginFn(popupWindow, appId, githubLoginUrl)
 
   if (!fbLoginEnabled && !googleLoginEnabled && !githubLoginEnabled) {
     return null
@@ -340,6 +437,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFi
 
   const { id, loading: tokenLoading } = useToken()
 
+  const { refetch } = useCrsfToken()
+
   useEffect(() => {
     // We need to wait until the credential context is reporting that we are logged in,
     // (in addition to waiting for useLogin() mutation to finish). Otherwise there's a window
@@ -360,8 +459,27 @@ export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFi
     </>
   }
 
-  return <OauthLogin>
-    <SocialButtons/>
+  const onLoginWrapper = () => {
+    if (window.opener != null) {
+      window.opener.postMessage('LOGGED_IN')
+      window.close()
+    }
+    if (onLogin != null) {
+      onLogin()
+    }
+  }
+
+  const popupWindow = useChildWindow('social-login-popup',
+    (msg: any) => {
+      if (msg === 'LOGGED_IN') {
+        // TODO: just update the cache manually instead of refetching the query
+        refetch()
+      }
+    }
+  )
+
+  return <OauthLogin onLogin={onLoginWrapper}>
+    <SocialButtons popupWindow={popupWindow} />
     <form className="form-signin" onSubmit={onSubmit}>
       <div className="form-label-group mb-2">
         <InputLabel flip={labelsFirst}>

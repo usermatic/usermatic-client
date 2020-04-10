@@ -155,7 +155,7 @@ const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics?: bool
   const client = useContext(UMApolloContext)
   const appId = useContext(AppIdContext)
 
-  const {data, error, loading} = useQuery(SESSION_QUERY,
+  const {data, error, loading, refetch} = useQuery(SESSION_QUERY,
     { variables: { appId }, client })
 
   let appConfig = { ...defaultAppConfig }
@@ -175,7 +175,7 @@ const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics?: bool
     appConfig = config
   }
 
-  return <CsrfContext.Provider value={csrfToken}>
+  return <CsrfContext.Provider value={{ csrfToken, refetch }}>
     <AppConfigContext.Provider value={appConfig}>
       <TokenContext.Provider value={tokenValue}>
         {error && showDiagnostics && <Diagnostics appId={appId} />}
