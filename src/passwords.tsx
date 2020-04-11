@@ -8,7 +8,6 @@ import { UMApolloContext, useAppConfig } from './auth'
 import { usePasswordCredential } from './user'
 import { useCsrfMutation } from './hooks'
 import { useForm, InputValueMap, InputLabel } from './forms'
-import { Formik, Form, Field } from 'formik'
 import { ErrorMessage } from './errors'
 import { useLogin } from './login'
 import { useDebounce } from './use-debounce'
@@ -74,13 +73,15 @@ export const useResetPassword = (token: string) => {
 type LoginState = {
   email: string
   password: string
-  stayLoggedIn: boolean
+  stayLoggedIn: string
 }
 
 export const ChangePasswordForm: React.FC<{idPrefix?: string, labelsFirst?: boolean}> =
   ({idPrefix, labelsFirst}) => {
 
-  const labelsFirstDef = labelsFirst ?? true
+  if (labelsFirst == null) {
+    labelsFirst = true
+  }
 
   const { loading: emailLoading, error: emailError, passwordCredential } = usePasswordCredential()
   if (emailLoading) { return null }
@@ -98,40 +99,37 @@ export const ChangePasswordForm: React.FC<{idPrefix?: string, labelsFirst?: bool
   const { email } = passwordCredential
 
   const [submitChangePassword, { loading, error }] = useChangePassword()
-  //const { onSubmit, onChange, values } = useForm(submitChangePassword)
+  const { onSubmit, onChange, values } = useForm(submitChangePassword)
 
-  return (
-    <Formik
-      initialValues={{ oldPassword: '', newPassword: '' }}
-      onSubmit={submitChangePassword}
-    >{(props) => (
-      <Form>
+  const debouncedPw = useDebounce(values.newPassword, 300)
 
-        <div className="form-label-group">
-          <InputLabel flip={labelsFirstDef}>
-            <Field type="password" name="oldPassword" className="form-control"
-                   placeholder="Old Password" required autoFocus />
-            <label htmlFor="oldPassword">Old Password</label>
-          </InputLabel>
-        </div>
+  return <form onSubmit={onSubmit}>
+    <div className="form-label-group">
+      <InputLabel flip={labelsFirst}>
+        <input type="password" data-var="oldPassword" className="form-control"
+               value={values.oldPassword || ''} onChange={onChange}
+               id={getId(idPrefix, "change-password-old-password")}
+               placeholder="Old Password" required autoFocus />
+        <label htmlFor={getId(idPrefix, "change-password-old-password")}>Old Password</label>
+      </InputLabel>
+    </div>
 
-        <div className="form-label-group">
-          <InputLabel flip={labelsFirstDef}>
-            <Field type="password" name="newPassword" className="form-control"
-                   placeholder="Old Password" required autoFocus />
-            <label htmlFor="newPassword">New Password</label>
-          </InputLabel>
-        </div>
-        <PasswordScore password={props.values.newPassword} username={email} />
+    <div className="form-label-group">
+      <InputLabel flip={labelsFirst}>
+        <input type="password" data-var="newPassword" className="form-control"
+               value={values.newPassword || ''} onChange={onChange}
+               id={getId(idPrefix, "change-password-new-password")}
+               placeholder="New Password" required />
+        <label htmlFor={getId(idPrefix, "change-password-new-password")}>New Password</label>
+      </InputLabel>
+    </div>
+    <PasswordScore password={debouncedPw} username={email} />
 
-        <button className={`btn btn-lg btn-primary ${ loading ? 'disabled' : '' }`} type="submit">
-          { loading ? 'Please wait...' : 'Change Password' }
-        </button>
-        <ErrorMessage error={error} />
-      </Form>
-    )}
-    </Formik>
-  )
+    <button className={`btn btn-lg btn-primary ${ loading ? 'disabled' : '' }`} type="submit">
+      { loading ? 'Please wait...' : 'Change Password' }
+    </button>
+    <ErrorMessage error={error} />
+  </form>
 }
 
 type ResetPasswordFormProps = {
@@ -147,7 +145,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> =
   ({token, onLogin, idPrefix, labelsFirst, allowLoginAfterReset,
     redirectAfterReset}) => {
 
-  const labelsFirstDef = labelsFirst ?? true
+  if (labelsFirst == null) { labelsFirst = true }
   if (allowLoginAfterReset == null) { allowLoginAfterReset = true }
   if (redirectAfterReset == null) { redirectAfterReset = false }
 
@@ -186,13 +184,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> =
     }
   })
 
-  const initialValues = {
-    newPassword: '',
-    loginAfterReset: false,
-    stayLoggedIn: false
-  }
-
-  const submitWrapper = (values: typeof initialValues) => {
+  const submitWrapper = (values: InputValueMap) => {
     const decoded = jwt.decode(token)
     if (!decoded || typeof decoded != 'object') {
       console.error("password reset token was invalid")
@@ -208,7 +200,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> =
     submit({ newPassword })
   }
 
-  //const {onSubmit, onChange, values} = useForm(submitWrapper)
+  const {onSubmit, onChange, values} = useForm(submitWrapper)
 
   if (success) {
     const redirectUri = data.resetPassword && data.resetPassword.redirectUri
@@ -223,40 +215,41 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> =
   return <div>
     <ErrorMessage error={error} />
     <ErrorMessage error={loginError} />
-    <Formik
-      initialValues={initialValues}
-      onSubmit={submitWrapper}
-    >{(props) => (
-      <Form className="form-signin">
-        <div className="form-label-group">
-          <InputLabel flip={labelsFirstDef}>
-            <Field type="password" name="newPassword" className="form-control"
-                   placeholder="New Password" required autoFocus />
-            <label htmlFor="newPassword">New Password</label>
-          </InputLabel>
-        </div>
+    <form className="form-signin" onSubmit={onSubmit}>
+      <div className="form-label-group">
+        <InputLabel flip={labelsFirst}>
+          <input type="password" data-var="newPassword" className="form-control"
+                 value={values.newPassword || ''} onChange={onChange}
+                 id={getId(idPrefix, "reset-password-new-password")}
+                 placeholder="New Password" required autoFocus />
+          <label htmlFor={getId(idPrefix, "reset-password-new-password")}>New Password</label>
+        </InputLabel>
+      </div>
 
-        { allowLoginAfterReset &&
+      { allowLoginAfterReset &&
 
+      <div className="custom-control custom-checkbox mb-3 justify-content-between d-flex">
+        <input type="checkbox" className="custom-control-input" data-var="loginAfterReset"
+               id={getId(idPrefix, "reset-password-login-after-reset")}
+               onChange={onChange} checked={Boolean(values.loginAfterReset)} />
+        <label className="custom-control-label" htmlFor={getId(idPrefix, "reset-password-login-after-reset")}>
+          Log in now?
+        </label>
+      </div> }
+
+      { Boolean(values.loginAfterReset) ?
         <div className="custom-control custom-checkbox mb-3 justify-content-between d-flex">
-          <Field type="checkbox" className="custom-control-input" name="loginAfterReset"/>
-          <label className="custom-control-label" htmlFor="loginAfterReset">
-            Log in now?
+          <input type="checkbox" className="custom-control-input" data-var="stayLoggedIn"
+                 id={getId(idPrefix, "reset-password-stay-logged-in")}
+                 onChange={onChange} checked={Boolean(values.stayLoggedIn)} />
+          <label className="custom-control-label" htmlFor={getId(idPrefix, "reset-password-stay-logged-in")}>
+            Remember me
           </label>
-        </div> }
+        </div>
+        : null }
 
-        { Boolean(props.values.loginAfterReset) ?
-          <div className="custom-control custom-checkbox mb-3 justify-content-between d-flex">
-            <Field type="checkbox" className="custom-control-input" name="stayLoggedIn" />
-            <label className="custom-control-label" htmlFor="stayLoggedIn">
-              Remember me
-            </label>
-          </div>
-          : null }
-
-        <button className="btn btn-primary" type="submit">Reset Password</button>
-      </Form>)}
-    </Formik>
+      <button className="btn btn-primary" type="submit">Reset Password</button>
+    </form>
   </div>
 }
 
@@ -380,11 +373,10 @@ const PasswordStrengthCheck: React.FC<{pwScore: PwScoreRecord}> = ({pwScore}) =>
 export const PasswordScore: React.FC<{password?: string, username?: string}> =
   ({password, username}) => {
 
-  const debouncedPw = useDebounce(password, 300)
   const [passwordScore, setPasswordScore] = useState({} as Record<string, any>)
 
   useEffect(() => {
-    if (debouncedPw == null) {
+    if (password == null) {
       return
     }
     const scorePassword = async () => {
@@ -393,13 +385,13 @@ export const PasswordScore: React.FC<{password?: string, username?: string}> =
       if (username) {
         dict.push(username)
       }
-      const results = loaded(debouncedPw, dict)
+      const results = loaded(password, dict)
       setPasswordScore(results)
     }
     scorePassword()
-  }, [debouncedPw, username])
+  }, [password, username])
 
-  if (debouncedPw == null || passwordScore.score == null) {
+  if (password == null || passwordScore.score == null) {
     return null
   }
 

@@ -101,11 +101,6 @@
   dependencies:
     tslib "^1.9.3"
 
-alea@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/alea/-/alea-1.0.0.tgz#0c6f2421a03a98963431366583a1112ea7c28ccc"
-  integrity sha512-LSvpz/wLJWC6P19Eogz0IgysHgb46DKhHx4VfNWSCQua3usAYDpmrYxqqlqdy4Ozhd2ras2Km+zc26yBB36EaA==
-
 apollo-boost@^0.4.4:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/apollo-boost/-/apollo-boost-0.4.4.tgz#7c278dac6cb6fa3f2f710c56baddc6e3ae730651"
@@ -491,13 +486,6 @@ unfetch@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/unfetch/-/unfetch-4.1.0.tgz#6ec2dd0de887e58a4dee83a050ded80ffc4137db"
   integrity sha512-crP/n3eAPUJxZXM9T80/yv0YhkTEx2K1D3h7D1AJM6fzsWZrxdyRuLN0JH/dkZh1LNH8LxCnBzoPFCPbb2iGpg==
-
-usenonce@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/usenonce/-/usenonce-0.1.0.tgz#1a47231a4795cfa90782d2b0820e70e3239d0012"
-  integrity sha512-uldFfJwmeCJoXMZ3K+BN7FQz9hMeGrhkBUwmwCg0unsrGWmp64ifrOXDKCHPVgkECl/EaIohuF+UCEY6OLgKZg==
-  dependencies:
-    alea "^1.0.0"
 
 zen-observable-ts@^0.8.20:
   version "0.8.20"

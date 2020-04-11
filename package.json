@@ -32,7 +32,6 @@
     "jsonwebtoken": "^8.5.1",
     "react-apollo": "^3.1.1",
     "react-icons": "^3.9.0",
-    "usenonce": "^0.1.0",
     "zxcvbn-async": "^0.0.5"
   }
 }
