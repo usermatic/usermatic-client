@@ -5,6 +5,7 @@ import { ApolloError } from 'apollo-client'
 import { GraphQLError } from 'graphql'
 import classNames from 'classnames'
 import jwt from 'jsonwebtoken'
+import { Formik, Form, Field } from 'formik'
 
 import { useToken, UMApolloContext, AppIdContext, useAppConfig, useAppId } from './auth'
 import { useCrsfToken, useCsrfMutation } from './hooks'
@@ -68,7 +69,7 @@ export const useLogin = () => {
 
   const { loading, error, data } = ret
 
-  const submit = (values: InputValueMap) => {
+  const submit = (values: { email: string, password: string, stayLoggedIn: boolean }) => {
     submitLogin({ variables: values })
   }
 
@@ -425,15 +426,13 @@ export const OauthLogin: React.FC<{onLogin?: () => void, children: ReactNode}> =
 
 export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFirst}) => {
 
-  if (labelsFirst == null) {
-    labelsFirst = true
-  }
+  const labelsFirstDef = labelsFirst ?? true
 
   const [isForgotPasswordMode, setForgotPasswordMode] = useState(false)
 
   const [submit, { loading, error, called }] = useLogin()
 
-  const { onSubmit, onChange, values } = useForm(submit)
+  //const { onSubmit, onChange, values } = useForm(submit)
 
   const { id, loading: tokenLoading } = useToken()
 
@@ -480,45 +479,69 @@ export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFi
 
   return <OauthLogin onLogin={onLoginWrapper}>
     <SocialButtons popupWindow={popupWindow} />
-    <form className="form-signin" onSubmit={onSubmit}>
-      <div className="form-label-group mb-2">
-        <InputLabel flip={labelsFirst}>
-          <input type="email" data-var="email" className="form-control"
-                 value={values.email || ''} onChange={onChange}
-                 id={getId(idPrefix, "login-email")}
-                 placeholder="Email address" required autoFocus />
-          <label htmlFor={getId(idPrefix, "login-email")}>Email address</label>
-        </InputLabel>
-      </div>
+    <Formik
+      initialValues={{
+        email: '',
+        password: '',
+        stayLoggedIn: false
+      }}
 
-      <div className="form-label-group mb-2">
-        <InputLabel flip={labelsFirst}>
-          <input type="password" data-var="password" className="form-control"
-                 value={values.password || ''} onChange={onChange}
-                 id={getId(idPrefix, "login-password")}
-                 placeholder="Password" required />
-          <label htmlFor={getId(idPrefix, "login-password")}>Password</label>
-        </InputLabel>
-      </div>
+      validate={(values) => {
+        const errors: Record<string, string> = {}
+        if (!values.email) {
+          errors.email = 'Required'
+        }
+        if (!values.password) {
+          errors.password = 'Required'
+        }
+        return errors
+      }}
 
-      <div className="custom-control custom-checkbox mb-2">
-        <input type="checkbox" className="custom-control-input" data-var="stayLoggedIn"
-               id={getId(idPrefix, "login-stay-logged-in")}
-               onChange={onChange} checked={Boolean(values.stayLoggedIn)} />
-        <label className="custom-control-label" htmlFor={getId(idPrefix, "login-stay-logged-in")}>
-          Remember me
-        </label>
-      </div>
+      onSubmit={(values) => {
+        submit(values)
+      }}
+    >{(props) => (
+      <Form className="form-signin">
+        <div className="form-label-group mb-2">
+          <InputLabel flip={labelsFirstDef}>
+            <Field type="email" name="email" className="form-control"
+                   placeholder="Email address" required autoFocus />
+            <label htmlFor="email">Email address</label>
+          </InputLabel>
+          { props.errors.email && props.touched.email &&
+            <div>{props.errors.email}</div>
+          }
+        </div>
 
-      <div className="mb-3 justify-content-between d-flex">
-        <button className="btn btn-primary" type="submit">Sign in</button>
-        <button className="btn btn-outline-primary" type="button"
-                onClick={(e) => { e.preventDefault(); setForgotPasswordMode(true); }}>
-          Forgot Password?
-        </button>
-      </div>
-      <ErrorMessage error={error} />
-    </form>
+        <div className="form-label-group mb-2">
+          <InputLabel flip={labelsFirstDef}>
+            <input type="password" name="password" className="form-control"
+                   value={props.values.password} onChange={props.handleChange}
+                   id={getId(idPrefix, "login-password")}
+                   placeholder="Password" required />
+            <label htmlFor={getId(idPrefix, "login-password")}>Password</label>
+          </InputLabel>
+        </div>
+
+        <div className="custom-control custom-checkbox mb-2">
+          <input type="checkbox" className="custom-control-input" name="stayLoggedIn"
+                 id={getId(idPrefix, "login-stay-logged-in")}
+                 onChange={props.handleChange} checked={props.values.stayLoggedIn} />
+          <label className="custom-control-label" htmlFor={getId(idPrefix, "login-stay-logged-in")}>
+            Remember me
+          </label>
+        </div>
+
+        <div className="mb-3 justify-content-between d-flex">
+          <button className="btn btn-primary" type="submit">Sign in</button>
+          <button className="btn btn-outline-primary" type="button"
+                  onClick={(e) => { e.preventDefault(); setForgotPasswordMode(true); }}>
+            Forgot Password?
+          </button>
+        </div>
+        <ErrorMessage error={error} />
+      </Form>
+    )}</Formik>
   </OauthLogin>
 }
 
