@@ -342,7 +342,6 @@ const PasswordStrengthText: React.FC<{pwScore: PwScoreRecord}> = ({pwScore}) => 
 const PasswordStrengthCheck: React.FC<{pwScore: PwScoreRecord}> = ({pwScore}) => {
 
   const config = useAppConfig()
-  console.log('hay config', config)
   if (config == null) {
     return null
   }
