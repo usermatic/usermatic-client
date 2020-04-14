@@ -11,6 +11,7 @@ import { InMemoryCache } from "apollo-cache-inmemory"
 import { ApolloError } from 'apollo-client'
 import { useQuery } from '@apollo/react-hooks'
 
+import { ErrorMessage } from './errors'
 import { SESSION_QUERY } from './fragments'
 import { CsrfContext } from './hooks'
 
@@ -106,7 +107,7 @@ const isValidAppId = (appId: string | undefined) => {
   return re.test(appId)
 }
 
-const Diagnostics: React.FC<{appId: string | undefined}> = ({appId}) => {
+const Diagnostics: React.FC<{appId?: string, error?: ApolloError}> = ({appId, error}) => {
 
   const [dismissed, setDismissed] = useState(false)
   if (dismissed) {
@@ -120,6 +121,7 @@ const Diagnostics: React.FC<{appId: string | undefined}> = ({appId}) => {
       <span aria-hidden="true">&times;</span>
     </button>
     <p/>
+    <ErrorMessage error={error}/>
     { isValidAppId(appId)
       ? <>
           You've provided the valid-looking <code>appId</code> property <code>{formatAppId(appId)}</code>
@@ -145,12 +147,8 @@ const Diagnostics: React.FC<{appId: string | undefined}> = ({appId}) => {
   </div>
 }
 
-const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics?: boolean}> =
+const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics: boolean}> =
   ({children, showDiagnostics}) => {
-
-  if (showDiagnostics == null) {
-    showDiagnostics = true
-  }
 
   const client = useContext(UMApolloContext)
   const appId = useContext(AppIdContext)
@@ -178,7 +176,7 @@ const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics?: bool
   return <CsrfContext.Provider value={{ csrfToken, refetch }}>
     <AppConfigContext.Provider value={appConfig}>
       <TokenContext.Provider value={tokenValue}>
-        {error && showDiagnostics && <Diagnostics appId={appId} />}
+        {error && showDiagnostics && <Diagnostics appId={appId} error={error} />}
         {children}
       </TokenContext.Provider>
     </AppConfigContext.Provider>
@@ -193,7 +191,7 @@ type AuthProviderProps = {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> =
-  ({children, uri, appId, showDiagnostics}) => {
+  ({children, uri, appId, showDiagnostics = false}) => {
 
   if (!uri) {
     uri = 'https://api.usermatic.com/graphql'
