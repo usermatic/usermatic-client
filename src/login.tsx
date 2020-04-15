@@ -10,7 +10,7 @@ import { useToken, UMApolloContext, AppIdContext, useAppConfig, useAppId } from 
 import { useCrsfToken, useCsrfMutation } from './hooks'
 import { useForm, InputValueMap, InputLabel } from './forms'
 import { ErrorMessage } from './errors'
-import { RequestPasswordResetForm } from './passwords'
+import { PasswordScore, RequestPasswordResetForm } from './passwords'
 
 import { FaFacebookSquare as FbLogo, FaGoogle as GoogleLogo } from 'react-icons/fa'
 import { GoMarkGithub as GithubLogo } from 'react-icons/go'
@@ -565,10 +565,13 @@ type AccountCreationProps = {
 
   // Render labels before inputs in the form (default true)
   labelsFirst?: boolean
+
+  // Display the PasswordScore widget.
+  showPasswordScore?: boolean
 }
 
 export const AccountCreationForm: React.FC<AccountCreationProps> =
-  ({loginAfterCreation, onLogin, idPrefix, labelsFirst}) => {
+  ({loginAfterCreation, onLogin, idPrefix, labelsFirst, showPasswordScore = true}) => {
 
   if (labelsFirst == null) {
     labelsFirst = true
@@ -622,6 +625,8 @@ export const AccountCreationForm: React.FC<AccountCreationProps> =
           Remember me
         </label>
       </div> }
+
+      { showPasswordScore && <PasswordScore password={values.password} username={values.email} /> }
 
       <div className="mb-3">
         <button className="btn btn-primary" type="submit">Create Account</button>
