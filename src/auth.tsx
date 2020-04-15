@@ -1,6 +1,6 @@
 
 import url  from 'url'
-import React, { ReactNode, createContext, useContext, useState } from 'react'
+import React, { ReactNode, createContext, useContext, useState, useEffect } from 'react'
 
 import jwt from 'jsonwebtoken'
 import fetch from 'isomorphic-unfetch'
@@ -172,6 +172,18 @@ const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics: boole
     }
     appConfig = config
   }
+
+  useEffect(() => {
+    if (error) {
+      console.error("Usermatic is not configured correctly.")
+      console.error("Error:", error)
+      if (!showDiagnostics) {
+        console.error('To enable diagnostics, add the `showDiagnostics`'
+          + 'property to your <AuthProvider> component, as follows:\n\n'
+          + '  <AuthProvider showDiagnostics appId={appId}>')
+      }
+    }
+  }, [error, showDiagnostics])
 
   return <CsrfContext.Provider value={{ csrfToken, refetch }}>
     <AppConfigContext.Provider value={appConfig}>
