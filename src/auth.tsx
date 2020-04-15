@@ -107,6 +107,29 @@ const isValidAppId = (appId: string | undefined) => {
   return re.test(appId)
 }
 
+const HttpWarning: React.FC<{}> = ({}) => {
+  const [dismissed, setDismissed] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    if (dismissed != null) {
+      return
+    }
+    setDismissed(location.protocol === 'https:')
+  })
+
+  if (dismissed == null || dismissed) {
+    return null
+  }
+
+  return <div className="usermatic-diagnostics alert alert-danger p-4">
+    <strong>Usermatic is being used on an unencrypted (<code>http:</code>) page.</strong>
+    <button type="button" className="close" aria-label="Close"
+            onClick={(e) => { e.preventDefault(); setDismissed(true) }}>
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+}
+
 const Diagnostics: React.FC<{appId?: string, error?: ApolloError}> = ({appId, error}) => {
 
   const [dismissed, setDismissed] = useState(false)
@@ -188,6 +211,7 @@ const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics: boole
   return <CsrfContext.Provider value={{ csrfToken, refetch }}>
     <AppConfigContext.Provider value={appConfig}>
       <TokenContext.Provider value={tokenValue}>
+        <HttpWarning />
         {error && showDiagnostics && <Diagnostics appId={appId} error={error} />}
         {children}
       </TokenContext.Provider>
