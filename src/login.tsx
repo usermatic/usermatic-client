@@ -326,8 +326,6 @@ const makeLoginFn = (childWindow: ChildWindow, appId: string, url: string) => (
   }
 )
 
-
-
 const SocialButtons: React.FC<{popupWindow: ChildWindow}> = ({popupWindow}) => {
 
   const appId = useAppId() as string
@@ -424,7 +422,6 @@ export const OauthLogin: React.FC<{onLogin?: () => void, children: ReactNode}> =
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFirst}) => {
-
   if (labelsFirst == null) {
     labelsFirst = true
   }
@@ -470,10 +467,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFi
   }
 
   const popupWindow = useChildWindow('social-login-popup',
-    (msg: any) => {
+    async (msg: any) => {
       if (msg === 'LOGGED_IN') {
         // TODO: just update the cache manually instead of refetching the query
-        refetch()
+        await refetch()
+        if (onLogin != null) {
+          onLogin()
+        }
       }
     }
   )
