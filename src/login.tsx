@@ -326,7 +326,7 @@ const makeLoginFn = (childWindow: ChildWindow, appId: string, url: string) => (
   }
 )
 
-const SocialButtons: React.FC<{popupWindow: ChildWindow}> = ({popupWindow}) => {
+const SocialButtons: React.FC<{popupWindow: ChildWindow, className?: string}> = ({popupWindow, className}) => {
 
   const appId = useAppId() as string
 
@@ -352,7 +352,7 @@ const SocialButtons: React.FC<{popupWindow: ChildWindow}> = ({popupWindow}) => {
     const buttonClass = (provider: string) => {
       return `${provider}-login-btn-${nonce}`
     }
-    return <div className="my-5">
+    return <div className={classNames(className)}>
       <style>{`
           .facebook-login-btn-${nonce} {
             color: white !important;
@@ -421,6 +421,20 @@ export const OauthLogin: React.FC<{onLogin?: () => void, children: ReactNode}> =
   }
 }
 
+const usePopupWindow = ({onLogin, refetch}: { onLogin?: () => void, refetch: () => void }) => (
+  useChildWindow('social-login-popup',
+    async (msg: any) => {
+      if (msg === 'LOGGED_IN') {
+        // TODO: just update the cache manually instead of refetching the query
+        await refetch()
+        if (onLogin != null) {
+          onLogin()
+        }
+      }
+    }
+  )
+)
+
 export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFirst}) => {
   if (labelsFirst == null) {
     labelsFirst = true
@@ -466,20 +480,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFi
     }
   }
 
-  const popupWindow = useChildWindow('social-login-popup',
-    async (msg: any) => {
-      if (msg === 'LOGGED_IN') {
-        // TODO: just update the cache manually instead of refetching the query
-        await refetch()
-        if (onLogin != null) {
-          onLogin()
-        }
-      }
-    }
-  )
+  const popupWindow = usePopupWindow({onLogin: onLoginWrapper, refetch})
 
   return <OauthLogin onLogin={onLoginWrapper}>
-    <SocialButtons popupWindow={popupWindow} />
+    <SocialButtons popupWindow={popupWindow} className="my-3"/>
     <form onSubmit={onSubmit}>
       <div className="form-label-group mb-2">
         <InputLabel flip={labelsFirst}>
@@ -583,10 +587,13 @@ export const AccountCreationForm: React.FC<AccountCreationProps> =
 
   const { id } = useToken()
   const [submit, { error, success }] = useCreateAccount()
+  const { refetch } = useCrsfToken()
 
   const { onSubmit, onChange, values } = useForm(submit,
     { loginAfterCreation }
   )
+
+  const popupWindow = usePopupWindow({onLogin, refetch})
 
   useEffect(() => {
     if (success && id && onLogin) {
@@ -594,7 +601,8 @@ export const AccountCreationForm: React.FC<AccountCreationProps> =
     }
   })
 
-  return <>
+  return <OauthLogin onLogin={onLogin}>
+    <SocialButtons popupWindow={popupWindow} className="my-3"/>
     <form onSubmit={onSubmit}>
       <div className="form-label-group mb-2">
         <InputLabel flip={labelsFirst}>
@@ -633,7 +641,7 @@ export const AccountCreationForm: React.FC<AccountCreationProps> =
       </div>
     </form>
     <UserCreateError error={error} />
-  </>
+  </OauthLogin>
 }
 
 export const LogoutButton: React.FC<{}> = () => {
