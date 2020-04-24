@@ -215,7 +215,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> =
   return <div>
     <ErrorMessage error={error} />
     <ErrorMessage error={loginError} />
-    <form className="form-signin" onSubmit={onSubmit}>
+    <form onSubmit={onSubmit}>
       <div className="form-label-group">
         <InputLabel flip={labelsFirst}>
           <input type="password" data-var="newPassword" className="form-control"
@@ -274,7 +274,7 @@ export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> =
 
   return <>
     <ErrorMessage error={error} />
-    <form className="form-signin" onSubmit={(e) => {onSubmit(e); setSubmittedEmail(values.email)}}>
+    <form onSubmit={(e) => {onSubmit(e); setSubmittedEmail(values.email)}}>
       <div className="form-label-group">
         <InputLabel flip={labelsFirst}>
           <input type="email" data-var="email" className="form-control"

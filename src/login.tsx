@@ -480,7 +480,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFi
 
   return <OauthLogin onLogin={onLoginWrapper}>
     <SocialButtons popupWindow={popupWindow} />
-    <form className="form-signin" onSubmit={onSubmit}>
+    <form onSubmit={onSubmit}>
       <div className="form-label-group mb-2">
         <InputLabel flip={labelsFirst}>
           <input type="email" data-var="email" className="form-control"
@@ -595,7 +595,7 @@ export const AccountCreationForm: React.FC<AccountCreationProps> =
   })
 
   return <>
-    <form className="form-signin" onSubmit={onSubmit}>
+    <form onSubmit={onSubmit}>
       <div className="form-label-group mb-2">
         <InputLabel flip={labelsFirst}>
           <input type="email" data-var="email" className="form-control"
