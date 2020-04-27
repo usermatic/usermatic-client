@@ -230,7 +230,7 @@ export const AuthProvider: React.FC<AuthProviderProps> =
   ({children, uri, appId, showDiagnostics = false}) => {
 
   if (!uri) {
-    uri = 'https://api.usermatic.com/graphql'
+    uri = 'https://api.usermatic.io/graphql'
   }
 
   const client = makeClient(uri, appId)
