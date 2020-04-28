@@ -21,6 +21,12 @@ export const APP_CONFIG_FRAGMENT = gql`
   }
 `
 
+export const SIGN_REAUTH_TOKEN_QUERY = gql`
+  mutation signReauthenticationToken($contents: String!, $password: String!) {
+    signReauthenticationToken(contents: $contents, password: $password)
+  }
+`
+
 export const SESSION_QUERY = gql`
 query svcGetSessionJWT($appId: ID!) {
   svcGetSessionJWT(appId: $appId) {

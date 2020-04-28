@@ -44,6 +44,11 @@ import {
   useSendVerificationEmail
 } from './verifyemail'
 
+import {
+  useReauthToken,
+  ReauthenticateGuard
+} from './reauth'
+
 export {
   AuthProvider,
   CredentialConsumer,
@@ -55,10 +60,12 @@ export {
   ResetPasswordForm,
   ChangePasswordForm,
   PasswordScore,
+  ReauthenticateGuard,
   useLogin,
   useLogout,
   useCreateAccount,
   useToken,
+  useReauthToken,
   useEmailVerifier,
   useProfile,
   usePrimaryEmail,
