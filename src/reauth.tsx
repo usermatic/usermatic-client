@@ -13,7 +13,10 @@ type useReauthenticateOptions = {
   password?: string
 }
 
-export const useReauthenticate = (contents: string, options: useReauthenticateOptions = {}) => {
+export const useReauthenticate = (contents: string | object, options: useReauthenticateOptions = {}) => {
+  if (typeof contents !== 'string') {
+    contents = JSON.stringify(contents)
+  }
   const variables: OperationVariables = { contents }
   if (options.password != null) {
     variables.password = options.password
@@ -30,7 +33,7 @@ export const useReauthToken = () => {
 
 type ReauthenticateGuardProps = {
   children: ReactNode
-  contents: string
+  tokenContents: string | object
 }
 
 // Hides some other component behind a reauthentication prompt. After the
@@ -38,9 +41,9 @@ type ReauthenticateGuardProps = {
 // reauthentication token is provided in a context, and can be retrieved by
 // calling useReauthToken().
 export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
-({children, contents}) => {
+({children, tokenContents}) => {
 
-  const [submit, { data, called, loading, error }] = useReauthenticate(contents)
+  const [submit, { data, called, loading, error }] = useReauthenticate(tokenContents)
 
   const initialValues = {
     password: ''
@@ -56,8 +59,7 @@ export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
     return errors;
   }
 
-  const onSubmit = (values: FormikValues) => {
-    const variables = { ...values, contents }
+  const onSubmit = (variables: FormikValues) => {
     submit({ variables })
   }
 
