@@ -1,15 +1,12 @@
 
 import React, { useContext, useEffect } from 'react'
 
-import { UMApolloContext } from './auth'
 import { useCsrfMutation, CsrfContext } from './hooks'
 
 import { VERIFY_EMAIL_MUT, SEND_VERIFICATION_EMAIL_MUT } from './fragments'
 
 export const useSendVerificationEmail = () => {
-  const client = useContext(UMApolloContext)
-
-  const [submit, ret] = useCsrfMutation(SEND_VERIFICATION_EMAIL_MUT, { client })
+  const [submit, ret] = useCsrfMutation(SEND_VERIFICATION_EMAIL_MUT, {})
   const { loading, error, data } = ret
   const success = !loading && !error && data
   const retObj = { ...ret, success }
@@ -17,9 +14,7 @@ export const useSendVerificationEmail = () => {
 }
 
 export const useEmailVerifier = () => {
-  const client = useContext(UMApolloContext)
-
-  const [submit, ret] = useCsrfMutation(VERIFY_EMAIL_MUT, { client })
+  const [submit, ret] = useCsrfMutation(VERIFY_EMAIL_MUT, {})
   const { loading, error, data } = ret
 
   const success = !loading && !error && data

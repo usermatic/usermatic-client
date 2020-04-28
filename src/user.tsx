@@ -1,8 +1,7 @@
 
-import { useContext } from 'react'
 import { ApolloError } from 'apollo-client'
 
-import { UMApolloContext, useToken } from './auth'
+import { useToken } from './auth'
 import { PROFILE_QUERY } from './fragments'
 import { useCsrfQuery } from './hooks'
 
@@ -31,9 +30,8 @@ export const useProfile = (): {
     }
   }
 } => {
-  const client = useContext(UMApolloContext)
   const { id } = useToken()
-  const ret = useCsrfQuery(PROFILE_QUERY, { client, skip: id == null })
+  const ret = useCsrfQuery(PROFILE_QUERY, { skip: id == null })
 
   const { loading, error, data } = ret
   let profile

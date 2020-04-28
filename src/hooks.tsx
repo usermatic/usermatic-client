@@ -2,7 +2,9 @@
 import { createContext, useContext } from 'react'
 import { DocumentNode } from 'graphql'
 import { useMutation, useQuery } from '@apollo/react-hooks'
+import { OperationVariables } from '@apollo/react-common'
 
+import { UMApolloContext } from './auth'
 type CsrfData = {
   csrfToken?: string
   refetch: () => void
@@ -13,12 +15,14 @@ export const useCrsfToken = () => {
   return useContext(CsrfContext)
 }
 
-export const useCsrfMutation = (doc: DocumentNode, options: Record<string, any>) => {
+export const useCsrfMutation = (doc: DocumentNode, options: OperationVariables) => {
+  const client = useContext(UMApolloContext)
   const { csrfToken } = useCrsfToken()
   if (options.context) {
     throw new Error("TODO: merge context object")
   }
   const ret = useMutation(doc, {
+    client,
     ...options,
     context: {
       headers: { 'x-csrf-token': csrfToken }
@@ -32,7 +36,8 @@ export const useCsrfMutation = (doc: DocumentNode, options: Record<string, any>)
   return ret;
 }
 
-export const useCsrfQuery = (doc: DocumentNode, options: Record<string, any>) => {
+export const useCsrfQuery = (doc: DocumentNode, options: OperationVariables) => {
+  const client = useContext(UMApolloContext)
   const { csrfToken } = useCrsfToken()
   if (!csrfToken) {
     console.warn("calling csrf query before csrfToken is ready")
@@ -44,6 +49,7 @@ export const useCsrfQuery = (doc: DocumentNode, options: Record<string, any>) =>
 
   const skip = !csrfToken || options.skip
   const ret = useQuery(doc, {
+    client,
     ...options,
     // Once the crsfToken is ready, the query will be fired.
     skip,

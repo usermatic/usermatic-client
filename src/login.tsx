@@ -6,7 +6,7 @@ import { GraphQLError } from 'graphql'
 import classNames from 'classnames'
 import jwt from 'jsonwebtoken'
 
-import { useToken, UMApolloContext, AppIdContext, useAppConfig, useAppId } from './auth'
+import { useToken, AppIdContext, useAppConfig, useAppId } from './auth'
 import { useCrsfToken, useCsrfMutation } from './hooks'
 import { useForm, InputValueMap, InputLabel } from './forms'
 import { ErrorMessage } from './errors'
@@ -34,14 +34,12 @@ const getId = (prefix: string | undefined, suffix: string) => {
 }
 
 export const useLogout = () => {
-  const client = useContext(UMApolloContext)
   const appId = useContext(AppIdContext)
 
   const [submit, ret] =
     useCsrfMutation(
       LOGOUT_MUT,
       {
-        client,
         refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }]
       }
     )
@@ -54,14 +52,12 @@ export const useLogout = () => {
 }
 
 export const useLogin = () => {
-  const client = useContext(UMApolloContext)
   const appId = useContext(AppIdContext)
 
   const [submitLogin, ret] =
     useCsrfMutation(
       LOGIN_MUT,
       {
-        client,
         refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }]
       }
     )
@@ -79,13 +75,11 @@ export const useLogin = () => {
 }
 
 export const useCreateAccount = () => {
-  const client = useContext(UMApolloContext)
   const appId = useContext(AppIdContext)
   const [submitCreateAccount, ret] =
     useCsrfMutation(
       CREATE_ACCOUNT_MUT,
       {
-        client,
         refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }]
       })
 
@@ -147,7 +141,6 @@ const useOauthToken = () => {
 }
 
 const useOauthLogin = ({onLogin, oauthToken}: { onLogin?: () => void, oauthToken?: string }) => {
-  const client = useContext(UMApolloContext)
   const { csrfToken } = useCrsfToken()
   const appId = useAppId() as string
   const { id, loading: tokenLoading } = useToken()
@@ -155,7 +148,6 @@ const useOauthLogin = ({onLogin, oauthToken}: { onLogin?: () => void, oauthToken
   const [submit, { data, loading, error, called }] = useCsrfMutation(
     OAUTH_LOGIN_MUT,
     {
-      client,
       refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }]
     }
   )

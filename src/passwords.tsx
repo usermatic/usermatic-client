@@ -1,10 +1,10 @@
 
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import jwt from 'jsonwebtoken'
 import classNames from 'classnames'
 
-import { UMApolloContext, useAppConfig } from './auth'
+import { useAppConfig } from './auth'
 import { usePasswordCredential } from './user'
 import { useCsrfMutation } from './hooks'
 import { useForm, InputValueMap, InputLabel } from './forms'
@@ -32,8 +32,7 @@ const getId = (prefix: string | undefined, suffix: string) => {
 }
 
 export const useChangePassword = () => {
-  const client = useContext(UMApolloContext)
-  const [submitChangePassword, ret] = useCsrfMutation(CHANGE_PW_MUT, { client })
+  const [submitChangePassword, ret] = useCsrfMutation(CHANGE_PW_MUT, {})
   const {loading, error, data} = ret
   const submit = (values: InputValueMap) => {
     submitChangePassword({ variables: values })
@@ -45,8 +44,7 @@ export const useChangePassword = () => {
 }
 
 export const useRequestPasswordResetEmail = () => {
-  const client = useContext(UMApolloContext)
-  const [submitPasswordResetRequest, ret] = useCsrfMutation(REQUEST_PW_RESET_EMAIL, { client })
+  const [submitPasswordResetRequest, ret] = useCsrfMutation(REQUEST_PW_RESET_EMAIL, {})
   const {loading, error, data} = ret
   const submit = (values: InputValueMap) => {
     submitPasswordResetRequest({ variables: values })
@@ -58,8 +56,7 @@ export const useRequestPasswordResetEmail = () => {
 }
 
 export const useResetPassword = (token: string) => {
-  const client = useContext(UMApolloContext)
-  const [submitResetPassword, ret] = useCsrfMutation(RESET_PW_MUT, { client })
+  const [submitResetPassword, ret] = useCsrfMutation(RESET_PW_MUT, {})
   const {loading, error, data} = ret
   const submit = (values: InputValueMap) => {
     submitResetPassword({ variables: { ...values, token } })
