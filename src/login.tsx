@@ -452,16 +452,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFi
     }
   })
 
-  if (isForgotPasswordMode) {
-    return <>
-      <div className="p-2">
-        Enter your email to get a password reset link.
-      </div>
-      <RequestPasswordResetForm labelsFirst={false}
-        onCancel={() => { setForgotPasswordMode(false)}} />
-    </>
-  }
-
   const onLoginWrapper = () => {
     if (window.opener != null) {
       window.opener.postMessage('LOGGED_IN')
@@ -473,6 +463,16 @@ export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFi
   }
 
   const popupWindow = usePopupWindow({onLogin: onLoginWrapper, refetch})
+
+  if (isForgotPasswordMode) {
+    return <div>
+      <div className="p-2">
+        Enter your email to get a password reset link.
+      </div>
+      <RequestPasswordResetForm labelsFirst={labelsFirst}
+        onCancel={() => { setForgotPasswordMode(false)}} />
+    </div>
+  }
 
   return <OauthLogin onLogin={onLoginWrapper}>
     <SocialButtons popupWindow={popupWindow} className="my-3"/>
