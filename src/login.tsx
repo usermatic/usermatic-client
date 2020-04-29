@@ -508,7 +508,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFi
 
       <div className="mb-3 justify-content-between d-flex">
         <button className="btn btn-primary" type="submit">Sign in</button>
-        <button className="btn btn-outline-primary" type="button"
+        <button id="forgot-pw-button" className="btn btn-outline-primary" type="button"
                 onClick={(e) => { e.preventDefault(); setForgotPasswordMode(true); }}>
           Forgot Password?
         </button>
@@ -517,6 +517,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFi
     </form>
   </OauthLogin>
 }
+LoginForm.displayName = 'LoginForm'
 
 // User creation error messages are likely to occur in normal situations,
 // so they get a bit more attention than ErrorMessage can give.
@@ -635,6 +636,7 @@ export const AccountCreationForm: React.FC<AccountCreationProps> =
     <UserCreateError error={error} />
   </OauthLogin>
 }
+AccountCreationForm.displayName = 'AccountCreationForm'
 
 export const LogoutButton: React.FC<{}> = () => {
 

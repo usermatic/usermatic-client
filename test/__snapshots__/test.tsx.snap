@@ -1,0 +1,982 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LoginForm>/<AccountCreationForm> 1`] = `
+<div
+  id="client-test-div"
+>
+  <LoginForm>
+    <Component
+      onLogin={[Function]}
+    >
+      <SocialButtons
+        className="my-3"
+        popupWindow={
+          Object {
+            "close": [Function],
+            "open": [Function],
+          }
+        }
+      />
+      <form
+        onSubmit={[Function]}
+      >
+        <div
+          className="form-label-group mb-2"
+        >
+          <Component
+            flip={true}
+          >
+            <label
+              htmlFor="um3kfiekd-login-email"
+              key=".1"
+            >
+              Email address
+            </label>
+            <input
+              autoFocus={true}
+              className="form-control"
+              data-var="email"
+              id="um3kfiekd-login-email"
+              key=".0"
+              onChange={[Function]}
+              placeholder="Email address"
+              required={true}
+              type="email"
+              value=""
+            />
+          </Component>
+        </div>
+        <div
+          className="form-label-group mb-2"
+        >
+          <Component
+            flip={true}
+          >
+            <label
+              htmlFor="um3kfiekd-login-password"
+              key=".1"
+            >
+              Password
+            </label>
+            <input
+              className="form-control"
+              data-var="password"
+              id="um3kfiekd-login-password"
+              key=".0"
+              onChange={[Function]}
+              placeholder="Password"
+              required={true}
+              type="password"
+              value=""
+            />
+          </Component>
+        </div>
+        <div
+          className="custom-control custom-checkbox mb-2"
+        >
+          <input
+            checked={false}
+            className="custom-control-input"
+            data-var="stayLoggedIn"
+            id="um3kfiekd-login-stay-logged-in"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          <label
+            className="custom-control-label"
+            htmlFor="um3kfiekd-login-stay-logged-in"
+          >
+            Remember me
+          </label>
+        </div>
+        <div
+          className="mb-3 justify-content-between d-flex"
+        >
+          <button
+            className="btn btn-primary"
+            type="submit"
+          >
+            Sign in
+          </button>
+          <button
+            className="btn btn-outline-primary"
+            id="forgot-pw-button"
+            onClick={[Function]}
+            type="button"
+          >
+            Forgot Password?
+          </button>
+        </div>
+        <ErrorMessage />
+      </form>
+    </Component>
+  </LoginForm>
+  <AccountCreationForm>
+    <Component>
+      <SocialButtons
+        className="my-3"
+        popupWindow={
+          Object {
+            "close": [Function],
+            "open": [Function],
+          }
+        }
+      />
+      <form
+        onSubmit={[Function]}
+      >
+        <div
+          className="form-label-group mb-2"
+        >
+          <Component
+            flip={true}
+          >
+            <label
+              htmlFor="um3kfiekd-account-creation-email"
+              key=".1"
+            >
+              Email address
+            </label>
+            <input
+              autoFocus={true}
+              className="form-control"
+              data-var="email"
+              id="um3kfiekd-account-creation-email"
+              key=".0"
+              onChange={[Function]}
+              placeholder="Email address"
+              required={true}
+              type="email"
+              value=""
+            />
+          </Component>
+        </div>
+        <div
+          className="form-label-group mb-2"
+        >
+          <Component
+            flip={true}
+          >
+            <label
+              htmlFor="um3kfiekd-account-creation-password"
+              key=".1"
+            >
+              Password
+            </label>
+            <input
+              className="form-control"
+              data-var="password"
+              id="um3kfiekd-account-creation-password"
+              key=".0"
+              onChange={[Function]}
+              placeholder="Password"
+              required={true}
+              type="password"
+              value=""
+            />
+          </Component>
+        </div>
+        <div
+          className="custom-control custom-checkbox mb-2"
+        >
+          <input
+            checked={false}
+            className="custom-control-input"
+            data-var="stayLoggedIn"
+            id="um3kfiekd-account-creation-stay-logged-in"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          <label
+            className="custom-control-label"
+            htmlFor="um3kfiekd-account-creation-stay-logged-in"
+          >
+            Remember me
+          </label>
+        </div>
+        <Component />
+        <div
+          className="mb-3"
+        >
+          <button
+            className="btn btn-primary"
+            type="submit"
+          >
+            Create Account
+          </button>
+        </div>
+      </form>
+      <UserCreateError />
+    </Component>
+  </AccountCreationForm>
+</div>
+`;
+
+exports[`<LoginForm>/<AccountCreationForm> 2`] = `
+<div
+  id="client-test-div"
+>
+  <LoginForm>
+    <div>
+      <div
+        className="p-2"
+      >
+        Enter your email to get a password reset link.
+      </div>
+      <Component
+        labelsFirst={true}
+        onCancel={[Function]}
+      >
+        <ErrorMessage />
+        <form
+          onSubmit={[Function]}
+        >
+          <div
+            className="form-label-group"
+          >
+            <Component
+              flip={true}
+            >
+              <label
+                htmlFor="um9akc83a-request-password-reset-email"
+                key=".1"
+              >
+                Email address
+              </label>
+              <input
+                autoFocus={true}
+                className="form-control"
+                data-var="email"
+                id="um9akc83a-request-password-reset-email"
+                key=".0"
+                onChange={[Function]}
+                placeholder="Email address"
+                required={true}
+                type="email"
+                value=""
+              />
+            </Component>
+          </div>
+          <div
+            className="d-flex justify-content-between"
+          >
+            <button
+              className="btn btn-primary "
+              type="submit"
+            >
+              Submit
+            </button>
+            <button
+              className="btn btn-outline-secondary"
+              onClick={[Function]}
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </Component>
+    </div>
+  </LoginForm>
+  <AccountCreationForm>
+    <Component>
+      <SocialButtons
+        className="my-3"
+        popupWindow={
+          Object {
+            "close": [Function],
+            "open": [Function],
+          }
+        }
+      />
+      <form
+        onSubmit={[Function]}
+      >
+        <div
+          className="form-label-group mb-2"
+        >
+          <Component
+            flip={true}
+          >
+            <label
+              htmlFor="um3kfiekd-account-creation-email"
+              key=".1"
+            >
+              Email address
+            </label>
+            <input
+              autoFocus={true}
+              className="form-control"
+              data-var="email"
+              id="um3kfiekd-account-creation-email"
+              key=".0"
+              onChange={[Function]}
+              placeholder="Email address"
+              required={true}
+              type="email"
+              value=""
+            />
+          </Component>
+        </div>
+        <div
+          className="form-label-group mb-2"
+        >
+          <Component
+            flip={true}
+          >
+            <label
+              htmlFor="um3kfiekd-account-creation-password"
+              key=".1"
+            >
+              Password
+            </label>
+            <input
+              className="form-control"
+              data-var="password"
+              id="um3kfiekd-account-creation-password"
+              key=".0"
+              onChange={[Function]}
+              placeholder="Password"
+              required={true}
+              type="password"
+              value=""
+            />
+          </Component>
+        </div>
+        <div
+          className="custom-control custom-checkbox mb-2"
+        >
+          <input
+            checked={false}
+            className="custom-control-input"
+            data-var="stayLoggedIn"
+            id="um3kfiekd-account-creation-stay-logged-in"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          <label
+            className="custom-control-label"
+            htmlFor="um3kfiekd-account-creation-stay-logged-in"
+          >
+            Remember me
+          </label>
+        </div>
+        <Component />
+        <div
+          className="mb-3"
+        >
+          <button
+            className="btn btn-primary"
+            type="submit"
+          >
+            Create Account
+          </button>
+        </div>
+      </form>
+      <UserCreateError />
+    </Component>
+  </AccountCreationForm>
+</div>
+`;
+
+exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
+<div
+  id="client-test-div"
+>
+  <LoginForm>
+    <Component
+      onLogin={[Function]}
+    >
+      <SocialButtons
+        className="my-3"
+        popupWindow={
+          Object {
+            "close": [Function],
+            "open": [Function],
+          }
+        }
+      >
+        <div
+          className="my-3"
+        >
+          <style>
+            
+          .facebook-login-btn-3kdic7az9 {
+            color: white !important;
+            background-color: #4267b2 !important;
+            border-color: #4267b2 !important;
+          }
+          .facebook-login-btn-3kdic7az9:hover {
+            color: #4267b2 !important;
+            background-color: white !important;
+          }
+
+          .google-login-btn-3kdic7az9 {
+            color: white !important;
+            background-color: #ea4335 !important;
+            border-color: #ea4335 !important;
+          }
+          .google-login-btn-3kdic7az9:hover {
+            color: #ea4335 !important;
+            background-color: white !important;
+          }
+
+          .github-login-btn-3kdic7az9 {
+            color: white !important;
+            background-color: rgb(21, 20, 19) !important;
+            border-color: rgb(21, 20, 19) !important;
+          }
+          .github-login-btn-3kdic7az9:hover {
+            color: rgb(21, 20, 19) !important;
+            background-color: white !important;
+          }
+      
+          </style>
+          <SocialLoginButton
+            buttonClasses="github-login-btn-3kdic7az9"
+            onClick={[Function]}
+          >
+            <div
+              className="d-flex justify-content-center my-2"
+            >
+              <button
+                className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between github-login-btn-3kdic7az9"
+                onClick={[Function]}
+              >
+                <GoMarkGithub
+                  size="2em"
+                >
+                  <IconBase
+                    attr={
+                      Object {
+                        "viewBox": "0 0 16 16",
+                      }
+                    }
+                    size="2em"
+                  >
+                    <svg
+                      fill="currentColor"
+                      height="2em"
+                      size="2em"
+                      stroke="currentColor"
+                      strokeWidth="0"
+                      style={
+                        Object {
+                          "color": undefined,
+                        }
+                      }
+                      viewBox="0 0 16 16"
+                      width="2em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+                        fillRule="evenodd"
+                        key="0"
+                      />
+                    </svg>
+                  </IconBase>
+                </GoMarkGithub>
+                <div
+                  className="flex-grow-1 font-weight-bold"
+                >
+                  Login with GitHub
+                </div>
+              </button>
+            </div>
+          </SocialLoginButton>
+          <SocialLoginButton
+            buttonClasses="facebook-login-btn-3kdic7az9"
+            onClick={[Function]}
+          >
+            <div
+              className="d-flex justify-content-center my-2"
+            >
+              <button
+                className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between facebook-login-btn-3kdic7az9"
+                onClick={[Function]}
+              >
+                <FaFacebookSquare
+                  size="2em"
+                >
+                  <IconBase
+                    attr={
+                      Object {
+                        "viewBox": "0 0 448 512",
+                      }
+                    }
+                    size="2em"
+                  >
+                    <svg
+                      fill="currentColor"
+                      height="2em"
+                      size="2em"
+                      stroke="currentColor"
+                      strokeWidth="0"
+                      style={
+                        Object {
+                          "color": undefined,
+                        }
+                      }
+                      viewBox="0 0 448 512"
+                      width="2em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M400 32H48A48 48 0 0 0 0 80v352a48 48 0 0 0 48 48h137.25V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.27c-30.81 0-40.42 19.12-40.42 38.73V256h68.78l-11 71.69h-57.78V480H400a48 48 0 0 0 48-48V80a48 48 0 0 0-48-48z"
+                        key="0"
+                      />
+                    </svg>
+                  </IconBase>
+                </FaFacebookSquare>
+                <div
+                  className="flex-grow-1 font-weight-bold"
+                >
+                  Login with Facebook
+                </div>
+              </button>
+            </div>
+          </SocialLoginButton>
+          <SocialLoginButton
+            buttonClasses="google-login-btn-3kdic7az9"
+            onClick={[Function]}
+          >
+            <div
+              className="d-flex justify-content-center my-2"
+            >
+              <button
+                className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between google-login-btn-3kdic7az9"
+                onClick={[Function]}
+              >
+                <FaGoogle
+                  size="2em"
+                >
+                  <IconBase
+                    attr={
+                      Object {
+                        "viewBox": "0 0 488 512",
+                      }
+                    }
+                    size="2em"
+                  >
+                    <svg
+                      fill="currentColor"
+                      height="2em"
+                      size="2em"
+                      stroke="currentColor"
+                      strokeWidth="0"
+                      style={
+                        Object {
+                          "color": undefined,
+                        }
+                      }
+                      viewBox="0 0 488 512"
+                      width="2em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
+                        key="0"
+                      />
+                    </svg>
+                  </IconBase>
+                </FaGoogle>
+                <div
+                  className="flex-grow-1 font-weight-bold"
+                >
+                  Login with Google
+                </div>
+              </button>
+            </div>
+          </SocialLoginButton>
+        </div>
+      </SocialButtons>
+      <form
+        onSubmit={[Function]}
+      >
+        <div
+          className="form-label-group mb-2"
+        >
+          <Component
+            flip={true}
+          >
+            <label
+              htmlFor="um3kfiekd-login-email"
+              key=".1"
+            >
+              Email address
+            </label>
+            <input
+              autoFocus={true}
+              className="form-control"
+              data-var="email"
+              id="um3kfiekd-login-email"
+              key=".0"
+              onChange={[Function]}
+              placeholder="Email address"
+              required={true}
+              type="email"
+              value=""
+            />
+          </Component>
+        </div>
+        <div
+          className="form-label-group mb-2"
+        >
+          <Component
+            flip={true}
+          >
+            <label
+              htmlFor="um3kfiekd-login-password"
+              key=".1"
+            >
+              Password
+            </label>
+            <input
+              className="form-control"
+              data-var="password"
+              id="um3kfiekd-login-password"
+              key=".0"
+              onChange={[Function]}
+              placeholder="Password"
+              required={true}
+              type="password"
+              value=""
+            />
+          </Component>
+        </div>
+        <div
+          className="custom-control custom-checkbox mb-2"
+        >
+          <input
+            checked={false}
+            className="custom-control-input"
+            data-var="stayLoggedIn"
+            id="um3kfiekd-login-stay-logged-in"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          <label
+            className="custom-control-label"
+            htmlFor="um3kfiekd-login-stay-logged-in"
+          >
+            Remember me
+          </label>
+        </div>
+        <div
+          className="mb-3 justify-content-between d-flex"
+        >
+          <button
+            className="btn btn-primary"
+            type="submit"
+          >
+            Sign in
+          </button>
+          <button
+            className="btn btn-outline-primary"
+            id="forgot-pw-button"
+            onClick={[Function]}
+            type="button"
+          >
+            Forgot Password?
+          </button>
+        </div>
+        <ErrorMessage />
+      </form>
+    </Component>
+  </LoginForm>
+  <AccountCreationForm>
+    <Component>
+      <SocialButtons
+        className="my-3"
+        popupWindow={
+          Object {
+            "close": [Function],
+            "open": [Function],
+          }
+        }
+      >
+        <div
+          className="my-3"
+        >
+          <style>
+            
+          .facebook-login-btn-3kdic7az9 {
+            color: white !important;
+            background-color: #4267b2 !important;
+            border-color: #4267b2 !important;
+          }
+          .facebook-login-btn-3kdic7az9:hover {
+            color: #4267b2 !important;
+            background-color: white !important;
+          }
+
+          .google-login-btn-3kdic7az9 {
+            color: white !important;
+            background-color: #ea4335 !important;
+            border-color: #ea4335 !important;
+          }
+          .google-login-btn-3kdic7az9:hover {
+            color: #ea4335 !important;
+            background-color: white !important;
+          }
+
+          .github-login-btn-3kdic7az9 {
+            color: white !important;
+            background-color: rgb(21, 20, 19) !important;
+            border-color: rgb(21, 20, 19) !important;
+          }
+          .github-login-btn-3kdic7az9:hover {
+            color: rgb(21, 20, 19) !important;
+            background-color: white !important;
+          }
+      
+          </style>
+          <SocialLoginButton
+            buttonClasses="github-login-btn-3kdic7az9"
+            onClick={[Function]}
+          >
+            <div
+              className="d-flex justify-content-center my-2"
+            >
+              <button
+                className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between github-login-btn-3kdic7az9"
+                onClick={[Function]}
+              >
+                <GoMarkGithub
+                  size="2em"
+                >
+                  <IconBase
+                    attr={
+                      Object {
+                        "viewBox": "0 0 16 16",
+                      }
+                    }
+                    size="2em"
+                  >
+                    <svg
+                      fill="currentColor"
+                      height="2em"
+                      size="2em"
+                      stroke="currentColor"
+                      strokeWidth="0"
+                      style={
+                        Object {
+                          "color": undefined,
+                        }
+                      }
+                      viewBox="0 0 16 16"
+                      width="2em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+                        fillRule="evenodd"
+                        key="0"
+                      />
+                    </svg>
+                  </IconBase>
+                </GoMarkGithub>
+                <div
+                  className="flex-grow-1 font-weight-bold"
+                >
+                  Login with GitHub
+                </div>
+              </button>
+            </div>
+          </SocialLoginButton>
+          <SocialLoginButton
+            buttonClasses="facebook-login-btn-3kdic7az9"
+            onClick={[Function]}
+          >
+            <div
+              className="d-flex justify-content-center my-2"
+            >
+              <button
+                className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between facebook-login-btn-3kdic7az9"
+                onClick={[Function]}
+              >
+                <FaFacebookSquare
+                  size="2em"
+                >
+                  <IconBase
+                    attr={
+                      Object {
+                        "viewBox": "0 0 448 512",
+                      }
+                    }
+                    size="2em"
+                  >
+                    <svg
+                      fill="currentColor"
+                      height="2em"
+                      size="2em"
+                      stroke="currentColor"
+                      strokeWidth="0"
+                      style={
+                        Object {
+                          "color": undefined,
+                        }
+                      }
+                      viewBox="0 0 448 512"
+                      width="2em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M400 32H48A48 48 0 0 0 0 80v352a48 48 0 0 0 48 48h137.25V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.27c-30.81 0-40.42 19.12-40.42 38.73V256h68.78l-11 71.69h-57.78V480H400a48 48 0 0 0 48-48V80a48 48 0 0 0-48-48z"
+                        key="0"
+                      />
+                    </svg>
+                  </IconBase>
+                </FaFacebookSquare>
+                <div
+                  className="flex-grow-1 font-weight-bold"
+                >
+                  Login with Facebook
+                </div>
+              </button>
+            </div>
+          </SocialLoginButton>
+          <SocialLoginButton
+            buttonClasses="google-login-btn-3kdic7az9"
+            onClick={[Function]}
+          >
+            <div
+              className="d-flex justify-content-center my-2"
+            >
+              <button
+                className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between google-login-btn-3kdic7az9"
+                onClick={[Function]}
+              >
+                <FaGoogle
+                  size="2em"
+                >
+                  <IconBase
+                    attr={
+                      Object {
+                        "viewBox": "0 0 488 512",
+                      }
+                    }
+                    size="2em"
+                  >
+                    <svg
+                      fill="currentColor"
+                      height="2em"
+                      size="2em"
+                      stroke="currentColor"
+                      strokeWidth="0"
+                      style={
+                        Object {
+                          "color": undefined,
+                        }
+                      }
+                      viewBox="0 0 488 512"
+                      width="2em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
+                        key="0"
+                      />
+                    </svg>
+                  </IconBase>
+                </FaGoogle>
+                <div
+                  className="flex-grow-1 font-weight-bold"
+                >
+                  Login with Google
+                </div>
+              </button>
+            </div>
+          </SocialLoginButton>
+        </div>
+      </SocialButtons>
+      <form
+        onSubmit={[Function]}
+      >
+        <div
+          className="form-label-group mb-2"
+        >
+          <Component
+            flip={true}
+          >
+            <label
+              htmlFor="um3kfiekd-account-creation-email"
+              key=".1"
+            >
+              Email address
+            </label>
+            <input
+              autoFocus={true}
+              className="form-control"
+              data-var="email"
+              id="um3kfiekd-account-creation-email"
+              key=".0"
+              onChange={[Function]}
+              placeholder="Email address"
+              required={true}
+              type="email"
+              value=""
+            />
+          </Component>
+        </div>
+        <div
+          className="form-label-group mb-2"
+        >
+          <Component
+            flip={true}
+          >
+            <label
+              htmlFor="um3kfiekd-account-creation-password"
+              key=".1"
+            >
+              Password
+            </label>
+            <input
+              className="form-control"
+              data-var="password"
+              id="um3kfiekd-account-creation-password"
+              key=".0"
+              onChange={[Function]}
+              placeholder="Password"
+              required={true}
+              type="password"
+              value=""
+            />
+          </Component>
+        </div>
+        <div
+          className="custom-control custom-checkbox mb-2"
+        >
+          <input
+            checked={false}
+            className="custom-control-input"
+            data-var="stayLoggedIn"
+            id="um3kfiekd-account-creation-stay-logged-in"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          <label
+            className="custom-control-label"
+            htmlFor="um3kfiekd-account-creation-stay-logged-in"
+          >
+            Remember me
+          </label>
+        </div>
+        <Component />
+        <div
+          className="mb-3"
+        >
+          <button
+            className="btn btn-primary"
+            type="submit"
+          >
+            Create Account
+          </button>
+        </div>
+      </form>
+      <UserCreateError />
+    </Component>
+  </AccountCreationForm>
+</div>
+`;

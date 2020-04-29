@@ -10,12 +10,15 @@ import { InMemoryCache } from "apollo-cache-inmemory"
 
 import { ApolloError } from 'apollo-client'
 import { useQuery } from '@apollo/react-hooks'
+import { ApolloConsumer } from '@apollo/react-common'
 
 import { ErrorMessage } from './errors'
 import { SESSION_QUERY } from './fragments'
 import { CsrfContext } from './hooks'
 
-export type ClientType = ApolloClient<NormalizedCacheObject>
+export type ClientType =
+  ApolloClient<NormalizedCacheObject> |
+  ApolloClient<object> // used in the tests.
 
 export type AuthTokenData = {
   error?: ApolloError,
@@ -229,19 +232,23 @@ type AuthProviderProps = {
 export const AuthProvider: React.FC<AuthProviderProps> =
   ({children, uri, appId, showDiagnostics = false}) => {
 
-  if (!uri) {
-    uri = 'https://api.usermatic.io/graphql'
-  }
-
-  const client = makeClient(uri, appId)
-
   return (
     <AppIdContext.Provider value={appId}>
-    <UMApolloContext.Provider value={client}>
-      <WrappedAuthProvider showDiagnostics={showDiagnostics}>
-        {children}
-      </WrappedAuthProvider>
-    </UMApolloContext.Provider>
+      <ApolloConsumer>
+        {(client) => {
+          if (client == null) {
+            if (!uri) {
+              uri = 'https://api.usermatic.io/graphql'
+            }
+            client = makeClient(uri, appId)
+          }
+          return <UMApolloContext.Provider value={client}>
+            <WrappedAuthProvider showDiagnostics={showDiagnostics}>
+              {children}
+            </WrappedAuthProvider>
+          </UMApolloContext.Provider>
+      }}
+      </ApolloConsumer>
     </AppIdContext.Provider>
   )
 }
