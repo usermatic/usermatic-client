@@ -1,6 +1,6 @@
 {
   "name": "@usermatic/client",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "description": "React components for usermatic applications",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
