@@ -3,6 +3,7 @@ import gql from 'graphql-tag'
 
 export const USER_FRAGMENT = gql`
   fragment UserParts on SvcUser {
+    __typename
     id
     primaryEmail
     credentials { id type email emailIsVerified provider providerID photoURL }
@@ -11,6 +12,7 @@ export const USER_FRAGMENT = gql`
 
 export const APP_CONFIG_FRAGMENT = gql`
   fragment AppConfigParts on AppConfig {
+    __typename
     minPasswordStrength
     fbLoginEnabled
     fbLoginUrl

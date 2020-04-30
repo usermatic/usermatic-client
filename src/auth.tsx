@@ -10,7 +10,7 @@ import { InMemoryCache } from "apollo-cache-inmemory"
 
 import { ApolloError } from 'apollo-client'
 import { useQuery } from '@apollo/react-hooks'
-import { ApolloConsumer } from '@apollo/react-common'
+import { getApolloContext } from '@apollo/react-common'
 
 import { ErrorMessage } from './errors'
 import { SESSION_QUERY } from './fragments'
@@ -232,23 +232,21 @@ type AuthProviderProps = {
 export const AuthProvider: React.FC<AuthProviderProps> =
   ({children, uri, appId, showDiagnostics = false}) => {
 
+  if (!uri) {
+    uri = 'https://api.usermatic.io/graphql'
+  }
+
+  const apolloCtx = getApolloContext()
+  const apolloVal = useContext(apolloCtx)
+  const client = apolloVal.client ?? makeClient(uri, appId)
+
   return (
     <AppIdContext.Provider value={appId}>
-      <ApolloConsumer>
-        {(client) => {
-          if (client == null) {
-            if (!uri) {
-              uri = 'https://api.usermatic.io/graphql'
-            }
-            client = makeClient(uri, appId)
-          }
-          return <UMApolloContext.Provider value={client}>
-            <WrappedAuthProvider showDiagnostics={showDiagnostics}>
-              {children}
-            </WrappedAuthProvider>
-          </UMApolloContext.Provider>
-      }}
-      </ApolloConsumer>
+      <UMApolloContext.Provider value={client}>
+        <WrappedAuthProvider showDiagnostics={showDiagnostics}>
+          {children}
+        </WrappedAuthProvider>
+      </UMApolloContext.Provider>
     </AppIdContext.Provider>
   )
 }

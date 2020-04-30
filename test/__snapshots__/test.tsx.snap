@@ -1,5 +1,181 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<LoginForm> login 1`] = `
+<div
+  id="client-test-div"
+>
+  <LoginForm
+    idPrefix="test"
+    onLogin={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      }
+    }
+  >
+    <Component
+      onLogin={[Function]}
+    >
+      <SocialButtons
+        className="my-3"
+        popupWindow={
+          Object {
+            "close": [Function],
+            "open": [Function],
+          }
+        }
+      />
+      <Formik
+        initialValues={
+          Object {
+            "email": "",
+            "password": "",
+            "stayLoggedIn": false,
+          }
+        }
+        onSubmit={[Function]}
+        validate={[Function]}
+      >
+        <Form>
+          <form
+            action="#"
+            onReset={[Function]}
+            onSubmit={[Function]}
+          >
+            <div
+              className="form-label-group mb-2"
+            >
+              <Component
+                flip={true}
+              >
+                <label
+                  htmlFor="test-login-email"
+                  key=".1"
+                >
+                  Email address
+                </label>
+                <Field
+                  autoFocus={true}
+                  className="form-control"
+                  id="test-login-email"
+                  key=".0"
+                  name="email"
+                  placeholder="Email address"
+                  required={true}
+                  type="email"
+                >
+                  <input
+                    autoFocus={true}
+                    className="form-control"
+                    id="test-login-email"
+                    name="email"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    placeholder="Email address"
+                    required={true}
+                    type="email"
+                    value="bob@bob.com"
+                  />
+                </Field>
+              </Component>
+            </div>
+            <div
+              className="form-label-group mb-2"
+            >
+              <Component
+                flip={true}
+              >
+                <label
+                  htmlFor="test-login-password"
+                  key=".1"
+                >
+                  Password
+                </label>
+                <Field
+                  className="form-control"
+                  id="test-login-password"
+                  key=".0"
+                  name="password"
+                  placeholder="Password"
+                  required={true}
+                  type="password"
+                >
+                  <input
+                    className="form-control"
+                    id="test-login-password"
+                    name="password"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    placeholder="Password"
+                    required={true}
+                    type="password"
+                    value="hunter2"
+                  />
+                </Field>
+              </Component>
+            </div>
+            <div
+              className="custom-control custom-checkbox mb-2"
+            >
+              <Field
+                className="custom-control-input"
+                id="test-login-stay-logged-in"
+                name="stayLoggedIn"
+                type="checkbox"
+              >
+                <input
+                  checked={true}
+                  className="custom-control-input"
+                  id="test-login-stay-logged-in"
+                  name="stayLoggedIn"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  type="checkbox"
+                  value={true}
+                />
+              </Field>
+              <label
+                className="custom-control-label"
+                htmlFor="test-login-stay-logged-in"
+              >
+                Remember me
+              </label>
+            </div>
+            <div
+              className="mb-3 justify-content-between d-flex"
+            >
+              <button
+                className="btn btn-primary"
+                id="login-button"
+                type="submit"
+              >
+                Sign in
+              </button>
+              <button
+                className="btn btn-outline-primary"
+                id="forgot-pw-button"
+                onClick={[Function]}
+                type="button"
+              >
+                Forgot Password?
+              </button>
+            </div>
+            <ErrorMessage />
+          </form>
+        </Form>
+      </Formik>
+    </Component>
+  </LoginForm>
+</div>
+`;
+
 exports[`<LoginForm>/<AccountCreationForm> 1`] = `
 <div
   id="client-test-div"
@@ -17,98 +193,145 @@ exports[`<LoginForm>/<AccountCreationForm> 1`] = `
           }
         }
       />
-      <form
+      <Formik
+        initialValues={
+          Object {
+            "email": "",
+            "password": "",
+            "stayLoggedIn": false,
+          }
+        }
         onSubmit={[Function]}
+        validate={[Function]}
       >
-        <div
-          className="form-label-group mb-2"
-        >
-          <Component
-            flip={true}
+        <Form>
+          <form
+            action="#"
+            onReset={[Function]}
+            onSubmit={[Function]}
           >
-            <label
-              htmlFor="um3kfiekd-login-email"
-              key=".1"
+            <div
+              className="form-label-group mb-2"
             >
-              Email address
-            </label>
-            <input
-              autoFocus={true}
-              className="form-control"
-              data-var="email"
-              id="um3kfiekd-login-email"
-              key=".0"
-              onChange={[Function]}
-              placeholder="Email address"
-              required={true}
-              type="email"
-              value=""
-            />
-          </Component>
-        </div>
-        <div
-          className="form-label-group mb-2"
-        >
-          <Component
-            flip={true}
-          >
-            <label
-              htmlFor="um3kfiekd-login-password"
-              key=".1"
+              <Component
+                flip={true}
+              >
+                <label
+                  htmlFor="um3kfiekd-login-email"
+                  key=".1"
+                >
+                  Email address
+                </label>
+                <Field
+                  autoFocus={true}
+                  className="form-control"
+                  id="um3kfiekd-login-email"
+                  key=".0"
+                  name="email"
+                  placeholder="Email address"
+                  required={true}
+                  type="email"
+                >
+                  <input
+                    autoFocus={true}
+                    className="form-control"
+                    id="um3kfiekd-login-email"
+                    name="email"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    placeholder="Email address"
+                    required={true}
+                    type="email"
+                    value=""
+                  />
+                </Field>
+              </Component>
+            </div>
+            <div
+              className="form-label-group mb-2"
             >
-              Password
-            </label>
-            <input
-              className="form-control"
-              data-var="password"
-              id="um3kfiekd-login-password"
-              key=".0"
-              onChange={[Function]}
-              placeholder="Password"
-              required={true}
-              type="password"
-              value=""
-            />
-          </Component>
-        </div>
-        <div
-          className="custom-control custom-checkbox mb-2"
-        >
-          <input
-            checked={false}
-            className="custom-control-input"
-            data-var="stayLoggedIn"
-            id="um3kfiekd-login-stay-logged-in"
-            onChange={[Function]}
-            type="checkbox"
-          />
-          <label
-            className="custom-control-label"
-            htmlFor="um3kfiekd-login-stay-logged-in"
-          >
-            Remember me
-          </label>
-        </div>
-        <div
-          className="mb-3 justify-content-between d-flex"
-        >
-          <button
-            className="btn btn-primary"
-            type="submit"
-          >
-            Sign in
-          </button>
-          <button
-            className="btn btn-outline-primary"
-            id="forgot-pw-button"
-            onClick={[Function]}
-            type="button"
-          >
-            Forgot Password?
-          </button>
-        </div>
-        <ErrorMessage />
-      </form>
+              <Component
+                flip={true}
+              >
+                <label
+                  htmlFor="um3kfiekd-login-password"
+                  key=".1"
+                >
+                  Password
+                </label>
+                <Field
+                  className="form-control"
+                  id="um3kfiekd-login-password"
+                  key=".0"
+                  name="password"
+                  placeholder="Password"
+                  required={true}
+                  type="password"
+                >
+                  <input
+                    className="form-control"
+                    id="um3kfiekd-login-password"
+                    name="password"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    placeholder="Password"
+                    required={true}
+                    type="password"
+                    value=""
+                  />
+                </Field>
+              </Component>
+            </div>
+            <div
+              className="custom-control custom-checkbox mb-2"
+            >
+              <Field
+                className="custom-control-input"
+                id="um3kfiekd-login-stay-logged-in"
+                name="stayLoggedIn"
+                type="checkbox"
+              >
+                <input
+                  checked={false}
+                  className="custom-control-input"
+                  id="um3kfiekd-login-stay-logged-in"
+                  name="stayLoggedIn"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  type="checkbox"
+                  value={false}
+                />
+              </Field>
+              <label
+                className="custom-control-label"
+                htmlFor="um3kfiekd-login-stay-logged-in"
+              >
+                Remember me
+              </label>
+            </div>
+            <div
+              className="mb-3 justify-content-between d-flex"
+            >
+              <button
+                className="btn btn-primary"
+                id="login-button"
+                type="submit"
+              >
+                Sign in
+              </button>
+              <button
+                className="btn btn-outline-primary"
+                id="forgot-pw-button"
+                onClick={[Function]}
+                type="button"
+              >
+                Forgot Password?
+              </button>
+            </div>
+            <ErrorMessage />
+          </form>
+        </Form>
+      </Formik>
     </Component>
   </LoginForm>
   <AccountCreationForm>
@@ -591,98 +814,145 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
           </SocialLoginButton>
         </div>
       </SocialButtons>
-      <form
+      <Formik
+        initialValues={
+          Object {
+            "email": "",
+            "password": "",
+            "stayLoggedIn": false,
+          }
+        }
         onSubmit={[Function]}
+        validate={[Function]}
       >
-        <div
-          className="form-label-group mb-2"
-        >
-          <Component
-            flip={true}
+        <Form>
+          <form
+            action="#"
+            onReset={[Function]}
+            onSubmit={[Function]}
           >
-            <label
-              htmlFor="um3kfiekd-login-email"
-              key=".1"
+            <div
+              className="form-label-group mb-2"
             >
-              Email address
-            </label>
-            <input
-              autoFocus={true}
-              className="form-control"
-              data-var="email"
-              id="um3kfiekd-login-email"
-              key=".0"
-              onChange={[Function]}
-              placeholder="Email address"
-              required={true}
-              type="email"
-              value=""
-            />
-          </Component>
-        </div>
-        <div
-          className="form-label-group mb-2"
-        >
-          <Component
-            flip={true}
-          >
-            <label
-              htmlFor="um3kfiekd-login-password"
-              key=".1"
+              <Component
+                flip={true}
+              >
+                <label
+                  htmlFor="um3kfiekd-login-email"
+                  key=".1"
+                >
+                  Email address
+                </label>
+                <Field
+                  autoFocus={true}
+                  className="form-control"
+                  id="um3kfiekd-login-email"
+                  key=".0"
+                  name="email"
+                  placeholder="Email address"
+                  required={true}
+                  type="email"
+                >
+                  <input
+                    autoFocus={true}
+                    className="form-control"
+                    id="um3kfiekd-login-email"
+                    name="email"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    placeholder="Email address"
+                    required={true}
+                    type="email"
+                    value=""
+                  />
+                </Field>
+              </Component>
+            </div>
+            <div
+              className="form-label-group mb-2"
             >
-              Password
-            </label>
-            <input
-              className="form-control"
-              data-var="password"
-              id="um3kfiekd-login-password"
-              key=".0"
-              onChange={[Function]}
-              placeholder="Password"
-              required={true}
-              type="password"
-              value=""
-            />
-          </Component>
-        </div>
-        <div
-          className="custom-control custom-checkbox mb-2"
-        >
-          <input
-            checked={false}
-            className="custom-control-input"
-            data-var="stayLoggedIn"
-            id="um3kfiekd-login-stay-logged-in"
-            onChange={[Function]}
-            type="checkbox"
-          />
-          <label
-            className="custom-control-label"
-            htmlFor="um3kfiekd-login-stay-logged-in"
-          >
-            Remember me
-          </label>
-        </div>
-        <div
-          className="mb-3 justify-content-between d-flex"
-        >
-          <button
-            className="btn btn-primary"
-            type="submit"
-          >
-            Sign in
-          </button>
-          <button
-            className="btn btn-outline-primary"
-            id="forgot-pw-button"
-            onClick={[Function]}
-            type="button"
-          >
-            Forgot Password?
-          </button>
-        </div>
-        <ErrorMessage />
-      </form>
+              <Component
+                flip={true}
+              >
+                <label
+                  htmlFor="um3kfiekd-login-password"
+                  key=".1"
+                >
+                  Password
+                </label>
+                <Field
+                  className="form-control"
+                  id="um3kfiekd-login-password"
+                  key=".0"
+                  name="password"
+                  placeholder="Password"
+                  required={true}
+                  type="password"
+                >
+                  <input
+                    className="form-control"
+                    id="um3kfiekd-login-password"
+                    name="password"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    placeholder="Password"
+                    required={true}
+                    type="password"
+                    value=""
+                  />
+                </Field>
+              </Component>
+            </div>
+            <div
+              className="custom-control custom-checkbox mb-2"
+            >
+              <Field
+                className="custom-control-input"
+                id="um3kfiekd-login-stay-logged-in"
+                name="stayLoggedIn"
+                type="checkbox"
+              >
+                <input
+                  checked={false}
+                  className="custom-control-input"
+                  id="um3kfiekd-login-stay-logged-in"
+                  name="stayLoggedIn"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  type="checkbox"
+                  value={false}
+                />
+              </Field>
+              <label
+                className="custom-control-label"
+                htmlFor="um3kfiekd-login-stay-logged-in"
+              >
+                Remember me
+              </label>
+            </div>
+            <div
+              className="mb-3 justify-content-between d-flex"
+            >
+              <button
+                className="btn btn-primary"
+                id="login-button"
+                type="submit"
+              >
+                Sign in
+              </button>
+              <button
+                className="btn btn-outline-primary"
+                id="forgot-pw-button"
+                onClick={[Function]}
+                type="button"
+              >
+                Forgot Password?
+              </button>
+            </div>
+            <ErrorMessage />
+          </form>
+        </Form>
+      </Formik>
     </Component>
   </LoginForm>
   <AccountCreationForm>

@@ -20,7 +20,7 @@ function getConciseErrors(error: ApolloError | undefined): Array<ConciseError> {
     }]
   }
 
-  if (error.graphQLErrors.length > 0) {
+  if (error.graphQLErrors && error.graphQLErrors.length > 0) {
     return error.graphQLErrors.map((e) => ({
       code: 'GraphQLError',
       message: e.message
