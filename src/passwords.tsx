@@ -169,7 +169,8 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> =
       } else {
         if (loginData) {
           setLoginData(undefined)
-          submitLogin(loginData)
+          // TODO: this should get cleaned up when we switch this form to Formik
+          submitLogin({ ...loginData, stayLoggedIn: Boolean(loginData.stayLoggedIn)})
         }
       }
     }

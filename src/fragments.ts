@@ -46,8 +46,8 @@ export const PROFILE_QUERY = gql`
 `
 
 export const LOGIN_MUT = gql`
-  mutation login($email: String!, $password: String!) {
-    loginPassword(email: $email, password: $password) {
+  mutation login($email: String!, $password: String!, $stayLoggedIn: Boolean!) {
+    loginPassword(email: $email, password: $password, stayLoggedIn: $stayLoggedIn) {
       userJwt
     }
   }

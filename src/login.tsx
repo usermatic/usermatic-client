@@ -1,6 +1,7 @@
 
 import urllib from 'url'
 import React, { ReactNode, useContext, useEffect, useState, MouseEvent } from 'react'
+import { Formik, Form, Field, FormikValues, FormikErrors } from 'formik'
 import { ApolloError } from 'apollo-client'
 import { GraphQLError } from 'graphql'
 import classNames from 'classnames'
@@ -51,6 +52,8 @@ export const useLogout = () => {
   return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
+type LoginSubmitArgs = { email: string, password: string, stayLoggedIn: boolean }
+
 export const useLogin = () => {
   const appId = useContext(AppIdContext)
 
@@ -64,7 +67,7 @@ export const useLogin = () => {
 
   const { loading, error, data } = ret
 
-  const submit = (values: InputValueMap) => {
+  const submit = (values: LoginSubmitArgs) => {
     submitLogin({ variables: values })
   }
 
@@ -427,16 +430,17 @@ const usePopupWindow = ({onLogin, refetch}: { onLogin?: () => void, refetch: () 
   )
 )
 
-export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFirst}) => {
-  if (labelsFirst == null) {
-    labelsFirst = true
-  }
+export const LoginForm: React.FC<LoginFormProps> = ({
+  onLogin,
+  idPrefix,
+  labelsFirst: labelsFirstArg
+}) => {
+
+  const labelsFirst = labelsFirstArg ?? true
 
   const [isForgotPasswordMode, setForgotPasswordMode] = useState(false)
 
   const [submit, { loading, error, called }] = useLogin()
-
-  const { onSubmit, onChange, values } = useForm(submit)
 
   const { id, loading: tokenLoading } = useToken()
 
@@ -474,47 +478,75 @@ export const LoginForm: React.FC<LoginFormProps> = ({onLogin, idPrefix, labelsFi
     </div>
   }
 
+  const onSubmit = (variables: FormikValues) => {
+    submit(variables as LoginSubmitArgs)
+  }
+
+  const initialValues = {
+    email: '',
+    password: '',
+    stayLoggedIn: false
+  }
+
+  const validate = (values: FormikValues) => {
+    const errors: FormikErrors<typeof initialValues> = {};
+
+    if (!values.password) {
+      errors.password = 'Required';
+    }
+
+    if (!values.email) {
+      errors.password = 'Required';
+    } else if (!/.+@.+/.test(values.email)) {
+      errors.password = 'Please enter an email address';
+    }
+
+    return errors;
+  }
+
+
   return <OauthLogin onLogin={onLoginWrapper}>
     <SocialButtons popupWindow={popupWindow} className="my-3"/>
-    <form onSubmit={onSubmit}>
-      <div className="form-label-group mb-2">
-        <InputLabel flip={labelsFirst}>
-          <input type="email" data-var="email" className="form-control"
-                 value={values.email || ''} onChange={onChange}
-                 id={getId(idPrefix, "login-email")}
-                 placeholder="Email address" required autoFocus />
-          <label htmlFor={getId(idPrefix, "login-email")}>Email address</label>
-        </InputLabel>
-      </div>
+    <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
+      {(props) => (
+        <Form>
+          <div className="form-label-group mb-2">
+            <InputLabel flip={labelsFirst}>
+              <Field type="email" name="email" className="form-control"
+                     id={getId(idPrefix, "login-email")}
+                     placeholder="Email address" required autoFocus />
+              <label htmlFor={getId(idPrefix, "login-email")}>Email address</label>
+            </InputLabel>
+          </div>
 
-      <div className="form-label-group mb-2">
-        <InputLabel flip={labelsFirst}>
-          <input type="password" data-var="password" className="form-control"
-                 value={values.password || ''} onChange={onChange}
-                 id={getId(idPrefix, "login-password")}
-                 placeholder="Password" required />
-          <label htmlFor={getId(idPrefix, "login-password")}>Password</label>
-        </InputLabel>
-      </div>
+          <div className="form-label-group mb-2">
+            <InputLabel flip={labelsFirst}>
+              <Field type="password" name="password" className="form-control"
+                     id={getId(idPrefix, "login-password")}
+                     placeholder="Password" required />
+              <label htmlFor={getId(idPrefix, "login-password")}>Password</label>
+            </InputLabel>
+          </div>
 
-      <div className="custom-control custom-checkbox mb-2">
-        <input type="checkbox" className="custom-control-input" data-var="stayLoggedIn"
-               id={getId(idPrefix, "login-stay-logged-in")}
-               onChange={onChange} checked={Boolean(values.stayLoggedIn)} />
-        <label className="custom-control-label" htmlFor={getId(idPrefix, "login-stay-logged-in")}>
-          Remember me
-        </label>
-      </div>
+          <div className="custom-control custom-checkbox mb-2">
+            <Field type="checkbox" className="custom-control-input" name="stayLoggedIn"
+                   id={getId(idPrefix, "login-stay-logged-in")} />
+            <label className="custom-control-label" htmlFor={getId(idPrefix, "login-stay-logged-in")}>
+              Remember me
+            </label>
+          </div>
 
-      <div className="mb-3 justify-content-between d-flex">
-        <button className="btn btn-primary" type="submit">Sign in</button>
-        <button id="forgot-pw-button" className="btn btn-outline-primary" type="button"
-                onClick={(e) => { e.preventDefault(); setForgotPasswordMode(true); }}>
-          Forgot Password?
-        </button>
-      </div>
-      <ErrorMessage error={error} />
-    </form>
+          <div className="mb-3 justify-content-between d-flex">
+            <button id="login-button" className="btn btn-primary" type="submit">Sign in</button>
+            <button id="forgot-pw-button" className="btn btn-outline-primary" type="button"
+                    onClick={(e) => { e.preventDefault(); setForgotPasswordMode(true); }}>
+              Forgot Password?
+            </button>
+          </div>
+          <ErrorMessage error={error} />
+        </Form>
+      )}
+    </Formik>
   </OauthLogin>
 }
 LoginForm.displayName = 'LoginForm'
