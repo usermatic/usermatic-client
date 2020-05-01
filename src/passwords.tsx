@@ -1,11 +1,13 @@
 
 import React, { useState, useEffect } from 'react'
+import { Formik, Form, Field, FormikValues, FormikErrors } from 'formik'
 
+import { DocumentNode } from 'graphql'
 import jwt from 'jsonwebtoken'
 import classNames from 'classnames'
 
 import { useAppConfig } from './auth'
-import { usePasswordCredential } from './user'
+import { usePasswordCredential, usePrimaryEmail } from './user'
 import { useCsrfMutation } from './hooks'
 import { useForm, InputValueMap, InputLabel } from './forms'
 import { ErrorMessage } from './errors'
@@ -16,6 +18,7 @@ import { useDebounce } from './use-debounce'
 import zxcvbnAsync from 'zxcvbn-async'
 
 import {
+  ADD_PW_MUT,
   CHANGE_PW_MUT,
   RESET_PW_MUT,
   REQUEST_PW_RESET_EMAIL
@@ -31,28 +34,28 @@ const getId = (prefix: string | undefined, suffix: string) => {
   }
 }
 
-export const useChangePassword = () => {
-  const [submitChangePassword, ret] = useCsrfMutation(CHANGE_PW_MUT, {})
+const useApiMutation = (mut: DocumentNode) => {
+  const [submit, ret] = useCsrfMutation(mut, {})
   const {loading, error, data} = ret
-  const submit = (values: InputValueMap) => {
-    submitChangePassword({ variables: values })
+  const submitWrapper = (values: InputValueMap) => {
+    submit({ variables: values })
   }
 
   const success = !loading && !error && data
   const retObj = { ...ret, success }
-  return [submit, retObj] as [typeof submit, typeof retObj]
+  return [submitWrapper, retObj] as [typeof submit, typeof retObj]
+}
+
+export const useChangePassword = () => {
+  return useApiMutation(CHANGE_PW_MUT)
+}
+
+export const useAddPassword = () => {
+  return useApiMutation(ADD_PW_MUT)
 }
 
 export const useRequestPasswordResetEmail = () => {
-  const [submitPasswordResetRequest, ret] = useCsrfMutation(REQUEST_PW_RESET_EMAIL, {})
-  const {loading, error, data} = ret
-  const submit = (values: InputValueMap) => {
-    submitPasswordResetRequest({ variables: values })
-  }
-
-  const success = !loading && !error && data
-  const retObj = { ...ret, success }
-  return [submit, retObj] as [typeof submit, typeof retObj]
+  return useApiMutation(REQUEST_PW_RESET_EMAIL)
 }
 
 export const useResetPassword = (token: string) => {
@@ -61,10 +64,22 @@ export const useResetPassword = (token: string) => {
   const submit = (values: InputValueMap) => {
     submitResetPassword({ variables: { ...values, token } })
   }
-
   const success = !loading && !error && data
   const retObj = { ...ret, success }
   return [submit, retObj] as [typeof submit, typeof retObj]
+}
+
+const useAddOrChangePassword = () => {
+  const { passwordCredential } = usePasswordCredential()
+
+  const change = useChangePassword()
+  const add = useAddPassword()
+
+  if (passwordCredential != null) {
+    return change
+  } else {
+    return add
+  }
 }
 
 type LoginState = {
@@ -74,59 +89,78 @@ type LoginState = {
 }
 
 export const ChangePasswordForm: React.FC<{idPrefix?: string, labelsFirst?: boolean}> =
-  ({idPrefix, labelsFirst}) => {
+  ({idPrefix, labelsFirst: labelsFirstArg}) => {
 
-  if (labelsFirst == null) {
-    labelsFirst = true
+  const { email: primaryEmail } = usePrimaryEmail()
+  const { loading: pwLoading, error: pwError, passwordCredential } = usePasswordCredential()
+  const [submit, { loading, error }] = useAddOrChangePassword()
+
+  const labelsFirst = labelsFirstArg ?? true
+
+  if (pwLoading) { return null }
+  if (pwError) { return <ErrorMessage error={pwError}/> }
+
+  const email = passwordCredential?.email ?? primaryEmail
+
+  const initialValues = {
+    email: passwordCredential ? undefined : email,
+    oldPassword: passwordCredential ? '' : undefined,
+    newPassword: ''
   }
 
-  const { loading: emailLoading, error: emailError, passwordCredential } = usePasswordCredential()
-  if (emailLoading) { return null }
-  if (emailError) { return <ErrorMessage error={emailError}/> }
-
-  if (!passwordCredential) {
-    // if the user doesn't have a password credential, we can't change their
-    // password, can we?
-    // TODO: Provide link to place where they can add one.
-    return <div className="alert alert-warning">
-      There is no password set for your account.
-    </div>
+  const validate = (values: FormikValues) => {
+    const errors: FormikErrors<typeof initialValues> = {};
+    if (passwordCredential && !values.oldPassword) {
+      errors.oldPassword = 'Required'
+    }
+    if (!values.newPassword) {
+      errors.newPassword = 'Required'
+    }
+    return errors
   }
 
-  const { email } = passwordCredential
+  return <Formik initialValues={initialValues} onSubmit={submit} validate={validate}>
+    {(props) => (
+      <Form>
+        { // if there is no password credential, ChangePassword adds a password to the account
+        passwordCredential
+        ? <div className="form-label-group">
+            <InputLabel flip={labelsFirst}>
+              <Field type="password" className="form-control" name="oldPassword"
+                     id={getId(idPrefix, "change-password-old-password")}
+                     placeholder="Old Password" required autoFocus />
+              <label htmlFor={getId(idPrefix, "change-password-old-password")}>Old Password</label>
+            </InputLabel>
+          </div>
+        : <div className="form-label-group">
+            <InputLabel flip={labelsFirst}>
+              <Field type="text" className="form-control" name="email"
+                     id={getId(idPrefix, "change-password-email")}
+                     placeholder="email" required autoFocus />
+              <label htmlFor={getId(idPrefix, "change-password-email")}>Email</label>
+            </InputLabel>
+          </div>
+        }
 
-  const [submitChangePassword, { loading, error }] = useChangePassword()
-  const { onSubmit, onChange, values } = useForm(submitChangePassword)
+        <div className="form-label-group">
+          <InputLabel flip={labelsFirst}>
+            <Field type="password" className="form-control" name="newPassword"
+                   id={getId(idPrefix, "change-password-new-password")}
+                   placeholder="New Password" required />
+            <label htmlFor={getId(idPrefix, "change-password-new-password")}>New Password</label>
+          </InputLabel>
+        </div>
+        <DebouncedPasswordScore password={props.values.newPassword} username={email} />
 
-  const debouncedPw = useDebounce(values.newPassword, 300)
-
-  return <form onSubmit={onSubmit}>
-    <div className="form-label-group">
-      <InputLabel flip={labelsFirst}>
-        <input type="password" data-var="oldPassword" className="form-control"
-               value={values.oldPassword || ''} onChange={onChange}
-               id={getId(idPrefix, "change-password-old-password")}
-               placeholder="Old Password" required autoFocus />
-        <label htmlFor={getId(idPrefix, "change-password-old-password")}>Old Password</label>
-      </InputLabel>
-    </div>
-
-    <div className="form-label-group">
-      <InputLabel flip={labelsFirst}>
-        <input type="password" data-var="newPassword" className="form-control"
-               value={values.newPassword || ''} onChange={onChange}
-               id={getId(idPrefix, "change-password-new-password")}
-               placeholder="New Password" required />
-        <label htmlFor={getId(idPrefix, "change-password-new-password")}>New Password</label>
-      </InputLabel>
-    </div>
-    <PasswordScore password={debouncedPw} username={email} />
-
-    <button className={`btn btn-lg btn-primary ${ loading ? 'disabled' : '' }`} type="submit">
-      { loading ? 'Please wait...' : 'Change Password' }
-    </button>
-    <ErrorMessage error={error} />
-  </form>
+        <button className={`btn btn-lg btn-primary ${ loading ? 'disabled' : '' }`} type="submit">
+          { loading
+            ? 'Please wait...'
+            : (passwordCredential ? 'Change Password' : 'Set Password') }
+        </button>
+        <ErrorMessage error={error} />
+      </Form>
+    )}
+  </Formik>
 }
 
 type ResetPasswordFormProps = {
@@ -367,8 +401,12 @@ const PasswordStrengthCheck: React.FC<{pwScore: PwScoreRecord}> = ({pwScore}) =>
   </div>
 }
 
-export const PasswordScore: React.FC<{password?: string, username?: string}> =
-  ({password, username}) => {
+type PasswordScoreProps = {
+  password?: string,
+  username?: string
+}
+
+export const PasswordScore: React.FC<PasswordScoreProps> = ({password, username}) => {
 
   const [passwordScore, setPasswordScore] = useState({} as Record<string, any>)
 
@@ -398,3 +436,7 @@ export const PasswordScore: React.FC<{password?: string, username?: string}> =
   </div>
 }
 
+const DebouncedPasswordScore: React.FC<PasswordScoreProps> = ({password, username}) => {
+  const debouncedPw = useDebounce(password, 300)
+  return <PasswordScore password={debouncedPw} username={username} />
+}

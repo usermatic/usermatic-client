@@ -1,5 +1,245 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<ChangePasswordForm> with password 1`] = `
+<div
+  id="client-test-div"
+>
+  <Component
+    idPrefix="test"
+    labelsFirst={false}
+  >
+    <Formik
+      initialValues={
+        Object {
+          "email": undefined,
+          "newPassword": "",
+          "oldPassword": "",
+        }
+      }
+      onSubmit={[Function]}
+      validate={[Function]}
+    >
+      <Form>
+        <form
+          action="#"
+          onReset={[Function]}
+          onSubmit={[Function]}
+        >
+          <div
+            className="form-label-group"
+          >
+            <Component
+              flip={false}
+            >
+              <Field
+                autoFocus={true}
+                className="form-control"
+                id="test-change-password-old-password"
+                key=".0"
+                name="oldPassword"
+                placeholder="Old Password"
+                required={true}
+                type="password"
+              >
+                <input
+                  autoFocus={true}
+                  className="form-control"
+                  id="test-change-password-old-password"
+                  name="oldPassword"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  placeholder="Old Password"
+                  required={true}
+                  type="password"
+                  value="hunter2"
+                />
+              </Field>
+              <label
+                htmlFor="test-change-password-old-password"
+                key=".1"
+              >
+                Old Password
+              </label>
+            </Component>
+          </div>
+          <div
+            className="form-label-group"
+          >
+            <Component
+              flip={false}
+            >
+              <Field
+                className="form-control"
+                id="test-change-password-new-password"
+                key=".0"
+                name="newPassword"
+                placeholder="New Password"
+                required={true}
+                type="password"
+              >
+                <input
+                  className="form-control"
+                  id="test-change-password-new-password"
+                  name="newPassword"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  placeholder="New Password"
+                  required={true}
+                  type="password"
+                  value="hunter3"
+                />
+              </Field>
+              <label
+                htmlFor="test-change-password-new-password"
+                key=".1"
+              >
+                New Password
+              </label>
+            </Component>
+          </div>
+          <DebouncedPasswordScore
+            password="hunter3"
+            username="bob@bob.com"
+          >
+            <Component
+              password="hunter3"
+              username="bob@bob.com"
+            />
+          </DebouncedPasswordScore>
+          <button
+            className="btn btn-lg btn-primary "
+            type="submit"
+          >
+            Change Password
+          </button>
+          <ErrorMessage />
+        </form>
+      </Form>
+    </Formik>
+  </Component>
+</div>
+`;
+
+exports[`<ChangePasswordForm> without password 1`] = `
+<div
+  id="client-test-div"
+>
+  <Component
+    idPrefix="test"
+    labelsFirst={false}
+  >
+    <Formik
+      initialValues={
+        Object {
+          "email": "bob@bob.com",
+          "newPassword": "",
+          "oldPassword": undefined,
+        }
+      }
+      onSubmit={[Function]}
+      validate={[Function]}
+    >
+      <Form>
+        <form
+          action="#"
+          onReset={[Function]}
+          onSubmit={[Function]}
+        >
+          <div
+            className="form-label-group"
+          >
+            <Component
+              flip={false}
+            >
+              <Field
+                autoFocus={true}
+                className="form-control"
+                id="test-change-password-email"
+                key=".0"
+                name="email"
+                placeholder="email"
+                required={true}
+                type="text"
+              >
+                <input
+                  autoFocus={true}
+                  className="form-control"
+                  id="test-change-password-email"
+                  name="email"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  placeholder="email"
+                  required={true}
+                  type="text"
+                  value="bob@bob.com"
+                />
+              </Field>
+              <label
+                htmlFor="test-change-password-email"
+                key=".1"
+              >
+                Email
+              </label>
+            </Component>
+          </div>
+          <div
+            className="form-label-group"
+          >
+            <Component
+              flip={false}
+            >
+              <Field
+                className="form-control"
+                id="test-change-password-new-password"
+                key=".0"
+                name="newPassword"
+                placeholder="New Password"
+                required={true}
+                type="password"
+              >
+                <input
+                  className="form-control"
+                  id="test-change-password-new-password"
+                  name="newPassword"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  placeholder="New Password"
+                  required={true}
+                  type="password"
+                  value="hunter3"
+                />
+              </Field>
+              <label
+                htmlFor="test-change-password-new-password"
+                key=".1"
+              >
+                New Password
+              </label>
+            </Component>
+          </div>
+          <DebouncedPasswordScore
+            password="hunter3"
+            username="bob@bob.com"
+          >
+            <Component
+              password="hunter3"
+              username="bob@bob.com"
+            />
+          </DebouncedPasswordScore>
+          <button
+            className="btn btn-lg btn-primary "
+            type="submit"
+          >
+            Set Password
+          </button>
+          <ErrorMessage />
+        </form>
+      </Form>
+    </Formik>
+  </Component>
+</div>
+`;
+
 exports[`<LoginForm> login 1`] = `
 <div
   id="client-test-div"

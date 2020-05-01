@@ -11,13 +11,13 @@ type CsrfData = {
 }
 export const CsrfContext = createContext<CsrfData>({ refetch: () => {} })
 
-export const useCrsfToken = () => {
+export const useCsrfToken = () => {
   return useContext(CsrfContext)
 }
 
 export const useCsrfMutation = (doc: DocumentNode, options: OperationVariables) => {
   const client = useContext(UMApolloContext)
-  const { csrfToken } = useCrsfToken()
+  const { csrfToken } = useCsrfToken()
   if (options.context) {
     throw new Error("TODO: merge context object")
   }
@@ -38,7 +38,7 @@ export const useCsrfMutation = (doc: DocumentNode, options: OperationVariables) 
 
 export const useCsrfQuery = (doc: DocumentNode, options: OperationVariables) => {
   const client = useContext(UMApolloContext)
-  const { csrfToken } = useCrsfToken()
+  const { csrfToken } = useCsrfToken()
   if (!csrfToken) {
     console.warn("calling csrf query before csrfToken is ready")
   }

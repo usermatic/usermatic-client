@@ -8,7 +8,7 @@ import classNames from 'classnames'
 import jwt from 'jsonwebtoken'
 
 import { useToken, AppIdContext, useAppConfig, useAppId } from './auth'
-import { useCrsfToken, useCsrfMutation } from './hooks'
+import { useCsrfToken, useCsrfMutation } from './hooks'
 import { useForm, InputValueMap, InputLabel } from './forms'
 import { ErrorMessage } from './errors'
 import { PasswordScore, RequestPasswordResetForm } from './passwords'
@@ -144,7 +144,7 @@ const useOauthToken = () => {
 }
 
 const useOauthLogin = ({onLogin, oauthToken}: { onLogin?: () => void, oauthToken?: string }) => {
-  const { csrfToken } = useCrsfToken()
+  const { csrfToken } = useCsrfToken()
   const appId = useAppId() as string
   const { id, loading: tokenLoading } = useToken()
 
@@ -444,7 +444,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
   const { id, loading: tokenLoading } = useToken()
 
-  const { refetch } = useCrsfToken()
+  const { refetch } = useCsrfToken()
 
   useEffect(() => {
     // We need to wait until the credential context is reporting that we are logged in,
@@ -612,7 +612,7 @@ export const AccountCreationForm: React.FC<AccountCreationProps> =
 
   const { id } = useToken()
   const [submit, { error, success }] = useCreateAccount()
-  const { refetch } = useCrsfToken()
+  const { refetch } = useCsrfToken()
 
   const { onSubmit, onChange, values } = useForm(submit,
     { loginAfterCreation }

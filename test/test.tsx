@@ -25,9 +25,11 @@ import schemaStr from '../../schemas/api-schema'
 
 
 import * as client from '../src/index'
+import { useCsrfToken } from '../src/hooks'
 
 configure({ adapter: new Adapter() })
 
+const email = 'bob@bob.com'
 const userId = '915cb3c0-a3ac-44be-a2a8-6edb25bfeacc'
 const appId = '248e5473-d9a6-4487-9164-24c3052d2898'
 
@@ -42,6 +44,33 @@ const extendMocks = (mocks: object) => {
     ...mocks
   }
 }
+
+const userWithPassword = () => ({
+  id: userId,
+  primaryEmail: email,
+  credentials: [
+    {
+      type: 'PASSWORD',
+      id: 'a31d68e6-898f-4998-9e6d-25ef1a62f62c',
+      email: email,
+      emailIsVerified: true
+    }
+  ]
+})
+
+const userWithoutPassword = () => ({
+  id: userId,
+  primaryEmail: email,
+  credentials: [
+    {
+      type: 'OAUTH',
+      id: 'a31d68e6-898f-4998-9e6d-25ef1a62f62c',
+      provider: 'GOOGLE',
+      providerId: 'abc',
+      photoURL: '/photo'
+    }
+  ]
+})
 
 const configNoOauth = {
   minPasswordStrength: 3,
@@ -63,6 +92,14 @@ const configOauth = {
   fbLoginUrl: '/doesntmatter'
 }
 
+const CsrfTokenWrapper: React.FC<{children: ReactNode}> = ({children}) => {
+  const { csrfToken } = useCsrfToken()
+  if (!csrfToken) {
+    return null
+  }
+  return <>{children}</>
+}
+
 const TestWrapper: React.FC<{children: ReactNode, mocks: any}> = ({children, mocks}) => {
   const schema = makeExecutableSchema({ typeDefs: schemaStr });
   addMocksToSchema({ schema, mocks });
@@ -74,7 +111,9 @@ const TestWrapper: React.FC<{children: ReactNode, mocks: any}> = ({children, moc
 
   return <ApolloProvider client={apolloClient}>
     <client.AuthProvider appId={appId}>
-      {children}
+      <CsrfTokenWrapper>
+        {children}
+      </CsrfTokenWrapper>
     </client.AuthProvider>
   </ApolloProvider>
 }
@@ -95,18 +134,15 @@ test('<LoginForm>/<AccountCreationForm>', async () => {
     </TestWrapper>
   )
 
-  await act(async () => {
-    jest.runAllImmediates()
-  })
+  await act(async () => { jest.runAllTimers() })
+  wrapper.update()
 
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 
   wrapper.find('#forgot-pw-button').simulate('click')
   wrapper.update()
 
-  await act(async () => {
-    jest.runAllTimers()
-  })
+  await act(async () => { jest.runAllTimers() })
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 })
 
@@ -161,7 +197,7 @@ test('<LoginForm> login', async () => {
     </TestWrapper>
   )
 
-  await act(async () => { jest.runAllImmediates() })
+  await act(async () => { jest.runAllTimers() })
   wrapper.update()
 
   setInput(wrapper, 'email', 'input#test-login-email', email)
@@ -181,5 +217,85 @@ test('<LoginForm> login', async () => {
     { email, password, stayLoggedIn: true },
   )
   expect(onLogin).toHaveBeenCalled()
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+})
+
+test('<ChangePasswordForm> with password', async () => {
+  jest.useFakeTimers()
+
+  const oldPassword = 'hunter2'
+  const newPassword = 'hunter3'
+
+  const svcChangePassword = jest.fn().mockReturnValue(true)
+  const mocks = extendMocks({
+    AppConfig: () => (configNoOauth),
+    SvcUser: userWithPassword,
+    Mutation: () => ({
+      svcChangePassword
+    })
+  })
+
+  const wrapper = mount(
+    <TestWrapper mocks={mocks}>
+      <div id="client-test-div">
+        <client.ChangePasswordForm idPrefix="test" labelsFirst={false} />
+      </div>
+    </TestWrapper>
+  )
+
+  await act(async () => { jest.runAllTimers() })
+  wrapper.update()
+
+  setInput(wrapper, 'oldPassword', 'input#test-change-password-old-password', oldPassword)
+  setInput(wrapper, 'newPassword', 'input#test-change-password-new-password', newPassword)
+
+  wrapper.find('form').simulate('submit')
+
+  await act(async () => { jest.runAllTimers() })
+  wrapper.update()
+  await act(async () => { jest.runAllTimers() })
+
+  expect(svcChangePassword.mock.calls[0][1]).toMatchObject(
+    { oldPassword, newPassword }
+  )
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+})
+
+test('<ChangePasswordForm> without password', async () => {
+  jest.useFakeTimers()
+
+  const newPassword = 'hunter3'
+
+  const addPassword = jest.fn().mockReturnValue(true)
+  const mocks = extendMocks({
+    AppConfig: () => (configNoOauth),
+    SvcUser: userWithoutPassword,
+    Mutation: () => ({
+      addPassword
+    })
+  })
+
+  const wrapper = mount(
+    <TestWrapper mocks={mocks}>
+      <div id="client-test-div">
+        <client.ChangePasswordForm idPrefix="test" labelsFirst={false} />
+      </div>
+    </TestWrapper>
+  )
+
+  await act(async () => { jest.runAllTimers() })
+  wrapper.update()
+
+  setInput(wrapper, 'newPassword', 'input#test-change-password-new-password', newPassword)
+
+  wrapper.find('form').simulate('submit')
+
+  await act(async () => { jest.runAllTimers() })
+  wrapper.update()
+  await act(async () => { jest.runAllTimers() })
+
+  expect(addPassword.mock.calls[0][1]).toMatchObject(
+    { email, password: newPassword }
+  )
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 })

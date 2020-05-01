@@ -81,6 +81,12 @@ export const CHANGE_PW_MUT = gql`
   }
 `
 
+export const ADD_PW_MUT = gql`
+  mutation addPassword($email: String!, $newPassword: String!) {
+    addPassword(email: $email, password: $newPassword)
+  }
+`
+
 export const LOGOUT_MUT = gql`mutation logout { logout }`
 
 export const CREATE_ACCOUNT_MUT = gql`
