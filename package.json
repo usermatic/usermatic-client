@@ -1,6 +1,6 @@
 {
   "name": "@usermatic/client",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "description": "React components for usermatic applications",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -10,7 +10,8 @@
   "private": false,
   "scripts": {
     "build": "yarn tsc",
-    "prepare": "yarn build"
+    "test": "yarn jest",
+    "prepare": "yarn build && yarn test"
   },
   "peerDependencies": {
     "react": "^16.9.0"
