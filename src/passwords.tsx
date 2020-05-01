@@ -136,7 +136,7 @@ export const ChangePasswordForm: React.FC<{idPrefix?: string, labelsFirst?: bool
             <InputLabel flip={labelsFirst}>
               <Field type="text" className="form-control" name="email"
                      id={getId(idPrefix, "change-password-email")}
-                     placeholder="email" required autoFocus />
+                     placeholder="email" required />
               <label htmlFor={getId(idPrefix, "change-password-email")}>Email</label>
             </InputLabel>
           </div>
@@ -146,7 +146,8 @@ export const ChangePasswordForm: React.FC<{idPrefix?: string, labelsFirst?: bool
           <InputLabel flip={labelsFirst}>
             <Field type="password" className="form-control" name="newPassword"
                    id={getId(idPrefix, "change-password-new-password")}
-                   placeholder="New Password" required />
+                   placeholder="New Password" required
+                   autoFocus={passwordCredential ? undefined : true} />
             <label htmlFor={getId(idPrefix, "change-password-new-password")}>New Password</label>
           </InputLabel>
         </div>

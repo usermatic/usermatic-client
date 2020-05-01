@@ -152,7 +152,6 @@ exports[`<ChangePasswordForm> without password 1`] = `
               flip={false}
             >
               <Field
-                autoFocus={true}
                 className="form-control"
                 id="test-change-password-email"
                 key=".0"
@@ -162,7 +161,6 @@ exports[`<ChangePasswordForm> without password 1`] = `
                 type="text"
               >
                 <input
-                  autoFocus={true}
                   className="form-control"
                   id="test-change-password-email"
                   name="email"
@@ -189,6 +187,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
               flip={false}
             >
               <Field
+                autoFocus={true}
                 className="form-control"
                 id="test-change-password-new-password"
                 key=".0"
@@ -198,6 +197,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
                 type="password"
               >
                 <input
+                  autoFocus={true}
                   className="form-control"
                   id="test-change-password-new-password"
                   name="newPassword"
