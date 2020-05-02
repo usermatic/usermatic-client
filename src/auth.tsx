@@ -117,7 +117,10 @@ const HttpWarning: React.FC<{}> = ({}) => {
     if (dismissed != null) {
       return
     }
-    setDismissed(location.protocol === 'https:')
+    if (location.protocol === 'https:' ||
+        /^(localhost|[-a-zA-Z0-9.]+\.local)(:[0-9]+)?$/.test(location.hostname)) {
+      setDismissed(true)
+    }
   })
 
   if (dismissed == null || dismissed) {
