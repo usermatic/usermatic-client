@@ -442,11 +442,13 @@ exports[`<LoginForm> login 1`] = `
 </div>
 `;
 
-exports[`<LoginForm>/<AccountCreationForm> 1`] = `
+exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
 <div
   id="client-test-div"
 >
-  <LoginForm>
+  <LoginForm
+    idPrefix="test"
+  >
     <Component
       onLogin={[Function]}
     >
@@ -483,7 +485,7 @@ exports[`<LoginForm>/<AccountCreationForm> 1`] = `
                 flip={true}
               >
                 <label
-                  htmlFor="um3kfiekd-login-email"
+                  htmlFor="test-login-email"
                   key=".1"
                 >
                   Email address
@@ -491,7 +493,7 @@ exports[`<LoginForm>/<AccountCreationForm> 1`] = `
                 <Field
                   autoFocus={true}
                   className="form-control"
-                  id="um3kfiekd-login-email"
+                  id="test-login-email"
                   key=".0"
                   name="email"
                   placeholder="Email address"
@@ -501,7 +503,7 @@ exports[`<LoginForm>/<AccountCreationForm> 1`] = `
                   <input
                     autoFocus={true}
                     className="form-control"
-                    id="um3kfiekd-login-email"
+                    id="test-login-email"
                     name="email"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -520,14 +522,14 @@ exports[`<LoginForm>/<AccountCreationForm> 1`] = `
                 flip={true}
               >
                 <label
-                  htmlFor="um3kfiekd-login-password"
+                  htmlFor="test-login-password"
                   key=".1"
                 >
                   Password
                 </label>
                 <Field
                   className="form-control"
-                  id="um3kfiekd-login-password"
+                  id="test-login-password"
                   key=".0"
                   name="password"
                   placeholder="Password"
@@ -536,7 +538,7 @@ exports[`<LoginForm>/<AccountCreationForm> 1`] = `
                 >
                   <input
                     className="form-control"
-                    id="um3kfiekd-login-password"
+                    id="test-login-password"
                     name="password"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -553,14 +555,14 @@ exports[`<LoginForm>/<AccountCreationForm> 1`] = `
             >
               <Field
                 className="custom-control-input"
-                id="um3kfiekd-login-stay-logged-in"
+                id="test-login-stay-logged-in"
                 name="stayLoggedIn"
                 type="checkbox"
               >
                 <input
                   checked={false}
                   className="custom-control-input"
-                  id="um3kfiekd-login-stay-logged-in"
+                  id="test-login-stay-logged-in"
                   name="stayLoggedIn"
                   onBlur={[Function]}
                   onChange={[Function]}
@@ -570,7 +572,7 @@ exports[`<LoginForm>/<AccountCreationForm> 1`] = `
               </Field>
               <label
                 className="custom-control-label"
-                htmlFor="um3kfiekd-login-stay-logged-in"
+                htmlFor="test-login-stay-logged-in"
               >
                 Remember me
               </label>
@@ -701,69 +703,99 @@ exports[`<LoginForm>/<AccountCreationForm> 1`] = `
 </div>
 `;
 
-exports[`<LoginForm>/<AccountCreationForm> 2`] = `
+exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
 <div
   id="client-test-div"
 >
-  <LoginForm>
+  <LoginForm
+    idPrefix="test"
+  >
     <div>
-      <div
-        className="p-2"
-      >
+      <div>
         Enter your email to get a password reset link.
       </div>
       <Component
+        idPrefix="test"
         labelsFirst={true}
         onCancel={[Function]}
       >
-        <ErrorMessage />
-        <form
+        <Formik
+          initialValues={
+            Object {
+              "email": "",
+            }
+          }
           onSubmit={[Function]}
+          validate={[Function]}
         >
-          <div
-            className="form-label-group mb-2"
+          <ErrorMessage />
+          <Form
+            id="test-request-password-reset-form"
           >
-            <Component
-              flip={true}
+            <form
+              action="#"
+              id="test-request-password-reset-form"
+              onReset={[Function]}
+              onSubmit={[Function]}
             >
-              <label
-                htmlFor="um9akc83a-request-password-reset-email"
-                key=".1"
+              <div
+                className="form-label-group mb-2"
               >
-                Email address
-              </label>
-              <input
-                autoFocus={true}
-                className="form-control"
-                data-var="email"
-                id="um9akc83a-request-password-reset-email"
-                key=".0"
-                onChange={[Function]}
-                placeholder="Email address"
-                required={true}
-                type="email"
-                value=""
-              />
-            </Component>
-          </div>
-          <div
-            className="d-flex justify-content-between mb-3"
-          >
-            <button
-              className="btn btn-primary "
-              type="submit"
-            >
-              Submit
-            </button>
-            <button
-              className="btn btn-outline-secondary"
-              onClick={[Function]}
-              type="button"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
+                <Component
+                  flip={true}
+                >
+                  <label
+                    htmlFor="test-request-password-reset-email"
+                    key=".1"
+                  >
+                    Email address
+                  </label>
+                  <Field
+                    autoFocus={true}
+                    className="form-control"
+                    id="test-request-password-reset-email"
+                    key=".0"
+                    name="email"
+                    placeholder="Email address"
+                    required={true}
+                    type="email"
+                  >
+                    <input
+                      autoFocus={true}
+                      className="form-control"
+                      id="test-request-password-reset-email"
+                      name="email"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      placeholder="Email address"
+                      required={true}
+                      type="email"
+                      value=""
+                    />
+                  </Field>
+                </Component>
+              </div>
+              <div
+                className="d-flex justify-content-between mb-3"
+              >
+                <button
+                  className="btn btn-primary "
+                  id="request-pw-reset-button"
+                  type="submit"
+                >
+                  Submit
+                </button>
+                <button
+                  className="btn btn-outline-secondary"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </Form>
+        </Formik>
       </Component>
     </div>
   </LoginForm>

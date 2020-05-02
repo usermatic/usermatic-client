@@ -118,17 +118,21 @@ const TestWrapper: React.FC<{children: ReactNode, mocks: any}> = ({children, moc
   </ApolloProvider>
 }
 
-test('<LoginForm>/<AccountCreationForm>', async () => {
+test('<LoginForm>/<AccountCreationForm> forgot password', async () => {
   jest.useFakeTimers()
 
+  const svcRequestPasswordResetEmail = jest.fn().mockReturnValue(true)
   const mocks = extendMocks({
-    AppConfig: () => configNoOauth
+    AppConfig: () => configNoOauth,
+    Mutation: () => ({
+      svcRequestPasswordResetEmail
+    })
   })
 
   const wrapper = mount(
     <TestWrapper mocks={mocks}>
       <div id="client-test-div">
-        <client.LoginForm/>
+        <client.LoginForm idPrefix="test" />
         <client.AccountCreationForm/>
       </div>
     </TestWrapper>
@@ -144,6 +148,14 @@ test('<LoginForm>/<AccountCreationForm>', async () => {
 
   await act(async () => { jest.runAllTimers() })
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+
+  setInput(wrapper, 'email', 'input#test-request-password-reset-email', email)
+  wrapper.find('form#test-request-password-reset-form').simulate('submit')
+
+  await act(async () => { jest.runAllTimers() })
+  wrapper.update()
+
+  expect(svcRequestPasswordResetEmail.mock.calls[0][1]).toMatchObject({ email })
 })
 
 test('<LoginForm>/<AccountCreationForm> oauth', async () => {

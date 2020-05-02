@@ -292,7 +292,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> =
         </div>
         : null }
 
-      <button className="btn btn-primary" type="submit">Reset Password</button>
+      <button className="btn btn-primary btn-block" type="submit">Reset Password</button>
     </form>
   </div>
 }
@@ -304,51 +304,65 @@ type RequestPasswordResetFormProps = {
 }
 
 export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> =
-  ({idPrefix, labelsFirst, onCancel}) => {
+  ({idPrefix, labelsFirst: labelsFirstArg, onCancel}) => {
 
-  if (labelsFirst == null) {
-    labelsFirst = true
-  }
+  const labelsFirst = labelsFirstArg ?? true
 
   const [submit, { loading, error, success }] = useRequestPasswordResetEmail()
 
   const [submittedEmail, setSubmittedEmail] = useState('')
 
-  const {onSubmit, onChange, values} = useForm(submit)
+  const initialValues = { email: '' }
 
-  return <>
-    <ErrorMessage error={error} />
-    <form onSubmit={(e) => {onSubmit(e); setSubmittedEmail(values.email)}}>
-      <div className="form-label-group mb-2">
-        <InputLabel flip={labelsFirst}>
-          <input type="email" data-var="email" className="form-control"
-                 value={values.email || ''} onChange={onChange}
-                 id={getId(idPrefix, "request-password-reset-email")}
-                 placeholder="Email address" required autoFocus />
-          <label htmlFor={getId(idPrefix, "request-password-reset-email")}>Email address</label>
-        </InputLabel>
-      </div>
+  const validate = (values: FormikValues) => {
+    const errors: FormikErrors<typeof initialValues> = {};
+    if (!values.email) {
+      errors.email = 'Required';
+    } else if (!/.+@.+/.test(values.email)) {
+      errors.email = 'Please enter an email address';
+    }
+    return errors
+  }
 
-      <div className="d-flex justify-content-between mb-3">
-        <button className={`btn btn-primary ${ loading ? 'disabled' : ''}`}
-                type="submit">
-          { loading ? 'Please wait...' : 'Submit' }
-        </button>
-        {onCancel &&
-          <button className="btn btn-outline-secondary" type="button"
-                  onClick={(e) => { e.preventDefault(); onCancel(); }}>
-            Cancel
-          </button>
-        }
-      </div>
-    </form>
+  const onSubmit = (variables: FormikValues) => {
+    submit(variables)
+    setSubmittedEmail(variables.email)
+  }
 
-    {success
-      ? <div className="alert alert-success m-3">A password reset link was sent to {submittedEmail}. Please look for it in your
-            inbox, and click the link to reset your password.
+  return <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate} >
+    {(props) => <>
+      <ErrorMessage error={error} />
+      <Form id={getId(idPrefix, "request-password-reset-form")}>
+        <div className="form-label-group mb-2">
+          <InputLabel flip={labelsFirst}>
+            <Field type="email" name="email" className="form-control"
+                   id={getId(idPrefix, "request-password-reset-email")}
+                   placeholder="Email address" required autoFocus />
+            <label htmlFor={getId(idPrefix, "request-password-reset-email")}>Email address</label>
+          </InputLabel>
         </div>
-      : null }
-  </>
+
+        <div className="d-flex justify-content-between mb-3">
+          <button className={`btn btn-primary ${ loading ? 'disabled' : ''}`}
+                  id="request-pw-reset-button" type="submit">
+            { loading ? 'Please wait...' : 'Submit' }
+          </button>
+          {onCancel &&
+            <button className="btn btn-outline-secondary" type="button"
+                    onClick={(e) => { e.preventDefault(); onCancel(); }}>
+              Cancel
+            </button>
+          }
+        </div>
+      </Form>
+
+      {success
+        ? <div className="alert alert-success m-3">A password reset link was sent to {submittedEmail}. Please look for it in your
+              inbox, and click the link to reset your password.
+          </div>
+        : null }
+    </>}
+  </Formik>
 }
 
 type PwScoreRecord = Record<string, any>

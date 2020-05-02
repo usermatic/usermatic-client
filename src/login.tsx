@@ -473,7 +473,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       <div>
         Enter your email to get a password reset link.
       </div>
-      <RequestPasswordResetForm labelsFirst={labelsFirst}
+      <RequestPasswordResetForm idPrefix={idPrefix} labelsFirst={labelsFirst}
         onCancel={() => { setForgotPasswordMode(false)}} />
     </div>
   }
@@ -496,14 +496,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     }
 
     if (!values.email) {
-      errors.password = 'Required';
+      errors.email = 'Required';
     } else if (!/.+@.+/.test(values.email)) {
-      errors.password = 'Please enter an email address';
+      errors.email = 'Please enter an email address';
     }
 
     return errors;
   }
-
 
   return <OauthLogin onLogin={onLoginWrapper}>
     <SocialButtons popupWindow={popupWindow} className="my-3"/>
