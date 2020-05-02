@@ -1,5 +1,5 @@
 
-import React, { ReactNode, useContext } from 'react'
+import React, { ReactNode, useContext, MouseEvent } from 'react'
 import { OperationVariables } from '@apollo/react-common'
 import classNames from 'classnames'
 
@@ -34,6 +34,7 @@ export const useReauthToken = () => {
 type ReauthenticateGuardProps = {
   children: ReactNode
   tokenContents: string | object
+  onClose?: () => void
 }
 
 // Hides some other component behind a reauthentication prompt. After the
@@ -41,7 +42,7 @@ type ReauthenticateGuardProps = {
 // reauthentication token is provided in a context, and can be retrieved by
 // calling useReauthToken().
 export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
-({children, tokenContents}) => {
+({children, tokenContents, onClose}) => {
 
   const [submit, { data, called, loading, error }] = useReauthenticate(tokenContents)
 
@@ -63,12 +64,18 @@ export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
     submit({ variables })
   }
 
+  const onClick = (e: MouseEvent) => {
+    e.preventDefault()
+    if (onClose) { onClose() }
+  }
+
   const buttonClasses = classNames("btn btn-primary", loading && "disabled")
+  const cancelButtonClasses = "btn btn-secondary"
 
   if (!called || error || loading) {
     return <div>
       <ErrorMessage error={error} />
-      <div>Please enter your password:</div>
+      <div className="mb-3">Please enter your password:</div>
       <Formik onSubmit={onSubmit} initialValues={initialValues} validate={validate} >
         {(props) => (
           <Form>
@@ -76,9 +83,12 @@ export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
               <Field id="reauth-password" name="password" type="password"
                      className="form-control" placeholder="password" autoFocus />
             </div>
-            <div>
+            <div className="d-flex justify-content-between">
               <button className={buttonClasses} type="submit">
                 { loading ? 'Please wait...' : 'Submit' }
+              </button>
+              <button className={cancelButtonClasses} onClick={onClick}>
+                Cancel
               </button>
             </div>
           </Form>
