@@ -108,7 +108,7 @@ export const VERIFY_EMAIL_MUT = gql`
 `
 
 export const SEND_VERIFICATION_EMAIL_MUT = gql`
-  mutation sendVerificationEmail {
-    svcSendVerificationEmail
+  mutation sendVerificationEmail($email: String!) {
+    svcSendVerificationEmail(email: $email)
   }
 `

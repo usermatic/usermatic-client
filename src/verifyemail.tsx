@@ -1,12 +1,14 @@
 
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 
-import { useCsrfMutation, CsrfContext } from './hooks'
+import { useCsrfMutation, useCsrfToken } from './hooks'
 
 import { VERIFY_EMAIL_MUT, SEND_VERIFICATION_EMAIL_MUT } from './fragments'
 
-export const useSendVerificationEmail = () => {
-  const [submit, ret] = useCsrfMutation(SEND_VERIFICATION_EMAIL_MUT, {})
+export const useSendVerificationEmail = (email: string) => {
+  const [submit, ret] = useCsrfMutation(SEND_VERIFICATION_EMAIL_MUT,
+    { variables: { email } }
+  )
   const { loading, error, data } = ret
   const success = !loading && !error && data
   const retObj = { ...ret, success }
@@ -25,7 +27,7 @@ export const useEmailVerifier = () => {
 export const EmailVerifier: React.FC<{token: string}> = ({token}) => {
 
   const [submit, { error, success, called, data }] = useEmailVerifier()
-  const csrfToken = useContext(CsrfContext)
+  const { csrfToken } = useCsrfToken()
 
   useEffect(() => {
     if (!called && csrfToken) {

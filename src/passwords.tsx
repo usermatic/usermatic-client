@@ -6,6 +6,8 @@ import { DocumentNode } from 'graphql'
 import jwt from 'jsonwebtoken'
 import classNames from 'classnames'
 
+import { OperationVariables } from '@apollo/react-common'
+
 import { useAppConfig } from './auth'
 import { usePasswordCredential, usePrimaryEmail } from './user'
 import { useCsrfMutation } from './hooks'
@@ -34,8 +36,8 @@ const getId = (prefix: string | undefined, suffix: string) => {
   }
 }
 
-const useApiMutation = (mut: DocumentNode) => {
-  const [submit, ret] = useCsrfMutation(mut, {})
+const useApiMutation = (mut: DocumentNode, options: OperationVariables) => {
+  const [submit, ret] = useCsrfMutation(mut, options)
   const {loading, error, data} = ret
   const submitWrapper = (values: InputValueMap) => {
     submit({ variables: values })
@@ -46,20 +48,20 @@ const useApiMutation = (mut: DocumentNode) => {
   return [submitWrapper, retObj] as [typeof submit, typeof retObj]
 }
 
-export const useChangePassword = () => {
-  return useApiMutation(CHANGE_PW_MUT)
+export const useChangePassword = (options: OperationVariables = {}) => {
+  return useApiMutation(CHANGE_PW_MUT, options)
 }
 
-export const useAddPassword = () => {
-  return useApiMutation(ADD_PW_MUT)
+export const useAddPassword = (options: OperationVariables = {}) => {
+  return useApiMutation(ADD_PW_MUT, options)
 }
 
-export const useRequestPasswordResetEmail = () => {
-  return useApiMutation(REQUEST_PW_RESET_EMAIL)
+export const useRequestPasswordResetEmail = (options: OperationVariables = {}) => {
+  return useApiMutation(REQUEST_PW_RESET_EMAIL, options)
 }
 
-export const useResetPassword = (token: string) => {
-  const [submitResetPassword, ret] = useCsrfMutation(RESET_PW_MUT, {})
+export const useResetPassword = (token: string, options: OperationVariables = {}) => {
+  const [submitResetPassword, ret] = useCsrfMutation(RESET_PW_MUT, options)
   const {loading, error, data} = ret
   const submit = (values: InputValueMap) => {
     submitResetPassword({ variables: { ...values, token } })
@@ -69,11 +71,11 @@ export const useResetPassword = (token: string) => {
   return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
-const useAddOrChangePassword = () => {
+const useAddOrChangePassword = (options: OperationVariables = {}) => {
   const { passwordCredential } = usePasswordCredential()
 
-  const change = useChangePassword()
-  const add = useAddPassword()
+  const change = useChangePassword(options)
+  const add = useAddPassword(options)
 
   if (passwordCredential != null) {
     return change
@@ -88,12 +90,21 @@ type LoginState = {
   stayLoggedIn: string
 }
 
-export const ChangePasswordForm: React.FC<{idPrefix?: string, labelsFirst?: boolean}> =
-  ({idPrefix, labelsFirst: labelsFirstArg}) => {
+type ChangePasswordFormProps = {
+  onSuccess?: () => void,
+  idPrefix?: string,
+  labelsFirst?: boolean
+}
+
+
+export const ChangePasswordForm: React.FC<ChangePasswordFormProps> =
+  ({onSuccess, idPrefix, labelsFirst: labelsFirstArg}) => {
 
   const { email: primaryEmail } = usePrimaryEmail()
   const { loading: pwLoading, error: pwError, passwordCredential } = usePasswordCredential()
-  const [submit, { loading, error }] = useAddOrChangePassword()
+  const [submit, { loading, error }] = useAddOrChangePassword({
+    onCompleted: () => { if (onSuccess) { onSuccess() } }
+  })
 
   const labelsFirst = labelsFirstArg ?? true
 

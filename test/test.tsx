@@ -1,6 +1,6 @@
 import 'jsdom-global/register'
 
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect } from 'react'
 
 import Adapter from 'enzyme-adapter-react-16'
 import { configure, mount, ReactWrapper } from 'enzyme'
@@ -298,4 +298,35 @@ test('<ChangePasswordForm> without password', async () => {
     { email, password: newPassword }
   )
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+})
+
+test('useSendVerificationEmail', async () => {
+  jest.useFakeTimers()
+
+  const svcSendVerificationEmail = jest.fn().mockReturnValue(true)
+  const mocks = extendMocks({
+    AppConfig: () => (configNoOauth),
+    SvcUser: userWithPassword,
+    Mutation: () => ({
+      svcSendVerificationEmail
+    })
+  })
+
+  const VerificationSender: React.FC<{}> = () => {
+    const [submit] = client.useSendVerificationEmail(email)
+    useEffect(() => { submit() }, [])
+    return <div>VerificationSender</div>
+  }
+
+  const wrapper = mount(
+    <TestWrapper mocks={mocks}>
+      <div id="client-test-div">
+        <VerificationSender/>
+      </div>
+    </TestWrapper>
+  )
+
+  await act(async () => { jest.runAllTimers() })
+  wrapper.update()
+  expect(svcSendVerificationEmail.mock.calls[0][1]).toMatchObject({ email })
 })
