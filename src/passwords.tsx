@@ -319,7 +319,7 @@ export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> =
   return <>
     <ErrorMessage error={error} />
     <form onSubmit={(e) => {onSubmit(e); setSubmittedEmail(values.email)}}>
-      <div className="form-label-group">
+      <div className="form-label-group mb-2">
         <InputLabel flip={labelsFirst}>
           <input type="email" data-var="email" className="form-control"
                  value={values.email || ''} onChange={onChange}
@@ -329,7 +329,7 @@ export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> =
         </InputLabel>
       </div>
 
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-between mb-3">
         <button className={`btn btn-primary ${ loading ? 'disabled' : ''}`}
                 type="submit">
           { loading ? 'Please wait...' : 'Submit' }

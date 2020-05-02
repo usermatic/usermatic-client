@@ -721,7 +721,7 @@ exports[`<LoginForm>/<AccountCreationForm> 2`] = `
           onSubmit={[Function]}
         >
           <div
-            className="form-label-group"
+            className="form-label-group mb-2"
           >
             <Component
               flip={true}
@@ -747,7 +747,7 @@ exports[`<LoginForm>/<AccountCreationForm> 2`] = `
             </Component>
           </div>
           <div
-            className="d-flex justify-content-between"
+            className="d-flex justify-content-between mb-3"
           >
             <button
               className="btn btn-primary "

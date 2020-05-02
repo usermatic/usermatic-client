@@ -470,7 +470,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
   if (isForgotPasswordMode) {
     return <div>
-      <div className="p-2">
+      <div>
         Enter your email to get a password reset link.
       </div>
       <RequestPasswordResetForm labelsFirst={labelsFirst}
