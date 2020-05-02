@@ -7,6 +7,19 @@ exports[`<ChangePasswordForm> with password 1`] = `
   <Component
     idPrefix="test"
     labelsFirst={false}
+    onSuccess={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      }
+    }
   >
     <Formik
       initialValues={
@@ -127,6 +140,19 @@ exports[`<ChangePasswordForm> without password 1`] = `
   <Component
     idPrefix="test"
     labelsFirst={false}
+    onSuccess={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      }
+    }
   >
     <Formik
       initialValues={

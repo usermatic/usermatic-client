@@ -235,10 +235,12 @@ test('<ChangePasswordForm> with password', async () => {
     })
   })
 
+  const onSuccess = jest.fn()
   const wrapper = mount(
     <TestWrapper mocks={mocks}>
       <div id="client-test-div">
-        <client.ChangePasswordForm idPrefix="test" labelsFirst={false} />
+        <client.ChangePasswordForm idPrefix="test" labelsFirst={false}
+                                   onSuccess={onSuccess} />
       </div>
     </TestWrapper>
   )
@@ -258,6 +260,7 @@ test('<ChangePasswordForm> with password', async () => {
   expect(svcChangePassword.mock.calls[0][1]).toMatchObject(
     { oldPassword, newPassword }
   )
+  expect(onSuccess).toHaveBeenCalled()
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 })
 
@@ -275,10 +278,12 @@ test('<ChangePasswordForm> without password', async () => {
     })
   })
 
+  const onSuccess = jest.fn()
   const wrapper = mount(
     <TestWrapper mocks={mocks}>
       <div id="client-test-div">
-        <client.ChangePasswordForm idPrefix="test" labelsFirst={false} />
+        <client.ChangePasswordForm idPrefix="test" labelsFirst={false}
+                                   onSuccess={onSuccess} />
       </div>
     </TestWrapper>
   )
@@ -297,6 +302,7 @@ test('<ChangePasswordForm> without password', async () => {
   expect(addPassword.mock.calls[0][1]).toMatchObject(
     { email, password: newPassword }
   )
+  expect(onSuccess).toHaveBeenCalled()
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 })
 
