@@ -9,7 +9,7 @@ import jwt from 'jsonwebtoken'
 
 import { useToken, AppIdContext, useAppConfig, useAppId } from './auth'
 import { useCsrfToken, useCsrfMutation } from './hooks'
-import { useForm, InputValueMap, InputLabel } from './forms'
+import { InputLabel } from './form-util'
 import { ErrorMessage } from './errors'
 import { PasswordScore, RequestPasswordResetForm } from './passwords'
 
@@ -52,7 +52,7 @@ export const useLogout = () => {
   return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
-type LoginSubmitArgs = { email: string, password: string, stayLoggedIn: boolean }
+export type LoginSubmitArgs = { email: string, password: string, stayLoggedIn: boolean }
 
 export const useLogin = () => {
   const appId = useContext(AppIdContext)
@@ -77,6 +77,8 @@ export const useLogin = () => {
   return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
+type CreateAccountArgs = LoginSubmitArgs
+
 export const useCreateAccount = () => {
   const appId = useContext(AppIdContext)
   const [submitCreateAccount, ret] =
@@ -88,7 +90,7 @@ export const useCreateAccount = () => {
 
   const { loading, error, data } = ret
 
-  const submit = (values: InputValueMap) => {
+  const submit = (values: CreateAccountArgs) => {
     submitCreateAccount({ variables: values })
   }
 
@@ -430,6 +432,28 @@ const usePopupWindow = ({onLogin, refetch}: { onLogin?: () => void, refetch: () 
   )
 )
 
+const loginInitialValues = {
+  email: '',
+  password: '',
+  stayLoggedIn: false
+}
+
+const validateLogin = (values: FormikValues) => {
+  const errors: FormikErrors<typeof loginInitialValues> = {};
+
+  if (!values.password) {
+    errors.password = 'Required';
+  }
+
+  if (!values.email) {
+    errors.email = 'Required';
+  } else if (!/.+@.+/.test(values.email)) {
+    errors.email = 'Please enter an email address';
+  }
+
+  return errors;
+}
+
 export const LoginForm: React.FC<LoginFormProps> = ({
   onLogin,
   idPrefix,
@@ -482,31 +506,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     submit(variables as LoginSubmitArgs)
   }
 
-  const initialValues = {
-    email: '',
-    password: '',
-    stayLoggedIn: false
-  }
-
-  const validate = (values: FormikValues) => {
-    const errors: FormikErrors<typeof initialValues> = {};
-
-    if (!values.password) {
-      errors.password = 'Required';
-    }
-
-    if (!values.email) {
-      errors.email = 'Required';
-    } else if (!/.+@.+/.test(values.email)) {
-      errors.email = 'Please enter an email address';
-    }
-
-    return errors;
-  }
-
   return <OauthLogin onLogin={onLoginWrapper}>
     <SocialButtons popupWindow={popupWindow} className="my-3"/>
-    <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
+    <Formik initialValues={loginInitialValues}
+            onSubmit={onSubmit}
+            validate={validateLogin}>
       {(props) => (
         <Form>
           <div className="form-label-group mb-2">
@@ -598,24 +602,20 @@ type AccountCreationProps = {
   showPasswordScore?: boolean
 }
 
-export const AccountCreationForm: React.FC<AccountCreationProps> =
-  ({loginAfterCreation, onLogin, idPrefix, labelsFirst, showPasswordScore = true}) => {
+export const AccountCreationForm: React.FC<AccountCreationProps> = ({
+  loginAfterCreation: loginAfterCreationArg = true,
+  onLogin,
+  idPrefix,
+  labelsFirst: labelsFirstArg = true,
+  showPasswordScore = true
+}) => {
 
-  if (labelsFirst == null) {
-    labelsFirst = true
-  }
-
-  if (loginAfterCreation == null) {
-    loginAfterCreation = true
-  }
+  const labelsFirst = labelsFirstArg
+  const loginAfterCreation = loginAfterCreationArg
 
   const { id } = useToken()
   const [submit, { error, success }] = useCreateAccount()
   const { refetch } = useCsrfToken()
-
-  const { onSubmit, onChange, values } = useForm(submit,
-    { loginAfterCreation }
-  )
 
   const popupWindow = usePopupWindow({onLogin, refetch})
 
@@ -625,45 +625,54 @@ export const AccountCreationForm: React.FC<AccountCreationProps> =
     }
   })
 
+  const onSubmit = (variables: FormikValues) => {
+    submit(variables as CreateAccountArgs)
+  }
+
   return <OauthLogin onLogin={onLogin}>
     <SocialButtons popupWindow={popupWindow} className="my-3"/>
-    <form onSubmit={onSubmit}>
-      <div className="form-label-group mb-2">
-        <InputLabel flip={labelsFirst}>
-          <input type="email" data-var="email" className="form-control"
-                 id={getId(idPrefix, "account-creation-email")}
-                 value={values.email || ''} onChange={onChange}
-                 placeholder="Email address" required autoFocus />
-          <label htmlFor={getId(idPrefix, "account-creation-email")}>Email address</label>
-        </InputLabel>
-      </div>
+    <Formik initialValues={loginInitialValues}
+            onSubmit={onSubmit}
+            validate={validateLogin}>
+    {(props) => (
+      <Form>
+        <div className="form-label-group mb-2">
+          <InputLabel flip={labelsFirst}>
+            <Field type="email" name="email" className="form-control"
+                   id={getId(idPrefix, "account-creation-email")}
+                   placeholder="Email address" required autoFocus />
+            <label htmlFor={getId(idPrefix, "account-creation-email")}>Email address</label>
+          </InputLabel>
+        </div>
 
-      <div className="form-label-group mb-2">
-        <InputLabel flip={labelsFirst}>
-          <input type="password" data-var="password" className="form-control"
-                 id={getId(idPrefix, "account-creation-password")}
-                 value={values.password || ''} onChange={onChange}
-                 placeholder="Password" required />
-          <label htmlFor={getId(idPrefix, "account-creation-password")}>Password</label>
-        </InputLabel>
-      </div>
+        <div className="form-label-group mb-2">
+          <InputLabel flip={labelsFirst}>
+            <Field type="password" name="password" className="form-control"
+                   id={getId(idPrefix, "account-creation-password")}
+                   placeholder="Password" required />
+            <label htmlFor={getId(idPrefix, "account-creation-password")}>Password</label>
+          </InputLabel>
+        </div>
 
-      { loginAfterCreation &&
-      <div className="custom-control custom-checkbox mb-2">
-        <input type="checkbox" className="custom-control-input" data-var="stayLoggedIn"
-               id={getId(idPrefix, "account-creation-stay-logged-in")}
-               onChange={onChange} checked={Boolean(values.stayLoggedIn)} />
-        <label className="custom-control-label" htmlFor={getId(idPrefix, "account-creation-stay-logged-in")}>
-          Remember me
-        </label>
-      </div> }
+        { loginAfterCreation &&
+        <div className="custom-control custom-checkbox mb-2">
+          <Field type="checkbox" className="custom-control-input" name="stayLoggedIn"
+                 id={getId(idPrefix, "account-creation-stay-logged-in")} />
+          <label className="custom-control-label" htmlFor={getId(idPrefix, "account-creation-stay-logged-in")}>
+            Remember me
+          </label>
+        </div> }
 
-      { showPasswordScore && <PasswordScore password={values.password} username={values.email} /> }
+        { showPasswordScore &&
+          <PasswordScore password={props.values.password} username={props.values.email} />
+        }
 
-      <div className="mb-3">
-        <button className="btn btn-primary" type="submit">Create Account</button>
-      </div>
-    </form>
+        <div className="mb-3">
+          <button className="btn btn-primary" type="submit">Create Account</button>
+        </div>
+      </Form>
+    )}
+    </Formik>
     <UserCreateError error={error} />
   </OauthLogin>
 }

@@ -613,90 +613,139 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
           }
         }
       />
-      <form
+      <Formik
+        initialValues={
+          Object {
+            "email": "",
+            "password": "",
+            "stayLoggedIn": false,
+          }
+        }
         onSubmit={[Function]}
+        validate={[Function]}
       >
-        <div
-          className="form-label-group mb-2"
-        >
-          <Component
-            flip={true}
+        <Form>
+          <form
+            action="#"
+            onReset={[Function]}
+            onSubmit={[Function]}
           >
-            <label
-              htmlFor="um3kfiekd-account-creation-email"
-              key=".1"
+            <div
+              className="form-label-group mb-2"
             >
-              Email address
-            </label>
-            <input
-              autoFocus={true}
-              className="form-control"
-              data-var="email"
-              id="um3kfiekd-account-creation-email"
-              key=".0"
-              onChange={[Function]}
-              placeholder="Email address"
-              required={true}
-              type="email"
-              value=""
-            />
-          </Component>
-        </div>
-        <div
-          className="form-label-group mb-2"
-        >
-          <Component
-            flip={true}
-          >
-            <label
-              htmlFor="um3kfiekd-account-creation-password"
-              key=".1"
+              <Component
+                flip={true}
+              >
+                <label
+                  htmlFor="um3kfiekd-account-creation-email"
+                  key=".1"
+                >
+                  Email address
+                </label>
+                <Field
+                  autoFocus={true}
+                  className="form-control"
+                  id="um3kfiekd-account-creation-email"
+                  key=".0"
+                  name="email"
+                  placeholder="Email address"
+                  required={true}
+                  type="email"
+                >
+                  <input
+                    autoFocus={true}
+                    className="form-control"
+                    id="um3kfiekd-account-creation-email"
+                    name="email"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    placeholder="Email address"
+                    required={true}
+                    type="email"
+                    value=""
+                  />
+                </Field>
+              </Component>
+            </div>
+            <div
+              className="form-label-group mb-2"
             >
-              Password
-            </label>
-            <input
-              className="form-control"
-              data-var="password"
-              id="um3kfiekd-account-creation-password"
-              key=".0"
-              onChange={[Function]}
-              placeholder="Password"
-              required={true}
-              type="password"
-              value=""
+              <Component
+                flip={true}
+              >
+                <label
+                  htmlFor="um3kfiekd-account-creation-password"
+                  key=".1"
+                >
+                  Password
+                </label>
+                <Field
+                  className="form-control"
+                  id="um3kfiekd-account-creation-password"
+                  key=".0"
+                  name="password"
+                  placeholder="Password"
+                  required={true}
+                  type="password"
+                >
+                  <input
+                    className="form-control"
+                    id="um3kfiekd-account-creation-password"
+                    name="password"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    placeholder="Password"
+                    required={true}
+                    type="password"
+                    value=""
+                  />
+                </Field>
+              </Component>
+            </div>
+            <div
+              className="custom-control custom-checkbox mb-2"
+            >
+              <Field
+                className="custom-control-input"
+                id="um3kfiekd-account-creation-stay-logged-in"
+                name="stayLoggedIn"
+                type="checkbox"
+              >
+                <input
+                  checked={false}
+                  className="custom-control-input"
+                  id="um3kfiekd-account-creation-stay-logged-in"
+                  name="stayLoggedIn"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  type="checkbox"
+                  value={false}
+                />
+              </Field>
+              <label
+                className="custom-control-label"
+                htmlFor="um3kfiekd-account-creation-stay-logged-in"
+              >
+                Remember me
+              </label>
+            </div>
+            <Component
+              password=""
+              username=""
             />
-          </Component>
-        </div>
-        <div
-          className="custom-control custom-checkbox mb-2"
-        >
-          <input
-            checked={false}
-            className="custom-control-input"
-            data-var="stayLoggedIn"
-            id="um3kfiekd-account-creation-stay-logged-in"
-            onChange={[Function]}
-            type="checkbox"
-          />
-          <label
-            className="custom-control-label"
-            htmlFor="um3kfiekd-account-creation-stay-logged-in"
-          >
-            Remember me
-          </label>
-        </div>
-        <Component />
-        <div
-          className="mb-3"
-        >
-          <button
-            className="btn btn-primary"
-            type="submit"
-          >
-            Create Account
-          </button>
-        </div>
-      </form>
+            <div
+              className="mb-3"
+            >
+              <button
+                className="btn btn-primary"
+                type="submit"
+              >
+                Create Account
+              </button>
+            </div>
+          </form>
+        </Form>
+      </Formik>
       <UserCreateError />
     </Component>
   </AccountCreationForm>
@@ -810,90 +859,139 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
           }
         }
       />
-      <form
+      <Formik
+        initialValues={
+          Object {
+            "email": "",
+            "password": "",
+            "stayLoggedIn": false,
+          }
+        }
         onSubmit={[Function]}
+        validate={[Function]}
       >
-        <div
-          className="form-label-group mb-2"
-        >
-          <Component
-            flip={true}
+        <Form>
+          <form
+            action="#"
+            onReset={[Function]}
+            onSubmit={[Function]}
           >
-            <label
-              htmlFor="um3kfiekd-account-creation-email"
-              key=".1"
+            <div
+              className="form-label-group mb-2"
             >
-              Email address
-            </label>
-            <input
-              autoFocus={true}
-              className="form-control"
-              data-var="email"
-              id="um3kfiekd-account-creation-email"
-              key=".0"
-              onChange={[Function]}
-              placeholder="Email address"
-              required={true}
-              type="email"
-              value=""
-            />
-          </Component>
-        </div>
-        <div
-          className="form-label-group mb-2"
-        >
-          <Component
-            flip={true}
-          >
-            <label
-              htmlFor="um3kfiekd-account-creation-password"
-              key=".1"
+              <Component
+                flip={true}
+              >
+                <label
+                  htmlFor="um3kfiekd-account-creation-email"
+                  key=".1"
+                >
+                  Email address
+                </label>
+                <Field
+                  autoFocus={true}
+                  className="form-control"
+                  id="um3kfiekd-account-creation-email"
+                  key=".0"
+                  name="email"
+                  placeholder="Email address"
+                  required={true}
+                  type="email"
+                >
+                  <input
+                    autoFocus={true}
+                    className="form-control"
+                    id="um3kfiekd-account-creation-email"
+                    name="email"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    placeholder="Email address"
+                    required={true}
+                    type="email"
+                    value=""
+                  />
+                </Field>
+              </Component>
+            </div>
+            <div
+              className="form-label-group mb-2"
             >
-              Password
-            </label>
-            <input
-              className="form-control"
-              data-var="password"
-              id="um3kfiekd-account-creation-password"
-              key=".0"
-              onChange={[Function]}
-              placeholder="Password"
-              required={true}
-              type="password"
-              value=""
+              <Component
+                flip={true}
+              >
+                <label
+                  htmlFor="um3kfiekd-account-creation-password"
+                  key=".1"
+                >
+                  Password
+                </label>
+                <Field
+                  className="form-control"
+                  id="um3kfiekd-account-creation-password"
+                  key=".0"
+                  name="password"
+                  placeholder="Password"
+                  required={true}
+                  type="password"
+                >
+                  <input
+                    className="form-control"
+                    id="um3kfiekd-account-creation-password"
+                    name="password"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    placeholder="Password"
+                    required={true}
+                    type="password"
+                    value=""
+                  />
+                </Field>
+              </Component>
+            </div>
+            <div
+              className="custom-control custom-checkbox mb-2"
+            >
+              <Field
+                className="custom-control-input"
+                id="um3kfiekd-account-creation-stay-logged-in"
+                name="stayLoggedIn"
+                type="checkbox"
+              >
+                <input
+                  checked={false}
+                  className="custom-control-input"
+                  id="um3kfiekd-account-creation-stay-logged-in"
+                  name="stayLoggedIn"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  type="checkbox"
+                  value={false}
+                />
+              </Field>
+              <label
+                className="custom-control-label"
+                htmlFor="um3kfiekd-account-creation-stay-logged-in"
+              >
+                Remember me
+              </label>
+            </div>
+            <Component
+              password=""
+              username=""
             />
-          </Component>
-        </div>
-        <div
-          className="custom-control custom-checkbox mb-2"
-        >
-          <input
-            checked={false}
-            className="custom-control-input"
-            data-var="stayLoggedIn"
-            id="um3kfiekd-account-creation-stay-logged-in"
-            onChange={[Function]}
-            type="checkbox"
-          />
-          <label
-            className="custom-control-label"
-            htmlFor="um3kfiekd-account-creation-stay-logged-in"
-          >
-            Remember me
-          </label>
-        </div>
-        <Component />
-        <div
-          className="mb-3"
-        >
-          <button
-            className="btn btn-primary"
-            type="submit"
-          >
-            Create Account
-          </button>
-        </div>
-      </form>
+            <div
+              className="mb-3"
+            >
+              <button
+                className="btn btn-primary"
+                type="submit"
+              >
+                Create Account
+              </button>
+            </div>
+          </form>
+        </Form>
+      </Formik>
       <UserCreateError />
     </Component>
   </AccountCreationForm>
@@ -1459,90 +1557,139 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
           </SocialLoginButton>
         </div>
       </SocialButtons>
-      <form
+      <Formik
+        initialValues={
+          Object {
+            "email": "",
+            "password": "",
+            "stayLoggedIn": false,
+          }
+        }
         onSubmit={[Function]}
+        validate={[Function]}
       >
-        <div
-          className="form-label-group mb-2"
-        >
-          <Component
-            flip={true}
+        <Form>
+          <form
+            action="#"
+            onReset={[Function]}
+            onSubmit={[Function]}
           >
-            <label
-              htmlFor="um3kfiekd-account-creation-email"
-              key=".1"
+            <div
+              className="form-label-group mb-2"
             >
-              Email address
-            </label>
-            <input
-              autoFocus={true}
-              className="form-control"
-              data-var="email"
-              id="um3kfiekd-account-creation-email"
-              key=".0"
-              onChange={[Function]}
-              placeholder="Email address"
-              required={true}
-              type="email"
-              value=""
-            />
-          </Component>
-        </div>
-        <div
-          className="form-label-group mb-2"
-        >
-          <Component
-            flip={true}
-          >
-            <label
-              htmlFor="um3kfiekd-account-creation-password"
-              key=".1"
+              <Component
+                flip={true}
+              >
+                <label
+                  htmlFor="um3kfiekd-account-creation-email"
+                  key=".1"
+                >
+                  Email address
+                </label>
+                <Field
+                  autoFocus={true}
+                  className="form-control"
+                  id="um3kfiekd-account-creation-email"
+                  key=".0"
+                  name="email"
+                  placeholder="Email address"
+                  required={true}
+                  type="email"
+                >
+                  <input
+                    autoFocus={true}
+                    className="form-control"
+                    id="um3kfiekd-account-creation-email"
+                    name="email"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    placeholder="Email address"
+                    required={true}
+                    type="email"
+                    value=""
+                  />
+                </Field>
+              </Component>
+            </div>
+            <div
+              className="form-label-group mb-2"
             >
-              Password
-            </label>
-            <input
-              className="form-control"
-              data-var="password"
-              id="um3kfiekd-account-creation-password"
-              key=".0"
-              onChange={[Function]}
-              placeholder="Password"
-              required={true}
-              type="password"
-              value=""
+              <Component
+                flip={true}
+              >
+                <label
+                  htmlFor="um3kfiekd-account-creation-password"
+                  key=".1"
+                >
+                  Password
+                </label>
+                <Field
+                  className="form-control"
+                  id="um3kfiekd-account-creation-password"
+                  key=".0"
+                  name="password"
+                  placeholder="Password"
+                  required={true}
+                  type="password"
+                >
+                  <input
+                    className="form-control"
+                    id="um3kfiekd-account-creation-password"
+                    name="password"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    placeholder="Password"
+                    required={true}
+                    type="password"
+                    value=""
+                  />
+                </Field>
+              </Component>
+            </div>
+            <div
+              className="custom-control custom-checkbox mb-2"
+            >
+              <Field
+                className="custom-control-input"
+                id="um3kfiekd-account-creation-stay-logged-in"
+                name="stayLoggedIn"
+                type="checkbox"
+              >
+                <input
+                  checked={false}
+                  className="custom-control-input"
+                  id="um3kfiekd-account-creation-stay-logged-in"
+                  name="stayLoggedIn"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  type="checkbox"
+                  value={false}
+                />
+              </Field>
+              <label
+                className="custom-control-label"
+                htmlFor="um3kfiekd-account-creation-stay-logged-in"
+              >
+                Remember me
+              </label>
+            </div>
+            <Component
+              password=""
+              username=""
             />
-          </Component>
-        </div>
-        <div
-          className="custom-control custom-checkbox mb-2"
-        >
-          <input
-            checked={false}
-            className="custom-control-input"
-            data-var="stayLoggedIn"
-            id="um3kfiekd-account-creation-stay-logged-in"
-            onChange={[Function]}
-            type="checkbox"
-          />
-          <label
-            className="custom-control-label"
-            htmlFor="um3kfiekd-account-creation-stay-logged-in"
-          >
-            Remember me
-          </label>
-        </div>
-        <Component />
-        <div
-          className="mb-3"
-        >
-          <button
-            className="btn btn-primary"
-            type="submit"
-          >
-            Create Account
-          </button>
-        </div>
-      </form>
+            <div
+              className="mb-3"
+            >
+              <button
+                className="btn btn-primary"
+                type="submit"
+              >
+                Create Account
+              </button>
+            </div>
+          </form>
+        </Form>
+      </Formik>
       <UserCreateError />
     </Component>
   </AccountCreationForm>
