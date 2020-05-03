@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Formik, Form, Field, FormikValues, FormikErrors } from 'formik'
 
 import { DocumentNode } from 'graphql'
@@ -11,9 +11,9 @@ import { OperationVariables } from '@apollo/react-common'
 import { useAppConfig } from './auth'
 import { usePasswordCredential, usePrimaryEmail } from './user'
 import { useCsrfMutation } from './hooks'
-import { useForm, InputValueMap, InputLabel } from './forms'
+import { InputLabel } from './form-util'
 import { ErrorMessage } from './errors'
-import { useLogin } from './login'
+import { LoginSubmitArgs, useLogin } from './login'
 import { useDebounce } from './use-debounce'
 
 // @ts-ignore
@@ -39,7 +39,7 @@ const getId = (prefix: string | undefined, suffix: string) => {
 const useApiMutation = (mut: DocumentNode, options: OperationVariables) => {
   const [submit, ret] = useCsrfMutation(mut, options)
   const {loading, error, data} = ret
-  const submitWrapper = (values: InputValueMap) => {
+  const submitWrapper = (values: Record<string, string>) => {
     submit({ variables: values })
   }
 
@@ -63,7 +63,7 @@ export const useRequestPasswordResetEmail = (options: OperationVariables = {}) =
 export const useResetPassword = (token: string, options: OperationVariables = {}) => {
   const [submitResetPassword, ret] = useCsrfMutation(RESET_PW_MUT, options)
   const {loading, error, data} = ret
-  const submit = (values: InputValueMap) => {
+  const submit = (values: { newPassword: string }) => {
     submitResetPassword({ variables: { ...values, token } })
   }
   const success = !loading && !error && data
@@ -82,12 +82,6 @@ const useAddOrChangePassword = (options: OperationVariables = {}) => {
   } else {
     return add
   }
-}
-
-type LoginState = {
-  email: string
-  password: string
-  stayLoggedIn: string
 }
 
 type ChangePasswordFormProps = {
@@ -184,13 +178,67 @@ type ResetPasswordFormProps = {
   redirectAfterReset?: boolean
 }
 
-export const ResetPasswordForm: React.FC<ResetPasswordFormProps> =
-  ({token, onLogin, idPrefix, labelsFirst, allowLoginAfterReset,
-    redirectAfterReset}) => {
+type UseAfterResetProps = {
+  allowLoginAfterReset: boolean,
+  redirectAfterReset: boolean
+  loginData: LoginSubmitArgs
+  svcResetPassword: ReturnType<typeof useResetPassword>[1]['data']
+  onLogin?: () => void
+}
 
-  if (labelsFirst == null) { labelsFirst = true }
-  if (allowLoginAfterReset == null) { allowLoginAfterReset = true }
-  if (redirectAfterReset == null) { redirectAfterReset = false }
+const LoginAfterReset: React.FC<UseAfterResetProps> = ({
+  allowLoginAfterReset,
+  redirectAfterReset,
+  loginData,
+  svcResetPassword,
+  onLogin
+}) => {
+
+  const [submitLogin, { error, success }] = useLogin()
+
+  const redirectUri = svcResetPassword && svcResetPassword.redirectUri
+
+  useEffect(() => {
+    if (success) {
+      if (onLogin != null) {
+        onLogin()
+      }
+    }
+  }, [success, onLogin])
+
+  useEffect(() => {
+    if (redirectAfterReset) {
+      setTimeout(() => {
+       window.location.replace(redirectUri)
+      }, 1000)
+    } else {
+      if (allowLoginAfterReset) {
+        submitLogin(loginData)
+      }
+    }
+  }, [redirectAfterReset, loginData, allowLoginAfterReset, redirectUri])
+
+  return <div className="alert alert-success">
+    <ErrorMessage error={error} />
+    Your password has been reset successfully.
+    { redirectUri &&
+      <>You will be redirected to <a href="{redirectUri}">{redirectUri}</a> shortly.</>
+    }
+  </div>
+}
+
+export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
+  token,
+  onLogin,
+  idPrefix,
+  labelsFirst: labelsFirstArg = true,
+  allowLoginAfterReset: allowLoginAfterResetArg = true,
+  redirectAfterReset: redirectAfterResetArg = false
+}) => {
+
+  const labelsFirst = labelsFirstArg
+  const allowLoginAfterReset = allowLoginAfterResetArg
+  const redirectAfterReset = redirectAfterResetArg
 
   if (redirectAfterReset && allowLoginAfterReset) {
     throw new Error(`
@@ -199,103 +247,99 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> =
     `)
   }
 
-  const [loginData, setLoginData] = useState<LoginState | undefined>()
-
   const [submit, { error, success, data }] = useResetPassword(token)
 
-  const [submitLogin, { error: loginError, success: loginSuccess }] = useLogin()
-
-  useEffect(() => {
-    if (success) {
-      if (redirectAfterReset) {
-        const { redirectUri } = data.svcResetPassword
-        setTimeout(() => {
-         window.location.replace(redirectUri)
-        }, 1000)
-      } else {
-        if (loginData) {
-          setLoginData(undefined)
-          // TODO: this should get cleaned up when we switch this form to Formik
-          submitLogin({ ...loginData, stayLoggedIn: Boolean(loginData.stayLoggedIn)})
-        }
-      }
-    }
-
-    if (loginSuccess) {
-      if (onLogin != null) {
-        onLogin()
-      }
-    }
-  })
-
-  const submitWrapper = (values: InputValueMap) => {
+  const email = useMemo(() => {
     const decoded = jwt.decode(token)
     if (!decoded || typeof decoded != 'object') {
       console.error("password reset token was invalid")
-      submit({}) // do a bogus submit to force an error
+      submit({} as any) // do a bogus submit to force an error
       return
     }
 
-    const { email } = decoded
-    const { newPassword, stayLoggedIn } = values
-    if (allowLoginAfterReset && Boolean(values.loginAfterReset)) {
-      setLoginData({ password: newPassword, stayLoggedIn, email })
-    }
+    return decoded.email
+  }, [token])
+
+  if (email == null) {
+    return <div className="alert alert-danger">
+      Invalid token <pre>{token}</pre>
+    </div>
+  }
+
+  const submitWrapper = (values: FormikValues) => {
+    const { newPassword } = values
     submit({ newPassword })
   }
 
-  const {onSubmit, onChange, values} = useForm(submitWrapper)
+  const initialValues = {
+    newPassword: '',
+    loginAfterReset: true,
+    stayLoggedIn: false
+  }
 
-  if (success) {
-    const redirectUri = data.resetPassword && data.resetPassword.redirectUri
-    return <div className="alert alert-success">
-      Your password has been reset successfully.
-      { redirectUri &&
-        <>You will be redirected to <a href="{redirectUri}">{redirectUri}</a> shortly.</>
-      }
-    </div>
+  const validate = (values: FormikValues) => {
+    const errors: FormikErrors<typeof initialValues> = {};
+    if (!values.newPassword) {
+      errors.newPassword = 'Required'
+    }
+    return errors
   }
 
   return <div>
     <ErrorMessage error={error} />
-    <ErrorMessage error={loginError} />
-    <form onSubmit={onSubmit}>
-      <div className="form-label-group">
-        <InputLabel flip={labelsFirst}>
-          <input type="password" data-var="newPassword" className="form-control"
-                 value={values.newPassword || ''} onChange={onChange}
-                 id={getId(idPrefix, "reset-password-new-password")}
-                 placeholder="New Password" required autoFocus />
-          <label htmlFor={getId(idPrefix, "reset-password-new-password")}>New Password</label>
-        </InputLabel>
-      </div>
+    <Formik initialValues={initialValues} validate={validate} onSubmit={submitWrapper}>
+    {(props) => {
+      if (success) {
+        return <LoginAfterReset
+          redirectAfterReset={redirectAfterReset}
+          allowLoginAfterReset={allowLoginAfterReset}
+          loginData={{
+            email,
+            password: props.values.newPassword,
+            stayLoggedIn: props.values.stayLoggedIn
+          }}
+          svcResetPassword={data ?? data.svcResetPassword}
+          onLogin={onLogin}
+        />
+      }
 
-      { allowLoginAfterReset &&
-
-      <div className="custom-control custom-checkbox mb-3 justify-content-between d-flex">
-        <input type="checkbox" className="custom-control-input" data-var="loginAfterReset"
-               id={getId(idPrefix, "reset-password-login-after-reset")}
-               onChange={onChange} checked={Boolean(values.loginAfterReset)} />
-        <label className="custom-control-label" htmlFor={getId(idPrefix, "reset-password-login-after-reset")}>
-          Log in now?
-        </label>
-      </div> }
-
-      { Boolean(values.loginAfterReset) ?
-        <div className="custom-control custom-checkbox mb-3 justify-content-between d-flex">
-          <input type="checkbox" className="custom-control-input" data-var="stayLoggedIn"
-                 id={getId(idPrefix, "reset-password-stay-logged-in")}
-                 onChange={onChange} checked={Boolean(values.stayLoggedIn)} />
-          <label className="custom-control-label" htmlFor={getId(idPrefix, "reset-password-stay-logged-in")}>
-            Remember me
-          </label>
+      return <Form id="reset-password-form">
+        <div className="form-label-group">
+          <InputLabel flip={labelsFirst}>
+            <Field type="password" name="newPassword" className="form-control"
+                   id={getId(idPrefix, "reset-password-new-password")}
+                   placeholder="New Password" required autoFocus />
+            <label htmlFor={getId(idPrefix, "reset-password-new-password")}>New Password</label>
+          </InputLabel>
         </div>
-        : null }
 
-      <button className="btn btn-primary btn-block" type="submit">Reset Password</button>
-    </form>
+        { allowLoginAfterReset &&
+
+        <div className="custom-control custom-checkbox mb-3 justify-content-between d-flex">
+          <Field type="checkbox" className="custom-control-input" name="loginAfterReset"
+                 id={getId(idPrefix, "reset-password-login-after-reset")} />
+          <label className="custom-control-label" htmlFor={getId(idPrefix, "reset-password-login-after-reset")}>
+            Log in now?
+          </label>
+        </div> }
+
+        { Boolean(props.values.loginAfterReset) ?
+          <div className="custom-control custom-checkbox mb-3 justify-content-between d-flex">
+            <Field type="checkbox" className="custom-control-input" name="stayLoggedIn"
+                   id={getId(idPrefix, "reset-password-stay-logged-in")} />
+            <label className="custom-control-label" htmlFor={getId(idPrefix, "reset-password-stay-logged-in")}>
+              Remember me
+            </label>
+          </div>
+          : null }
+
+        <button className="btn btn-primary btn-block" type="submit">Reset Password</button>
+      </Form>
+    }}
+    </Formik>
   </div>
 }
+ResetPasswordForm.displayName = 'ResetPasswordForm'
 
 type RequestPasswordResetFormProps = {
   idPrefix?: string,
@@ -364,6 +408,7 @@ export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> =
     </>}
   </Formik>
 }
+RequestPasswordResetForm.displayName = 'RequestPasswordResetForm'
 
 type PwScoreRecord = Record<string, any>
 

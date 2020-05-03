@@ -763,7 +763,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
       <div>
         Enter your email to get a password reset link.
       </div>
-      <Component
+      <RequestPasswordResetForm
         idPrefix="test"
         labelsFirst={true}
         onCancel={[Function]}
@@ -845,7 +845,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
             </form>
           </Form>
         </Formik>
-      </Component>
+      </RequestPasswordResetForm>
     </div>
   </LoginForm>
   <AccountCreationForm>
@@ -1790,5 +1790,241 @@ exports[`<ReauthenticateGuard> 2`] = `
       </div>
     </GuardedComponent>
   </Component>
+</div>
+`;
+
+exports[`<ResetPasswordForm> 1`] = `
+<div
+  id="client-test-div"
+>
+  <ResetPasswordForm
+    allowLoginAfterReset={true}
+    idPrefix="test"
+    onLogin={[MockFunction]}
+    token="eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJlbWFpbCI6ImJvYkBib2IuY29tIiwiY3JlZGVudGlhbElkIjoiYTMxZDY4ZTYtODk4Zi00OTk4LTllNmQtMjVlZjFhNjJmNjJjIiwiaWQiOiI5MTVjYjNjMC1hM2FjLTQ0YmUtYTJhOC02ZWRiMjViZmVhY2MiLCJhcHBJZCI6IjI0OGU1NDczLWQ5YTYtNDQ4Ny05MTY0LTI0YzMwNTJkMjg5OCIsImFjdGlvbiI6IlJFU0VUX1BXIiwiaWF0IjoxMDAwfQ."
+  >
+    <div>
+      <ErrorMessage />
+      <Formik
+        initialValues={
+          Object {
+            "loginAfterReset": true,
+            "newPassword": "",
+            "stayLoggedIn": false,
+          }
+        }
+        onSubmit={[Function]}
+        validate={[Function]}
+      >
+        <Form
+          id="reset-password-form"
+        >
+          <form
+            action="#"
+            id="reset-password-form"
+            onReset={[Function]}
+            onSubmit={[Function]}
+          >
+            <div
+              className="form-label-group"
+            >
+              <Component
+                flip={true}
+              >
+                <label
+                  htmlFor="test-reset-password-new-password"
+                  key=".1"
+                >
+                  New Password
+                </label>
+                <Field
+                  autoFocus={true}
+                  className="form-control"
+                  id="test-reset-password-new-password"
+                  key=".0"
+                  name="newPassword"
+                  placeholder="New Password"
+                  required={true}
+                  type="password"
+                >
+                  <input
+                    autoFocus={true}
+                    className="form-control"
+                    id="test-reset-password-new-password"
+                    name="newPassword"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    placeholder="New Password"
+                    required={true}
+                    type="password"
+                    value=""
+                  />
+                </Field>
+              </Component>
+            </div>
+            <div
+              className="custom-control custom-checkbox mb-3 justify-content-between d-flex"
+            >
+              <Field
+                className="custom-control-input"
+                id="test-reset-password-login-after-reset"
+                name="loginAfterReset"
+                type="checkbox"
+              >
+                <input
+                  checked={true}
+                  className="custom-control-input"
+                  id="test-reset-password-login-after-reset"
+                  name="loginAfterReset"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  type="checkbox"
+                  value={true}
+                />
+              </Field>
+              <label
+                className="custom-control-label"
+                htmlFor="test-reset-password-login-after-reset"
+              >
+                Log in now?
+              </label>
+            </div>
+            <div
+              className="custom-control custom-checkbox mb-3 justify-content-between d-flex"
+            >
+              <Field
+                className="custom-control-input"
+                id="test-reset-password-stay-logged-in"
+                name="stayLoggedIn"
+                type="checkbox"
+              >
+                <input
+                  checked={false}
+                  className="custom-control-input"
+                  id="test-reset-password-stay-logged-in"
+                  name="stayLoggedIn"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  type="checkbox"
+                  value={false}
+                />
+              </Field>
+              <label
+                className="custom-control-label"
+                htmlFor="test-reset-password-stay-logged-in"
+              >
+                Remember me
+              </label>
+            </div>
+            <button
+              className="btn btn-primary btn-block"
+              type="submit"
+            >
+              Reset Password
+            </button>
+          </form>
+        </Form>
+      </Formik>
+    </div>
+  </ResetPasswordForm>
+</div>
+`;
+
+exports[`<ResetPasswordForm> 2`] = `
+<div
+  id="client-test-div"
+>
+  <ResetPasswordForm
+    allowLoginAfterReset={true}
+    idPrefix="test"
+    onLogin={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      }
+    }
+    token="eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJlbWFpbCI6ImJvYkBib2IuY29tIiwiY3JlZGVudGlhbElkIjoiYTMxZDY4ZTYtODk4Zi00OTk4LTllNmQtMjVlZjFhNjJmNjJjIiwiaWQiOiI5MTVjYjNjMC1hM2FjLTQ0YmUtYTJhOC02ZWRiMjViZmVhY2MiLCJhcHBJZCI6IjI0OGU1NDczLWQ5YTYtNDQ4Ny05MTY0LTI0YzMwNTJkMjg5OCIsImFjdGlvbiI6IlJFU0VUX1BXIiwiaWF0IjoxMDAwfQ."
+  >
+    <div>
+      <ErrorMessage />
+      <Formik
+        initialValues={
+          Object {
+            "loginAfterReset": true,
+            "newPassword": "",
+            "stayLoggedIn": false,
+          }
+        }
+        onSubmit={[Function]}
+        validate={[Function]}
+      >
+        <LoginAfterReset
+          allowLoginAfterReset={true}
+          loginData={
+            Object {
+              "email": "bob@bob.com",
+              "password": "abc123",
+              "stayLoggedIn": false,
+            }
+          }
+          onLogin={
+            [MockFunction] {
+              "calls": Array [
+                Array [],
+              ],
+              "results": Array [
+                Object {
+                  "type": "return",
+                  "value": undefined,
+                },
+              ],
+            }
+          }
+          redirectAfterReset={false}
+          svcResetPassword={
+            Object {
+              "svcResetPassword": Object {
+                "__typename": "PasswordResetResult",
+                "redirectUri": "/fakeuri",
+              },
+            }
+          }
+        >
+          <div
+            className="alert alert-success"
+          >
+            <ErrorMessage />
+            Your password has been reset successfully.
+          </div>
+        </LoginAfterReset>
+      </Formik>
+    </div>
+  </ResetPasswordForm>
+</div>
+`;
+
+exports[`<ResetPasswordForm> invalid token 1`] = `
+<div
+  id="client-test-div"
+>
+  <ResetPasswordForm
+    token="eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJjcmVkZW50aWFsSWQiOiJhMzFkNjhlNi04OThmLTQ5OTgtOWU2ZC0yNWVmMWE2MmY2MmMiLCJpZCI6IjkxNWNiM2MwLWEzYWMtNDRiZS1hMmE4LTZlZGIyNWJmZWFjYyIsImFwcElkIjoiMjQ4ZTU0NzMtZDlhNi00NDg3LTkxNjQtMjRjMzA1MmQyODk4IiwiYWN0aW9uIjoiUkVTRVRfUFciLCJpYXQiOjEwMDB9."
+  >
+    <div
+      className="alert alert-danger"
+    >
+      Invalid token 
+      <pre>
+        eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJjcmVkZW50aWFsSWQiOiJhMzFkNjhlNi04OThmLTQ5OTgtOWU2ZC0yNWVmMWE2MmY2MmMiLCJpZCI6IjkxNWNiM2MwLWEzYWMtNDRiZS1hMmE4LTZlZGIyNWJmZWFjYyIsImFwcElkIjoiMjQ4ZTU0NzMtZDlhNi00NDg3LTkxNjQtMjRjMzA1MmQyODk4IiwiYWN0aW9uIjoiUkVTRVRfUFciLCJpYXQiOjEwMDB9.
+      </pre>
+    </div>
+  </ResetPasswordForm>
 </div>
 `;

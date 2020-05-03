@@ -32,6 +32,7 @@ configure({ adapter: new Adapter() })
 const email = 'bob@bob.com'
 const userId = '915cb3c0-a3ac-44be-a2a8-6edb25bfeacc'
 const appId = '248e5473-d9a6-4487-9164-24c3052d2898'
+const credentialId = 'a31d68e6-898f-4998-9e6d-25ef1a62f62c'
 
 const defaultMocks = {
   AppConfig: () => ({ minPasswordStrength: 3 }),
@@ -51,7 +52,7 @@ const userWithPassword = () => ({
   credentials: [
     {
       type: 'PASSWORD',
-      id: 'a31d68e6-898f-4998-9e6d-25ef1a62f62c',
+      id: credentialId,
       email: email,
       emailIsVerified: true
     }
@@ -64,7 +65,7 @@ const userWithoutPassword = () => ({
   credentials: [
     {
       type: 'OAUTH',
-      id: 'a31d68e6-898f-4998-9e6d-25ef1a62f62c',
+      id: credentialId,
       provider: 'GOOGLE',
       providerId: 'abc',
       photoURL: '/photo'
@@ -409,6 +410,97 @@ test('<ReauthenticateGuard>', async () => {
   expect(signReauthenticationToken.mock.calls[0][1]).toMatchObject(
     { contents: '"a token"', password: "hunter2" }
   )
+
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+})
+
+test('<ResetPasswordForm> invalid token', async () => {
+  jest.useFakeTimers()
+
+  const svcResetPassword = jest.fn().mockReturnValue({
+    redirectUri: '/fakeuri'
+  })
+  const mocks = extendMocks({
+    AppConfig: () => (configNoOauth),
+    SvcUser: userWithPassword,
+    Mutation: () => ({
+      svcResetPassword
+    })
+  })
+
+  const token = jwt.sign({
+    credentialId,
+    id: userId,
+    appId: appId,
+    action: 'RESET_PW',
+    iat: 1000
+  }, 'abc', { algorithm: 'none' })
+
+  const wrapper = mount(
+    <TestWrapper mocks={mocks}>
+      <div id="client-test-div">
+        <client.ResetPasswordForm token={token} />
+      </div>
+    </TestWrapper>
+  )
+  await act(async () => { jest.runAllTimers() })
+  wrapper.update()
+
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+})
+
+test('<ResetPasswordForm>', async () => {
+  jest.useFakeTimers()
+
+  const svcResetPassword = jest.fn().mockReturnValue({
+    redirectUri: '/fakeuri'
+  })
+  const mocks = extendMocks({
+    AppConfig: () => (configNoOauth),
+    SvcUser: userWithPassword,
+    Mutation: () => ({
+      svcResetPassword
+    })
+  })
+
+  const token = jwt.sign({
+    email,
+    credentialId,
+    id: userId,
+    appId: appId,
+    action: 'RESET_PW',
+    iat: 1000,
+  }, 'abc', { algorithm: 'none' })
+
+  const onLogin = jest.fn()
+  const wrapper = mount(
+    <TestWrapper mocks={mocks}>
+      <div id="client-test-div">
+        <client.ResetPasswordForm onLogin={onLogin} idPrefix="test" token={token}
+          allowLoginAfterReset />
+      </div>
+    </TestWrapper>
+  )
+
+  await act(async () => { jest.runAllTimers() })
+  wrapper.update()
+
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+
+  const newPassword = 'abc123'
+  setInput(wrapper, 'newPassword', 'input#test-reset-password-new-password', newPassword)
+  setInput(wrapper, 'loginAfterReset', 'input#test-reset-password-login-after-reset', true)
+  wrapper.find('form#reset-password-form').simulate('submit')
+
+  await act(async () => { jest.runAllTimers() })
+  wrapper.update()
+  await act(async () => { jest.runAllTimers() })
+  wrapper.update()
+
+  expect(svcResetPassword.mock.calls[0][1]).toMatchObject(
+    { token, newPassword }
+  )
+  expect(onLogin).toHaveBeenCalled()
 
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 })
