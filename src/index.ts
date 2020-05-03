@@ -46,6 +46,8 @@ import {
 
 import {
   useReauthToken,
+  useCachedReauthToken,
+  useReauthenticate,
   ReauthenticateGuard
 } from './reauth'
 
@@ -66,6 +68,8 @@ export {
   useCreateAccount,
   useToken,
   useReauthToken,
+  useCachedReauthToken,
+  useReauthenticate,
   useEmailVerifier,
   useProfile,
   usePrimaryEmail,

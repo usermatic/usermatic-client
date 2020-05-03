@@ -348,3 +348,67 @@ test('useSendVerificationEmail', async () => {
   wrapper.update()
   expect(svcSendVerificationEmail.mock.calls[0][1]).toMatchObject({ email })
 })
+
+test('<ReauthenticateGuard>', async () => {
+  jest.useFakeTimers()
+
+  const signReauthenticationToken = jest.fn().mockImplementation(
+    (root, { contents, password }) => (
+      jwt.sign({
+        id: userId,
+        userContents: contents,
+        reauthenticationMethods: ['password']
+      }, 'abc')
+    )
+  )
+
+  const mocks = extendMocks({
+    AppConfig: () => (configNoOauth),
+    SvcUser: userWithPassword,
+    Mutation: () => ({
+      signReauthenticationToken
+    })
+  })
+
+  const GuardedComponent: React.FC<{}> = () => {
+    const token = client.useReauthToken()
+    if (!token) { return null }
+    const decoded = jwt.decode(token)
+    if (decoded == null || typeof decoded === 'string') { return null }
+    if (decoded.iat) { decoded.iat = 42 }
+
+    return <div>
+      token: { token && JSON.stringify(decoded) }
+    </div>
+  }
+
+  const wrapper = mount(
+    <TestWrapper mocks={mocks}>
+      <div id="client-test-div">
+        <client.ReauthenticateGuard
+          tokenContents="a token"
+        >
+          <GuardedComponent/>
+        </client.ReauthenticateGuard>
+      </div>
+    </TestWrapper>
+  )
+
+  await act(async () => { jest.runAllTimers() })
+  wrapper.update()
+
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+
+  setInput(wrapper, 'password', 'input#reauth-guard-password', 'hunter2')
+  wrapper.find('form#reauth-guard-form').simulate('submit')
+
+  await act(async () => { jest.runAllTimers() })
+  wrapper.update()
+  await act(async () => { jest.runAllTimers() })
+
+  expect(signReauthenticationToken.mock.calls[0][1]).toMatchObject(
+    { contents: '"a token"', password: "hunter2" }
+  )
+
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+})

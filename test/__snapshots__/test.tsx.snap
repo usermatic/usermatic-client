@@ -1548,3 +1548,100 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
   </AccountCreationForm>
 </div>
 `;
+
+exports[`<ReauthenticateGuard> 1`] = `
+<div
+  id="client-test-div"
+>
+  <Component
+    tokenContents="a token"
+  >
+    <div>
+      <ErrorMessage />
+      <div
+        className="mb-3"
+      >
+        Please enter your password:
+      </div>
+      <Formik
+        initialValues={
+          Object {
+            "password": "",
+          }
+        }
+        onSubmit={[Function]}
+        validate={[Function]}
+      >
+        <Form
+          id="reauth-guard-form"
+        >
+          <form
+            action="#"
+            id="reauth-guard-form"
+            onReset={[Function]}
+            onSubmit={[Function]}
+          >
+            <div
+              className="form-label-group"
+            >
+              <Field
+                autoFocus={true}
+                className="form-control"
+                id="reauth-guard-password"
+                name="password"
+                placeholder="password"
+                type="password"
+              >
+                <input
+                  autoFocus={true}
+                  className="form-control"
+                  id="reauth-guard-password"
+                  name="password"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  placeholder="password"
+                  type="password"
+                  value=""
+                />
+              </Field>
+            </div>
+            <div
+              className="d-flex justify-content-between"
+            >
+              <button
+                className="btn btn-primary"
+                type="submit"
+              >
+                Submit
+              </button>
+              <button
+                className="btn btn-secondary"
+                onClick={[Function]}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </Form>
+      </Formik>
+    </div>
+  </Component>
+</div>
+`;
+
+exports[`<ReauthenticateGuard> 2`] = `
+<div
+  id="client-test-div"
+>
+  <Component
+    tokenContents="a token"
+  >
+    <GuardedComponent>
+      <div>
+        token: 
+        {"id":"915cb3c0-a3ac-44be-a2a8-6edb25bfeacc","userContents":"\\"a token\\"","reauthenticationMethods":["password"],"iat":42}
+      </div>
+    </GuardedComponent>
+  </Component>
+</div>
+`;

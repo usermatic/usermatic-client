@@ -1,6 +1,12 @@
 
 import url  from 'url'
-import React, { ReactNode, createContext, useContext, useState, useEffect } from 'react'
+import React, {
+  ReactNode,
+  createContext,
+  useContext,
+  useState,
+  useEffect
+} from 'react'
 
 import jwt from 'jsonwebtoken'
 import fetch from 'isomorphic-unfetch'
@@ -12,6 +18,7 @@ import { ApolloError } from 'apollo-client'
 import { useQuery } from '@apollo/react-hooks'
 import { getApolloContext } from '@apollo/react-common'
 
+import { ReauthCacheProvider } from './reauth'
 import { ErrorMessage } from './errors'
 import { SESSION_QUERY } from './fragments'
 import { CsrfContext } from './hooks'
@@ -217,9 +224,11 @@ const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics: boole
   return <CsrfContext.Provider value={{ csrfToken, refetch }}>
     <AppConfigContext.Provider value={appConfig}>
       <TokenContext.Provider value={tokenValue}>
-        <HttpWarning />
-        {error && showDiagnostics && <Diagnostics appId={appId} error={error} />}
-        {children}
+        <ReauthCacheProvider>
+          <HttpWarning />
+          {error && showDiagnostics && <Diagnostics appId={appId} error={error} />}
+          {children}
+        </ReauthCacheProvider>
       </TokenContext.Provider>
     </AppConfigContext.Provider>
   </CsrfContext.Provider>
