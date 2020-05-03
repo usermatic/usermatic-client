@@ -25,6 +25,7 @@ import schemaStr from '../../schemas/api-schema'
 
 
 import * as client from '../src/index'
+import * as components from '../src/components'
 import { useCsrfToken } from '../src/hooks'
 
 configure({ adapter: new Adapter() })
@@ -133,8 +134,8 @@ test('<LoginForm>/<AccountCreationForm> forgot password', async () => {
   const wrapper = mount(
     <TestWrapper mocks={mocks}>
       <div id="client-test-div">
-        <client.LoginForm idPrefix="test" />
-        <client.AccountCreationForm/>
+        <components.LoginForm idPrefix="test" />
+        <components.AccountCreationForm/>
       </div>
     </TestWrapper>
   )
@@ -169,8 +170,8 @@ test('<LoginForm>/<AccountCreationForm> oauth', async () => {
   const wrapper = mount(
     <TestWrapper mocks={mocks}>
       <div id="client-test-div">
-        <client.LoginForm/>
-        <client.AccountCreationForm/>
+        <components.LoginForm/>
+        <components.AccountCreationForm/>
       </div>
     </TestWrapper>
   )
@@ -205,7 +206,7 @@ test('<LoginForm> login', async () => {
   const wrapper = mount(
     <TestWrapper mocks={mocks}>
       <div id="client-test-div">
-        <client.LoginForm onLogin={onLogin} idPrefix="test" />
+        <components.LoginForm onLogin={onLogin} idPrefix="test" />
       </div>
     </TestWrapper>
   )
@@ -252,7 +253,7 @@ test('<ChangePasswordForm> with password', async () => {
   const wrapper = mount(
     <TestWrapper mocks={mocks}>
       <div id="client-test-div">
-        <client.ChangePasswordForm idPrefix="test" labelsFirst={false}
+        <components.ChangePasswordForm idPrefix="test" labelsFirst={false}
                                    onSuccess={onSuccess} />
       </div>
     </TestWrapper>
@@ -295,7 +296,7 @@ test('<ChangePasswordForm> without password', async () => {
   const wrapper = mount(
     <TestWrapper mocks={mocks}>
       <div id="client-test-div">
-        <client.ChangePasswordForm idPrefix="test" labelsFirst={false}
+        <components.ChangePasswordForm idPrefix="test" labelsFirst={false}
                                    onSuccess={onSuccess} />
       </div>
     </TestWrapper>
@@ -386,11 +387,11 @@ test('<ReauthenticateGuard>', async () => {
   const wrapper = mount(
     <TestWrapper mocks={mocks}>
       <div id="client-test-div">
-        <client.ReauthenticateGuard
+        <components.ReauthenticateGuard
           tokenContents="a token"
         >
           <GuardedComponent/>
-        </client.ReauthenticateGuard>
+        </components.ReauthenticateGuard>
       </div>
     </TestWrapper>
   )
@@ -439,7 +440,7 @@ test('<ResetPasswordForm> invalid token', async () => {
   const wrapper = mount(
     <TestWrapper mocks={mocks}>
       <div id="client-test-div">
-        <client.ResetPasswordForm token={token} />
+        <components.ResetPasswordForm token={token} />
       </div>
     </TestWrapper>
   )
@@ -476,7 +477,7 @@ test('<ResetPasswordForm>', async () => {
   const wrapper = mount(
     <TestWrapper mocks={mocks}>
       <div id="client-test-div">
-        <client.ResetPasswordForm onLogin={onLogin} idPrefix="test" token={token}
+        <components.ResetPasswordForm onLogin={onLogin} idPrefix="test" token={token}
           allowLoginAfterReset />
       </div>
     </TestWrapper>

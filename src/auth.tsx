@@ -82,8 +82,7 @@ export const makeClient = (uri: string, appId: string): ClientType => {
 // ApolloProvider (if they are using apollo).
 export const UMApolloContext = createContext<ClientType | undefined>(undefined)
 
-const TokenContext = createContext<AuthTokenData | undefined>(undefined)
-export const CredentialConsumer = TokenContext.Consumer
+export const TokenContext = createContext<AuthTokenData | undefined>(undefined)
 
 const AppConfigContext = createContext<AppConfig>(defaultAppConfig)
 

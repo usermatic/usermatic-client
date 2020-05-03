@@ -286,7 +286,7 @@ exports[`<LoginForm> login 1`] = `
       }
     }
   >
-    <Component
+    <OauthLogin
       onLogin={[Function]}
     >
       <SocialButtons
@@ -437,7 +437,7 @@ exports[`<LoginForm> login 1`] = `
           </form>
         </Form>
       </Formik>
-    </Component>
+    </OauthLogin>
   </LoginForm>
 </div>
 `;
@@ -449,7 +449,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
   <LoginForm
     idPrefix="test"
   >
-    <Component
+    <OauthLogin
       onLogin={[Function]}
     >
       <SocialButtons
@@ -600,10 +600,10 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
           </form>
         </Form>
       </Formik>
-    </Component>
+    </OauthLogin>
   </LoginForm>
   <AccountCreationForm>
-    <Component>
+    <OauthLogin>
       <SocialButtons
         className="my-3"
         popupWindow={
@@ -747,7 +747,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
         </Form>
       </Formik>
       <UserCreateError />
-    </Component>
+    </OauthLogin>
   </AccountCreationForm>
 </div>
 `;
@@ -849,7 +849,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
     </div>
   </LoginForm>
   <AccountCreationForm>
-    <Component>
+    <OauthLogin>
       <SocialButtons
         className="my-3"
         popupWindow={
@@ -993,7 +993,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
         </Form>
       </Formik>
       <UserCreateError />
-    </Component>
+    </OauthLogin>
   </AccountCreationForm>
 </div>
 `;
@@ -1003,7 +1003,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
   id="client-test-div"
 >
   <LoginForm>
-    <Component
+    <OauthLogin
       onLogin={[Function]}
     >
       <SocialButtons
@@ -1349,10 +1349,10 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
           </form>
         </Form>
       </Formik>
-    </Component>
+    </OauthLogin>
   </LoginForm>
   <AccountCreationForm>
-    <Component>
+    <OauthLogin>
       <SocialButtons
         className="my-3"
         popupWindow={
@@ -1691,7 +1691,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
         </Form>
       </Formik>
       <UserCreateError />
-    </Component>
+    </OauthLogin>
   </AccountCreationForm>
 </div>
 `;
@@ -1700,7 +1700,7 @@ exports[`<ReauthenticateGuard> 1`] = `
 <div
   id="client-test-div"
 >
-  <Component
+  <ReauthenticateGuard
     tokenContents="a token"
   >
     <div>
@@ -1772,7 +1772,7 @@ exports[`<ReauthenticateGuard> 1`] = `
         </Form>
       </Formik>
     </div>
-  </Component>
+  </ReauthenticateGuard>
 </div>
 `;
 
@@ -1780,7 +1780,7 @@ exports[`<ReauthenticateGuard> 2`] = `
 <div
   id="client-test-div"
 >
-  <Component
+  <ReauthenticateGuard
     tokenContents="a token"
   >
     <GuardedComponent>
@@ -1789,7 +1789,7 @@ exports[`<ReauthenticateGuard> 2`] = `
         {"id":"915cb3c0-a3ac-44be-a2a8-6edb25bfeacc","userContents":"\\"a token\\"","reauthenticationMethods":["password"],"iat":42}
       </div>
     </GuardedComponent>
-  </Component>
+  </ReauthenticateGuard>
 </div>
 `;
 

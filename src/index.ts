@@ -1,12 +1,11 @@
 
-import {
+export {
   AuthProvider,
-  CredentialConsumer,
   useToken,
   useAppId
 } from './auth'
 
-import {
+export {
   useProfile,
   usePrimaryEmail,
   useCredentials,
@@ -19,73 +18,25 @@ import {
   OauthCredential
 } from './user'
 
-import {
-  LoginForm,
-  LogoutButton,
-  AccountCreationForm,
+export {
   useLogin,
   useCreateAccount,
   useLogout
 } from './login'
 
-import {
+export {
   useResetPassword,
   useChangePassword,
   useRequestPasswordResetEmail,
-  RequestPasswordResetForm,
-  ResetPasswordForm,
-  ChangePasswordForm,
-  PasswordScore
 } from './passwords'
 
-import {
-  EmailVerifier,
+export {
   useEmailVerifier,
   useSendVerificationEmail
 } from './verifyemail'
 
-import {
-  useReauthToken,
-  useCachedReauthToken,
-  useReauthenticate,
-  ReauthenticateGuard
-} from './reauth'
-
 export {
-  AuthProvider,
-  CredentialConsumer,
-  LoginForm,
-  LogoutButton,
-  AccountCreationForm,
-  EmailVerifier,
-  RequestPasswordResetForm,
-  ResetPasswordForm,
-  ChangePasswordForm,
-  PasswordScore,
-  ReauthenticateGuard,
-  useLogin,
-  useLogout,
-  useCreateAccount,
-  useToken,
   useReauthToken,
   useCachedReauthToken,
-  useReauthenticate,
-  useEmailVerifier,
-  useProfile,
-  usePrimaryEmail,
-  useProfilePhotos,
-  useCredentials,
-  usePasswordCredential,
-  isPasswordCredential,
-  isOauthCredential,
-  useSendVerificationEmail,
-  useResetPassword,
-  useChangePassword,
-  useRequestPasswordResetEmail,
-  useAppId,
-
-  // types
-  Credential,
-  PasswordCredential,
-  OauthCredential
-}
+  useReauthenticate
+} from './reauth'
