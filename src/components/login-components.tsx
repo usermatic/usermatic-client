@@ -70,7 +70,6 @@ const SocialLoginButton: React.FC<{
     </button>
   </div>
 )
-SocialLoginButton.displayName = 'SocialLoginButton'
 
 type ChildWindow = {
   open: (url: string) => void
@@ -260,7 +259,6 @@ const SocialButtons: React.FC<{popupWindow: ChildWindow, className?: string}> = 
     </div>
   }
 }
-SocialButtons.displayName = 'SocialButtons'
 
 export const OauthLogin: React.FC<{onLogin?: () => void, children: ReactNode}> = ({onLogin, children}) => {
   const oauthToken = useOauthToken()
@@ -276,7 +274,6 @@ export const OauthLogin: React.FC<{onLogin?: () => void, children: ReactNode}> =
     </>
   }
 }
-OauthLogin.displayName = 'OauthLogin'
 
 const usePopupWindow = ({onLogin, refetch}: { onLogin?: () => void, refetch: () => void }) => (
   useChildWindow('social-login-popup',
@@ -412,7 +409,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     </Formik>
   </OauthLogin>
 }
-LoginForm.displayName = 'LoginForm'
 
 // User creation error messages are likely to occur in normal situations,
 // so they get a bit more attention than ErrorMessage can give.
@@ -444,7 +440,6 @@ const UserCreateError: React.FC<{error?: ApolloError}> = ({error}) => {
     ))}
   </>
 }
-UserCreateError.displayName = 'UserCreateError'
 
 type AccountCreationProps = {
   loginAfterCreation?: boolean
@@ -537,7 +532,6 @@ export const AccountCreationForm: React.FC<AccountCreationProps> = ({
     <UserCreateError error={error} />
   </OauthLogin>
 }
-AccountCreationForm.displayName = 'AccountCreationForm'
 
 export const LogoutButton: React.FC<{}> = () => {
 
@@ -553,4 +547,3 @@ export const LogoutButton: React.FC<{}> = () => {
     <ErrorMessage error={error} />
   </>
 }
-LogoutButton.displayName = 'LogoutButton'

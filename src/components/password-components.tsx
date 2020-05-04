@@ -301,7 +301,6 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
     </Formik>
   </div>
 }
-ResetPasswordForm.displayName = 'ResetPasswordForm'
 
 type RequestPasswordResetFormProps = {
   idPrefix?: string,
@@ -370,7 +369,6 @@ export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> =
     </>}
   </Formik>
 }
-RequestPasswordResetForm.displayName = 'RequestPasswordResetForm'
 
 type PwScoreRecord = Record<string, any>
 
