@@ -270,7 +270,7 @@ exports[`<LoginForm> login 1`] = `
 <div
   id="client-test-div"
 >
-  <LoginForm
+  <Component
     idPrefix="test"
     onLogin={
       [MockFunction] {
@@ -286,7 +286,7 @@ exports[`<LoginForm> login 1`] = `
       }
     }
   >
-    <OauthLogin
+    <Component
       onLogin={[Function]}
     >
       <SocialButtons
@@ -437,8 +437,8 @@ exports[`<LoginForm> login 1`] = `
           </form>
         </Form>
       </Formik>
-    </OauthLogin>
-  </LoginForm>
+    </Component>
+  </Component>
 </div>
 `;
 
@@ -446,10 +446,10 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
 <div
   id="client-test-div"
 >
-  <LoginForm
+  <Component
     idPrefix="test"
   >
-    <OauthLogin
+    <Component
       onLogin={[Function]}
     >
       <SocialButtons
@@ -600,10 +600,10 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
           </form>
         </Form>
       </Formik>
-    </OauthLogin>
-  </LoginForm>
-  <AccountCreationForm>
-    <OauthLogin>
+    </Component>
+  </Component>
+  <Component>
+    <Component>
       <SocialButtons
         className="my-3"
         popupWindow={
@@ -747,8 +747,8 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
         </Form>
       </Formik>
       <UserCreateError />
-    </OauthLogin>
-  </AccountCreationForm>
+    </Component>
+  </Component>
 </div>
 `;
 
@@ -756,14 +756,14 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
 <div
   id="client-test-div"
 >
-  <LoginForm
+  <Component
     idPrefix="test"
   >
     <div>
       <div>
         Enter your email to get a password reset link.
       </div>
-      <RequestPasswordResetForm
+      <Component
         idPrefix="test"
         labelsFirst={true}
         onCancel={[Function]}
@@ -845,11 +845,11 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
             </form>
           </Form>
         </Formik>
-      </RequestPasswordResetForm>
+      </Component>
     </div>
-  </LoginForm>
-  <AccountCreationForm>
-    <OauthLogin>
+  </Component>
+  <Component>
+    <Component>
       <SocialButtons
         className="my-3"
         popupWindow={
@@ -993,8 +993,8 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
         </Form>
       </Formik>
       <UserCreateError />
-    </OauthLogin>
-  </AccountCreationForm>
+    </Component>
+  </Component>
 </div>
 `;
 
@@ -1002,8 +1002,8 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
 <div
   id="client-test-div"
 >
-  <LoginForm>
-    <OauthLogin
+  <Component>
+    <Component
       onLogin={[Function]}
     >
       <SocialButtons
@@ -1594,10 +1594,10 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
           </form>
         </Form>
       </Formik>
-    </OauthLogin>
-  </LoginForm>
-  <AccountCreationForm>
-    <OauthLogin>
+    </Component>
+  </Component>
+  <Component>
+    <Component>
       <SocialButtons
         className="my-3"
         popupWindow={
@@ -2181,8 +2181,8 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
         </Form>
       </Formik>
       <UserCreateError />
-    </OauthLogin>
-  </AccountCreationForm>
+    </Component>
+  </Component>
 </div>
 `;
 
@@ -2190,7 +2190,7 @@ exports[`<ReauthenticateGuard> 1`] = `
 <div
   id="client-test-div"
 >
-  <ReauthenticateGuard
+  <Component
     tokenContents="a token"
   >
     <div>
@@ -2262,7 +2262,7 @@ exports[`<ReauthenticateGuard> 1`] = `
         </Form>
       </Formik>
     </div>
-  </ReauthenticateGuard>
+  </Component>
 </div>
 `;
 
@@ -2270,7 +2270,7 @@ exports[`<ReauthenticateGuard> 2`] = `
 <div
   id="client-test-div"
 >
-  <ReauthenticateGuard
+  <Component
     tokenContents="a token"
   >
     <GuardedComponent>
@@ -2279,7 +2279,7 @@ exports[`<ReauthenticateGuard> 2`] = `
         {"id":"915cb3c0-a3ac-44be-a2a8-6edb25bfeacc","userContents":"\\"a token\\"","reauthenticationMethods":["password"],"iat":42}
       </div>
     </GuardedComponent>
-  </ReauthenticateGuard>
+  </Component>
 </div>
 `;
 
@@ -2287,7 +2287,7 @@ exports[`<ResetPasswordForm> 1`] = `
 <div
   id="client-test-div"
 >
-  <ResetPasswordForm
+  <Component
     allowLoginAfterReset={true}
     idPrefix="test"
     onLogin={[MockFunction]}
@@ -2416,7 +2416,7 @@ exports[`<ResetPasswordForm> 1`] = `
         </Form>
       </Formik>
     </div>
-  </ResetPasswordForm>
+  </Component>
 </div>
 `;
 
@@ -2424,7 +2424,7 @@ exports[`<ResetPasswordForm> 2`] = `
 <div
   id="client-test-div"
 >
-  <ResetPasswordForm
+  <Component
     allowLoginAfterReset={true}
     idPrefix="test"
     onLogin={
@@ -2496,7 +2496,7 @@ exports[`<ResetPasswordForm> 2`] = `
         </LoginAfterReset>
       </Formik>
     </div>
-  </ResetPasswordForm>
+  </Component>
 </div>
 `;
 
@@ -2504,7 +2504,7 @@ exports[`<ResetPasswordForm> invalid token 1`] = `
 <div
   id="client-test-div"
 >
-  <ResetPasswordForm
+  <Component
     token="eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJjcmVkZW50aWFsSWQiOiJhMzFkNjhlNi04OThmLTQ5OTgtOWU2ZC0yNWVmMWE2MmY2MmMiLCJpZCI6IjkxNWNiM2MwLWEzYWMtNDRiZS1hMmE4LTZlZGIyNWJmZWFjYyIsImFwcElkIjoiMjQ4ZTU0NzMtZDlhNi00NDg3LTkxNjQtMjRjMzA1MmQyODk4IiwiYWN0aW9uIjoiUkVTRVRfUFciLCJpYXQiOjEwMDB9."
   >
     <div
@@ -2515,6 +2515,6 @@ exports[`<ResetPasswordForm> invalid token 1`] = `
         eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJjcmVkZW50aWFsSWQiOiJhMzFkNjhlNi04OThmLTQ5OTgtOWU2ZC0yNWVmMWE2MmY2MmMiLCJpZCI6IjkxNWNiM2MwLWEzYWMtNDRiZS1hMmE4LTZlZGIyNWJmZWFjYyIsImFwcElkIjoiMjQ4ZTU0NzMtZDlhNi00NDg3LTkxNjQtMjRjMzA1MmQyODk4IiwiYWN0aW9uIjoiUkVTRVRfUFciLCJpYXQiOjEwMDB9.
       </pre>
     </div>
-  </ResetPasswordForm>
+  </Component>
 </div>
 `;

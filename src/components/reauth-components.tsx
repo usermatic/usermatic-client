@@ -91,4 +91,3 @@ export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
     </Formik>
   </div>
 }
-ReauthenticateGuard.displayName = 'ReauthenticateGuard'
