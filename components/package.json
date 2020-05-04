@@ -1,4 +1,5 @@
 {
   "sideEffects": false,
-  "module": "./index.js"
+  "types": "../dist/src/components/index.d.ts",
+  "module": "../dist/src/components/index.js"
 }
