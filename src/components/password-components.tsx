@@ -7,12 +7,12 @@ import classNames from 'classnames'
 
 import { OperationVariables } from '@apollo/react-common'
 
-import { useAppConfig } from './auth'
-import { usePasswordCredential, usePrimaryEmail } from './user'
+import { useAppConfig } from '../auth'
+import { usePasswordCredential, usePrimaryEmail } from '../user'
 import { InputLabel } from './form-util'
-import { ErrorMessage } from './errors'
-import { LoginSubmitArgs, useLogin } from './login'
-import { useDebounce } from './use-debounce'
+import { ErrorMessage } from '../errors'
+import { LoginSubmitArgs, useLogin } from '../login'
+import { useDebounce } from '../use-debounce'
 
 // @ts-ignore
 import zxcvbnAsync from 'zxcvbn-async'
@@ -22,7 +22,7 @@ import {
   useAddPassword,
   useRequestPasswordResetEmail,
   useResetPassword
-} from './passwords'
+} from '../passwords'
 
 const getId = (prefix: string | undefined, suffix: string) => {
   if (prefix) {

@@ -5,10 +5,10 @@ import { ApolloError } from 'apollo-client'
 import { GraphQLError } from 'graphql'
 import classNames from 'classnames'
 
-import { useToken, useAppConfig, useAppId } from './auth'
-import { useCsrfToken } from './hooks'
+import { useToken, useAppConfig, useAppId } from '../auth'
+import { useCsrfToken } from '../hooks'
 import { InputLabel } from './form-util'
-import { ErrorMessage } from './errors'
+import { ErrorMessage } from '../errors'
 import { PasswordScore, RequestPasswordResetForm } from './password-components'
 
 import { FaFacebookSquare as FbLogo, FaGoogle as GoogleLogo } from 'react-icons/fa'
@@ -22,7 +22,7 @@ import {
   useLogout,
   CreateAccountArgs,
   LoginSubmitArgs
-} from './login'
+} from '../login'
 
 const getId = (prefix: string | undefined, suffix: string) => {
   if (prefix) {

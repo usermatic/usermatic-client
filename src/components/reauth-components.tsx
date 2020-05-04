@@ -7,13 +7,13 @@ import React, {
 import classNames from 'classnames'
 import { Formik, Form, Field, FormikValues, FormikErrors } from 'formik'
 
-import { ErrorMessage } from './errors'
+import { ErrorMessage } from '../errors'
 
 import {
   useReauthenticate,
   useCachedReauthToken,
   ReauthContext
-} from './reauth'
+} from '../reauth'
 
 type ReauthenticateGuardProps = {
   children: ReactNode

@@ -1,11 +1,11 @@
 
 import React, { useEffect } from 'react'
 
-import { useCsrfToken } from './hooks'
+import { useCsrfToken } from '../hooks'
 
 import {
   useEmailVerifier
-} from './verifyemail'
+} from '../verifyemail'
 
 export const EmailVerifier: React.FC<{token: string}> = ({token}) => {
 
