@@ -11,8 +11,19 @@ import { InputLabel } from './form-util'
 import { ErrorMessage } from '../errors'
 import { PasswordScore, RequestPasswordResetForm } from './password-components'
 
-import { FaFacebookSquare as FbLogo, FaGoogle as GoogleLogo } from 'react-icons/fa'
-import { GoMarkGithub as GithubLogo } from 'react-icons/go'
+import { Icon } from 'react-icons-kit'
+import { google } from 'react-icons-kit/fa/google'
+import { facebookOfficial } from 'react-icons-kit/fa/facebookOfficial'
+import { markGithub } from 'react-icons-kit/oct/markGithub'
+
+type IconProps = {
+  color?: string,
+  size?: string | number
+}
+
+const GoogleLogo = (props: IconProps) => <Icon icon={google} {...props} />
+const FbLogo = (props: IconProps) => <Icon icon={facebookOfficial} {...props} />
+const GithubLogo = (props: IconProps) => <Icon icon={markGithub} {...props} />
 
 import {
   useCreateAccount,
