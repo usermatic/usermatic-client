@@ -8,6 +8,10 @@
   "author": "Mark Logan",
   "license": "MIT",
   "private": false,
+  "files": [
+    "dist",
+    "components"
+  ],
   "scripts": {
     "build": "yarn tsc",
     "test": "yarn jest",
