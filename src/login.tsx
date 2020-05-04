@@ -1,7 +1,7 @@
 
 import urllib from 'url'
 import { useContext, useEffect, useState } from 'react'
-import jwt from 'jsonwebtoken'
+import jwtDecode from 'jwt-decode'
 
 import { useToken, AppIdContext, useAppId } from './auth'
 import { useCsrfToken, useCsrfMutation } from './hooks'
@@ -114,7 +114,7 @@ export const useOauthToken = () => {
       return
     }
 
-    const { nonce } = jwt.decode(umOauthToken) as { nonce: string }
+    const { nonce } = jwtDecode(umOauthToken) as { nonce: string }
 
     const { umAuthNonce } = window.localStorage
 

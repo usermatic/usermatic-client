@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Formik, Form, Field, FormikValues, FormikErrors } from 'formik'
 
-import jwt from 'jsonwebtoken'
+import jwtDecode from 'jwt-decode'
 import classNames from 'classnames'
 
 import { OperationVariables } from '@apollo/react-common'
@@ -212,7 +212,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   const [submit, { error, success, data }] = useResetPassword(token)
 
   const email = useMemo(() => {
-    const decoded = jwt.decode(token)
+    const decoded = jwtDecode(token) as { email?: string }
     if (!decoded || typeof decoded != 'object') {
       console.error("password reset token was invalid")
       submit({} as any) // do a bogus submit to force an error

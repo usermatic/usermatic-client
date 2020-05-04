@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 
 import { OperationVariables } from '@apollo/react-common'
-import jwt from 'jsonwebtoken'
+import jwtDecode from 'jwt-decode'
 import ms from 'ms'
 
 import { useCsrfMutation } from './hooks'
@@ -27,7 +27,7 @@ class ReauthTokenCache {
   }
 
   cacheToken (key: string, token: string): void {
-    const decoded = jwt.decode(token)
+    const decoded = jwtDecode(token) as { iat: number }
     if (!decoded) {
       throw new Error("invalid token")
     }

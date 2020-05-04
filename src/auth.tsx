@@ -8,7 +8,7 @@ import React, {
   useEffect
 } from 'react'
 
-import jwt from 'jsonwebtoken'
+import jwtDecode from 'jwt-decode'
 import fetch from 'isomorphic-unfetch'
 import { createHttpLink } from "apollo-link-http"
 import { ApolloClient, NormalizedCacheObject } from 'apollo-boost'
@@ -201,7 +201,7 @@ const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics: boole
     const { auth, config } = data.svcGetSessionJWT
     if (auth) {
       const { userJwt } = auth
-      const { id } = jwt.decode(userJwt) as Record<string, string>
+      const { id } = jwtDecode(userJwt) as Record<string, string>
       tokenValue.id = id
       tokenValue.userJwt = userJwt
     }
