@@ -14,7 +14,7 @@ import { PasswordScore, RequestPasswordResetForm } from './password-components'
 import { Icon } from 'react-icons-kit'
 import { google } from 'react-icons-kit/fa/google'
 import { facebookOfficial } from 'react-icons-kit/fa/facebookOfficial'
-import { markGithub } from 'react-icons-kit/oct/markGithub'
+import { github } from 'react-icons-kit/fa/github'
 
 type IconProps = {
   color?: string,
@@ -23,7 +23,7 @@ type IconProps = {
 
 const GoogleLogo = (props: IconProps) => <Icon icon={google} {...props} />
 const FbLogo = (props: IconProps) => <Icon icon={facebookOfficial} {...props} />
-const GithubLogo = (props: IconProps) => <Icon icon={markGithub} {...props} />
+const GithubLogo = (props: IconProps) => <Icon icon={github} {...props} />
 
 import {
   useCreateAccount,
