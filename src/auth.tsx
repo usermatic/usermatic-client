@@ -195,10 +195,10 @@ const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics: boole
 
   const tokenValue: AuthTokenData = { error, loading }
   let csrfToken
-  if (!loading && !error && data.svcGetSessionJWT) {
-    csrfToken = data.svcGetSessionJWT.csrfToken
+  if (!loading && !error && data.getSessionJWT) {
+    csrfToken = data.getSessionJWT.csrfToken
     // TODO: if csrfToken is missing, most/all subsequent requests will fail.
-    const { auth, config } = data.svcGetSessionJWT
+    const { auth, config } = data.getSessionJWT
     if (auth) {
       const { userJwt } = auth
       const { id } = jwtDecode(userJwt) as Record<string, string>

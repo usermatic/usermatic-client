@@ -2,7 +2,7 @@
 import gql from 'graphql-tag'
 
 export const USER_FRAGMENT = gql`
-  fragment UserParts on SvcUser {
+  fragment UserParts on User {
     __typename
     id
     primaryEmail
@@ -30,8 +30,8 @@ export const SIGN_REAUTH_TOKEN_QUERY = gql`
 `
 
 export const SESSION_QUERY = gql`
-query svcGetSessionJWT($appId: ID!) {
-  svcGetSessionJWT(appId: $appId) {
+query getSessionJWT($appId: ID!) {
+  getSessionJWT(appId: $appId) {
     auth { userJwt }
     csrfToken
     config { ...AppConfigParts }
@@ -42,7 +42,7 @@ ${APP_CONFIG_FRAGMENT}
 
 export const PROFILE_QUERY = gql`
   query getProfile {
-    svcGetAuthenticatedUser { ...UserParts }
+    getAuthenticatedUser { ...UserParts }
   }
   ${USER_FRAGMENT}
 `
@@ -65,19 +65,19 @@ export const OAUTH_LOGIN_MUT = gql`
 
 export const RESET_PW_MUT = gql`
   mutation resetPassword($token: String!, $newPassword: String!) {
-    svcResetPassword(token: $token, newPassword: $newPassword) { redirectUri }
+    resetPassword(token: $token, newPassword: $newPassword) { redirectUri }
   }
 `
 
 export const REQUEST_PW_RESET_EMAIL = gql`
   mutation requestPwResetEmail($email: String!) {
-    svcRequestPasswordResetEmail(email: $email)
+    requestPasswordResetEmail(email: $email)
   }
 `
 
 export const CHANGE_PW_MUT = gql`
   mutation changePw($oldPassword: String!, $newPassword: String!) {
-    svcChangePassword(oldPassword: $oldPassword, newPassword: $newPassword)
+    changePassword(oldPassword: $oldPassword, newPassword: $newPassword)
   }
 `
 
@@ -92,7 +92,7 @@ export const LOGOUT_MUT = gql`mutation logout { logout }`
 export const CREATE_ACCOUNT_MUT = gql`
   mutation createAccount($email: String!, $password: String!,
                          $loginAfterCreation: Boolean = false, $stayLoggedIn: Boolean = false) {
-    svcCreateAccount(
+    createAccount(
       email: $email,
       password: $password,
       loginAfterCreation: $loginAfterCreation,
@@ -103,12 +103,12 @@ export const CREATE_ACCOUNT_MUT = gql`
 
 export const VERIFY_EMAIL_MUT = gql`
   mutation verifyEmail($token: String!) {
-    svcVerifyEmail(token: $token) { redirectUri }
+    verifyEmail(token: $token) { redirectUri }
   }
 `
 
 export const SEND_VERIFICATION_EMAIL_MUT = gql`
   mutation sendVerificationEmail($email: String!) {
-    svcSendVerificationEmail(email: $email)
+    sendVerificationEmail(email: $email)
   }
 `

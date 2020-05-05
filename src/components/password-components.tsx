@@ -144,7 +144,7 @@ type LoginAfterResetProps = {
   allowLoginAfterReset: boolean,
   redirectAfterReset: boolean
   loginData: LoginSubmitArgs
-  svcResetPassword: ReturnType<typeof useResetPassword>[1]['data']
+  resetPassword: ReturnType<typeof useResetPassword>[1]['data']
   onLogin?: () => void
 }
 
@@ -152,13 +152,13 @@ const LoginAfterReset: React.FC<LoginAfterResetProps> = ({
   allowLoginAfterReset,
   redirectAfterReset,
   loginData,
-  svcResetPassword,
+  resetPassword,
   onLogin
 }) => {
 
   const [submitLogin, { error, success }] = useLogin()
 
-  const redirectUri = svcResetPassword && svcResetPassword.redirectUri
+  const redirectUri = resetPassword && resetPassword.redirectUri
 
   useEffect(() => {
     if (success) {
@@ -260,7 +260,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
             password: props.values.newPassword,
             stayLoggedIn: props.values.stayLoggedIn
           }}
-          svcResetPassword={data ?? data.svcResetPassword}
+          resetPassword={data ?? data.resetPassword}
           onLogin={onLogin}
         />
       }

@@ -37,7 +37,7 @@ const credentialId = 'a31d68e6-898f-4998-9e6d-25ef1a62f62c'
 
 const defaultMocks = {
   AppConfig: () => ({ minPasswordStrength: 3 }),
-  SvcAuthToken: () => ({ userJwt: jwt.sign({ id: userId }, 'abc') })
+  AuthToken: () => ({ userJwt: jwt.sign({ id: userId }, 'abc') })
 }
 
 const extendMocks = (mocks: object) => {
@@ -123,11 +123,11 @@ const TestWrapper: React.FC<{children: ReactNode, mocks: any}> = ({children, moc
 test('<LoginForm>/<AccountCreationForm> forgot password', async () => {
   jest.useFakeTimers()
 
-  const svcRequestPasswordResetEmail = jest.fn().mockReturnValue(true)
+  const requestPasswordResetEmail = jest.fn().mockReturnValue(true)
   const mocks = extendMocks({
     AppConfig: () => configNoOauth,
     Mutation: () => ({
-      svcRequestPasswordResetEmail
+      requestPasswordResetEmail
     })
   })
 
@@ -157,7 +157,7 @@ test('<LoginForm>/<AccountCreationForm> forgot password', async () => {
   await act(async () => { jest.runAllTimers() })
   wrapper.update()
 
-  expect(svcRequestPasswordResetEmail.mock.calls[0][1]).toMatchObject({ email })
+  expect(requestPasswordResetEmail.mock.calls[0][1]).toMatchObject({ email })
 })
 
 test('<LoginForm>/<AccountCreationForm> oauth', async () => {
@@ -240,12 +240,12 @@ test('<ChangePasswordForm> with password', async () => {
   const oldPassword = 'hunter2'
   const newPassword = 'hunter3'
 
-  const svcChangePassword = jest.fn().mockReturnValue(true)
+  const changePassword = jest.fn().mockReturnValue(true)
   const mocks = extendMocks({
     AppConfig: () => (configNoOauth),
-    SvcUser: userWithPassword,
+    User: userWithPassword,
     Mutation: () => ({
-      svcChangePassword
+      changePassword
     })
   })
 
@@ -271,7 +271,7 @@ test('<ChangePasswordForm> with password', async () => {
   wrapper.update()
   await act(async () => { jest.runAllTimers() })
 
-  expect(svcChangePassword.mock.calls[0][1]).toMatchObject(
+  expect(changePassword.mock.calls[0][1]).toMatchObject(
     { oldPassword, newPassword }
   )
   expect(onSuccess).toHaveBeenCalled()
@@ -286,7 +286,7 @@ test('<ChangePasswordForm> without password', async () => {
   const addPassword = jest.fn().mockReturnValue(true)
   const mocks = extendMocks({
     AppConfig: () => (configNoOauth),
-    SvcUser: userWithoutPassword,
+    User: userWithoutPassword,
     Mutation: () => ({
       addPassword
     })
@@ -323,12 +323,12 @@ test('<ChangePasswordForm> without password', async () => {
 test('useSendVerificationEmail', async () => {
   jest.useFakeTimers()
 
-  const svcSendVerificationEmail = jest.fn().mockReturnValue(true)
+  const sendVerificationEmail = jest.fn().mockReturnValue(true)
   const mocks = extendMocks({
     AppConfig: () => (configNoOauth),
-    SvcUser: userWithPassword,
+    User: userWithPassword,
     Mutation: () => ({
-      svcSendVerificationEmail
+      sendVerificationEmail
     })
   })
 
@@ -348,7 +348,7 @@ test('useSendVerificationEmail', async () => {
 
   await act(async () => { jest.runAllTimers() })
   wrapper.update()
-  expect(svcSendVerificationEmail.mock.calls[0][1]).toMatchObject({ email })
+  expect(sendVerificationEmail.mock.calls[0][1]).toMatchObject({ email })
 })
 
 test('<ReauthenticateGuard>', async () => {
@@ -366,7 +366,7 @@ test('<ReauthenticateGuard>', async () => {
 
   const mocks = extendMocks({
     AppConfig: () => (configNoOauth),
-    SvcUser: userWithPassword,
+    User: userWithPassword,
     Mutation: () => ({
       signReauthenticationToken
     })
@@ -418,14 +418,14 @@ test('<ReauthenticateGuard>', async () => {
 test('<ResetPasswordForm> invalid token', async () => {
   jest.useFakeTimers()
 
-  const svcResetPassword = jest.fn().mockReturnValue({
+  const resetPassword = jest.fn().mockReturnValue({
     redirectUri: '/fakeuri'
   })
   const mocks = extendMocks({
     AppConfig: () => (configNoOauth),
-    SvcUser: userWithPassword,
+    User: userWithPassword,
     Mutation: () => ({
-      svcResetPassword
+      resetPassword
     })
   })
 
@@ -453,14 +453,14 @@ test('<ResetPasswordForm> invalid token', async () => {
 test('<ResetPasswordForm>', async () => {
   jest.useFakeTimers()
 
-  const svcResetPassword = jest.fn().mockReturnValue({
+  const resetPassword = jest.fn().mockReturnValue({
     redirectUri: '/fakeuri'
   })
   const mocks = extendMocks({
     AppConfig: () => (configNoOauth),
-    SvcUser: userWithPassword,
+    User: userWithPassword,
     Mutation: () => ({
-      svcResetPassword
+      resetPassword
     })
   })
 
@@ -498,7 +498,7 @@ test('<ResetPasswordForm>', async () => {
   await act(async () => { jest.runAllTimers() })
   wrapper.update()
 
-  expect(svcResetPassword.mock.calls[0][1]).toMatchObject(
+  expect(resetPassword.mock.calls[0][1]).toMatchObject(
     { token, newPassword }
   )
   expect(onLogin).toHaveBeenCalled()
