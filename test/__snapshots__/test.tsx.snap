@@ -1994,7 +1994,7 @@ exports[`<ResetPasswordForm> 1`] = `
   id="client-test-div"
 >
   <Component
-    allowLoginAfterReset={true}
+    exposeLoginAfterReset={true}
     idPrefix="test"
     onLogin={[MockFunction]}
     token="eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJlbWFpbCI6ImJvYkBib2IuY29tIiwiY3JlZGVudGlhbElkIjoiYTMxZDY4ZTYtODk4Zi00OTk4LTllNmQtMjVlZjFhNjJmNjJjIiwiaWQiOiI5MTVjYjNjMC1hM2FjLTQ0YmUtYTJhOC02ZWRiMjViZmVhY2MiLCJhcHBJZCI6IjI0OGU1NDczLWQ5YTYtNDQ4Ny05MTY0LTI0YzMwNTJkMjg5OCIsImFjdGlvbiI6IlJFU0VUX1BXIiwiaWF0IjoxMDAwfQ."
@@ -2090,6 +2090,7 @@ exports[`<ResetPasswordForm> 1`] = `
             >
               <Field
                 className="custom-control-input"
+                disabled={false}
                 id="test-reset-password-stay-logged-in"
                 name="stayLoggedIn"
                 type="checkbox"
@@ -2097,6 +2098,7 @@ exports[`<ResetPasswordForm> 1`] = `
                 <input
                   checked={false}
                   className="custom-control-input"
+                  disabled={false}
                   id="test-reset-password-stay-logged-in"
                   name="stayLoggedIn"
                   onBlur={[Function]}
@@ -2131,7 +2133,7 @@ exports[`<ResetPasswordForm> 2`] = `
   id="client-test-div"
 >
   <Component
-    allowLoginAfterReset={true}
+    exposeLoginAfterReset={true}
     idPrefix="test"
     onLogin={
       [MockFunction] {
@@ -2161,45 +2163,11 @@ exports[`<ResetPasswordForm> 2`] = `
         onSubmit={[Function]}
         validate={[Function]}
       >
-        <LoginAfterReset
-          allowLoginAfterReset={true}
-          loginData={
-            Object {
-              "email": "bob@bob.com",
-              "password": "abc123",
-              "stayLoggedIn": false,
-            }
-          }
-          onLogin={
-            [MockFunction] {
-              "calls": Array [
-                Array [],
-              ],
-              "results": Array [
-                Object {
-                  "type": "return",
-                  "value": undefined,
-                },
-              ],
-            }
-          }
-          redirectAfterReset={false}
-          resetPassword={
-            Object {
-              "resetPassword": Object {
-                "__typename": "PasswordResetResult",
-                "redirectUri": "/fakeuri",
-              },
-            }
-          }
+        <div
+          className="alert alert-success"
         >
-          <div
-            className="alert alert-success"
-          >
-            <ErrorMessage />
-            Your password has been reset successfully.
-          </div>
-        </LoginAfterReset>
+          Your password has been reset successfully.
+        </div>
       </Formik>
     </div>
   </Component>

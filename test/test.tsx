@@ -478,7 +478,7 @@ test('<ResetPasswordForm>', async () => {
     <TestWrapper mocks={mocks}>
       <div id="client-test-div">
         <components.ResetPasswordForm onLogin={onLogin} idPrefix="test" token={token}
-          allowLoginAfterReset />
+          exposeLoginAfterReset />
       </div>
     </TestWrapper>
   )

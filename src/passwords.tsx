@@ -4,6 +4,7 @@ import { DocumentNode } from 'graphql'
 
 import { OperationVariables } from '@apollo/react-common'
 
+import { useAppId } from './auth'
 import { useCsrfMutation } from './hooks'
 
 // @ts-ignore
@@ -13,7 +14,8 @@ import {
   ADD_PW_MUT,
   CHANGE_PW_MUT,
   RESET_PW_MUT,
-  REQUEST_PW_RESET_EMAIL
+  REQUEST_PW_RESET_EMAIL,
+  SESSION_QUERY
 } from './fragments'
 
 const useApiMutation = (mut: DocumentNode, options: OperationVariables) => {
@@ -40,7 +42,14 @@ export const useRequestPasswordResetEmail = (options: OperationVariables = {}) =
   return useApiMutation(REQUEST_PW_RESET_EMAIL, options)
 }
 
-export const useResetPassword = (token: string, options: OperationVariables = {}) => {
+export const useResetPassword = (token: string, optionsArg: OperationVariables = {}) => {
+  const appId = useAppId()
+
+  const options = {
+    refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }],
+    ...optionsArg
+  }
+
   const [submitResetPassword, ret] = useCsrfMutation(RESET_PW_MUT, options)
   const {loading, error, data} = ret
   const submit = (values: { newPassword: string }) => {
