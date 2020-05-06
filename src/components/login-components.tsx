@@ -182,7 +182,7 @@ const makeLoginFn = (childWindow: ChildWindow, appId: string, url: string) => (
 
 const SocialButtons: React.FC<{popupWindow: ChildWindow, className?: string}> = ({popupWindow, className}) => {
 
-  const appId = useAppId() as string
+  const appId = useAppId()
 
   const {
     fbLoginEnabled,

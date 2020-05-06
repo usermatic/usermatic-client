@@ -15,7 +15,7 @@ import {
 } from './fragments'
 
 export const useLogout = () => {
-  const appId = useContext(AppIdContext)
+  const appId = useAppId()
 
   const [submit, ret] =
     useCsrfMutation(
@@ -131,7 +131,7 @@ export const useOauthToken = () => {
 
 export const useOauthLogin = ({onLogin, oauthToken}: { onLogin?: () => void, oauthToken?: string }) => {
   const { csrfToken } = useCsrfToken()
-  const appId = useAppId() as string
+  const appId = useAppId()
   const { id, loading: tokenLoading } = useToken()
 
   const [submit, { data, loading, error, called }] = useCsrfMutation(

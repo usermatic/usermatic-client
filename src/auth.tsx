@@ -90,8 +90,12 @@ export const AppConfigConsumer = AppConfigContext.Consumer
 
 export const AppIdContext = createContext<string | undefined>(undefined)
 
-export const useAppId = (): string | undefined => {
-  return useContext(AppIdContext)
+export const useAppId = (): string => {
+  const ret = useContext(AppIdContext)
+  if (typeof ret !== 'string') {
+    throw new Error("useAppId() must be used from within an AuthProvider")
+  }
+  return ret
 }
 
 export const useToken = (): AuthTokenData => {
