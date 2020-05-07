@@ -82,14 +82,6 @@ export const ReauthCacheProvider: React.FC<{children: ReactNode}> = ({children})
 export const useReauthenticate = (contentsArg: string | object) => {
   const contents = JSON.stringify(contentsArg)
 
-  /*
-  const variables: SignReauthenticationTokenMutationVariables = {
-    contents
-  }
-  if (options.password != null) {
-    variables.password = options.password
-  }
-  */
   const cache = useContext(ReauthCacheContext)
   const ret = useCsrfMutation(useSignReauthenticationTokenMutation, {})
   const { data } = ret[1]
