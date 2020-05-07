@@ -17,7 +17,7 @@ export const EmailVerifier: React.FC<{token: string}> = ({token}) => {
       submit({variables: { token }})
     }
 
-    if (success) {
+    if (success && data) {
       const { redirectUri } = data.verifyEmail
       setTimeout(() => {
         window.location.replace(redirectUri)
@@ -25,7 +25,7 @@ export const EmailVerifier: React.FC<{token: string}> = ({token}) => {
     }
   }, [called, csrfToken, success])
 
-  if (success) {
+  if (success && data) {
     const { redirectUri } = data.verifyEmail
     return <div>Your email is now verified! You will be automatically
       redirected to <a href={redirectUri}>{redirectUri}</a>.

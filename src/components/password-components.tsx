@@ -157,7 +157,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   const exposeLoginAfterReset = allowLoginAfterResetArg
   const redirectAfterReset = redirectAfterResetArg
 
-  const [submit, { error, success, data }] = useResetPassword(token)
+  const [submit, { error, success, data }] = useResetPassword()
 
   const email = useMemo(() => {
     const decoded = jwtDecode(token) as { email?: string }
@@ -181,7 +181,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
     if (id && !tokenLoading && onLogin) {
       onLogin()
     }
-    if (redirectAfterReset) {
+    if (redirectAfterReset && redirectUri) {
       setTimeout(() => {
        window.location.replace(redirectUri)
       }, 1000)
@@ -195,8 +195,8 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   }
 
   const submitWrapper = (values: FormikValues) => {
-    const { newPassword } = values
-    submit({ newPassword })
+    const { newPassword, loginAfterReset, stayLoggedIn } = values
+    submit({ token, newPassword, loginAfterReset, stayLoggedIn })
   }
 
   const initialValues = {
@@ -213,13 +213,12 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
     return errors
   }
 
-
   return <div>
     <ErrorMessage error={error} />
     <Formik initialValues={initialValues} validate={validate} onSubmit={submitWrapper}>
     {(props) => {
       if (success) {
-        const redirectUri = data.resetPassword && data.resetPassword.redirectUri
+        const redirectUri = data?.resetPassword && data?.resetPassword.redirectUri
         return <div className="alert alert-success">
           Your password has been reset successfully.
           { redirectAfterReset && redirectUri &&

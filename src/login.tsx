@@ -7,19 +7,22 @@ import { useToken, AppIdContext, useAppId } from './auth'
 import { useCsrfToken, useCsrfMutation } from './hooks'
 
 import {
-  LOGIN_MUT,
-  OAUTH_LOGIN_MUT,
-  LOGOUT_MUT,
-  CREATE_ACCOUNT_MUT,
   SESSION_QUERY
 } from './fragments'
+
+import {
+  useLogoutMutation,
+  useLoginPasswordMutation,
+  useLoginOauthMutation,
+  useCreateAccountMutation,
+} from '../gen/operations'
 
 export const useLogout = () => {
   const appId = useAppId()
 
   const [submit, ret] =
     useCsrfMutation(
-      LOGOUT_MUT,
+      useLogoutMutation,
       {
         refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }]
       }
@@ -43,7 +46,7 @@ export const useLogin = () => {
 
   const [submitLogin, ret] =
     useCsrfMutation(
-      LOGIN_MUT,
+      useLoginPasswordMutation,
       {
         refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }]
       }
@@ -67,7 +70,7 @@ export const useCreateAccount = () => {
   const appId = useContext(AppIdContext)
   const [submitCreateAccount, ret] =
     useCsrfMutation(
-      CREATE_ACCOUNT_MUT,
+      useCreateAccountMutation,
       {
         refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }]
       })
@@ -135,7 +138,7 @@ export const useOauthLogin = ({onLogin, oauthToken}: { onLogin?: () => void, oau
   const { id, loading: tokenLoading } = useToken()
 
   const [submit, { data, loading, error, called }] = useCsrfMutation(
-    OAUTH_LOGIN_MUT,
+    useLoginOauthMutation,
     {
       refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }]
     }

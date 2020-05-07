@@ -2,36 +2,15 @@
 import { ApolloError } from 'apollo-client'
 
 import { useToken } from './auth'
-import { PROFILE_QUERY } from './fragments'
 import { useCsrfQuery } from './hooks'
 
-// TODO: set up graphql codegen instead of doing this by hand
-type CredentialType = {
-  id: string
-  type: 'PASSWORD' | 'OAUTH'
-  email?: string
-  emailIsVerified?: boolean
-  provider?: string
-  providerID?: string
-  photoURL?: string
-}
+import {
+  useGetProfileQuery
+} from '../gen/operations'
 
-export const useProfile = (): {
-  loading: boolean
-  error?: ApolloError
-  profile?: {
-    id: string
-    primaryEmail: string
-    credentials: CredentialType[]
-    name: {
-      family?: string,
-      given?: string,
-      full?: string
-    }
-  }
-} => {
+export const useProfile = () => {
   const { id } = useToken()
-  const ret = useCsrfQuery(PROFILE_QUERY, { skip: id == null })
+  const ret = useCsrfQuery(useGetProfileQuery, { skip: id == null })
 
   const { loading, error, data } = ret
   let profile
@@ -101,8 +80,8 @@ export const useCredentials = (): {
             id: c.id,
             provider: c.provider ?? '<unknown>',
             providerID: c.providerID ?? '<unknown>',
-            photoURL: c.photoURL,
-            email: c.email
+            photoURL: (c.photoURL != null) ? c.photoURL : undefined,
+            email: (c.email != null) ? c.email : undefined,
           }
         }
       })
@@ -142,9 +121,17 @@ export const usePersonalDetails = (): {
 
   const { loading, error, profile } = useProfile()
 
-  const name = (profile != null) ? profile.name : {}
+  const name = profile?.name ?? {}
 
-  return { loading, error, name }
+  return {
+    loading,
+    error,
+    name: {
+      family: name.family ?? undefined,
+      given: name.given ?? undefined,
+      full: name.full ?? undefined
+    }
+  }
 }
 
 export const useProfilePhotos = (): {

@@ -15,12 +15,12 @@ import { ApolloClient, NormalizedCacheObject } from 'apollo-boost'
 import { InMemoryCache } from "apollo-cache-inmemory"
 
 import { ApolloError } from 'apollo-client'
-import { useQuery } from '@apollo/react-hooks'
 import { getApolloContext } from '@apollo/react-common'
+
+import { useGetSessionJwtQuery, AppConfig } from '../gen/operations'
 
 import { ReauthCacheProvider } from './reauth'
 import { ErrorMessage } from './errors'
-import { SESSION_QUERY } from './fragments'
 import { CsrfContext } from './hooks'
 
 export type ClientType =
@@ -35,17 +35,7 @@ export type AuthTokenData = {
   userJwt?: string,
 }
 
-export type AppConfig = {
-  minPasswordStrength?: number
-  fbLoginEnabled: boolean
-  fbLoginUrl: string
-  googleLoginEnabled: boolean
-  googleLoginUrl: string
-  githubLoginEnabled: boolean
-  githubLoginUrl: string
-}
-
-const defaultAppConfig = {
+const defaultAppConfig: AppConfig = {
   fbLoginEnabled: false,
   fbLoginUrl: 'https://usermatic.io/auth/facebook',
   googleLoginEnabled: false,
@@ -190,16 +180,17 @@ const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics: boole
   ({children, showDiagnostics}) => {
 
   const client = useContext(UMApolloContext)
-  const appId = useContext(AppIdContext)
+  const appId = useAppId()
 
-  const {data, error, loading, refetch} = useQuery(SESSION_QUERY,
-    { variables: { appId }, client })
+  const {data, error, loading, refetch} = useGetSessionJwtQuery(
+    { variables: { appId }, client
+  })
 
-  let appConfig = { ...defaultAppConfig }
+  let appConfig: AppConfig = { ...defaultAppConfig }
 
   const tokenValue: AuthTokenData = { error, loading }
   let csrfToken
-  if (!loading && !error && data.getSessionJWT) {
+  if (!loading && !error && data && data.getSessionJWT) {
     csrfToken = data.getSessionJWT.csrfToken
     // TODO: if csrfToken is missing, most/all subsequent requests will fail.
     const { auth, config } = data.getSessionJWT

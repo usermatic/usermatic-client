@@ -6,6 +6,7 @@ export const USER_FRAGMENT = gql`
     __typename
     id
     primaryEmail
+    name { given family full }
     credentials { id type email emailIsVerified provider providerID photoURL }
   }
 `
@@ -24,7 +25,7 @@ export const APP_CONFIG_FRAGMENT = gql`
 `
 
 export const SIGN_REAUTH_TOKEN_QUERY = gql`
-  mutation signReauthenticationToken($contents: String!, $password: String!) {
+  mutation signReauthenticationToken($contents: String!, $password: String) {
     signReauthenticationToken(contents: $contents, password: $password)
   }
 `
@@ -48,7 +49,7 @@ export const PROFILE_QUERY = gql`
 `
 
 export const LOGIN_MUT = gql`
-  mutation login($email: String!, $password: String!, $stayLoggedIn: Boolean!) {
+  mutation loginPassword($email: String!, $password: String!, $stayLoggedIn: Boolean!) {
     loginPassword(email: $email, password: $password, stayLoggedIn: $stayLoggedIn) {
       userJwt
     }
@@ -56,7 +57,7 @@ export const LOGIN_MUT = gql`
 `
 
 export const OAUTH_LOGIN_MUT = gql`
-  mutation login($oauthToken: String!, $stayLoggedIn: Boolean) {
+  mutation loginOauth($oauthToken: String!, $stayLoggedIn: Boolean) {
     loginOauth(oauthToken: $oauthToken, stayLoggedIn: $stayLoggedIn) {
       userJwt
     }
@@ -64,8 +65,18 @@ export const OAUTH_LOGIN_MUT = gql`
 `
 
 export const RESET_PW_MUT = gql`
-  mutation resetPassword($token: String!, $newPassword: String!) {
-    resetPassword(token: $token, newPassword: $newPassword) { redirectUri }
+  mutation resetPassword(
+    $token: String!,
+    $newPassword: String!,
+    $loginAfterReset: Boolean,
+    $stayLoggedIn: Boolean
+  ) {
+    resetPassword(
+      token: $token,
+      newPassword: $newPassword,
+      loginAfterReset: $loginAfterReset,
+      stayLoggedIn: $stayLoggedIn
+    ) { redirectUri }
   }
 `
 

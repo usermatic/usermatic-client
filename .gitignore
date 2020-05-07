@@ -11,6 +11,8 @@
 # production
 /dist
 
+/gen
+
 # misc
 .DS_Store
 .env*

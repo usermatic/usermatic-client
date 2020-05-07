@@ -34,7 +34,7 @@ export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
 
   const token = cachedToken != null
     ? cachedToken
-    : (called && !error && !loading) ? data.signReauthenticationToken : null
+    : (called && !error && !loading && data) ? data.signReauthenticationToken : null
 
   if (token) {
     return <ReauthContext.Provider value={token}>
@@ -57,7 +57,7 @@ export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
   }
 
   const onSubmit = (variables: FormikValues) => {
-    submit({ variables })
+    submit(variables)
   }
 
   const onClick = (e: MouseEvent) => {

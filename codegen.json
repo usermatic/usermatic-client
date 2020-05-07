@@ -1,0 +1,16 @@
+{
+  "schema": ["gen/schema.graphql"],
+  "documents": "./src/fragments.ts",
+  "generates": {
+    "./gen/operations.tsx": {
+      "plugins": [
+        "typescript",
+        "typescript-operations",
+        "typescript-react-apollo"
+      ],
+      "config": {
+        "withHooks": true
+      }
+    }
+  }
+}

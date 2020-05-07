@@ -1,10 +1,13 @@
 
 import { useCsrfMutation } from './hooks'
 
-import { VERIFY_EMAIL_MUT, SEND_VERIFICATION_EMAIL_MUT } from './fragments'
+import {
+  useSendVerificationEmailMutation,
+  useVerifyEmailMutation
+} from '../gen/operations'
 
 export const useSendVerificationEmail = (email: string) => {
-  const [submit, ret] = useCsrfMutation(SEND_VERIFICATION_EMAIL_MUT,
+  const [submit, ret] = useCsrfMutation(useSendVerificationEmailMutation,
     { variables: { email } }
   )
   const { loading, error, data } = ret
@@ -14,7 +17,7 @@ export const useSendVerificationEmail = (email: string) => {
 }
 
 export const useEmailVerifier = () => {
-  const [submit, ret] = useCsrfMutation(VERIFY_EMAIL_MUT, {})
+  const [submit, ret] = useCsrfMutation(useVerifyEmailMutation, {})
   const { loading, error, data } = ret
 
   const success = !loading && !error && data

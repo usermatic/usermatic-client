@@ -13,9 +13,11 @@
     "components"
   ],
   "scripts": {
-    "build": "yarn tsc",
+    "build": "yarn codegen && yarn tsc",
     "test": "yarn jest",
-    "prepare": "yarn build && yarn test"
+    "prepare": "yarn build && yarn test",
+    "codegen": "yarn run -s build-schema && yarn graphql-codegen",
+    "build-schema": "node -e 'process.stdout.write(require(\"../schemas/api-schema.js\"))' > gen/schema.graphql"
   },
   "peerDependencies": {
     "react": "^16.9.0"
@@ -25,6 +27,10 @@
     "@babel/preset-env": "^7.9.5",
     "@babel/preset-react": "^7.9.4",
     "@babel/preset-typescript": "^7.9.0",
+    "@graphql-codegen/cli": "^1.13.5",
+    "@graphql-codegen/typescript": "^1.13.5",
+    "@graphql-codegen/typescript-operations": "^1.13.5",
+    "@graphql-codegen/typescript-react-apollo": "^1.13.5",
     "@types/classnames": "^2.2.10",
     "@types/enzyme": "^3.10.5",
     "@types/enzyme-adapter-react-16": "^1.0.6",

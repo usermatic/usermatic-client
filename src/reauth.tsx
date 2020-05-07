@@ -6,12 +6,14 @@ import React, {
   useMemo
 } from 'react'
 
-import { OperationVariables } from '@apollo/react-common'
 import jwtDecode from 'jwt-decode'
 import ms from 'ms'
 
 import { useCsrfMutation } from './hooks'
-import { SIGN_REAUTH_TOKEN_QUERY } from './fragments'
+import {
+  useSignReauthenticationTokenMutation,
+  SignReauthenticationTokenMutationVariables
+} from '../gen/operations'
 
 type CacheEntry = {
   token: string
@@ -77,24 +79,34 @@ export const ReauthCacheProvider: React.FC<{children: ReactNode}> = ({children})
   </ReauthCacheContext.Provider>
 }
 
-type useReauthenticateOptions = {
-  password?: string
-}
+export const useReauthenticate = (contentsArg: string | object) => {
+  const contents = JSON.stringify(contentsArg)
 
-export const useReauthenticate = (contents: string | object, options: useReauthenticateOptions = {}) => {
-  contents = JSON.stringify(contents)
-
-  const variables: OperationVariables = { contents }
+  /*
+  const variables: SignReauthenticationTokenMutationVariables = {
+    contents
+  }
   if (options.password != null) {
     variables.password = options.password
   }
+  */
   const cache = useContext(ReauthCacheContext)
-  const ret = useCsrfMutation(SIGN_REAUTH_TOKEN_QUERY, { variables })
+  const ret = useCsrfMutation(useSignReauthenticationTokenMutation, {})
   const { data } = ret[1]
   if (data && data.signReauthenticationToken) {
     cache.cacheToken(contents, data.signReauthenticationToken)
   }
-  return ret
+
+  const [submit, obj] = ret
+  const submitWrapper = (
+    variables: Omit<SignReauthenticationTokenMutationVariables, 'contents'>) => {
+    submit({ variables: {
+      ...variables,
+      contents
+    }})
+  }
+
+  return [submitWrapper, obj] as [typeof submitWrapper, typeof obj]
 }
 
 export const ReauthContext = React.createContext<string | undefined>(undefined)
