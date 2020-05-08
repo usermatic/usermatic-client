@@ -175,13 +175,13 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   const { id, loading: tokenLoading } = useToken()
 
   useEffect(() => {
-    if (!success) {
-      return
-    }
-    if (id && !tokenLoading && onLogin) {
+    if (success && id && !tokenLoading && onLogin) {
       onLogin()
     }
-    if (redirectAfterReset && redirectUri) {
+  }, [success, id, tokenLoading, onLogin])
+
+  useEffect(() => {
+    if (success && redirectAfterReset && redirectUri) {
       setTimeout(() => {
        window.location.replace(redirectUri)
       }, 1000)
