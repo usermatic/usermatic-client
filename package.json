@@ -65,8 +65,10 @@
     "isomorphic-unfetch": "^3.0.0",
     "jwt-decode": "^2.2.0",
     "ms": "^2.1.2",
+    "qrcode": "^1.4.4",
     "react-apollo": "^3.1.5",
     "react-icons-kit": "^1.3.1",
+    "react-qrcode": "^0.2.5",
     "zxcvbn-async": "^0.0.6"
   }
 }

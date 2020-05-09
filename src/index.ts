@@ -2,8 +2,14 @@
 export {
   AuthProvider,
   useToken,
-  useAppId
+  useAppId,
+  useAppConfig
 } from './auth'
+
+export {
+  useGetTotpKey,
+  useAddTotp
+} from './totp'
 
 export {
   useProfile,
@@ -13,6 +19,7 @@ export {
   useProfilePhotos,
   isPasswordCredential,
   isOauthCredential,
+  isTotpCredential,
   Credential,
   PasswordCredential,
   OauthCredential

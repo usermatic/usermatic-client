@@ -1,5 +1,103 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<AddTotpForm> 1`] = `
+<div
+  id="client-test-div"
+>
+  <Component
+    idPrefix="test"
+  >
+    <div>
+      <div
+        className="d-flex flex-column align-items-center"
+      >
+        <div>
+          1. Scan this QRCode with your authenticator app
+        </div>
+        <div>
+          <Component
+            otpauthUrl="/url"
+          >
+            <img
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHQAAAB0CAYAAABUmhYnAAAAAklEQVR4AewaftIAAAKsSURBVO3BQa7jSAwFwXyE7n/lnL/kqgBBsuHmMCL+YY1RrFGKNUqxRinWKMUapVijFGuUYo1SrFGKNUqxRinWKMUapVijFGuUi4eS8E0qdyThROUkCd+k8kSxRinWKMUa5eJlKm9Kwh1J6FS6JHRJ6FROVN6UhDcVa5RijVKsUS4+LAl3qNyRhE6lS0Kn8qYk3KHyScUapVijFGuUi2GS8H9WrFGKNUqxRrkYRuUkCScq/7JijVKsUYo1ysWHqfwSlS4JT6j8kmKNUqxRijXKxcuS8EuS0Kk8kYRfVqxRijVKsUa5eEjll6l0SbhD5V9SrFGKNUqxRrl4KAmdSpeEN6l0Kl0STlS6JJwk4U0qn1SsUYo1SrFGufgylZMkdConSfgklS4JnUqXhJMknKg8UaxRijVKsUaJf3ggCScqXRJ+iUqXhE7lJAlPqLypWKMUa5RijRL/8EASnlDpktCpdEnoVLoknKg8kYRPUnmiWKMUa5RijXLxMpUuCZ3KHUnoVO5Q6ZLQqXRJ6FQ6lS4JJypdEj6pWKMUa5RijRL/8A9LwolKl4QnVO5IQqfSJaFTeaJYoxRrlGKNEv/wQBK+SeUkCZ3KSRI6lS4JJyq/pFijFGuUYo1y8TKVNyXhJAl3JOEkCScqJ0k4UfmkYo1SrFGKNcrFhyXhDpUnVLokdCpdEjqVkyR0Kp3KSRI6lTcVa5RijVKsUS6GU/mmJHQqnconFWuUYo1SrFEuhkvCiUqXhE6lU+mS0Kl0SehUPqlYoxRrlGKNcvFhKp+k0iWhU7lD5SQJv6xYoxRrlGKNcvGyJHxTEk6ScKLSJaFT6VS6JNyRhE7lTcUapVijFGuU+Ic1RrFGKdYoxRqlWKMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUf4DJrAL6spAVAcAAAAASUVORK5CYII="
+            />
+          </Component>
+        </div>
+        <Component
+          token="eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJhcHBJZCI6IjI0OGU1NDczLWQ5YTYtNDQ4Ny05MTY0LTI0YzMwNTJkMjg5OCIsInNlY3JldEJhc2UzMiI6Ikg4QVVIMk40WFlLTU5VVU8iLCJpYXQiOjEwMDB9."
+        >
+          <div
+            className="d-flex flex-column align-items-center text-muted"
+          >
+            <div
+              onClick={[Function]}
+            >
+              click for manual entry
+            </div>
+          </div>
+        </Component>
+        <div>
+          2. Then, enter the 6 digit code from the authenticator app here:
+        </div>
+        <AddTotpInner
+          InputComponent={[Function]}
+          idPrefix="test"
+          token="eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJhcHBJZCI6IjI0OGU1NDczLWQ5YTYtNDQ4Ny05MTY0LTI0YzMwNTJkMjg5OCIsInNlY3JldEJhc2UzMiI6Ikg4QVVIMk40WFlLTU5VVU8iLCJpYXQiOjEwMDB9."
+        >
+          <ErrorMessage />
+          <Component
+            InputComponent={[Function]}
+            idPrefix="test"
+            submit={[Function]}
+          >
+            <Formik
+              initialValues={
+                Object {
+                  "code": "",
+                }
+              }
+              onSubmit={[Function]}
+              validate={[Function]}
+            >
+              <Form>
+                <form
+                  action="#"
+                  onReset={[Function]}
+                  onSubmit={[Function]}
+                >
+                  <DefaultCodeInput
+                    autoFocus={true}
+                    id="test-add-totp"
+                    name="code"
+                    onChange={[Function]}
+                    required={true}
+                    type="text"
+                    value=""
+                  >
+                    <div>
+                      <input
+                        autoFocus={true}
+                        className="form-control"
+                        id="test-add-totp"
+                        name="code"
+                        onChange={[Function]}
+                        required={true}
+                        type="text"
+                        value=""
+                      />
+                    </div>
+                  </DefaultCodeInput>
+                </form>
+              </Form>
+            </Formik>
+          </Component>
+        </AddTotpInner>
+      </div>
+    </div>
+  </Component>
+</div>
+`;
+
 exports[`<ChangePasswordForm> with password 1`] = `
 <div
   id="client-test-div"

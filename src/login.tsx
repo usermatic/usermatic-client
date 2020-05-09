@@ -39,6 +39,7 @@ export type LoginSubmitArgs = {
   email: string
   password: string
   stayLoggedIn: boolean
+  totpCode?: string
 }
 
 export const useLogin = () => {

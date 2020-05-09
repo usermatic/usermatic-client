@@ -7,9 +7,11 @@ import classNames from 'classnames'
 
 import { useToken, useAppConfig, useAppId } from '../auth'
 import { useCsrfToken } from '../hooks'
-import { InputLabel } from './form-util'
+import { InputLabel, InputComponentType } from './form-util'
 import { ErrorMessage } from '../errors'
 import { PasswordScore, RequestPasswordResetForm } from './password-components'
+
+import { TotpTokenForm } from './totp-components'
 
 import { Icon } from 'react-icons-kit'
 import { google } from 'react-icons-kit/fa/google'
@@ -56,6 +58,9 @@ type LoginFormProps = {
 
   // Render labels before inputs in the form (default true)
   labelsFirst?: boolean
+
+  // Provide a special input component for the TOTP token input.
+  TotpInputComponent?: InputComponentType
 }
 
 const SocialLoginButton: React.FC<{
@@ -296,30 +301,34 @@ const loginInitialValues = {
 }
 
 const validateLogin = (values: FormikValues) => {
-  const errors: FormikErrors<typeof loginInitialValues> = {};
+  const errors: FormikErrors<typeof loginInitialValues> = {}
 
   if (!values.password) {
-    errors.password = 'Required';
+    errors.password = 'Required'
   }
 
   if (!values.email) {
-    errors.email = 'Required';
+    errors.email = 'Required'
   } else if (!/.+@.+/.test(values.email)) {
-    errors.email = 'Please enter an email address';
+    errors.email = 'Please enter an email address'
   }
 
-  return errors;
+  return errors
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({
   onLogin,
   idPrefix,
-  labelsFirst: labelsFirstArg
+  labelsFirst: labelsFirstArg,
+  TotpInputComponent
 }) => {
 
   const labelsFirst = labelsFirstArg ?? true
 
   const [isForgotPasswordMode, setForgotPasswordMode] = useState(false)
+  const [isTotpMode, setTotpMode] = useState<boolean>(false)
+  const [submittedData, setSubmittedData] =
+    useState<LoginSubmitArgs | undefined>(undefined)
 
   const [submit, { loading, error, called }] = useLogin()
 
@@ -335,7 +344,17 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     if (called && !loading && !error && id && !tokenLoading && onLogin) {
       onLogin()
     }
-  })
+  }, [called, loading, error, id, tokenLoading, onLogin])
+
+  const totpRequired = error?.graphQLErrors.find(
+    e => e.extensions?.exception?.code === 'TOTP_REQUIRED'
+  )
+
+  useEffect(() => {
+    if (!isTotpMode && totpRequired) {
+      setTotpMode(true)
+    }
+  }, [totpRequired, isTotpMode])
 
   const onLoginWrapper = () => {
     if (window.opener != null) {
@@ -349,6 +368,24 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
   const popupWindow = usePopupWindow({onLogin: onLoginWrapper, refetch})
 
+  if (isTotpMode) {
+    if (submittedData == null) {
+      throw new Error("login data must be saved before entering totp mode")
+    }
+    const submitCode = (totpCode: string) => {
+      submit({ ...submittedData, totpCode })
+    }
+    return <div className="d-flex flex-column align-items-center">
+      <div className="w-75 text-muted p-3">
+        Please Enter the 6 digit code from your authenticator app:
+      </div>
+      { // Don't display the error message that says we need a code...
+        !totpRequired && <ErrorMessage error={error} /> }
+      <TotpTokenForm submit={submitCode} idPrefix={idPrefix} InputComponent={TotpInputComponent}/>
+      { loading && <div>Please wait...</div> }
+    </div>
+  }
+
   if (isForgotPasswordMode) {
     return <div>
       <div>
@@ -359,8 +396,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     </div>
   }
 
-  const onSubmit = (variables: FormikValues) => {
-    submit(variables as LoginSubmitArgs)
+  const onSubmit = (values: FormikValues) => {
+    const variables = { ...values } as LoginSubmitArgs
+    submit(variables)
+    setSubmittedData(variables)
   }
 
   return <OauthLogin onLogin={onLoginWrapper}>

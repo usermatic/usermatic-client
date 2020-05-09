@@ -36,6 +36,7 @@ export type AuthTokenData = {
 }
 
 const defaultAppConfig: AppConfig = {
+  totpEnabled: false,
   fbLoginEnabled: false,
   fbLoginUrl: 'https://usermatic.io/auth/facebook',
   googleLoginEnabled: false,

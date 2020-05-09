@@ -7,6 +7,11 @@ export {
 } from './login-components'
 
 export {
+  QRCode,
+  AddTotpForm
+} from './totp-components'
+
+export {
   RequestPasswordResetForm,
   ResetPasswordForm,
   ChangePasswordForm,
@@ -20,3 +25,8 @@ export {
 export {
   ReauthenticateGuard
 } from './reauth-components'
+
+export {
+  InputComponentType,
+  DefaultInputComponent
+} from './form-util'

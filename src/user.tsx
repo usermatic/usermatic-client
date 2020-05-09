@@ -45,7 +45,12 @@ export type OauthCredential = {
   email?: string
 }
 
-export type Credential = PasswordCredential | OauthCredential
+export type TotpCredential = {
+  type: string,
+  id: string,
+}
+
+export type Credential = PasswordCredential | OauthCredential | TotpCredential
 
 export const isPasswordCredential = (c: Credential): c is PasswordCredential => {
   return c.type === 'PASSWORD'
@@ -53,6 +58,10 @@ export const isPasswordCredential = (c: Credential): c is PasswordCredential => 
 
 export const isOauthCredential = (c: Credential): c is OauthCredential => {
   return c.type === 'OAUTH'
+}
+
+export const isTotpCredential = (c: Credential): c is TotpCredential => {
+  return c.type === 'TOTP'
 }
 
 export const useCredentials = (): {

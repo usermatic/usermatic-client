@@ -15,6 +15,7 @@ export const APP_CONFIG_FRAGMENT = gql`
   fragment AppConfigParts on AppConfig {
     __typename
     minPasswordStrength
+    totpEnabled
     fbLoginEnabled
     fbLoginUrl
     googleLoginEnabled
@@ -48,17 +49,39 @@ export const PROFILE_QUERY = gql`
   ${USER_FRAGMENT}
 `
 
+export const TOTP_QUERY = gql`
+  query getTotpKey {
+    getTotpKey { token otpauthUrl }
+  }
+`
+
+export const ADD_TOTP_MUT = gql`
+  mutation addTotp($token: String!, $code: String!) {
+    addTotp(token: $token, code: $code)
+  }
+`
+
 export const LOGIN_MUT = gql`
-  mutation loginPassword($email: String!, $password: String!, $stayLoggedIn: Boolean!) {
-    loginPassword(email: $email, password: $password, stayLoggedIn: $stayLoggedIn) {
+  mutation loginPassword(
+    $email: String!,
+    $password: String!,
+    $totpCode: String,
+    $stayLoggedIn: Boolean!
+  ) {
+    loginPassword(
+      email: $email,
+      password: $password,
+      totpCode: $totpCode,
+      stayLoggedIn: $stayLoggedIn
+    ) {
       userJwt
     }
   }
 `
 
 export const OAUTH_LOGIN_MUT = gql`
-  mutation loginOauth($oauthToken: String!, $stayLoggedIn: Boolean) {
-    loginOauth(oauthToken: $oauthToken, stayLoggedIn: $stayLoggedIn) {
+  mutation loginOauth($oauthToken: String!, $totpCode: String, $stayLoggedIn: Boolean) {
+    loginOauth(oauthToken: $oauthToken, totpCode: $totpCode, stayLoggedIn: $stayLoggedIn) {
       userJwt
     }
   }

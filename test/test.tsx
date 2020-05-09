@@ -505,3 +505,45 @@ test('<ResetPasswordForm>', async () => {
 
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 })
+
+test('<AddTotpForm>', async () => {
+  jest.useFakeTimers()
+
+  const token = jwt.sign({
+    appId,
+    secretBase32: 'H8AUH2N4XYKMNUUO',
+    iat: 1000,
+  }, 'abc', { algorithm: 'none' })
+  const getTotpKey = jest.fn().mockReturnValue({ token, otpauthUrl: "/url" })
+
+  const mocks = extendMocks({
+    AppConfig: () => (configNoOauth),
+    User: userWithPassword,
+    Query: () => ({
+      getTotpKey
+    })
+  })
+
+  const wrapper = mount(
+    <TestWrapper mocks={mocks}>
+      <div id="client-test-div">
+        <components.AddTotpForm idPrefix="test" />
+      </div>
+    </TestWrapper>
+  )
+
+  for (let i = 0; i < 10; i++) {
+    await act(async () => { jest.runAllTimers() })
+    wrapper.update()
+    const img = wrapper.find('#client-test-div img')
+    if (img.props().src) {
+      break
+    }
+    if (i >= 9) {
+      throw new Error("qrcode was never rendered")
+    }
+  }
+
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+
+})
