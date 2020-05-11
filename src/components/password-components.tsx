@@ -5,8 +5,6 @@ import { Formik, Form, Field, FormikValues, FormikErrors } from 'formik'
 import jwtDecode from 'jwt-decode'
 import classNames from 'classnames'
 
-import { OperationVariables } from '@apollo/react-common'
-
 import { useAppConfig, useToken } from '../auth'
 import { usePasswordCredential, usePrimaryEmail } from '../user'
 import { InputLabel } from './form-util'
@@ -23,6 +21,11 @@ import {
   useResetPassword
 } from '../passwords'
 
+import {
+  ChangePwMutationOptions,
+  AddPasswordMutationOptions
+} from '../../gen/operations'
+
 const getId = (prefix: string | undefined, suffix: string) => {
   if (prefix) {
     return `${prefix}-${suffix}`
@@ -33,7 +36,9 @@ const getId = (prefix: string | undefined, suffix: string) => {
   }
 }
 
-const useAddOrChangePassword = (options: OperationVariables = {}) => {
+type UseOrChangeOptions = ChangePwMutationOptions & AddPasswordMutationOptions
+
+const useAddOrChangePassword = (options: UseOrChangeOptions) => {
   const { passwordCredential } = usePasswordCredential()
 
   const change = useChangePassword(options)
@@ -85,7 +90,12 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> =
     return errors
   }
 
-  return <Formik initialValues={initialValues} onSubmit={submit} validate={validate}>
+  const onSubmit = (values: FormikValues) => {
+    const variables = values as NonNullable<UseOrChangeOptions['variables']>
+    submit(variables)
+  }
+
+  return <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
     {(props) => (
       <Form>
         { // if there is no password credential, ChangePassword adds a password to the account
@@ -293,7 +303,8 @@ export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> =
   }
 
   const onSubmit = (variables: FormikValues) => {
-    submit(variables)
+    const { email } = variables
+    submit({ email })
     setSubmittedEmail(variables.email)
   }
 

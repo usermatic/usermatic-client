@@ -38,7 +38,7 @@ const useApiMutation = <TData, TVar> (
 
   const success = !loading && !error && data
   const retObj = { ...ret, success }
-  return [submitWrapper, retObj] as [typeof submit, typeof retObj]
+  return [submitWrapper, retObj] as [typeof submitWrapper, typeof retObj]
 }
 
 export const useChangePassword = (options: ChangePwMutationOptions = {}) => {
