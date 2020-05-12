@@ -1,14 +1,22 @@
 
+import { QueryHookOptions, MutationHookOptions } from '@apollo/react-hooks';
+
 import { useCsrfMutation, useCsrfQuery } from './hooks'
 
 import {
   useGetTotpKeyQuery,
   useAddTotpMutation,
-  AddTotpMutationVariables
+  GetTotpKeyQuery,
+  GetTotpKeyQueryVariables,
+  AddTotpMutation,
+  AddTotpMutationVariables,
 } from '../gen/operations'
 
-export const useGetTotpKey = () => {
-  const { data, loading, error } = useCsrfQuery(useGetTotpKeyQuery, {})
+type GetTotpKeyOptions = QueryHookOptions<GetTotpKeyQuery, GetTotpKeyQueryVariables>
+type AddTotpMutationOptions = MutationHookOptions<AddTotpMutation, AddTotpMutationVariables>
+
+export const useGetTotpKey = (options: GetTotpKeyOptions = {}) => {
+  const { data, loading, error } = useCsrfQuery(useGetTotpKeyQuery, options)
   let otpauthUrl, token
   if (!loading && !error && data) {
     otpauthUrl = data.getTotpKey.otpauthUrl
@@ -17,8 +25,8 @@ export const useGetTotpKey = () => {
   return { loading, error, otpauthUrl, token }
 }
 
-export const useAddTotp = () => {
-  const [submit, ret] = useCsrfMutation(useAddTotpMutation, {})
+export const useAddTotp = (options: AddTotpMutationOptions = {}) => {
+  const [submit, ret] = useCsrfMutation(useAddTotpMutation, options)
 
   const submitWrapper = (variables: AddTotpMutationVariables) => {
     submit({ variables })

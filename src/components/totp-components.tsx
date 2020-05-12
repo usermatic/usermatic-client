@@ -96,9 +96,12 @@ export const TotpTokenForm: React.FC<{
 const AddTotpInner: React.FC<{
   idPrefix?: string,
   token: string,
+  onSuccess?: () => void,
   InputComponent: InputComponentType
-}> = ({ idPrefix, token, InputComponent }) => {
-  const [submit, { success, loading, error }] = useAddTotp()
+}> = ({ idPrefix, onSuccess, token, InputComponent }) => {
+  const [submit, { success, loading, error }] = useAddTotp({
+    onCompleted: () => { if (onSuccess != null) { onSuccess() } }
+  })
 
   const submitCode = (code: string) => {
     submit({ code, token })
@@ -124,8 +127,9 @@ const AddTotpInner: React.FC<{
 
 export const AddTotpForm: React.FC<{
   idPrefix?: string,
+  onSuccess?: () => void,
   inputComponent?: InputComponentType
-}> = ({idPrefix, inputComponent = DefaultCodeInput}) => {
+}> = ({idPrefix, onSuccess, inputComponent = DefaultCodeInput}) => {
   const { loading, error, otpauthUrl, token } = useGetTotpKey()
 
   if (loading) {
@@ -147,7 +151,8 @@ export const AddTotpForm: React.FC<{
       <div><QRCode otpauthUrl={otpauthUrl} /></div>
       <ManualEntry token={token} />
       <div>2. Then, enter the 6 digit code from the authenticator app here:</div>
-      <AddTotpInner idPrefix={idPrefix} token={token} InputComponent={inputComponent} />
+      <AddTotpInner idPrefix={idPrefix} token={token} InputComponent={inputComponent}
+        onSuccess={onSuccess} />
     </div>
   </div>
 }
