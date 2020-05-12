@@ -11,6 +11,7 @@ import { useCsrfMutation } from './hooks'
 import zxcvbnAsync from 'zxcvbn-async'
 
 import {
+  PROFILE_QUERY,
   SESSION_QUERY
 } from './fragments'
 
@@ -42,11 +43,24 @@ const useApiMutation = <TData, TVar> (
 }
 
 export const useChangePassword = (options: ChangePwMutationOptions = {}) => {
-  return useApiMutation(useChangePwMutation, options)
+  if (options.refetchQueries) {
+    console.warn('overwriting default options.refetchQueries')
+  }
+
+  return useApiMutation(useChangePwMutation, {
+    refetchQueries: [{ query: PROFILE_QUERY }],
+    ...options,
+  })
 }
 
 export const useAddPassword = (options: AddPasswordMutationOptions = {}) => {
-  return useApiMutation(useAddPasswordMutation, options)
+  if (options.refetchQueries) {
+    console.warn('overwriting default options.refetchQueries')
+  }
+  return useApiMutation(useAddPasswordMutation, {
+    refetchQueries: [{ query: PROFILE_QUERY }],
+    ...options,
+  })
 }
 
 export const useRequestPasswordResetEmail = (options: RequestPwResetEmailMutationOptions = {}) => {

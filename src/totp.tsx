@@ -4,6 +4,10 @@ import { QueryHookOptions, MutationHookOptions } from '@apollo/react-hooks';
 import { useCsrfMutation, useCsrfQuery } from './hooks'
 
 import {
+  PROFILE_QUERY
+} from './fragments'
+
+import {
   useGetTotpKeyQuery,
   useAddTotpMutation,
   GetTotpKeyQuery,
@@ -26,7 +30,14 @@ export const useGetTotpKey = (options: GetTotpKeyOptions = {}) => {
 }
 
 export const useAddTotp = (options: AddTotpMutationOptions = {}) => {
-  const [submit, ret] = useCsrfMutation(useAddTotpMutation, options)
+  if (options.refetchQueries) {
+    console.warn('overwriting default options.refetchQueries')
+  }
+
+  const [submit, ret] = useCsrfMutation(useAddTotpMutation, {
+    refetchQueries: [{ query: PROFILE_QUERY }],
+    ...options,
+  })
 
   const submitWrapper = (variables: AddTotpMutationVariables) => {
     submit({ variables })
