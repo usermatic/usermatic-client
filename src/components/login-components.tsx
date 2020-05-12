@@ -530,7 +530,7 @@ export const AccountCreationForm: React.FC<AccountCreationProps> = ({
             onSubmit={onSubmit}
             validate={validateLogin}>
     {(props) => (
-      <Form>
+      <Form autoComplete="off">
         <div className="form-label-group mb-2">
           <InputLabel flip={labelsFirst}>
             <Field type="email" name="email" className="form-control"
