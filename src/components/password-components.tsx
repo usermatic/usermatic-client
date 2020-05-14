@@ -112,7 +112,7 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> =
             <InputLabel flip={labelsFirst}>
               <Field type="text" className="form-control" name="email"
                      id={getId(idPrefix, "change-password-email")}
-                     placeholder="email" required />
+                     placeholder="Email" required />
               <label htmlFor={getId(idPrefix, "change-password-email")}>Email</label>
             </InputLabel>
           </div>

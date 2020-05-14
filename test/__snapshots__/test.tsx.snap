@@ -280,7 +280,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
                 id="test-change-password-email"
                 key=".0"
                 name="email"
-                placeholder="email"
+                placeholder="Email"
                 required={true}
                 type="text"
               >
@@ -290,7 +290,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
                   name="email"
                   onBlur={[Function]}
                   onChange={[Function]}
-                  placeholder="email"
+                  placeholder="Email"
                   required={true}
                   type="text"
                   value="bob@bob.com"
