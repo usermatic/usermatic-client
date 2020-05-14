@@ -94,6 +94,30 @@ const configOauth = {
   fbLoginUrl: '/doesntmatter'
 }
 
+const exists = (selector: string) => {
+  return (wrapper: ReactWrapper) => {
+    const el = wrapper.find(selector)
+    return el.length >= 1
+  }
+}
+
+const waitUntil = async (
+  wrapper: ReactWrapper,
+  fn: (w: ReactWrapper) => boolean
+): Promise<'finished'> => {
+  for (let i = 0; i < 10; i++) {
+    await act(async () => { jest.runAllTimers() })
+    wrapper.update()
+    if (fn(wrapper)) {
+      return 'finished'
+    }
+    if (i >= 9) {
+      throw new Error('waitUntil() timed out')
+    }
+  }
+  throw new Error('unreachable')
+}
+
 const CsrfTokenWrapper: React.FC<{children: ReactNode}> = ({children}) => {
   const { csrfToken } = useCsrfToken()
   if (!csrfToken) {
@@ -351,10 +375,8 @@ test('useSendVerificationEmail', async () => {
   expect(sendVerificationEmail.mock.calls[0][1]).toMatchObject({ email })
 })
 
-test('<ReauthenticateGuard>', async () => {
-  jest.useFakeTimers()
-
-  const signReauthenticationToken = jest.fn().mockImplementation(
+const mockSignReauthenticationToken = () => (
+  jest.fn().mockImplementation(
     (root, { contents, password }) => (
       jwt.sign({
         id: userId,
@@ -363,6 +385,13 @@ test('<ReauthenticateGuard>', async () => {
       }, 'abc')
     )
   )
+)
+
+
+test('<ReauthenticateGuard>', async () => {
+  jest.useFakeTimers()
+
+  const signReauthenticationToken = mockSignReauthenticationToken()
 
   const mocks = extendMocks({
     AppConfig: () => (configNoOauth),
@@ -532,18 +561,60 @@ test('<AddTotpForm>', async () => {
     </TestWrapper>
   )
 
-  for (let i = 0; i < 10; i++) {
-    await act(async () => { jest.runAllTimers() })
-    wrapper.update()
+  await waitUntil(wrapper, (wrapper) => {
     const img = wrapper.find('#client-test-div img')
-    if (img.props().src) {
-      break
-    }
-    if (i >= 9) {
-      throw new Error("qrcode was never rendered")
-    }
-  }
+    return Boolean(img.props().src)
+  })
+
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+})
+
+test('<GenRecoveryCodesForm>', async () => {
+  jest.useFakeTimers()
+
+  const signReauthenticationToken = mockSignReauthenticationToken()
+  const getRecoveryCodesCount = jest.fn().mockReturnValue(10)
+  const createRecoveryCodes = jest.fn().mockReturnValue({
+    codes: [
+      'ACDF01AB234A', 'ACDF01AB234A', 'ACDF01AB234A', 'ACDF01AB234A', 'ACDF01AB234A',
+      'ACDF01AB234A', 'ACDF01AB234A', 'ACDF01AB234A', 'ACDF01AB234A', 'ACDF01AB234A'
+    ]
+  })
+  const mocks = extendMocks({
+    AppConfig: () => (configNoOauth),
+    User: userWithPassword,
+    Query: () => ({
+      getRecoveryCodesCount
+    }),
+    Mutation: () => ({
+      signReauthenticationToken,
+      createRecoveryCodes
+    })
+  })
+
+  const wrapper = mount(
+    <TestWrapper mocks={mocks}>
+      <div id="client-test-div">
+        <components.GenRecoveryCodesForm />
+      </div>
+    </TestWrapper>
+  )
+
+  await waitUntil(wrapper, exists('#reauth-guard-form'))
 
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 
+  setInput(wrapper, 'password', 'input#reauth-guard-password', 'hunter2')
+
+  wrapper.find('form#reauth-guard-form').simulate('submit')
+
+  await waitUntil(wrapper, exists('#gen-new-codes-confirm-btn'))
+
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+
+  wrapper.find('#gen-new-codes-confirm-btn').simulate('click')
+
+  await waitUntil(wrapper, exists('#pre-codes'))
+
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 })

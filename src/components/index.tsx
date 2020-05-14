@@ -23,8 +23,13 @@ export {
 } from './verifyemail-components'
 
 export {
-  ReauthenticateGuard
+  ReauthenticateGuard,
+  ReauthPromptComponent
 } from './reauth-components'
+
+export {
+  GenRecoveryCodesForm
+} from './recoverycodes-components'
 
 export {
   InputComponentType,

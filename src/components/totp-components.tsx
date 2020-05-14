@@ -20,7 +20,6 @@ const getId = (prefix: string | undefined, suffix: string) => {
 }
 
 export const QRCode: React.FC<{otpauthUrl: string}> = ({otpauthUrl}) => {
-  console.log('otpauthUrl', otpauthUrl)
   const dataUrl = useQRCode(otpauthUrl)
   return <img src={dataUrl} />
 }
@@ -142,8 +141,6 @@ export const AddTotpForm: React.FC<{
     console.error("otpauthUrl and token are required", otpauthUrl, token)
     return null
   }
-
-  console.log('token', token, jwtDecode(token))
 
   return <div>
     <div className="d-flex flex-column align-items-center">

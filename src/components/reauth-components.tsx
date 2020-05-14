@@ -15,19 +15,32 @@ import {
   ReauthContext
 } from '../reauth'
 
+export type ReauthPromptComponent = React.FC<{}>
+
 type ReauthenticateGuardProps = {
   children: ReactNode
   tokenContents: string | object
   maxTokenAge?: string
   onClose?: () => void
+  prompt?: ReauthPromptComponent
 }
+
+const DefaultPromptComponent: ReauthPromptComponent = () => (
+  <div className="mb-3">Please enter your password:</div>
+)
 
 // Hides some other component behind a reauthentication prompt. After the
 // user reauthenticates successfully, the children are displayed, and the
 // reauthentication token is provided in a context, and can be retrieved by
 // calling useReauthToken().
 export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
-({children, tokenContents, maxTokenAge = "2m", onClose}) => {
+({
+  children,
+  tokenContents,
+  maxTokenAge = "2m",
+  onClose,
+  prompt: Prompt = DefaultPromptComponent
+}) => {
 
   const [submit, { data, called, loading, error }] = useReauthenticate(tokenContents)
   const cachedToken = useCachedReauthToken(tokenContents, maxTokenAge)
@@ -70,7 +83,7 @@ export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
 
   return <div>
     <ErrorMessage error={error} />
-    <div className="mb-3">Please enter your password:</div>
+    <Prompt/>
     <Formik onSubmit={onSubmit} initialValues={initialValues} validate={validate} >
       {(props) => (
         <Form id="reauth-guard-form">

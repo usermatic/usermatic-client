@@ -61,6 +61,20 @@ export const ADD_TOTP_MUT = gql`
   }
 `
 
+export const CREATE_RECOVERY_CODES_MUT = gql`
+  mutation createRecoveryCodes($reauthToken: String!) {
+    createRecoveryCodes(reauthToken: $reauthToken) {
+      codes
+    }
+  }
+`
+
+export const GET_RECOVERY_CODES_COUNT_QUERY = gql`
+  query getRecoveryCodesCount {
+    getRecoveryCodesCount
+  }
+`
+
 export const LOGIN_MUT = gql`
   mutation loginPassword(
     $email: String!,

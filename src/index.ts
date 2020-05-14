@@ -12,6 +12,11 @@ export {
 } from './totp'
 
 export {
+  useGetRecoveryCodeCount,
+  useCreateRecoveryCodes
+} from './recoverycodes'
+
+export {
   useProfile,
   usePrimaryEmail,
   useCredentials,

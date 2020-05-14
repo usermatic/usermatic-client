@@ -103,7 +103,11 @@ export const useReauthenticate = (contentsArg: string | object) => {
 
 export const ReauthContext = React.createContext<string | undefined>(undefined)
 
-export const useReauthToken = () => {
-  return useContext(ReauthContext)
+export const useReauthToken = (): string => {
+  const ret = useContext(ReauthContext)
+  if (ret == null) {
+    throw new Error('useReauthToken must be within a ReauthContext')
+  }
+  return ret
 }
 

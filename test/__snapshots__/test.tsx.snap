@@ -364,6 +364,188 @@ exports[`<ChangePasswordForm> without password 1`] = `
 </div>
 `;
 
+exports[`<GenRecoveryCodesForm> 1`] = `
+<div
+  id="client-test-div"
+>
+  <Component>
+    <Component
+      prompt={[Function]}
+      tokenContents={
+        Object {
+          "operations": Array [
+            "gen-recovery-codes",
+          ],
+        }
+      }
+    >
+      <div>
+        <ErrorMessage />
+        <Prompt>
+          <div
+            className="mb-3 h4"
+          >
+            Please enter your password to generate new account recovery codes.
+          </div>
+        </Prompt>
+        <Formik
+          initialValues={
+            Object {
+              "password": "",
+            }
+          }
+          onSubmit={[Function]}
+          validate={[Function]}
+        >
+          <Form
+            id="reauth-guard-form"
+          >
+            <form
+              action="#"
+              id="reauth-guard-form"
+              onReset={[Function]}
+              onSubmit={[Function]}
+            >
+              <div
+                className="form-label-group"
+              >
+                <Field
+                  autoFocus={true}
+                  className="form-control"
+                  id="reauth-guard-password"
+                  name="password"
+                  placeholder="password"
+                  type="password"
+                >
+                  <input
+                    autoFocus={true}
+                    className="form-control"
+                    id="reauth-guard-password"
+                    name="password"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    placeholder="password"
+                    type="password"
+                    value=""
+                  />
+                </Field>
+              </div>
+              <div
+                className="d-flex justify-content-between"
+              >
+                <button
+                  className="btn btn-primary"
+                  type="submit"
+                >
+                  Submit
+                </button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={[Function]}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </Form>
+        </Formik>
+      </div>
+    </Component>
+  </Component>
+</div>
+`;
+
+exports[`<GenRecoveryCodesForm> 2`] = `
+<div
+  id="client-test-div"
+>
+  <Component>
+    <Component
+      prompt={[Function]}
+      tokenContents={
+        Object {
+          "operations": Array [
+            "gen-recovery-codes",
+          ],
+        }
+      }
+    >
+      <GenRecoveryCodesFormInner
+        codeCount={10}
+      >
+        <div
+          className="d-flex flex-column align-items-center"
+        >
+          <div
+            className="alert alert-warning"
+          >
+            Warning: After you generate new codes, your old codes will no longer work. Make sure you store the new codes securely.
+          </div>
+          <button
+            className="btn btn-danger"
+            id="gen-new-codes-confirm-btn"
+            onClick={[Function]}
+          >
+            Invalidate my old codes and create new ones.
+          </button>
+        </div>
+      </GenRecoveryCodesFormInner>
+    </Component>
+  </Component>
+</div>
+`;
+
+exports[`<GenRecoveryCodesForm> 3`] = `
+<div
+  id="client-test-div"
+>
+  <Component>
+    <Component
+      prompt={[Function]}
+      tokenContents={
+        Object {
+          "operations": Array [
+            "gen-recovery-codes",
+          ],
+        }
+      }
+    >
+      <GenRecoveryCodesFormInner
+        codeCount={10}
+      >
+        <div>
+          <ErrorMessage />
+          <div
+            className="p-5"
+          >
+            Here are your recovery codes. Treat them like passwords and store them somewhere safe.
+            <div
+              className="d-flex justify-content-center"
+            >
+              <pre
+                id="pre-codes"
+              >
+                ACDF-01AB-234A
+ACDF-01AB-234A
+ACDF-01AB-234A
+ACDF-01AB-234A
+ACDF-01AB-234A
+ACDF-01AB-234A
+ACDF-01AB-234A
+ACDF-01AB-234A
+ACDF-01AB-234A
+ACDF-01AB-234A
+              </pre>
+            </div>
+            You will not be able to view these codes again later. If you lose them, you can generate new ones.
+          </div>
+        </div>
+      </GenRecoveryCodesFormInner>
+    </Component>
+  </Component>
+</div>
+`;
+
 exports[`<LoginForm> login 1`] = `
 <div
   id="client-test-div"
@@ -2008,11 +2190,13 @@ exports[`<ReauthenticateGuard> 1`] = `
   >
     <div>
       <ErrorMessage />
-      <div
-        className="mb-3"
-      >
-        Please enter your password:
-      </div>
+      <DefaultPromptComponent>
+        <div
+          className="mb-3"
+        >
+          Please enter your password:
+        </div>
+      </DefaultPromptComponent>
       <Formik
         initialValues={
           Object {
