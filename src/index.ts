@@ -22,7 +22,8 @@ export {
   isTotpCredential,
   Credential,
   PasswordCredential,
-  OauthCredential
+  OauthCredential,
+  TotpCredential
 } from './user'
 
 export {
