@@ -14,6 +14,8 @@ import {
   addMocksToSchema
 } from 'graphql-tools'
 
+import { GraphQLError } from 'graphql'
+
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { SchemaLink } from 'apollo-link-schema'
@@ -95,10 +97,12 @@ const configOauth = {
 }
 
 const exists = (selector: string) => {
-  return (wrapper: ReactWrapper) => {
+  const ret = (wrapper: ReactWrapper) => {
     const el = wrapper.find(selector)
     return el.length >= 1
   }
+  ret.toString = () => `exists(${selector})`
+  return ret
 }
 
 const waitUntil = async (
@@ -106,13 +110,15 @@ const waitUntil = async (
   fn: (w: ReactWrapper) => boolean
 ): Promise<'finished'> => {
   for (let i = 0; i < 10; i++) {
-    await act(async () => { jest.runAllTimers() })
+    await act(async () => {
+      jest.runAllTimers()
+    })
     wrapper.update()
     if (fn(wrapper)) {
       return 'finished'
     }
     if (i >= 9) {
-      throw new Error('waitUntil() timed out')
+      throw new Error(`waitUntil(${fn}) timed out`)
     }
   }
   throw new Error('unreachable')
@@ -255,6 +261,62 @@ test('<LoginForm> login', async () => {
     { email, password, stayLoggedIn: true },
   )
   expect(onLogin).toHaveBeenCalled()
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+})
+
+const codeError = (msg: string, code: string) => {
+  return new GraphQLError(msg, undefined, undefined, undefined,
+    undefined, undefined, { exception: { code } })
+}
+
+test('<LoginForm> TOTP', async () => {
+  jest.useFakeTimers()
+
+  const email = 'bob@bob.com'
+  const password = 'hunter2'
+
+  const loginPassword = jest.fn().mockImplementation(
+    (root, { password, email, totpCode }) => {
+      if (!totpCode) {
+        throw codeError('totp required', 'TOTP_REQUIRED')
+      }
+      return {}
+    }
+  )
+
+  const mocks = extendMocks({
+    AppConfig: () => (configNoOauth),
+    Mutation: () => ({
+      loginPassword
+    })
+  })
+
+  const onLogin = jest.fn()
+  const wrapper = mount(
+    <TestWrapper mocks={mocks}>
+      <div id="client-test-div">
+        <components.LoginForm onLogin={onLogin} idPrefix="test" />
+      </div>
+    </TestWrapper>
+  )
+
+  await waitUntil(wrapper, exists('input#test-login-email'))
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+
+  setInput(wrapper, 'email', 'input#test-login-email', email)
+  setInput(wrapper, 'password', 'input#test-login-password', password)
+  setInput(wrapper, 'stayLoggedIn', 'input#test-login-stay-logged-in', true)
+
+  wrapper.find('form').simulate('submit')
+
+  await waitUntil(wrapper, exists('input#test-totp-code'))
+
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+
+  wrapper.find('#test-recovery-code-button').simulate('click')
+
+  await waitUntil(wrapper, exists('input#test-recovery-code'))
+
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 })
 

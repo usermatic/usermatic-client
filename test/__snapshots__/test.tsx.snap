@@ -40,13 +40,15 @@ exports[`<AddTotpForm> 1`] = `
           2. Then, enter the 6 digit code from the authenticator app here:
         </div>
         <AddTotpInner
-          InputComponent={[Function]}
+          RecoveryCodeInputComponent={[Function]}
+          TotpInputComponent={[Function]}
           idPrefix="test"
           token="eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJhcHBJZCI6IjI0OGU1NDczLWQ5YTYtNDQ4Ny05MTY0LTI0YzMwNTJkMjg5OCIsInNlY3JldEJhc2UzMiI6Ikg4QVVIMk40WFlLTU5VVU8iLCJpYXQiOjEwMDB9."
         >
           <ErrorMessage />
           <Component
-            InputComponent={[Function]}
+            RecoveryCodeInputComponent={[Function]}
+            TotpInputComponent={[Function]}
             idPrefix="test"
             submit={[Function]}
           >
@@ -67,7 +69,7 @@ exports[`<AddTotpForm> 1`] = `
                 >
                   <DefaultCodeInput
                     autoFocus={true}
-                    id="test-add-totp"
+                    id="test-totp-code"
                     name="code"
                     onChange={[Function]}
                     required={true}
@@ -78,7 +80,7 @@ exports[`<AddTotpForm> 1`] = `
                       <input
                         autoFocus={true}
                         className="form-control"
-                        id="test-add-totp"
+                        id="test-totp-code"
                         name="code"
                         onChange={[Function]}
                         required={true}
@@ -89,6 +91,13 @@ exports[`<AddTotpForm> 1`] = `
                   </DefaultCodeInput>
                 </form>
               </Form>
+              <button
+                className="btn btn-outline-secondary"
+                id="test-recovery-code-button"
+                onClick={[Function]}
+              >
+                I need to use a 2FA recovery code
+              </button>
             </Formik>
           </Component>
         </AddTotpInner>
@@ -542,6 +551,321 @@ ACDF-01AB-234A
         </div>
       </GenRecoveryCodesFormInner>
     </Component>
+  </Component>
+</div>
+`;
+
+exports[`<LoginForm> TOTP 1`] = `
+<div
+  id="client-test-div"
+>
+  <Component
+    idPrefix="test"
+    onLogin={[MockFunction]}
+  >
+    <Component
+      onLogin={[Function]}
+    >
+      <SocialButtons
+        className="my-3"
+        popupWindow={
+          Object {
+            "close": [Function],
+            "open": [Function],
+          }
+        }
+      />
+      <Formik
+        initialValues={
+          Object {
+            "email": "",
+            "password": "",
+            "stayLoggedIn": false,
+          }
+        }
+        onSubmit={[Function]}
+        validate={[Function]}
+      >
+        <Form>
+          <form
+            action="#"
+            onReset={[Function]}
+            onSubmit={[Function]}
+          >
+            <div
+              className="form-label-group mb-2"
+            >
+              <Component
+                flip={true}
+              >
+                <label
+                  htmlFor="test-login-email"
+                  key=".1"
+                >
+                  Email address
+                </label>
+                <Field
+                  autoFocus={true}
+                  className="form-control"
+                  id="test-login-email"
+                  key=".0"
+                  name="email"
+                  placeholder="Email address"
+                  required={true}
+                  type="email"
+                >
+                  <input
+                    autoFocus={true}
+                    className="form-control"
+                    id="test-login-email"
+                    name="email"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    placeholder="Email address"
+                    required={true}
+                    type="email"
+                    value=""
+                  />
+                </Field>
+              </Component>
+            </div>
+            <div
+              className="form-label-group mb-2"
+            >
+              <Component
+                flip={true}
+              >
+                <label
+                  htmlFor="test-login-password"
+                  key=".1"
+                >
+                  Password
+                </label>
+                <Field
+                  className="form-control"
+                  id="test-login-password"
+                  key=".0"
+                  name="password"
+                  placeholder="Password"
+                  required={true}
+                  type="password"
+                >
+                  <input
+                    className="form-control"
+                    id="test-login-password"
+                    name="password"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    placeholder="Password"
+                    required={true}
+                    type="password"
+                    value=""
+                  />
+                </Field>
+              </Component>
+            </div>
+            <div
+              className="custom-control custom-checkbox mb-2"
+            >
+              <Field
+                className="custom-control-input"
+                id="test-login-stay-logged-in"
+                name="stayLoggedIn"
+                type="checkbox"
+              >
+                <input
+                  checked={false}
+                  className="custom-control-input"
+                  id="test-login-stay-logged-in"
+                  name="stayLoggedIn"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  type="checkbox"
+                  value={false}
+                />
+              </Field>
+              <label
+                className="custom-control-label"
+                htmlFor="test-login-stay-logged-in"
+              >
+                Remember me
+              </label>
+            </div>
+            <div
+              className="mb-3 justify-content-between d-flex"
+            >
+              <button
+                className="btn btn-primary"
+                id="login-button"
+                type="submit"
+              >
+                Sign in
+              </button>
+              <button
+                className="btn btn-outline-primary"
+                id="forgot-pw-button"
+                onClick={[Function]}
+                type="button"
+              >
+                Forgot Password?
+              </button>
+            </div>
+            <ErrorMessage />
+          </form>
+        </Form>
+      </Formik>
+    </Component>
+  </Component>
+</div>
+`;
+
+exports[`<LoginForm> TOTP 2`] = `
+<div
+  id="client-test-div"
+>
+  <Component
+    idPrefix="test"
+    onLogin={[MockFunction]}
+  >
+    <div
+      className="d-flex flex-column align-items-center"
+    >
+      <div
+        className="w-75 text-muted p-3"
+      >
+        Please Enter the 6 digit code from your authenticator app:
+      </div>
+      <Component
+        idPrefix="test"
+        submit={[Function]}
+      >
+        <Formik
+          initialValues={
+            Object {
+              "code": "",
+            }
+          }
+          onSubmit={[Function]}
+          validate={[Function]}
+        >
+          <Form>
+            <form
+              action="#"
+              onReset={[Function]}
+              onSubmit={[Function]}
+            >
+              <DefaultCodeInput
+                autoFocus={true}
+                id="test-totp-code"
+                name="code"
+                onChange={[Function]}
+                required={true}
+                type="text"
+                value=""
+              >
+                <div>
+                  <input
+                    autoFocus={true}
+                    className="form-control"
+                    id="test-totp-code"
+                    name="code"
+                    onChange={[Function]}
+                    required={true}
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </DefaultCodeInput>
+            </form>
+          </Form>
+          <button
+            className="btn btn-outline-secondary"
+            id="test-recovery-code-button"
+            onClick={[Function]}
+          >
+            I need to use a 2FA recovery code
+          </button>
+        </Formik>
+      </Component>
+    </div>
+  </Component>
+</div>
+`;
+
+exports[`<LoginForm> TOTP 3`] = `
+<div
+  id="client-test-div"
+>
+  <Component
+    idPrefix="test"
+    onLogin={[MockFunction]}
+  >
+    <div
+      className="d-flex flex-column align-items-center"
+    >
+      <div
+        className="w-75 text-muted p-3"
+      >
+        Please Enter the 6 digit code from your authenticator app:
+      </div>
+      <Component
+        idPrefix="test"
+        submit={[Function]}
+      >
+        <Formik
+          initialValues={
+            Object {
+              "code": "",
+            }
+          }
+          onSubmit={[Function]}
+          validate={[Function]}
+        >
+          <Form>
+            <form
+              action="#"
+              onReset={[Function]}
+              onSubmit={[Function]}
+            >
+              <DefaultCodeInput
+                autoFocus={true}
+                id="test-recovery-code"
+                name="code"
+                onChange={[Function]}
+                required={true}
+                type="text"
+                value=""
+              >
+                <div>
+                  <input
+                    autoFocus={true}
+                    className="form-control"
+                    id="test-recovery-code"
+                    name="code"
+                    onChange={[Function]}
+                    required={true}
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </DefaultCodeInput>
+              <button
+                className="btn btn-primary"
+                type="submit"
+              >
+                Submit Recovery Code
+              </button>
+            </form>
+          </Form>
+          <button
+            className="btn btn-outline-secondary"
+            onClick={[Function]}
+          >
+            Cancel
+          </button>
+        </Formik>
+      </Component>
+    </div>
   </Component>
 </div>
 `;

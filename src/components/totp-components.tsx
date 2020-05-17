@@ -49,10 +49,17 @@ const DefaultCodeInput: InputComponentType = (props) => (
 
 export const TotpTokenForm: React.FC<{
   submit: (code: string) => void,
-  InputComponent?: InputComponentType,
+  TotpInputComponent?: InputComponentType,
+  RecoveryCodeInputComponent?: InputComponentType,
   idPrefix?: string
-}> = ({submit, idPrefix, InputComponent = DefaultCodeInput}) => {
+}> = ({
+  submit,
+  idPrefix,
+  TotpInputComponent = DefaultCodeInput,
+  RecoveryCodeInputComponent = DefaultCodeInput
+}) => {
 
+  const [recoveryMode, setRecoveryMode] = useState<boolean>(false)
   const initialValues = {
     code: ''
   }
@@ -69,24 +76,56 @@ export const TotpTokenForm: React.FC<{
   }
 
   return <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
-  {({values, handleChange, submitForm}) => {
+  {({values, handleChange, submitForm, resetForm}) => {
+
+    const enterRecoveryMode = (e: MouseEvent) => {
+      e.preventDefault()
+      setRecoveryMode(true)
+      resetForm()
+    }
+
+    const exitRecoveryMode = (e: MouseEvent) => {
+      e.preventDefault()
+      setRecoveryMode(false)
+      resetForm()
+    }
+
     const handleChangeWrapper = (e: ChangeEvent<HTMLInputElement>) => {
-      if (/^[0-9]{0,6}$/.test(e.target.value)) {
+      if (recoveryMode) {
         handleChange(e)
-      }
-      if (/^[0-9]{6}$/.test(e.target.value)) {
-        submitForm()
+      } else {
+        if (/^[0-9]{0,6}$/.test(e.target.value)) {
+          handleChange(e)
+        }
+        if (/^[0-9]{6}$/.test(e.target.value)) {
+          submitForm()
+        }
       }
     }
+    const InputComponent = recoveryMode ? RecoveryCodeInputComponent : TotpInputComponent
     return <>
       <Form>
         <InputComponent
           type="text" name="code"
           onChange={handleChangeWrapper}
           value={values.code}
-          id={getId(idPrefix, "add-totp")}
+          id={getId(idPrefix, recoveryMode ? "recovery-code" : "totp-code")}
           required autoFocus />
+        { recoveryMode &&
+          <button className="btn btn-primary" type="submit">
+            Submit Recovery Code
+          </button>
+        }
       </Form>
+      { recoveryMode
+        ? <button className="btn btn-outline-secondary" onClick={exitRecoveryMode}>
+            Cancel
+          </button>
+        : <button id={getId(idPrefix, "recovery-code-button")}
+                  className="btn btn-outline-secondary" onClick={enterRecoveryMode}>
+            I need to use a 2FA recovery code
+          </button>
+      }
     </>
   }}
   </Formik>
@@ -96,8 +135,9 @@ const AddTotpInner: React.FC<{
   idPrefix?: string,
   token: string,
   onSuccess?: () => void,
-  InputComponent: InputComponentType
-}> = ({ idPrefix, onSuccess, token, InputComponent }) => {
+  RecoveryCodeInputComponent: InputComponentType,
+  TotpInputComponent: InputComponentType
+}> = ({ idPrefix, onSuccess, token, TotpInputComponent, RecoveryCodeInputComponent }) => {
   const [submit, { success, loading, error }] = useAddTotp({
     onCompleted: () => { if (onSuccess != null) { onSuccess() } }
   })
@@ -117,7 +157,8 @@ const AddTotpInner: React.FC<{
     <ErrorMessage error={error} />
     <TotpTokenForm
       idPrefix={idPrefix}
-      InputComponent={InputComponent}
+      TotpInputComponent={TotpInputComponent}
+      RecoveryCodeInputComponent={RecoveryCodeInputComponent}
       submit={submitCode}
     />
     { loading && <div>Please wait...</div> }
@@ -127,8 +168,14 @@ const AddTotpInner: React.FC<{
 export const AddTotpForm: React.FC<{
   idPrefix?: string,
   onSuccess?: () => void,
+  recoveryCodeInputComponent?: InputComponentType,
   inputComponent?: InputComponentType
-}> = ({idPrefix, onSuccess, inputComponent = DefaultCodeInput}) => {
+}> = ({
+  idPrefix,
+  onSuccess,
+  inputComponent = DefaultCodeInput,
+  recoveryCodeInputComponent = DefaultCodeInput
+}) => {
   const { loading, error, otpauthUrl, token } = useGetTotpKey()
 
   if (loading) {
@@ -148,7 +195,9 @@ export const AddTotpForm: React.FC<{
       <div><QRCode otpauthUrl={otpauthUrl} /></div>
       <ManualEntry token={token} />
       <div>2. Then, enter the 6 digit code from the authenticator app here:</div>
-      <AddTotpInner idPrefix={idPrefix} token={token} InputComponent={inputComponent}
+      <AddTotpInner idPrefix={idPrefix} token={token}
+        TotpInputComponent={inputComponent}
+        RecoveryCodeInputComponent={recoveryCodeInputComponent}
         onSuccess={onSuccess} />
     </div>
   </div>

@@ -59,8 +59,10 @@ type LoginFormProps = {
   // Render labels before inputs in the form (default true)
   labelsFirst?: boolean
 
-  // Provide a special input component for the TOTP token input.
+  // Provide a special input component for the TOTP token input and Recovery Code
+  // input
   TotpInputComponent?: InputComponentType
+  RecoveryCodeInputComponent?: InputComponentType
 }
 
 const SocialLoginButton: React.FC<{
@@ -316,17 +318,19 @@ const validateLogin = (values: FormikValues) => {
   return errors
 }
 
+type LoginMode = 'login' | 'forgotpw' | 'totp'
+
 export const LoginForm: React.FC<LoginFormProps> = ({
   onLogin,
   idPrefix,
   labelsFirst: labelsFirstArg,
-  TotpInputComponent
+  TotpInputComponent,
+  RecoveryCodeInputComponent
 }) => {
 
   const labelsFirst = labelsFirstArg ?? true
 
-  const [isForgotPasswordMode, setForgotPasswordMode] = useState(false)
-  const [isTotpMode, setTotpMode] = useState<boolean>(false)
+  const [mode, setMode] = useState<LoginMode>('login')
   const [submittedData, setSubmittedData] =
     useState<LoginSubmitArgs | undefined>(undefined)
 
@@ -346,15 +350,18 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     }
   }, [called, loading, error, id, tokenLoading, onLogin])
 
-  const totpRequired = error?.graphQLErrors.find(
+  const totpRequired = Boolean(error?.graphQLErrors.find(
     e => e.extensions?.exception?.code === 'TOTP_REQUIRED'
-  )
+  ))
+
+  //console.log('ERROR', mode, loading, called, totpRequired, JSON.stringify(error, null, '  '))
 
   useEffect(() => {
-    if (!isTotpMode && totpRequired) {
-      setTotpMode(true)
+    if (mode !== 'totp' && totpRequired) {
+      console.log('enter TOTP')
+      setMode('totp')
     }
-  }, [totpRequired, isTotpMode])
+  }, [totpRequired, mode])
 
   const onLoginWrapper = () => {
     if (window.opener != null) {
@@ -368,7 +375,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
   const popupWindow = usePopupWindow({onLogin: onLoginWrapper, refetch})
 
-  if (isTotpMode) {
+  if (mode === 'totp') {
     if (submittedData == null) {
       throw new Error("login data must be saved before entering totp mode")
     }
@@ -381,72 +388,75 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       </div>
       { // Don't display the error message that says we need a code...
         !totpRequired && <ErrorMessage error={error} /> }
-      <TotpTokenForm submit={submitCode} idPrefix={idPrefix} InputComponent={TotpInputComponent}/>
+      <TotpTokenForm submit={submitCode} idPrefix={idPrefix}
+         TotpInputComponent={TotpInputComponent}
+         RecoveryCodeInputComponent={RecoveryCodeInputComponent}
+      />
       { loading && <div>Please wait...</div> }
     </div>
-  }
-
-  if (isForgotPasswordMode) {
+  } else if (mode === 'forgotpw') {
     return <div>
       <div>
         Enter your email to get a password reset link.
       </div>
       <RequestPasswordResetForm idPrefix={idPrefix} labelsFirst={labelsFirst}
-        onCancel={() => { setForgotPasswordMode(false)}} />
+        onCancel={() => { setMode('login')}} />
     </div>
+  } else if (mode === 'login') {
+
+    const onSubmit = (values: FormikValues) => {
+      const variables = { ...values } as LoginSubmitArgs
+      submit(variables)
+      setSubmittedData(variables)
+    }
+
+    return <OauthLogin onLogin={onLoginWrapper}>
+      <SocialButtons popupWindow={popupWindow} className="my-3"/>
+      <Formik initialValues={loginInitialValues}
+              onSubmit={onSubmit}
+              validate={validateLogin}>
+        {(props) => (
+          <Form>
+            <div className="form-label-group mb-2">
+              <InputLabel flip={labelsFirst}>
+                <Field type="email" name="email" className="form-control"
+                       id={getId(idPrefix, "login-email")}
+                       placeholder="Email address" required autoFocus />
+                <label htmlFor={getId(idPrefix, "login-email")}>Email address</label>
+              </InputLabel>
+            </div>
+
+            <div className="form-label-group mb-2">
+              <InputLabel flip={labelsFirst}>
+                <Field type="password" name="password" className="form-control"
+                       id={getId(idPrefix, "login-password")}
+                       placeholder="Password" required />
+                <label htmlFor={getId(idPrefix, "login-password")}>Password</label>
+              </InputLabel>
+            </div>
+
+            <div className="custom-control custom-checkbox mb-2">
+              <Field type="checkbox" className="custom-control-input" name="stayLoggedIn"
+                     id={getId(idPrefix, "login-stay-logged-in")} />
+              <label className="custom-control-label" htmlFor={getId(idPrefix, "login-stay-logged-in")}>
+                Remember me
+              </label>
+            </div>
+
+            <div className="mb-3 justify-content-between d-flex">
+              <button id="login-button" className="btn btn-primary" type="submit">Sign in</button>
+              <button id="forgot-pw-button" className="btn btn-outline-primary" type="button"
+                      onClick={(e) => { e.preventDefault(); setMode('forgotpw'); }}>
+                Forgot Password?
+              </button>
+            </div>
+            <ErrorMessage error={error} />
+          </Form>
+        )}
+      </Formik>
+    </OauthLogin>
   }
-
-  const onSubmit = (values: FormikValues) => {
-    const variables = { ...values } as LoginSubmitArgs
-    submit(variables)
-    setSubmittedData(variables)
-  }
-
-  return <OauthLogin onLogin={onLoginWrapper}>
-    <SocialButtons popupWindow={popupWindow} className="my-3"/>
-    <Formik initialValues={loginInitialValues}
-            onSubmit={onSubmit}
-            validate={validateLogin}>
-      {(props) => (
-        <Form>
-          <div className="form-label-group mb-2">
-            <InputLabel flip={labelsFirst}>
-              <Field type="email" name="email" className="form-control"
-                     id={getId(idPrefix, "login-email")}
-                     placeholder="Email address" required autoFocus />
-              <label htmlFor={getId(idPrefix, "login-email")}>Email address</label>
-            </InputLabel>
-          </div>
-
-          <div className="form-label-group mb-2">
-            <InputLabel flip={labelsFirst}>
-              <Field type="password" name="password" className="form-control"
-                     id={getId(idPrefix, "login-password")}
-                     placeholder="Password" required />
-              <label htmlFor={getId(idPrefix, "login-password")}>Password</label>
-            </InputLabel>
-          </div>
-
-          <div className="custom-control custom-checkbox mb-2">
-            <Field type="checkbox" className="custom-control-input" name="stayLoggedIn"
-                   id={getId(idPrefix, "login-stay-logged-in")} />
-            <label className="custom-control-label" htmlFor={getId(idPrefix, "login-stay-logged-in")}>
-              Remember me
-            </label>
-          </div>
-
-          <div className="mb-3 justify-content-between d-flex">
-            <button id="login-button" className="btn btn-primary" type="submit">Sign in</button>
-            <button id="forgot-pw-button" className="btn btn-outline-primary" type="button"
-                    onClick={(e) => { e.preventDefault(); setForgotPasswordMode(true); }}>
-              Forgot Password?
-            </button>
-          </div>
-          <ErrorMessage error={error} />
-        </Form>
-      )}
-    </Formik>
-  </OauthLogin>
+  throw new Error("unreachable")
 }
 
 // User creation error messages are likely to occur in normal situations,

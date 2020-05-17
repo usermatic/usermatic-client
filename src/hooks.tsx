@@ -30,6 +30,7 @@ export const useCsrfMutation = <TData, TVar> (
   }
   const ret = operation({
     client,
+    onError: (e) => {},
     ...options,
     context: {
       headers: { 'x-csrf-token': csrfToken }
@@ -60,6 +61,7 @@ export const useCsrfQuery = <TData, TVar> (
   const skip = !csrfToken || options.skip
   const ret = operation({
     client,
+    onError: (e) => {},
     ...options,
     // Once the crsfToken is ready, the query will be fired.
     skip,
