@@ -39,68 +39,54 @@ exports[`<AddTotpForm> 1`] = `
         <div>
           2. Then, enter the 6 digit code from the authenticator app here:
         </div>
-        <AddTotpInner
-          RecoveryCodeInputComponent={[Function]}
+        <ErrorMessage />
+        <Component
           TotpInputComponent={[Function]}
+          allowRecoveryMode={false}
           idPrefix="test"
-          token="eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJhcHBJZCI6IjI0OGU1NDczLWQ5YTYtNDQ4Ny05MTY0LTI0YzMwNTJkMjg5OCIsInNlY3JldEJhc2UzMiI6Ikg4QVVIMk40WFlLTU5VVU8iLCJpYXQiOjEwMDB9."
+          submit={[Function]}
         >
-          <ErrorMessage />
-          <Component
-            RecoveryCodeInputComponent={[Function]}
-            TotpInputComponent={[Function]}
-            idPrefix="test"
-            submit={[Function]}
-          >
-            <Formik
-              initialValues={
-                Object {
-                  "code": "",
-                }
+          <Formik
+            initialValues={
+              Object {
+                "code": "",
               }
-              onSubmit={[Function]}
-              validate={[Function]}
-            >
-              <Form>
-                <form
-                  action="#"
-                  onReset={[Function]}
-                  onSubmit={[Function]}
-                >
-                  <DefaultCodeInput
-                    autoFocus={true}
-                    id="test-totp-code"
-                    name="code"
-                    onChange={[Function]}
-                    required={true}
-                    type="text"
-                    value=""
-                  >
-                    <div>
-                      <input
-                        autoFocus={true}
-                        className="form-control"
-                        id="test-totp-code"
-                        name="code"
-                        onChange={[Function]}
-                        required={true}
-                        type="text"
-                        value=""
-                      />
-                    </div>
-                  </DefaultCodeInput>
-                </form>
-              </Form>
-              <button
-                className="btn btn-outline-secondary"
-                id="test-recovery-code-button"
-                onClick={[Function]}
+            }
+            onSubmit={[Function]}
+            validate={[Function]}
+          >
+            <Form>
+              <form
+                action="#"
+                onReset={[Function]}
+                onSubmit={[Function]}
               >
-                I need to use a 2FA recovery code
-              </button>
-            </Formik>
-          </Component>
-        </AddTotpInner>
+                <DefaultCodeInput
+                  autoFocus={true}
+                  id="test-totp-code"
+                  name="code"
+                  onChange={[Function]}
+                  required={true}
+                  type="text"
+                  value=""
+                >
+                  <div>
+                    <input
+                      autoFocus={true}
+                      className="form-control"
+                      id="test-totp-code"
+                      name="code"
+                      onChange={[Function]}
+                      required={true}
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </DefaultCodeInput>
+              </form>
+            </Form>
+          </Formik>
+        </Component>
       </div>
     </div>
   </Component>
@@ -481,6 +467,7 @@ exports[`<GenRecoveryCodesForm> 2`] = `
     >
       <GenRecoveryCodesFormInner
         codeCount={10}
+        onSuccess={[Function]}
       >
         <div
           className="d-flex flex-column align-items-center"
@@ -521,6 +508,7 @@ exports[`<GenRecoveryCodesForm> 3`] = `
     >
       <GenRecoveryCodesFormInner
         codeCount={10}
+        onSuccess={[Function]}
       >
         <div>
           <ErrorMessage />

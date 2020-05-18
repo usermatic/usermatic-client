@@ -7,8 +7,13 @@ import { useReauthToken } from '../reauth'
 import { useCreateRecoveryCodes, useGetRecoveryCodeCount } from '../recoverycodes'
 import { ReauthenticateGuard, ReauthPromptComponent } from './reauth-components'
 
-const GenRecoveryCodesFormInner: React.FC<{codeCount: number}> = ({codeCount}) => {
-  const [submit, { success, called, loading, error, data }] = useCreateRecoveryCodes()
+const GenRecoveryCodesFormInner: React.FC<{
+  codeCount: number,
+  onSuccess: () => void
+}> = ({codeCount, onSuccess}) => {
+  const [submit, { success, called, loading, error, data }] = useCreateRecoveryCodes({
+    onCompleted: () => { onSuccess() }
+  })
   const reauthToken = useReauthToken()
 
   useEffect(() => {
@@ -68,7 +73,11 @@ const Prompt: ReauthPromptComponent = () => (
   <div className="mb-3 h4">Please enter your password to generate new account recovery codes.</div>
 )
 
-export const GenRecoveryCodesForm: React.FC<{}> = () => {
+export const GenRecoveryCodesForm: React.FC<{
+  onSuccess?: () => void
+}> = ({
+  onSuccess = () => {}
+}) => {
 
   const { loading, error, count } = useGetRecoveryCodeCount()
 
@@ -78,6 +87,6 @@ export const GenRecoveryCodesForm: React.FC<{}> = () => {
 
   return <ReauthenticateGuard tokenContents={{ operations: ['gen-recovery-codes'] }}
                        prompt={Prompt}>
-    <GenRecoveryCodesFormInner codeCount={count}/>
+    <GenRecoveryCodesFormInner codeCount={count} onSuccess={onSuccess} />
   </ReauthenticateGuard>
 }

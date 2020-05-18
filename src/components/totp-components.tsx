@@ -51,10 +51,12 @@ export const TotpTokenForm: React.FC<{
   submit: (code: string) => void,
   TotpInputComponent?: InputComponentType,
   RecoveryCodeInputComponent?: InputComponentType,
+  allowRecoveryMode?: boolean
   idPrefix?: string
 }> = ({
   submit,
   idPrefix,
+  allowRecoveryMode = true,
   TotpInputComponent = DefaultCodeInput,
   RecoveryCodeInputComponent = DefaultCodeInput
 }) => {
@@ -72,6 +74,7 @@ export const TotpTokenForm: React.FC<{
   }
 
   const onSubmit = (values: FormikValues) => {
+    console.log('submitting code', values.code)
     submit(values.code)
   }
 
@@ -117,7 +120,8 @@ export const TotpTokenForm: React.FC<{
           </button>
         }
       </Form>
-      { recoveryMode
+      { allowRecoveryMode && (
+        recoveryMode
         ? <button className="btn btn-outline-secondary" onClick={exitRecoveryMode}>
             Cancel
           </button>
@@ -125,58 +129,29 @@ export const TotpTokenForm: React.FC<{
                   className="btn btn-outline-secondary" onClick={enterRecoveryMode}>
             I need to use a 2FA recovery code
           </button>
+        )
       }
     </>
   }}
   </Formik>
 }
 
-const AddTotpInner: React.FC<{
-  idPrefix?: string,
-  token: string,
-  onSuccess?: () => void,
-  RecoveryCodeInputComponent: InputComponentType,
-  TotpInputComponent: InputComponentType
-}> = ({ idPrefix, onSuccess, token, TotpInputComponent, RecoveryCodeInputComponent }) => {
-  const [submit, { success, loading, error }] = useAddTotp({
-    onCompleted: () => { if (onSuccess != null) { onSuccess() } }
-  })
-
-  const submitCode = (code: string) => {
-    submit({ code, token })
-  }
-
-  if (success) {
-    return <div className="alert alert-success">
-      Your authenticator app has been successfully configured.
-      You will need your app in order to log in to your account from now on.
-    </div>
-  }
-
-  return <>
-    <ErrorMessage error={error} />
-    <TotpTokenForm
-      idPrefix={idPrefix}
-      TotpInputComponent={TotpInputComponent}
-      RecoveryCodeInputComponent={RecoveryCodeInputComponent}
-      submit={submitCode}
-    />
-    { loading && <div>Please wait...</div> }
-  </>
-}
-
 export const AddTotpForm: React.FC<{
   idPrefix?: string,
   onSuccess?: () => void,
-  recoveryCodeInputComponent?: InputComponentType,
   inputComponent?: InputComponentType
 }> = ({
   idPrefix,
   onSuccess,
-  inputComponent = DefaultCodeInput,
-  recoveryCodeInputComponent = DefaultCodeInput
+  inputComponent: TotpInputComponent = DefaultCodeInput
 }) => {
   const { loading, error, otpauthUrl, token } = useGetTotpKey()
+
+  const [submit, { success, loading: mutLoading, error: mutError }] = useAddTotp({
+    onCompleted: () => {
+      if (onSuccess != null) { onSuccess() }
+    }
+  })
 
   if (loading) {
     return null
@@ -189,16 +164,32 @@ export const AddTotpForm: React.FC<{
     return null
   }
 
+  const submitCode = (code: string) => {
+    submit({ code, token })
+  }
+
+  if (success) {
+    return <div className="alert alert-success mt-3">
+      Your authenticator app has been successfully configured.
+      You will need your authenticator app in order to log in to
+      your account from now on.
+    </div>
+  }
+
   return <div>
     <div className="d-flex flex-column align-items-center">
       <div>1. Scan this QRCode with your authenticator app</div>
       <div><QRCode otpauthUrl={otpauthUrl} /></div>
       <ManualEntry token={token} />
       <div>2. Then, enter the 6 digit code from the authenticator app here:</div>
-      <AddTotpInner idPrefix={idPrefix} token={token}
-        TotpInputComponent={inputComponent}
-        RecoveryCodeInputComponent={recoveryCodeInputComponent}
-        onSuccess={onSuccess} />
+      <ErrorMessage error={mutError} />
+      <TotpTokenForm
+        idPrefix={idPrefix}
+        allowRecoveryMode={false}
+        TotpInputComponent={TotpInputComponent}
+        submit={submitCode}
+      />
+      { mutLoading && <div>Please wait...</div> }
     </div>
   </div>
 }
