@@ -61,6 +61,12 @@ export const ADD_TOTP_MUT = gql`
   }
 `
 
+export const CLEAR_TOTP_MUT = gql`
+  mutation clearTotp($reauthToken: String!) {
+    clearTotp(reauthToken: $reauthToken)
+  }
+`
+
 export const CREATE_RECOVERY_CODES_MUT = gql`
   mutation createRecoveryCodes($reauthToken: String!) {
     createRecoveryCodes(reauthToken: $reauthToken) {
@@ -89,6 +95,7 @@ export const LOGIN_MUT = gql`
       stayLoggedIn: $stayLoggedIn
     ) {
       userJwt
+      reauthToken
     }
   }
 `
@@ -97,6 +104,7 @@ export const OAUTH_LOGIN_MUT = gql`
   mutation loginOauth($oauthToken: String!, $totpCode: String, $stayLoggedIn: Boolean) {
     loginOauth(oauthToken: $oauthToken, totpCode: $totpCode, stayLoggedIn: $stayLoggedIn) {
       userJwt
+      reauthToken
     }
   }
 `
@@ -145,7 +153,7 @@ export const CREATE_ACCOUNT_MUT = gql`
       password: $password,
       loginAfterCreation: $loginAfterCreation,
       stayLoggedIn: $stayLoggedIn
-    ) { userJwt }
+    ) { userJwt reauthToken }
   }
 `
 

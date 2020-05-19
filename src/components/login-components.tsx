@@ -5,18 +5,26 @@ import { ApolloError } from 'apollo-client'
 import { GraphQLError } from 'graphql'
 import classNames from 'classnames'
 
-import { useToken, useAppConfig, useAppId } from '../auth'
-import { useCsrfToken } from '../hooks'
-import { InputLabel, InputComponentType } from './form-util'
-import { ErrorMessage } from '../errors'
-import { PasswordScore, RequestPasswordResetForm } from './password-components'
-
-import { TotpTokenForm } from './totp-components'
-
 import { Icon } from 'react-icons-kit'
 import { google } from 'react-icons-kit/fa/google'
 import { facebookOfficial } from 'react-icons-kit/fa/facebookOfficial'
 import { github } from 'react-icons-kit/fa/github'
+
+import { useToken, useAppConfig, useAppId } from '../auth'
+import { useCsrfToken, useCsrfMutation } from '../hooks'
+import { InputLabel, InputComponentType } from './form-util'
+import { ErrorMessage } from '../errors'
+import { useGetRecoveryCodeCount } from '../recoverycodes'
+import { ReauthContext } from '../reauth'
+import { PasswordScore, RequestPasswordResetForm } from './password-components'
+import { TotpTokenForm } from './totp-components'
+import { useReauthToken } from '../reauth'
+
+import { useClearTotpMutation } from '../../gen/operations'
+
+import {
+  PROFILE_QUERY
+} from '../fragments'
 
 type IconProps = {
   color?: string,
@@ -320,6 +328,62 @@ const validateLogin = (values: FormikValues) => {
 
 type LoginMode = 'login' | 'forgotpw' | 'totp'
 
+const PostRecoveryCode: React.FC<{dismiss: () => void }> = ({dismiss}) => {
+
+  const reauthToken = useReauthToken()
+  const { count, loading: countLoading } = useGetRecoveryCodeCount()
+  const [submit, { called, loading, error }] = useCsrfMutation(useClearTotpMutation, {
+    refetchQueries: [{ query: PROFILE_QUERY }]
+  })
+
+  const reset2FA = (e: MouseEvent) => {
+    e.preventDefault()
+    submit({ variables: { reauthToken } })
+  }
+
+  const onClickDismiss = (e: MouseEvent) => {
+    e.preventDefault()
+    dismiss()
+  }
+
+  if (called && !loading && !error) {
+    return <div>
+      <div className="alert alert-info">
+        You have disabled 2FA. Please consider re-enabling it as soon as possible.
+      </div>
+      <button className="btn btn-outline-primary btn-block" onClick={onClickDismiss}>
+        Okay
+      </button>
+    </div>
+  }
+
+  return <div>
+    <div className="alert alert-info">
+      You have logged in via a recovery code.
+      The code you just used will no longer work.
+      { !countLoading && <>You have {count} recovery codes remaining.</> }
+    </div>
+    <div className="mb-3">
+      Do you need to reset your 2FA codes?
+    </div>
+    <ErrorMessage error={error} />
+    <button
+      className={classNames("btn btn-outline-danger btn-block mb-3", loading && 'disabled')}
+      onClick={reset2FA}
+    >
+      { loading
+        ? 'Please wait...'
+        : 'I lost my phone and need to turn 2FA off for now.' }
+    </button>
+    <button
+      className={classNames("btn btn-outline-primary btn-block", called && 'disabled')}
+      onClick={dismiss}
+    >
+      I still have my phone, but not with me. Leave 2FA on.
+    </button>
+  </div>
+}
+
 export const LoginForm: React.FC<LoginFormProps> = ({
   onLogin,
   idPrefix,
@@ -334,31 +398,37 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   const [submittedData, setSubmittedData] =
     useState<LoginSubmitArgs | undefined>(undefined)
 
-  const [submit, { loading, error, called }] = useLogin()
+  const [submit, { loading, error, called, success, data }] = useLogin()
 
   const { id, loading: tokenLoading } = useToken()
 
   const { refetch } = useCsrfToken()
+
+  const [successViaRecoveryCodeDismissed, setSuccessViaRecoveryCodeDismissed] =
+    useState<boolean>(false)
+
+  const successViaRecoveryCode = called && success
+    && submittedData?.totpCode
+    && /^[-0-9A-Z]{14}$/.test(submittedData.totpCode)
 
   useEffect(() => {
     // We need to wait until the credential context is reporting that we are logged in,
     // (in addition to waiting for useLogin() mutation to finish). Otherwise there's a window
     // during which other components might think we aren't logged in, even though we are
     // about to be.
-    if (called && !loading && !error && id && !tokenLoading && onLogin) {
+    if (called && success && id && !tokenLoading && onLogin &&
+        (!successViaRecoveryCode || successViaRecoveryCodeDismissed)) {
       onLogin()
     }
-  }, [called, loading, error, id, tokenLoading, onLogin])
+  }, [called, success, id, tokenLoading, onLogin,
+      successViaRecoveryCode, successViaRecoveryCodeDismissed])
 
   const totpRequired = Boolean(error?.graphQLErrors.find(
     e => e.extensions?.exception?.code === 'TOTP_REQUIRED'
   ))
 
-  //console.log('ERROR', mode, loading, called, totpRequired, JSON.stringify(error, null, '  '))
-
   useEffect(() => {
     if (mode !== 'totp' && totpRequired) {
-      console.log('enter TOTP')
       setMode('totp')
     }
   }, [totpRequired, mode])
@@ -375,12 +445,23 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
   const popupWindow = usePopupWindow({onLogin: onLoginWrapper, refetch})
 
+  if (successViaRecoveryCode) {
+    const dismiss = () => {
+      setSuccessViaRecoveryCodeDismissed(true)
+    }
+    return <ReauthContext.Provider value={data?.loginPassword?.reauthToken ?? ''}>
+      <PostRecoveryCode dismiss={dismiss}/>
+    </ReauthContext.Provider>
+  }
+
   if (mode === 'totp') {
     if (submittedData == null) {
       throw new Error("login data must be saved before entering totp mode")
     }
     const submitCode = (totpCode: string) => {
-      submit({ ...submittedData, totpCode })
+      const variables = { ...submittedData, totpCode }
+      submit(variables)
+      setSubmittedData(variables)
     }
     return <div className="d-flex flex-column align-items-center">
       <div className="w-75 text-muted p-3">

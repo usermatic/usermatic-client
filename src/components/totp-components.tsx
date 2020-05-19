@@ -74,7 +74,6 @@ export const TotpTokenForm: React.FC<{
   }
 
   const onSubmit = (values: FormikValues) => {
-    console.log('submitting code', values.code)
     submit(values.code)
   }
 
@@ -95,7 +94,18 @@ export const TotpTokenForm: React.FC<{
 
     const handleChangeWrapper = (e: ChangeEvent<HTMLInputElement>) => {
       if (recoveryMode) {
-        handleChange(e)
+        const { selectionStart, selectionEnd } = e.target
+        const upper = e.target.value.toUpperCase()
+        if (/^[-0-9A-Z]{0,14}$/.test(upper)) {
+          const chunks = upper.replace(/-/g, '').match(/.{1,4}/g)
+          const value = chunks == null ? '' : chunks!.join('-')
+          const delta = value.length - upper.length
+
+          e.target.value = value
+          e.target.selectionStart = selectionStart! + delta
+          e.target.selectionEnd = selectionEnd! + delta
+          handleChange(e)
+        }
       } else {
         if (/^[0-9]{0,6}$/.test(e.target.value)) {
           handleChange(e)
@@ -115,14 +125,14 @@ export const TotpTokenForm: React.FC<{
           id={getId(idPrefix, recoveryMode ? "recovery-code" : "totp-code")}
           required autoFocus />
         { recoveryMode &&
-          <button className="btn btn-primary" type="submit">
+          <button className="btn btn-primary btn-block mb-3" type="submit">
             Submit Recovery Code
           </button>
         }
       </Form>
       { allowRecoveryMode && (
         recoveryMode
-        ? <button className="btn btn-outline-secondary" onClick={exitRecoveryMode}>
+        ? <button className="btn btn-outline-secondary btn-block" onClick={exitRecoveryMode}>
             Cancel
           </button>
         : <button id={getId(idPrefix, "recovery-code-button")}

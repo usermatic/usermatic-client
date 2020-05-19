@@ -838,7 +838,7 @@ exports[`<LoginForm> TOTP 3`] = `
                 </div>
               </DefaultCodeInput>
               <button
-                className="btn btn-primary"
+                className="btn btn-primary btn-block mb-3"
                 type="submit"
               >
                 Submit Recovery Code
@@ -846,7 +846,7 @@ exports[`<LoginForm> TOTP 3`] = `
             </form>
           </Form>
           <button
-            className="btn btn-outline-secondary"
+            className="btn btn-outline-secondary btn-block"
             onClick={[Function]}
           >
             Cancel

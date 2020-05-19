@@ -39,7 +39,7 @@ const credentialId = 'a31d68e6-898f-4998-9e6d-25ef1a62f62c'
 
 const defaultMocks = {
   AppConfig: () => ({ minPasswordStrength: 3 }),
-  AuthToken: () => ({ userJwt: jwt.sign({ id: userId }, 'abc') })
+  LoginData: () => ({ userJwt: jwt.sign({ id: userId }, 'abc') })
 }
 
 const extendMocks = (mocks: object) => {
