@@ -357,18 +357,20 @@ const PostRecoveryCode: React.FC<{dismiss: () => void }> = ({dismiss}) => {
     </div>
   }
 
+  const buttonClasses = "btn btn-outline-primary btn-block font-weight-bolder"
+
   return <div>
-    <div className="alert alert-info">
+    <div className="alert alert-secondary">
       You have logged in via a recovery code.
       The code you just used will no longer work.
       { !countLoading && <>You have {count} recovery codes remaining.</> }
     </div>
-    <div className="mb-3">
+    <div className="my-3 d-flex justify-content-center">
       Do you need to reset your 2FA codes?
     </div>
     <ErrorMessage error={error} />
     <button
-      className={classNames("btn btn-outline-danger btn-block mb-3", loading && 'disabled')}
+      className={classNames(buttonClasses, "mb-3", loading && 'disabled')}
       onClick={reset2FA}
     >
       { loading
@@ -376,7 +378,7 @@ const PostRecoveryCode: React.FC<{dismiss: () => void }> = ({dismiss}) => {
         : 'I lost my phone and need to turn 2FA off for now.' }
     </button>
     <button
-      className={classNames("btn btn-outline-primary btn-block", called && 'disabled')}
+      className={classNames(buttonClasses, called && 'disabled')}
       onClick={dismiss}
     >
       I still have my phone, but not with me. Leave 2FA on.
