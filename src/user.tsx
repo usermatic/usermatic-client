@@ -156,6 +156,4 @@ export const useProfilePhotos = (): {
     .filter((c?: string): c is string => c != null)
 
   return { loading, error, photos }
-
 }
-

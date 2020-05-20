@@ -3,8 +3,8 @@ import urllib from 'url'
 import { useContext, useEffect, useState } from 'react'
 import jwtDecode from 'jwt-decode'
 
-import { useToken, AppIdContext, useAppId } from './auth'
-import { useCsrfToken, useCsrfMutation } from './hooks'
+import { AppIdContext, useAppId } from './auth'
+import { useCsrfMutation } from './hooks'
 
 import {
   SESSION_QUERY
@@ -12,9 +12,11 @@ import {
 
 import {
   useLogoutMutation,
-  useLoginPasswordMutation,
-  useLoginOauthMutation,
+  useLoginMutation,
   useCreateAccountMutation,
+  LoginMutationVariables,
+  LoginMutationOptions,
+  CreateAccountMutationVariables
 } from '../gen/operations'
 
 export const useLogout = () => {
@@ -35,27 +37,25 @@ export const useLogout = () => {
   return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
-export type LoginSubmitArgs = {
-  email: string
-  password: string
-  stayLoggedIn: boolean
-  totpCode?: string
-}
-
-export const useLogin = () => {
+export const useLogin = (options: LoginMutationOptions = {}) => {
   const appId = useContext(AppIdContext)
+
+  if (options.refetchQueries) {
+    console.warn('overwriting default options.refetchQueries')
+  }
 
   const [submitLogin, ret] =
     useCsrfMutation(
-      useLoginPasswordMutation,
+      useLoginMutation,
       {
-        refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }]
+        refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }],
+        ...options
       }
     )
 
   const { loading, error, data } = ret
 
-  const submit = (values: LoginSubmitArgs) => {
+  const submit = (values: LoginMutationVariables) => {
     submitLogin({ variables: values })
   }
 
@@ -64,8 +64,6 @@ export const useLogin = () => {
   // typescript can't infer tuples :(
   return [submit, retObj] as [typeof submit, typeof retObj]
 }
-
-export type CreateAccountArgs = LoginSubmitArgs
 
 export const useCreateAccount = () => {
   const appId = useContext(AppIdContext)
@@ -78,7 +76,7 @@ export const useCreateAccount = () => {
 
   const { loading, error, data } = ret
 
-  const submit = (values: CreateAccountArgs) => {
+  const submit = (values: CreateAccountMutationVariables) => {
     submitCreateAccount({ variables: values })
   }
 
@@ -133,22 +131,34 @@ export const useOauthToken = () => {
   return token
 }
 
-export const useOauthLogin = ({onLogin, oauthToken}: { onLogin?: () => void, oauthToken?: string }) => {
+/*
+type useOauthLoginArgs = {
+  onLogin?: () => void,
+  oauthToken?: string,
+  totpCode?: string
+}
+*/
+
+/*
+export const useOauthLogin = ({onLogin, oauthToken, totpCode}: useOauthLoginArgs) => {
   const { csrfToken } = useCsrfToken()
   const appId = useAppId()
   const { id, loading: tokenLoading } = useToken()
 
+  const [success, setSuccess] = useState<boolean>(false)
+
   const [submit, { data, loading, error, called }] = useCsrfMutation(
     useLoginOauthMutation,
     {
-      refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }]
+      refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }],
+      onCompleted: () => { setSuccess(true) }
     }
   )
 
   useEffect(() => {
     // need to wait until the login mutation is complete *and* we've updated the
     // token.
-    if (called && !loading && !error && id && !tokenLoading) {
+    if (success && id && !tokenLoading) {
       if (onLogin != null) {
         onLogin()
       }
@@ -166,12 +176,14 @@ export const useOauthLogin = ({onLogin, oauthToken}: { onLogin?: () => void, oau
         }
       }, 500)
     }
-  }, [called, loading, error, id, tokenLoading, onLogin])
+  }, [success, id, tokenLoading, onLogin])
 
   useEffect(() => {
-    if (oauthToken == null || csrfToken == null || called) { return }
-    submit({ variables: { oauthToken } })
-  }, [oauthToken, csrfToken, called])
+    if (oauthToken == null || csrfToken == null || success) { return }
+    const variables = { oauthToken, totpCode}
+    submit({ variables })
+  }, [oauthToken, csrfToken, called, totpCode])
 
   return { error, loading, data }
 }
+*/

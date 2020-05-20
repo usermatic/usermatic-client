@@ -25,7 +25,6 @@ import { ApolloProvider } from '@apollo/react-common'
 // @ts-ignore
 import schemaStr from '../../schemas/api-schema'
 
-
 import * as client from '../src/index'
 import * as components from '../src/components'
 import { useCsrfToken } from '../src/hooks'
@@ -213,9 +212,15 @@ test('<LoginForm>/<AccountCreationForm> oauth', async () => {
 })
 
 const setInput = (wrapper: ReactWrapper, name: string, selector: string,
-                  value: string | boolean) => {
+                  value: string) => {
   const subwrapper = wrapper.find('#client-test-div')
   subwrapper.find(selector).simulate('change', { target: { value, name } })
+}
+
+const setCheckbox = (wrapper: ReactWrapper, name: string, selector: string,
+                     checked: boolean) => {
+  const subwrapper = wrapper.find('#client-test-div')
+  subwrapper.find(selector).simulate('change', { target: { checked, name } })
 }
 
 test('<LoginForm> login', async () => {
@@ -224,11 +229,11 @@ test('<LoginForm> login', async () => {
   const email = 'bob@bob.com'
   const password = 'hunter2'
 
-  const loginPassword = jest.fn().mockReturnValue({})
+  const login = jest.fn().mockReturnValue({})
   const mocks = extendMocks({
     AppConfig: () => (configNoOauth),
     Mutation: () => ({
-      loginPassword
+      login
     })
   })
 
@@ -246,7 +251,7 @@ test('<LoginForm> login', async () => {
 
   setInput(wrapper, 'email', 'input#test-login-email', email)
   setInput(wrapper, 'password', 'input#test-login-password', password)
-  setInput(wrapper, 'stayLoggedIn', 'input#test-login-stay-logged-in', true)
+  setCheckbox(wrapper, 'stayLoggedIn', 'input#test-login-stay-logged-in', true)
 
   wrapper.find('form').simulate('submit')
 
@@ -257,9 +262,10 @@ test('<LoginForm> login', async () => {
   await act(async () => {
     jest.runAllTimers()
   })
-  expect(loginPassword.mock.calls[0][1]).toMatchObject(
-    { email, password, stayLoggedIn: true },
-  )
+  expect(login.mock.calls[0][1]).toMatchObject({
+    credential: { password: { email, password } },
+    stayLoggedIn: true
+  })
   expect(onLogin).toHaveBeenCalled()
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 })
@@ -275,7 +281,7 @@ test('<LoginForm> TOTP', async () => {
   const email = 'bob@bob.com'
   const password = 'hunter2'
 
-  const loginPassword = jest.fn().mockImplementation(
+  const login = jest.fn().mockImplementation(
     (root, { password, email, totpCode }) => {
       if (!totpCode) {
         throw codeError('totp required', 'TOTP_REQUIRED')
@@ -287,7 +293,7 @@ test('<LoginForm> TOTP', async () => {
   const mocks = extendMocks({
     AppConfig: () => (configNoOauth),
     Mutation: () => ({
-      loginPassword
+      login
     })
   })
 
@@ -305,7 +311,7 @@ test('<LoginForm> TOTP', async () => {
 
   setInput(wrapper, 'email', 'input#test-login-email', email)
   setInput(wrapper, 'password', 'input#test-login-password', password)
-  setInput(wrapper, 'stayLoggedIn', 'input#test-login-stay-logged-in', true)
+  setCheckbox(wrapper, 'stayLoggedIn', 'input#test-login-stay-logged-in', true)
 
   wrapper.find('form').simulate('submit')
 
@@ -581,7 +587,7 @@ test('<ResetPasswordForm>', async () => {
 
   const newPassword = 'abc123'
   setInput(wrapper, 'newPassword', 'input#test-reset-password-new-password', newPassword)
-  setInput(wrapper, 'loginAfterReset', 'input#test-reset-password-login-after-reset', true)
+  setCheckbox(wrapper, 'loginAfterReset', 'input#test-reset-password-login-after-reset', true)
   wrapper.find('form#reset-password-form').simulate('submit')
 
   await act(async () => { jest.runAllTimers() })

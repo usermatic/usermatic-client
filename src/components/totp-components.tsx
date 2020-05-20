@@ -47,21 +47,16 @@ const DefaultCodeInput: InputComponentType = (props) => (
   </div>
 )
 
-export const TotpTokenForm: React.FC<{
+const TotpTokenForm: React.FC<{
   submit: (code: string) => void,
-  TotpInputComponent?: InputComponentType,
-  RecoveryCodeInputComponent?: InputComponentType,
-  allowRecoveryMode?: boolean
+  InputComponent?: InputComponentType,
   idPrefix?: string
 }> = ({
   submit,
   idPrefix,
-  allowRecoveryMode = true,
-  TotpInputComponent = DefaultCodeInput,
-  RecoveryCodeInputComponent = DefaultCodeInput
+  InputComponent = DefaultCodeInput
 }) => {
 
-  const [recoveryMode, setRecoveryMode] = useState<boolean>(false)
   const initialValues = {
     code: ''
   }
@@ -77,23 +72,62 @@ export const TotpTokenForm: React.FC<{
     submit(values.code)
   }
 
-  return <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
-  {({values, handleChange, submitForm, resetForm}) => {
+  return <div>
+    <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
+    {({values, handleChange, submitForm, resetForm}) => {
 
-    const enterRecoveryMode = (e: MouseEvent) => {
-      e.preventDefault()
-      setRecoveryMode(true)
-      resetForm()
+      const handleChangeWrapper = (e: ChangeEvent<HTMLInputElement>) => {
+        if (/^[0-9]{0,6}$/.test(e.target.value)) {
+          handleChange(e)
+        }
+        if (/^[0-9]{6}$/.test(e.target.value)) {
+          submitForm()
+        }
+      }
+      return <>
+        <Form>
+          <InputComponent
+            type="text" name="code"
+            onChange={handleChangeWrapper}
+            value={values.code}
+            id={getId(idPrefix, "totp-code")}
+            required autoFocus />
+        </Form>
+      </>
+    }}
+    </Formik>
+  </div>
+}
+
+const RecoveryCodeForm: React.FC<{
+  submit: (code: string) => void,
+  InputComponent?: InputComponentType,
+  idPrefix?: string
+}> = ({
+  submit,
+  idPrefix,
+  InputComponent = DefaultCodeInput
+}) => {
+
+  const initialValues = {
+    code: ''
+  }
+
+  const validate = (values: FormikValues) => {
+    const errors: FormikErrors<typeof initialValues> = {}
+    if (!/^[-A-Z0-9]{14}$/.test(values.code)) {
+      errors.code = 'Must be 12 character recovery code.'
     }
+  }
 
-    const exitRecoveryMode = (e: MouseEvent) => {
-      e.preventDefault()
-      setRecoveryMode(false)
-      resetForm()
-    }
+  const onSubmit = (values: FormikValues) => {
+    submit(values.code)
+  }
 
-    const handleChangeWrapper = (e: ChangeEvent<HTMLInputElement>) => {
-      if (recoveryMode) {
+  return <div className="w-100 d-flex justify-content-center">
+    <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
+    {({values, handleChange, submitForm, resetForm}) => {
+      const handleChangeWrapper = (e: ChangeEvent<HTMLInputElement>) => {
         const { selectionStart, selectionEnd } = e.target
         const upper = e.target.value.toUpperCase()
         if (/^[-0-9A-Z]{0,14}$/.test(upper)) {
@@ -106,44 +140,76 @@ export const TotpTokenForm: React.FC<{
           e.target.selectionEnd = selectionEnd! + delta
           handleChange(e)
         }
-      } else {
-        if (/^[0-9]{0,6}$/.test(e.target.value)) {
-          handleChange(e)
-        }
-        if (/^[0-9]{6}$/.test(e.target.value)) {
-          submitForm()
-        }
       }
-    }
-    const InputComponent = recoveryMode ? RecoveryCodeInputComponent : TotpInputComponent
-    return <>
-      <Form>
-        <InputComponent
-          type="text" name="code"
-          onChange={handleChangeWrapper}
-          value={values.code}
-          id={getId(idPrefix, recoveryMode ? "recovery-code" : "totp-code")}
-          required autoFocus />
-        { recoveryMode &&
+      return <>
+        <Form className="w-100 d-flex flex-column align-items-center">
+          <InputComponent
+            type="text" name="code"
+            onChange={handleChangeWrapper}
+            value={values.code}
+            id={getId(idPrefix, "recovery-code")}
+            required autoFocus
+          />
           <button className="btn btn-primary btn-block mb-3" type="submit">
             Submit Recovery Code
           </button>
-        }
-      </Form>
-      { allowRecoveryMode && (
-        recoveryMode
-        ? <button className="btn btn-outline-secondary btn-block" onClick={exitRecoveryMode}>
-            Cancel
-          </button>
-        : <button id={getId(idPrefix, "recovery-code-button")}
-                  className="btn btn-outline-secondary" onClick={enterRecoveryMode}>
-            I need to use a 2FA recovery code
-          </button>
-        )
+        </Form>
+      </>
+    }}
+    </Formik>
+  </div>
+}
+
+export const MFAForm: React.FC<{
+  submit: (code: string) => void,
+  TotpInputComponent?: InputComponentType,
+  RecoveryCodeInputComponent?: InputComponentType,
+  idPrefix?: string
+}> = ({
+  submit,
+  idPrefix,
+  TotpInputComponent = DefaultCodeInput,
+  RecoveryCodeInputComponent = DefaultCodeInput
+}) => {
+
+  const [recoveryMode, setRecoveryMode] = useState<boolean>(false)
+  const [stateKey, setStateKey] = useState<number>(0)
+
+  const enterRecoveryMode = (e: MouseEvent) => {
+    e.preventDefault()
+    setRecoveryMode(true)
+    setStateKey(stateKey + 1)
+  }
+
+  const exitRecoveryMode = (e: MouseEvent) => {
+    e.preventDefault()
+    setRecoveryMode(false)
+    setStateKey(stateKey + 1)
+  }
+
+  return <>
+    <div className="text-muted p-3">
+      { recoveryMode
+        ? <>Please enter your recovery code:</>
+        : <>Please enter the 6 digit code from your authenticator app:</>
       }
-    </>
-  }}
-  </Formik>
+    </div>
+    { recoveryMode
+      ? <RecoveryCodeForm key={stateKey} submit={submit} idPrefix={idPrefix}
+          InputComponent={RecoveryCodeInputComponent} />
+      : <TotpTokenForm key={stateKey} submit={submit} idPrefix={idPrefix}
+          InputComponent={TotpInputComponent} />
+    }
+    { recoveryMode
+      ? <button className="btn btn-outline-secondary btn-block" onClick={exitRecoveryMode}>
+          Cancel
+        </button>
+      : <button id={getId(idPrefix, "recovery-code-button")}
+                className="my-3 btn btn-outline-secondary" onClick={enterRecoveryMode}>
+          I need to use a 2FA recovery code
+        </button>
+    }
+  </>
 }
 
 export const AddTotpForm: React.FC<{
@@ -195,8 +261,7 @@ export const AddTotpForm: React.FC<{
       <ErrorMessage error={mutError} />
       <TotpTokenForm
         idPrefix={idPrefix}
-        allowRecoveryMode={false}
-        TotpInputComponent={TotpInputComponent}
+        InputComponent={TotpInputComponent}
         submit={submitCode}
       />
       { mutLoading && <div>Please wait...</div> }

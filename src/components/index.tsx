@@ -1,6 +1,5 @@
 
 export {
-  OauthLogin,
   LoginForm,
   LogoutButton,
   AccountCreationForm,

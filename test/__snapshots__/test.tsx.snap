@@ -40,53 +40,54 @@ exports[`<AddTotpForm> 1`] = `
           2. Then, enter the 6 digit code from the authenticator app here:
         </div>
         <ErrorMessage />
-        <Component
-          TotpInputComponent={[Function]}
-          allowRecoveryMode={false}
+        <TotpTokenForm
+          InputComponent={[Function]}
           idPrefix="test"
           submit={[Function]}
         >
-          <Formik
-            initialValues={
-              Object {
-                "code": "",
+          <div>
+            <Formik
+              initialValues={
+                Object {
+                  "code": "",
+                }
               }
-            }
-            onSubmit={[Function]}
-            validate={[Function]}
-          >
-            <Form>
-              <form
-                action="#"
-                onReset={[Function]}
-                onSubmit={[Function]}
-              >
-                <DefaultCodeInput
-                  autoFocus={true}
-                  id="test-totp-code"
-                  name="code"
-                  onChange={[Function]}
-                  required={true}
-                  type="text"
-                  value=""
+              onSubmit={[Function]}
+              validate={[Function]}
+            >
+              <Form>
+                <form
+                  action="#"
+                  onReset={[Function]}
+                  onSubmit={[Function]}
                 >
-                  <div>
-                    <input
-                      autoFocus={true}
-                      className="form-control"
-                      id="test-totp-code"
-                      name="code"
-                      onChange={[Function]}
-                      required={true}
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </DefaultCodeInput>
-              </form>
-            </Form>
-          </Formik>
-        </Component>
+                  <DefaultCodeInput
+                    autoFocus={true}
+                    id="test-totp-code"
+                    name="code"
+                    onChange={[Function]}
+                    required={true}
+                    type="text"
+                    value=""
+                  >
+                    <div>
+                      <input
+                        autoFocus={true}
+                        className="form-control"
+                        id="test-totp-code"
+                        name="code"
+                        onChange={[Function]}
+                        required={true}
+                        type="text"
+                        value=""
+                      />
+                    </div>
+                  </DefaultCodeInput>
+                </form>
+              </Form>
+            </Formik>
+          </div>
+        </TotpTokenForm>
       </div>
     </div>
   </Component>
@@ -551,158 +552,142 @@ exports[`<LoginForm> TOTP 1`] = `
     idPrefix="test"
     onLogin={[MockFunction]}
   >
-    <Component
-      onLogin={[Function]}
+    <SocialButtons
+      className="my-3"
+      popupWindow={
+        Object {
+          "close": [Function],
+          "open": [Function],
+        }
+      }
+    />
+    <Formik
+      initialValues={
+        Object {
+          "email": "",
+          "password": "",
+        }
+      }
+      onSubmit={[Function]}
+      validate={[Function]}
     >
-      <SocialButtons
-        className="my-3"
-        popupWindow={
-          Object {
-            "close": [Function],
-            "open": [Function],
-          }
-        }
-      />
-      <Formik
-        initialValues={
-          Object {
-            "email": "",
-            "password": "",
-            "stayLoggedIn": false,
-          }
-        }
-        onSubmit={[Function]}
-        validate={[Function]}
-      >
-        <Form>
-          <form
-            action="#"
-            onReset={[Function]}
-            onSubmit={[Function]}
+      <Form>
+        <form
+          action="#"
+          onReset={[Function]}
+          onSubmit={[Function]}
+        >
+          <div
+            className="form-label-group mb-2"
           >
-            <div
-              className="form-label-group mb-2"
+            <Component
+              flip={true}
             >
-              <Component
-                flip={true}
+              <label
+                htmlFor="test-login-email"
+                key=".1"
               >
-                <label
-                  htmlFor="test-login-email"
-                  key=".1"
-                >
-                  Email address
-                </label>
-                <Field
+                Email address
+              </label>
+              <Field
+                autoFocus={true}
+                className="form-control"
+                id="test-login-email"
+                key=".0"
+                name="email"
+                placeholder="Email address"
+                required={true}
+                type="email"
+              >
+                <input
                   autoFocus={true}
                   className="form-control"
                   id="test-login-email"
-                  key=".0"
                   name="email"
+                  onBlur={[Function]}
+                  onChange={[Function]}
                   placeholder="Email address"
                   required={true}
                   type="email"
-                >
-                  <input
-                    autoFocus={true}
-                    className="form-control"
-                    id="test-login-email"
-                    name="email"
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    placeholder="Email address"
-                    required={true}
-                    type="email"
-                    value=""
-                  />
-                </Field>
-              </Component>
-            </div>
-            <div
-              className="form-label-group mb-2"
+                  value=""
+                />
+              </Field>
+            </Component>
+          </div>
+          <div
+            className="form-label-group mb-2"
+          >
+            <Component
+              flip={true}
             >
-              <Component
-                flip={true}
+              <label
+                htmlFor="test-login-password"
+                key=".1"
               >
-                <label
-                  htmlFor="test-login-password"
-                  key=".1"
-                >
-                  Password
-                </label>
-                <Field
+                Password
+              </label>
+              <Field
+                className="form-control"
+                id="test-login-password"
+                key=".0"
+                name="password"
+                placeholder="Password"
+                required={true}
+                type="password"
+              >
+                <input
                   className="form-control"
                   id="test-login-password"
-                  key=".0"
                   name="password"
+                  onBlur={[Function]}
+                  onChange={[Function]}
                   placeholder="Password"
                   required={true}
                   type="password"
-                >
-                  <input
-                    className="form-control"
-                    id="test-login-password"
-                    name="password"
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    placeholder="Password"
-                    required={true}
-                    type="password"
-                    value=""
-                  />
-                </Field>
-              </Component>
-            </div>
-            <div
-              className="custom-control custom-checkbox mb-2"
-            >
-              <Field
-                className="custom-control-input"
-                id="test-login-stay-logged-in"
-                name="stayLoggedIn"
-                type="checkbox"
-              >
-                <input
-                  checked={false}
-                  className="custom-control-input"
-                  id="test-login-stay-logged-in"
-                  name="stayLoggedIn"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  type="checkbox"
-                  value={false}
+                  value=""
                 />
               </Field>
-              <label
-                className="custom-control-label"
-                htmlFor="test-login-stay-logged-in"
-              >
-                Remember me
-              </label>
-            </div>
-            <div
-              className="mb-3 justify-content-between d-flex"
+            </Component>
+          </div>
+          <div
+            className="custom-control custom-checkbox mb-2"
+          >
+            <input
+              className="custom-control-input"
+              id="test-login-stay-logged-in"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <label
+              className="custom-control-label"
+              htmlFor="test-login-stay-logged-in"
             >
-              <button
-                className="btn btn-primary"
-                id="login-button"
-                type="submit"
-              >
-                Sign in
-              </button>
-              <button
-                className="btn btn-outline-primary"
-                id="forgot-pw-button"
-                onClick={[Function]}
-                type="button"
-              >
-                Forgot Password?
-              </button>
-            </div>
-            <ErrorMessage />
-          </form>
-        </Form>
-      </Formik>
-    </Component>
+              Remember me
+            </label>
+          </div>
+          <div
+            className="mb-3 justify-content-between d-flex"
+          >
+            <button
+              className="btn btn-primary"
+              id="login-button"
+              type="submit"
+            >
+              Sign in
+            </button>
+            <button
+              className="btn btn-outline-primary"
+              id="forgot-pw-button"
+              onClick={[Function]}
+              type="button"
+            >
+              Forgot Password?
+            </button>
+          </div>
+          <ErrorMessage />
+        </form>
+      </Form>
+    </Formik>
   </Component>
 </div>
 `;
@@ -715,67 +700,84 @@ exports[`<LoginForm> TOTP 2`] = `
     idPrefix="test"
     onLogin={[MockFunction]}
   >
-    <div
-      className="d-flex flex-column align-items-center"
+    <TOTPFlow
+      error={[Error: GraphQL error: totp required]}
+      idPrefix="test"
+      loading={false}
+      submit={[Function]}
+      totpRequired={true}
     >
       <div
-        className="w-75 text-muted p-3"
+        className="d-flex flex-column align-items-center"
       >
-        Please Enter the 6 digit code from your authenticator app:
-      </div>
-      <Component
-        idPrefix="test"
-        submit={[Function]}
-      >
-        <Formik
-          initialValues={
-            Object {
-              "code": "",
-            }
-          }
-          onSubmit={[Function]}
-          validate={[Function]}
+        <Component
+          idPrefix="test"
+          submit={[Function]}
         >
-          <Form>
-            <form
-              action="#"
-              onReset={[Function]}
-              onSubmit={[Function]}
-            >
-              <DefaultCodeInput
-                autoFocus={true}
-                id="test-totp-code"
-                name="code"
-                onChange={[Function]}
-                required={true}
-                type="text"
-                value=""
+          <div
+            className="text-muted p-3"
+          >
+            Please enter the 6 digit code from your authenticator app:
+          </div>
+          <TotpTokenForm
+            InputComponent={[Function]}
+            idPrefix="test"
+            key="0"
+            submit={[Function]}
+          >
+            <div>
+              <Formik
+                initialValues={
+                  Object {
+                    "code": "",
+                  }
+                }
+                onSubmit={[Function]}
+                validate={[Function]}
               >
-                <div>
-                  <input
-                    autoFocus={true}
-                    className="form-control"
-                    id="test-totp-code"
-                    name="code"
-                    onChange={[Function]}
-                    required={true}
-                    type="text"
-                    value=""
-                  />
-                </div>
-              </DefaultCodeInput>
-            </form>
-          </Form>
+                <Form>
+                  <form
+                    action="#"
+                    onReset={[Function]}
+                    onSubmit={[Function]}
+                  >
+                    <DefaultCodeInput
+                      autoFocus={true}
+                      id="test-totp-code"
+                      name="code"
+                      onChange={[Function]}
+                      required={true}
+                      type="text"
+                      value=""
+                    >
+                      <div>
+                        <input
+                          autoFocus={true}
+                          className="form-control"
+                          id="test-totp-code"
+                          name="code"
+                          onChange={[Function]}
+                          required={true}
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </DefaultCodeInput>
+                  </form>
+                </Form>
+              </Formik>
+            </div>
+          </TotpTokenForm>
           <button
-            className="btn btn-outline-secondary"
+            className="my-3 btn btn-outline-secondary"
             id="test-recovery-code-button"
             onClick={[Function]}
           >
             I need to use a 2FA recovery code
           </button>
-        </Formik>
-      </Component>
-    </div>
+        </Component>
+      </div>
+    </TOTPFlow>
   </Component>
 </div>
 `;
@@ -788,72 +790,94 @@ exports[`<LoginForm> TOTP 3`] = `
     idPrefix="test"
     onLogin={[MockFunction]}
   >
-    <div
-      className="d-flex flex-column align-items-center"
+    <TOTPFlow
+      error={[Error: GraphQL error: totp required]}
+      idPrefix="test"
+      loading={false}
+      submit={[Function]}
+      totpRequired={true}
     >
       <div
-        className="w-75 text-muted p-3"
+        className="d-flex flex-column align-items-center"
       >
-        Please Enter the 6 digit code from your authenticator app:
-      </div>
-      <Component
-        idPrefix="test"
-        submit={[Function]}
-      >
-        <Formik
-          initialValues={
-            Object {
-              "code": "",
-            }
-          }
-          onSubmit={[Function]}
-          validate={[Function]}
+        <Component
+          idPrefix="test"
+          submit={[Function]}
         >
-          <Form>
-            <form
-              action="#"
-              onReset={[Function]}
-              onSubmit={[Function]}
+          <div
+            className="text-muted p-3"
+          >
+            Please enter your recovery code:
+          </div>
+          <RecoveryCodeForm
+            InputComponent={[Function]}
+            idPrefix="test"
+            key="1"
+            submit={[Function]}
+          >
+            <div
+              className="w-100 d-flex justify-content-center"
             >
-              <DefaultCodeInput
-                autoFocus={true}
-                id="test-recovery-code"
-                name="code"
-                onChange={[Function]}
-                required={true}
-                type="text"
-                value=""
+              <Formik
+                initialValues={
+                  Object {
+                    "code": "",
+                  }
+                }
+                onSubmit={[Function]}
+                validate={[Function]}
               >
-                <div>
-                  <input
-                    autoFocus={true}
-                    className="form-control"
-                    id="test-recovery-code"
-                    name="code"
-                    onChange={[Function]}
-                    required={true}
-                    type="text"
-                    value=""
-                  />
-                </div>
-              </DefaultCodeInput>
-              <button
-                className="btn btn-primary btn-block mb-3"
-                type="submit"
-              >
-                Submit Recovery Code
-              </button>
-            </form>
-          </Form>
+                <Form
+                  className="w-100 d-flex flex-column align-items-center"
+                >
+                  <form
+                    action="#"
+                    className="w-100 d-flex flex-column align-items-center"
+                    onReset={[Function]}
+                    onSubmit={[Function]}
+                  >
+                    <DefaultCodeInput
+                      autoFocus={true}
+                      id="test-recovery-code"
+                      name="code"
+                      onChange={[Function]}
+                      required={true}
+                      type="text"
+                      value=""
+                    >
+                      <div>
+                        <input
+                          autoFocus={true}
+                          className="form-control"
+                          id="test-recovery-code"
+                          name="code"
+                          onChange={[Function]}
+                          required={true}
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </DefaultCodeInput>
+                    <button
+                      className="btn btn-primary btn-block mb-3"
+                      type="submit"
+                    >
+                      Submit Recovery Code
+                    </button>
+                  </form>
+                </Form>
+              </Formik>
+            </div>
+          </RecoveryCodeForm>
           <button
             className="btn btn-outline-secondary btn-block"
             onClick={[Function]}
           >
             Cancel
           </button>
-        </Formik>
-      </Component>
-    </div>
+        </Component>
+      </div>
+    </TOTPFlow>
   </Component>
 </div>
 `;
@@ -878,158 +902,142 @@ exports[`<LoginForm> login 1`] = `
       }
     }
   >
-    <Component
-      onLogin={[Function]}
+    <SocialButtons
+      className="my-3"
+      popupWindow={
+        Object {
+          "close": [Function],
+          "open": [Function],
+        }
+      }
+    />
+    <Formik
+      initialValues={
+        Object {
+          "email": "",
+          "password": "",
+        }
+      }
+      onSubmit={[Function]}
+      validate={[Function]}
     >
-      <SocialButtons
-        className="my-3"
-        popupWindow={
-          Object {
-            "close": [Function],
-            "open": [Function],
-          }
-        }
-      />
-      <Formik
-        initialValues={
-          Object {
-            "email": "",
-            "password": "",
-            "stayLoggedIn": false,
-          }
-        }
-        onSubmit={[Function]}
-        validate={[Function]}
-      >
-        <Form>
-          <form
-            action="#"
-            onReset={[Function]}
-            onSubmit={[Function]}
+      <Form>
+        <form
+          action="#"
+          onReset={[Function]}
+          onSubmit={[Function]}
+        >
+          <div
+            className="form-label-group mb-2"
           >
-            <div
-              className="form-label-group mb-2"
+            <Component
+              flip={true}
             >
-              <Component
-                flip={true}
+              <label
+                htmlFor="test-login-email"
+                key=".1"
               >
-                <label
-                  htmlFor="test-login-email"
-                  key=".1"
-                >
-                  Email address
-                </label>
-                <Field
+                Email address
+              </label>
+              <Field
+                autoFocus={true}
+                className="form-control"
+                id="test-login-email"
+                key=".0"
+                name="email"
+                placeholder="Email address"
+                required={true}
+                type="email"
+              >
+                <input
                   autoFocus={true}
                   className="form-control"
                   id="test-login-email"
-                  key=".0"
                   name="email"
+                  onBlur={[Function]}
+                  onChange={[Function]}
                   placeholder="Email address"
                   required={true}
                   type="email"
-                >
-                  <input
-                    autoFocus={true}
-                    className="form-control"
-                    id="test-login-email"
-                    name="email"
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    placeholder="Email address"
-                    required={true}
-                    type="email"
-                    value="bob@bob.com"
-                  />
-                </Field>
-              </Component>
-            </div>
-            <div
-              className="form-label-group mb-2"
+                  value="bob@bob.com"
+                />
+              </Field>
+            </Component>
+          </div>
+          <div
+            className="form-label-group mb-2"
+          >
+            <Component
+              flip={true}
             >
-              <Component
-                flip={true}
+              <label
+                htmlFor="test-login-password"
+                key=".1"
               >
-                <label
-                  htmlFor="test-login-password"
-                  key=".1"
-                >
-                  Password
-                </label>
-                <Field
+                Password
+              </label>
+              <Field
+                className="form-control"
+                id="test-login-password"
+                key=".0"
+                name="password"
+                placeholder="Password"
+                required={true}
+                type="password"
+              >
+                <input
                   className="form-control"
                   id="test-login-password"
-                  key=".0"
                   name="password"
+                  onBlur={[Function]}
+                  onChange={[Function]}
                   placeholder="Password"
                   required={true}
                   type="password"
-                >
-                  <input
-                    className="form-control"
-                    id="test-login-password"
-                    name="password"
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    placeholder="Password"
-                    required={true}
-                    type="password"
-                    value="hunter2"
-                  />
-                </Field>
-              </Component>
-            </div>
-            <div
-              className="custom-control custom-checkbox mb-2"
-            >
-              <Field
-                className="custom-control-input"
-                id="test-login-stay-logged-in"
-                name="stayLoggedIn"
-                type="checkbox"
-              >
-                <input
-                  checked={true}
-                  className="custom-control-input"
-                  id="test-login-stay-logged-in"
-                  name="stayLoggedIn"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  type="checkbox"
-                  value={true}
+                  value="hunter2"
                 />
               </Field>
-              <label
-                className="custom-control-label"
-                htmlFor="test-login-stay-logged-in"
-              >
-                Remember me
-              </label>
-            </div>
-            <div
-              className="mb-3 justify-content-between d-flex"
+            </Component>
+          </div>
+          <div
+            className="custom-control custom-checkbox mb-2"
+          >
+            <input
+              className="custom-control-input"
+              id="test-login-stay-logged-in"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <label
+              className="custom-control-label"
+              htmlFor="test-login-stay-logged-in"
             >
-              <button
-                className="btn btn-primary"
-                id="login-button"
-                type="submit"
-              >
-                Sign in
-              </button>
-              <button
-                className="btn btn-outline-primary"
-                id="forgot-pw-button"
-                onClick={[Function]}
-                type="button"
-              >
-                Forgot Password?
-              </button>
-            </div>
-            <ErrorMessage />
-          </form>
-        </Form>
-      </Formik>
-    </Component>
+              Remember me
+            </label>
+          </div>
+          <div
+            className="mb-3 justify-content-between d-flex"
+          >
+            <button
+              className="btn btn-primary"
+              id="login-button"
+              type="submit"
+            >
+              Sign in
+            </button>
+            <button
+              className="btn btn-outline-primary"
+              id="forgot-pw-button"
+              onClick={[Function]}
+              type="button"
+            >
+              Forgot Password?
+            </button>
+          </div>
+          <ErrorMessage />
+        </form>
+      </Form>
+    </Formik>
   </Component>
 </div>
 `;
@@ -1041,161 +1049,145 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
   <Component
     idPrefix="test"
   >
-    <Component
-      onLogin={[Function]}
+    <SocialButtons
+      className="my-3"
+      popupWindow={
+        Object {
+          "close": [Function],
+          "open": [Function],
+        }
+      }
+    />
+    <Formik
+      initialValues={
+        Object {
+          "email": "",
+          "password": "",
+        }
+      }
+      onSubmit={[Function]}
+      validate={[Function]}
     >
-      <SocialButtons
-        className="my-3"
-        popupWindow={
-          Object {
-            "close": [Function],
-            "open": [Function],
-          }
-        }
-      />
-      <Formik
-        initialValues={
-          Object {
-            "email": "",
-            "password": "",
-            "stayLoggedIn": false,
-          }
-        }
-        onSubmit={[Function]}
-        validate={[Function]}
-      >
-        <Form>
-          <form
-            action="#"
-            onReset={[Function]}
-            onSubmit={[Function]}
+      <Form>
+        <form
+          action="#"
+          onReset={[Function]}
+          onSubmit={[Function]}
+        >
+          <div
+            className="form-label-group mb-2"
           >
-            <div
-              className="form-label-group mb-2"
+            <Component
+              flip={true}
             >
-              <Component
-                flip={true}
+              <label
+                htmlFor="test-login-email"
+                key=".1"
               >
-                <label
-                  htmlFor="test-login-email"
-                  key=".1"
-                >
-                  Email address
-                </label>
-                <Field
+                Email address
+              </label>
+              <Field
+                autoFocus={true}
+                className="form-control"
+                id="test-login-email"
+                key=".0"
+                name="email"
+                placeholder="Email address"
+                required={true}
+                type="email"
+              >
+                <input
                   autoFocus={true}
                   className="form-control"
                   id="test-login-email"
-                  key=".0"
                   name="email"
+                  onBlur={[Function]}
+                  onChange={[Function]}
                   placeholder="Email address"
                   required={true}
                   type="email"
-                >
-                  <input
-                    autoFocus={true}
-                    className="form-control"
-                    id="test-login-email"
-                    name="email"
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    placeholder="Email address"
-                    required={true}
-                    type="email"
-                    value=""
-                  />
-                </Field>
-              </Component>
-            </div>
-            <div
-              className="form-label-group mb-2"
+                  value=""
+                />
+              </Field>
+            </Component>
+          </div>
+          <div
+            className="form-label-group mb-2"
+          >
+            <Component
+              flip={true}
             >
-              <Component
-                flip={true}
+              <label
+                htmlFor="test-login-password"
+                key=".1"
               >
-                <label
-                  htmlFor="test-login-password"
-                  key=".1"
-                >
-                  Password
-                </label>
-                <Field
+                Password
+              </label>
+              <Field
+                className="form-control"
+                id="test-login-password"
+                key=".0"
+                name="password"
+                placeholder="Password"
+                required={true}
+                type="password"
+              >
+                <input
                   className="form-control"
                   id="test-login-password"
-                  key=".0"
                   name="password"
+                  onBlur={[Function]}
+                  onChange={[Function]}
                   placeholder="Password"
                   required={true}
                   type="password"
-                >
-                  <input
-                    className="form-control"
-                    id="test-login-password"
-                    name="password"
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    placeholder="Password"
-                    required={true}
-                    type="password"
-                    value=""
-                  />
-                </Field>
-              </Component>
-            </div>
-            <div
-              className="custom-control custom-checkbox mb-2"
-            >
-              <Field
-                className="custom-control-input"
-                id="test-login-stay-logged-in"
-                name="stayLoggedIn"
-                type="checkbox"
-              >
-                <input
-                  checked={false}
-                  className="custom-control-input"
-                  id="test-login-stay-logged-in"
-                  name="stayLoggedIn"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  type="checkbox"
-                  value={false}
+                  value=""
                 />
               </Field>
-              <label
-                className="custom-control-label"
-                htmlFor="test-login-stay-logged-in"
-              >
-                Remember me
-              </label>
-            </div>
-            <div
-              className="mb-3 justify-content-between d-flex"
+            </Component>
+          </div>
+          <div
+            className="custom-control custom-checkbox mb-2"
+          >
+            <input
+              className="custom-control-input"
+              id="test-login-stay-logged-in"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <label
+              className="custom-control-label"
+              htmlFor="test-login-stay-logged-in"
             >
-              <button
-                className="btn btn-primary"
-                id="login-button"
-                type="submit"
-              >
-                Sign in
-              </button>
-              <button
-                className="btn btn-outline-primary"
-                id="forgot-pw-button"
-                onClick={[Function]}
-                type="button"
-              >
-                Forgot Password?
-              </button>
-            </div>
-            <ErrorMessage />
-          </form>
-        </Form>
-      </Formik>
-    </Component>
+              Remember me
+            </label>
+          </div>
+          <div
+            className="mb-3 justify-content-between d-flex"
+          >
+            <button
+              className="btn btn-primary"
+              id="login-button"
+              type="submit"
+            >
+              Sign in
+            </button>
+            <button
+              className="btn btn-outline-primary"
+              id="forgot-pw-button"
+              onClick={[Function]}
+              type="button"
+            >
+              Forgot Password?
+            </button>
+          </div>
+          <ErrorMessage />
+        </form>
+      </Form>
+    </Formik>
   </Component>
   <Component>
-    <Component>
+    <OauthCreateAccount>
       <SocialButtons
         className="my-3"
         popupWindow={
@@ -1210,7 +1202,6 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
           Object {
             "email": "",
             "password": "",
-            "stayLoggedIn": false,
           }
         }
         onSubmit={[Function]}
@@ -1314,7 +1305,6 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
                   onBlur={[Function]}
                   onChange={[Function]}
                   type="checkbox"
-                  value={false}
                 />
               </Field>
               <label
@@ -1342,7 +1332,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
         </Form>
       </Formik>
       <UserCreateError />
-    </Component>
+    </OauthCreateAccount>
   </Component>
 </div>
 `;
@@ -1444,7 +1434,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
     </div>
   </Component>
   <Component>
-    <Component>
+    <OauthCreateAccount>
       <SocialButtons
         className="my-3"
         popupWindow={
@@ -1459,7 +1449,6 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
           Object {
             "email": "",
             "password": "",
-            "stayLoggedIn": false,
           }
         }
         onSubmit={[Function]}
@@ -1563,7 +1552,6 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                   onBlur={[Function]}
                   onChange={[Function]}
                   type="checkbox"
-                  value={false}
                 />
               </Field>
               <label
@@ -1591,7 +1579,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
         </Form>
       </Formik>
       <UserCreateError />
-    </Component>
+    </OauthCreateAccount>
   </Component>
 </div>
 `;
@@ -1601,23 +1589,20 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
   id="client-test-div"
 >
   <Component>
-    <Component
-      onLogin={[Function]}
-    >
-      <SocialButtons
-        className="my-3"
-        popupWindow={
-          Object {
-            "close": [Function],
-            "open": [Function],
-          }
+    <SocialButtons
+      className="my-3"
+      popupWindow={
+        Object {
+          "close": [Function],
+          "open": [Function],
         }
+      }
+    >
+      <div
+        className="my-3"
       >
-        <div
-          className="my-3"
-        >
-          <style>
-            
+        <style>
+          
           .facebook-login-btn-3kdic7az9 {
             color: white !important;
             background-color: #4267b2 !important;
@@ -1648,407 +1633,394 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
             background-color: white !important;
           }
       
-          </style>
-          <SocialLoginButton
-            buttonClasses="github-login-btn-3kdic7az9"
-            onClick={[Function]}
+        </style>
+        <SocialLoginButton
+          buttonClasses="github-login-btn-3kdic7az9"
+          onClick={[Function]}
+        >
+          <div
+            className="d-flex justify-content-center my-2"
           >
-            <div
-              className="d-flex justify-content-center my-2"
+            <button
+              className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between github-login-btn-3kdic7az9"
+              onClick={[Function]}
             >
-              <button
-                className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between github-login-btn-3kdic7az9"
-                onClick={[Function]}
+              <GithubLogo
+                size="2em"
               >
-                <GithubLogo
-                  size="2em"
-                >
-                  <Icon
-                    fill="currentColor"
-                    icon={
-                      Object {
-                        "children": Array [
-                          Object {
-                            "attribs": Object {
-                              "d": "M768 128q209 0 385.5 103t279.5 279.5 103 385.5q0 251-146.5 451.5t-378.5 277.5q-27 5-40-7t-13-30q0-3 0.5-76.5t0.5-134.5q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105 20.5-150.5q0-119-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27t-83.5-38.5-85-13.5q-45 113-8 204-79 87-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-39 36-49 103-21 10-45 15t-57 5-65.5-21.5-55.5-62.5q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 0.5 88.5t0.5 54.5q0 18-13 30t-40 7q-232-77-378.5-277.5t-146.5-451.5q0-209 103-385.5t279.5-279.5 385.5-103zM291 1231q3-7-7-12-10-3-13 2-3 7 7 12 9 6 13-2zM322 1265q7-5-2-16-10-9-16-3-7 5 2 16 10 10 16 3zM352 1310q9-7 0-19-8-13-17-6-9 5 0 18t17 7zM394 1352q8-8-4-19-12-12-20-3-9 8 4 19 12 12 20 3zM451 1377q3-11-13-16-15-4-19 7t13 15q15 6 19-6zM514 1382q0-13-17-11-16 0-16 11 0 13 17 11 16 0 16-11zM572 1372q-2-11-18-9-16 3-14 15t18 8 14-14z",
-                            },
-                            "name": "path",
+                <Icon
+                  fill="currentColor"
+                  icon={
+                    Object {
+                      "children": Array [
+                        Object {
+                          "attribs": Object {
+                            "d": "M768 128q209 0 385.5 103t279.5 279.5 103 385.5q0 251-146.5 451.5t-378.5 277.5q-27 5-40-7t-13-30q0-3 0.5-76.5t0.5-134.5q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105 20.5-150.5q0-119-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27t-83.5-38.5-85-13.5q-45 113-8 204-79 87-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-39 36-49 103-21 10-45 15t-57 5-65.5-21.5-55.5-62.5q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 0.5 88.5t0.5 54.5q0 18-13 30t-40 7q-232-77-378.5-277.5t-146.5-451.5q0-209 103-385.5t279.5-279.5 385.5-103zM291 1231q3-7-7-12-10-3-13 2-3 7 7 12 9 6 13-2zM322 1265q7-5-2-16-10-9-16-3-7 5 2 16 10 10 16 3zM352 1310q9-7 0-19-8-13-17-6-9 5 0 18t17 7zM394 1352q8-8-4-19-12-12-20-3-9 8 4 19 12 12 20 3zM451 1377q3-11-13-16-15-4-19 7t13 15q15 6 19-6zM514 1382q0-13-17-11-16 0-16 11 0 13 17 11 16 0 16-11zM572 1372q-2-11-18-9-16 3-14 15t18 8 14-14z",
                           },
-                        ],
-                        "viewBox": "0 0 1536 1792",
+                          "name": "path",
+                        },
+                      ],
+                      "viewBox": "0 0 1536 1792",
+                    }
+                  }
+                  size="2em"
+                  tag="i"
+                >
+                  <i
+                    fill="currentColor"
+                    style={
+                      Object {
+                        "display": "inline-block",
                       }
                     }
-                    size="2em"
-                    tag="i"
                   >
-                    <i
-                      fill="currentColor"
-                      style={
+                    <SvgIcon
+                      icon={
                         Object {
-                          "display": "inline-block",
+                          "children": Array [
+                            Object {
+                              "attribs": Object {
+                                "d": "M768 128q209 0 385.5 103t279.5 279.5 103 385.5q0 251-146.5 451.5t-378.5 277.5q-27 5-40-7t-13-30q0-3 0.5-76.5t0.5-134.5q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105 20.5-150.5q0-119-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27t-83.5-38.5-85-13.5q-45 113-8 204-79 87-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-39 36-49 103-21 10-45 15t-57 5-65.5-21.5-55.5-62.5q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 0.5 88.5t0.5 54.5q0 18-13 30t-40 7q-232-77-378.5-277.5t-146.5-451.5q0-209 103-385.5t279.5-279.5 385.5-103zM291 1231q3-7-7-12-10-3-13 2-3 7 7 12 9 6 13-2zM322 1265q7-5-2-16-10-9-16-3-7 5 2 16 10 10 16 3zM352 1310q9-7 0-19-8-13-17-6-9 5 0 18t17 7zM394 1352q8-8-4-19-12-12-20-3-9 8 4 19 12 12 20 3zM451 1377q3-11-13-16-15-4-19 7t13 15q15 6 19-6zM514 1382q0-13-17-11-16 0-16 11 0 13 17 11 16 0 16-11zM572 1372q-2-11-18-9-16 3-14 15t18 8 14-14z",
+                              },
+                              "name": "path",
+                            },
+                          ],
+                          "viewBox": "0 0 1536 1792",
                         }
                       }
+                      size="2em"
                     >
-                      <SvgIcon
-                        icon={
+                      <svg
+                        fill="currentColor"
+                        height="2em"
+                        style={
                           Object {
-                            "children": Array [
-                              Object {
-                                "attribs": Object {
-                                  "d": "M768 128q209 0 385.5 103t279.5 279.5 103 385.5q0 251-146.5 451.5t-378.5 277.5q-27 5-40-7t-13-30q0-3 0.5-76.5t0.5-134.5q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105 20.5-150.5q0-119-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27t-83.5-38.5-85-13.5q-45 113-8 204-79 87-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-39 36-49 103-21 10-45 15t-57 5-65.5-21.5-55.5-62.5q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 0.5 88.5t0.5 54.5q0 18-13 30t-40 7q-232-77-378.5-277.5t-146.5-451.5q0-209 103-385.5t279.5-279.5 385.5-103zM291 1231q3-7-7-12-10-3-13 2-3 7 7 12 9 6 13-2zM322 1265q7-5-2-16-10-9-16-3-7 5 2 16 10 10 16 3zM352 1310q9-7 0-19-8-13-17-6-9 5 0 18t17 7zM394 1352q8-8-4-19-12-12-20-3-9 8 4 19 12 12 20 3zM451 1377q3-11-13-16-15-4-19 7t13 15q15 6 19-6zM514 1382q0-13-17-11-16 0-16 11 0 13 17 11 16 0 16-11zM572 1372q-2-11-18-9-16 3-14 15t18 8 14-14z",
-                                },
-                                "name": "path",
-                              },
-                            ],
-                            "viewBox": "0 0 1536 1792",
+                            "display": "inline-block",
+                            "verticalAlign": "middle",
                           }
                         }
-                        size="2em"
+                        viewBox="0 0 1536 1792"
+                        width="2em"
                       >
-                        <svg
-                          fill="currentColor"
-                          height="2em"
-                          style={
-                            Object {
-                              "display": "inline-block",
-                              "verticalAlign": "middle",
-                            }
-                          }
-                          viewBox="0 0 1536 1792"
-                          width="2em"
-                        >
-                          <path
-                            d="M768 128q209 0 385.5 103t279.5 279.5 103 385.5q0 251-146.5 451.5t-378.5 277.5q-27 5-40-7t-13-30q0-3 0.5-76.5t0.5-134.5q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105 20.5-150.5q0-119-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27t-83.5-38.5-85-13.5q-45 113-8 204-79 87-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-39 36-49 103-21 10-45 15t-57 5-65.5-21.5-55.5-62.5q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 0.5 88.5t0.5 54.5q0 18-13 30t-40 7q-232-77-378.5-277.5t-146.5-451.5q0-209 103-385.5t279.5-279.5 385.5-103zM291 1231q3-7-7-12-10-3-13 2-3 7 7 12 9 6 13-2zM322 1265q7-5-2-16-10-9-16-3-7 5 2 16 10 10 16 3zM352 1310q9-7 0-19-8-13-17-6-9 5 0 18t17 7zM394 1352q8-8-4-19-12-12-20-3-9 8 4 19 12 12 20 3zM451 1377q3-11-13-16-15-4-19 7t13 15q15 6 19-6zM514 1382q0-13-17-11-16 0-16 11 0 13 17 11 16 0 16-11zM572 1372q-2-11-18-9-16 3-14 15t18 8 14-14z"
-                            key="0"
-                          />
-                        </svg>
-                      </SvgIcon>
-                    </i>
-                  </Icon>
-                </GithubLogo>
-                <div
-                  className="flex-grow-1 font-weight-bold"
-                >
-                  Login with GitHub
-                </div>
-              </button>
-            </div>
-          </SocialLoginButton>
-          <SocialLoginButton
-            buttonClasses="facebook-login-btn-3kdic7az9"
-            onClick={[Function]}
-          >
-            <div
-              className="d-flex justify-content-center my-2"
-            >
-              <button
-                className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between facebook-login-btn-3kdic7az9"
-                onClick={[Function]}
+                        <path
+                          d="M768 128q209 0 385.5 103t279.5 279.5 103 385.5q0 251-146.5 451.5t-378.5 277.5q-27 5-40-7t-13-30q0-3 0.5-76.5t0.5-134.5q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105 20.5-150.5q0-119-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27t-83.5-38.5-85-13.5q-45 113-8 204-79 87-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-39 36-49 103-21 10-45 15t-57 5-65.5-21.5-55.5-62.5q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 0.5 88.5t0.5 54.5q0 18-13 30t-40 7q-232-77-378.5-277.5t-146.5-451.5q0-209 103-385.5t279.5-279.5 385.5-103zM291 1231q3-7-7-12-10-3-13 2-3 7 7 12 9 6 13-2zM322 1265q7-5-2-16-10-9-16-3-7 5 2 16 10 10 16 3zM352 1310q9-7 0-19-8-13-17-6-9 5 0 18t17 7zM394 1352q8-8-4-19-12-12-20-3-9 8 4 19 12 12 20 3zM451 1377q3-11-13-16-15-4-19 7t13 15q15 6 19-6zM514 1382q0-13-17-11-16 0-16 11 0 13 17 11 16 0 16-11zM572 1372q-2-11-18-9-16 3-14 15t18 8 14-14z"
+                          key="0"
+                        />
+                      </svg>
+                    </SvgIcon>
+                  </i>
+                </Icon>
+              </GithubLogo>
+              <div
+                className="flex-grow-1 font-weight-bold"
               >
-                <FbLogo
-                  size="2em"
-                >
-                  <Icon
-                    fill="currentColor"
-                    icon={
-                      Object {
-                        "children": Array [
-                          Object {
-                            "attribs": Object {
-                              "d": "M1451 128q35 0 60 25t25 60v1366q0 35-25 60t-60 25h-391v-595h199l30-232h-229v-148q0-56 23.5-84t91.5-28l122-1v-207q-63-9-178-9-136 0-217.5 80t-81.5 226v171h-200v232h200v595h-735q-35 0-60-25t-25-60v-1366q0-35 25-60t60-25h1366z",
-                            },
-                            "name": "path",
+                Login with GitHub
+              </div>
+            </button>
+          </div>
+        </SocialLoginButton>
+        <SocialLoginButton
+          buttonClasses="facebook-login-btn-3kdic7az9"
+          onClick={[Function]}
+        >
+          <div
+            className="d-flex justify-content-center my-2"
+          >
+            <button
+              className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between facebook-login-btn-3kdic7az9"
+              onClick={[Function]}
+            >
+              <FbLogo
+                size="2em"
+              >
+                <Icon
+                  fill="currentColor"
+                  icon={
+                    Object {
+                      "children": Array [
+                        Object {
+                          "attribs": Object {
+                            "d": "M1451 128q35 0 60 25t25 60v1366q0 35-25 60t-60 25h-391v-595h199l30-232h-229v-148q0-56 23.5-84t91.5-28l122-1v-207q-63-9-178-9-136 0-217.5 80t-81.5 226v171h-200v232h200v595h-735q-35 0-60-25t-25-60v-1366q0-35 25-60t60-25h1366z",
                           },
-                        ],
-                        "viewBox": "0 0 1536 1792",
+                          "name": "path",
+                        },
+                      ],
+                      "viewBox": "0 0 1536 1792",
+                    }
+                  }
+                  size="2em"
+                  tag="i"
+                >
+                  <i
+                    fill="currentColor"
+                    style={
+                      Object {
+                        "display": "inline-block",
                       }
                     }
-                    size="2em"
-                    tag="i"
                   >
-                    <i
-                      fill="currentColor"
-                      style={
+                    <SvgIcon
+                      icon={
                         Object {
-                          "display": "inline-block",
+                          "children": Array [
+                            Object {
+                              "attribs": Object {
+                                "d": "M1451 128q35 0 60 25t25 60v1366q0 35-25 60t-60 25h-391v-595h199l30-232h-229v-148q0-56 23.5-84t91.5-28l122-1v-207q-63-9-178-9-136 0-217.5 80t-81.5 226v171h-200v232h200v595h-735q-35 0-60-25t-25-60v-1366q0-35 25-60t60-25h1366z",
+                              },
+                              "name": "path",
+                            },
+                          ],
+                          "viewBox": "0 0 1536 1792",
                         }
                       }
+                      size="2em"
                     >
-                      <SvgIcon
-                        icon={
+                      <svg
+                        fill="currentColor"
+                        height="2em"
+                        style={
                           Object {
-                            "children": Array [
-                              Object {
-                                "attribs": Object {
-                                  "d": "M1451 128q35 0 60 25t25 60v1366q0 35-25 60t-60 25h-391v-595h199l30-232h-229v-148q0-56 23.5-84t91.5-28l122-1v-207q-63-9-178-9-136 0-217.5 80t-81.5 226v171h-200v232h200v595h-735q-35 0-60-25t-25-60v-1366q0-35 25-60t60-25h1366z",
-                                },
-                                "name": "path",
-                              },
-                            ],
-                            "viewBox": "0 0 1536 1792",
+                            "display": "inline-block",
+                            "verticalAlign": "middle",
                           }
                         }
-                        size="2em"
+                        viewBox="0 0 1536 1792"
+                        width="2em"
                       >
-                        <svg
-                          fill="currentColor"
-                          height="2em"
-                          style={
-                            Object {
-                              "display": "inline-block",
-                              "verticalAlign": "middle",
-                            }
-                          }
-                          viewBox="0 0 1536 1792"
-                          width="2em"
-                        >
-                          <path
-                            d="M1451 128q35 0 60 25t25 60v1366q0 35-25 60t-60 25h-391v-595h199l30-232h-229v-148q0-56 23.5-84t91.5-28l122-1v-207q-63-9-178-9-136 0-217.5 80t-81.5 226v171h-200v232h200v595h-735q-35 0-60-25t-25-60v-1366q0-35 25-60t60-25h1366z"
-                            key="0"
-                          />
-                        </svg>
-                      </SvgIcon>
-                    </i>
-                  </Icon>
-                </FbLogo>
-                <div
-                  className="flex-grow-1 font-weight-bold"
-                >
-                  Login with Facebook
-                </div>
-              </button>
-            </div>
-          </SocialLoginButton>
-          <SocialLoginButton
-            buttonClasses="google-login-btn-3kdic7az9"
-            onClick={[Function]}
-          >
-            <div
-              className="d-flex justify-content-center my-2"
-            >
-              <button
-                className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between google-login-btn-3kdic7az9"
-                onClick={[Function]}
+                        <path
+                          d="M1451 128q35 0 60 25t25 60v1366q0 35-25 60t-60 25h-391v-595h199l30-232h-229v-148q0-56 23.5-84t91.5-28l122-1v-207q-63-9-178-9-136 0-217.5 80t-81.5 226v171h-200v232h200v595h-735q-35 0-60-25t-25-60v-1366q0-35 25-60t60-25h1366z"
+                          key="0"
+                        />
+                      </svg>
+                    </SvgIcon>
+                  </i>
+                </Icon>
+              </FbLogo>
+              <div
+                className="flex-grow-1 font-weight-bold"
               >
-                <GoogleLogo
-                  size="2em"
-                >
-                  <Icon
-                    fill="currentColor"
-                    icon={
-                      Object {
-                        "children": Array [
-                          Object {
-                            "attribs": Object {
-                              "d": "M768 786h725q12 67 12 128 0 217-91 387.5t-259.5 266.5-386.5 96q-157 0-299-60.5t-245-163.5-163.5-245-60.5-299 60.5-299 163.5-245 245-163.5 299-60.5q300 0 515 201l-209 201q-123-119-306-119-129 0-238.5 65t-173.5 176.5-64 243.5 64 243.5 173.5 176.5 238.5 65q87 0 160-24t120-60 82-82 51.5-87 22.5-78h-436v-264z",
-                            },
-                            "name": "path",
+                Login with Facebook
+              </div>
+            </button>
+          </div>
+        </SocialLoginButton>
+        <SocialLoginButton
+          buttonClasses="google-login-btn-3kdic7az9"
+          onClick={[Function]}
+        >
+          <div
+            className="d-flex justify-content-center my-2"
+          >
+            <button
+              className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between google-login-btn-3kdic7az9"
+              onClick={[Function]}
+            >
+              <GoogleLogo
+                size="2em"
+              >
+                <Icon
+                  fill="currentColor"
+                  icon={
+                    Object {
+                      "children": Array [
+                        Object {
+                          "attribs": Object {
+                            "d": "M768 786h725q12 67 12 128 0 217-91 387.5t-259.5 266.5-386.5 96q-157 0-299-60.5t-245-163.5-163.5-245-60.5-299 60.5-299 163.5-245 245-163.5 299-60.5q300 0 515 201l-209 201q-123-119-306-119-129 0-238.5 65t-173.5 176.5-64 243.5 64 243.5 173.5 176.5 238.5 65q87 0 160-24t120-60 82-82 51.5-87 22.5-78h-436v-264z",
                           },
-                        ],
-                        "viewBox": "0 0 1536 1792",
+                          "name": "path",
+                        },
+                      ],
+                      "viewBox": "0 0 1536 1792",
+                    }
+                  }
+                  size="2em"
+                  tag="i"
+                >
+                  <i
+                    fill="currentColor"
+                    style={
+                      Object {
+                        "display": "inline-block",
                       }
                     }
-                    size="2em"
-                    tag="i"
                   >
-                    <i
-                      fill="currentColor"
-                      style={
+                    <SvgIcon
+                      icon={
                         Object {
-                          "display": "inline-block",
+                          "children": Array [
+                            Object {
+                              "attribs": Object {
+                                "d": "M768 786h725q12 67 12 128 0 217-91 387.5t-259.5 266.5-386.5 96q-157 0-299-60.5t-245-163.5-163.5-245-60.5-299 60.5-299 163.5-245 245-163.5 299-60.5q300 0 515 201l-209 201q-123-119-306-119-129 0-238.5 65t-173.5 176.5-64 243.5 64 243.5 173.5 176.5 238.5 65q87 0 160-24t120-60 82-82 51.5-87 22.5-78h-436v-264z",
+                              },
+                              "name": "path",
+                            },
+                          ],
+                          "viewBox": "0 0 1536 1792",
                         }
                       }
+                      size="2em"
                     >
-                      <SvgIcon
-                        icon={
+                      <svg
+                        fill="currentColor"
+                        height="2em"
+                        style={
                           Object {
-                            "children": Array [
-                              Object {
-                                "attribs": Object {
-                                  "d": "M768 786h725q12 67 12 128 0 217-91 387.5t-259.5 266.5-386.5 96q-157 0-299-60.5t-245-163.5-163.5-245-60.5-299 60.5-299 163.5-245 245-163.5 299-60.5q300 0 515 201l-209 201q-123-119-306-119-129 0-238.5 65t-173.5 176.5-64 243.5 64 243.5 173.5 176.5 238.5 65q87 0 160-24t120-60 82-82 51.5-87 22.5-78h-436v-264z",
-                                },
-                                "name": "path",
-                              },
-                            ],
-                            "viewBox": "0 0 1536 1792",
+                            "display": "inline-block",
+                            "verticalAlign": "middle",
                           }
                         }
-                        size="2em"
+                        viewBox="0 0 1536 1792"
+                        width="2em"
                       >
-                        <svg
-                          fill="currentColor"
-                          height="2em"
-                          style={
-                            Object {
-                              "display": "inline-block",
-                              "verticalAlign": "middle",
-                            }
-                          }
-                          viewBox="0 0 1536 1792"
-                          width="2em"
-                        >
-                          <path
-                            d="M768 786h725q12 67 12 128 0 217-91 387.5t-259.5 266.5-386.5 96q-157 0-299-60.5t-245-163.5-163.5-245-60.5-299 60.5-299 163.5-245 245-163.5 299-60.5q300 0 515 201l-209 201q-123-119-306-119-129 0-238.5 65t-173.5 176.5-64 243.5 64 243.5 173.5 176.5 238.5 65q87 0 160-24t120-60 82-82 51.5-87 22.5-78h-436v-264z"
-                            key="0"
-                          />
-                        </svg>
-                      </SvgIcon>
-                    </i>
-                  </Icon>
-                </GoogleLogo>
-                <div
-                  className="flex-grow-1 font-weight-bold"
-                >
-                  Login with Google
-                </div>
-              </button>
-            </div>
-          </SocialLoginButton>
-        </div>
-      </SocialButtons>
-      <Formik
-        initialValues={
-          Object {
-            "email": "",
-            "password": "",
-            "stayLoggedIn": false,
-          }
+                        <path
+                          d="M768 786h725q12 67 12 128 0 217-91 387.5t-259.5 266.5-386.5 96q-157 0-299-60.5t-245-163.5-163.5-245-60.5-299 60.5-299 163.5-245 245-163.5 299-60.5q300 0 515 201l-209 201q-123-119-306-119-129 0-238.5 65t-173.5 176.5-64 243.5 64 243.5 173.5 176.5 238.5 65q87 0 160-24t120-60 82-82 51.5-87 22.5-78h-436v-264z"
+                          key="0"
+                        />
+                      </svg>
+                    </SvgIcon>
+                  </i>
+                </Icon>
+              </GoogleLogo>
+              <div
+                className="flex-grow-1 font-weight-bold"
+              >
+                Login with Google
+              </div>
+            </button>
+          </div>
+        </SocialLoginButton>
+      </div>
+    </SocialButtons>
+    <Formik
+      initialValues={
+        Object {
+          "email": "",
+          "password": "",
         }
-        onSubmit={[Function]}
-        validate={[Function]}
-      >
-        <Form>
-          <form
-            action="#"
-            onReset={[Function]}
-            onSubmit={[Function]}
+      }
+      onSubmit={[Function]}
+      validate={[Function]}
+    >
+      <Form>
+        <form
+          action="#"
+          onReset={[Function]}
+          onSubmit={[Function]}
+        >
+          <div
+            className="form-label-group mb-2"
           >
-            <div
-              className="form-label-group mb-2"
+            <Component
+              flip={true}
             >
-              <Component
-                flip={true}
+              <label
+                htmlFor="um3kfiekd-login-email"
+                key=".1"
               >
-                <label
-                  htmlFor="um3kfiekd-login-email"
-                  key=".1"
-                >
-                  Email address
-                </label>
-                <Field
+                Email address
+              </label>
+              <Field
+                autoFocus={true}
+                className="form-control"
+                id="um3kfiekd-login-email"
+                key=".0"
+                name="email"
+                placeholder="Email address"
+                required={true}
+                type="email"
+              >
+                <input
                   autoFocus={true}
                   className="form-control"
                   id="um3kfiekd-login-email"
-                  key=".0"
                   name="email"
+                  onBlur={[Function]}
+                  onChange={[Function]}
                   placeholder="Email address"
                   required={true}
                   type="email"
-                >
-                  <input
-                    autoFocus={true}
-                    className="form-control"
-                    id="um3kfiekd-login-email"
-                    name="email"
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    placeholder="Email address"
-                    required={true}
-                    type="email"
-                    value=""
-                  />
-                </Field>
-              </Component>
-            </div>
-            <div
-              className="form-label-group mb-2"
+                  value=""
+                />
+              </Field>
+            </Component>
+          </div>
+          <div
+            className="form-label-group mb-2"
+          >
+            <Component
+              flip={true}
             >
-              <Component
-                flip={true}
+              <label
+                htmlFor="um3kfiekd-login-password"
+                key=".1"
               >
-                <label
-                  htmlFor="um3kfiekd-login-password"
-                  key=".1"
-                >
-                  Password
-                </label>
-                <Field
+                Password
+              </label>
+              <Field
+                className="form-control"
+                id="um3kfiekd-login-password"
+                key=".0"
+                name="password"
+                placeholder="Password"
+                required={true}
+                type="password"
+              >
+                <input
                   className="form-control"
                   id="um3kfiekd-login-password"
-                  key=".0"
                   name="password"
+                  onBlur={[Function]}
+                  onChange={[Function]}
                   placeholder="Password"
                   required={true}
                   type="password"
-                >
-                  <input
-                    className="form-control"
-                    id="um3kfiekd-login-password"
-                    name="password"
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    placeholder="Password"
-                    required={true}
-                    type="password"
-                    value=""
-                  />
-                </Field>
-              </Component>
-            </div>
-            <div
-              className="custom-control custom-checkbox mb-2"
-            >
-              <Field
-                className="custom-control-input"
-                id="um3kfiekd-login-stay-logged-in"
-                name="stayLoggedIn"
-                type="checkbox"
-              >
-                <input
-                  checked={false}
-                  className="custom-control-input"
-                  id="um3kfiekd-login-stay-logged-in"
-                  name="stayLoggedIn"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  type="checkbox"
-                  value={false}
+                  value=""
                 />
               </Field>
-              <label
-                className="custom-control-label"
-                htmlFor="um3kfiekd-login-stay-logged-in"
-              >
-                Remember me
-              </label>
-            </div>
-            <div
-              className="mb-3 justify-content-between d-flex"
+            </Component>
+          </div>
+          <div
+            className="custom-control custom-checkbox mb-2"
+          >
+            <input
+              className="custom-control-input"
+              id="um3kfiekd-login-stay-logged-in"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <label
+              className="custom-control-label"
+              htmlFor="um3kfiekd-login-stay-logged-in"
             >
-              <button
-                className="btn btn-primary"
-                id="login-button"
-                type="submit"
-              >
-                Sign in
-              </button>
-              <button
-                className="btn btn-outline-primary"
-                id="forgot-pw-button"
-                onClick={[Function]}
-                type="button"
-              >
-                Forgot Password?
-              </button>
-            </div>
-            <ErrorMessage />
-          </form>
-        </Form>
-      </Formik>
-    </Component>
+              Remember me
+            </label>
+          </div>
+          <div
+            className="mb-3 justify-content-between d-flex"
+          >
+            <button
+              className="btn btn-primary"
+              id="login-button"
+              type="submit"
+            >
+              Sign in
+            </button>
+            <button
+              className="btn btn-outline-primary"
+              id="forgot-pw-button"
+              onClick={[Function]}
+              type="button"
+            >
+              Forgot Password?
+            </button>
+          </div>
+          <ErrorMessage />
+        </form>
+      </Form>
+    </Formik>
   </Component>
   <Component>
-    <Component>
+    <OauthCreateAccount>
       <SocialButtons
         className="my-3"
         popupWindow={
@@ -2356,7 +2328,6 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
           Object {
             "email": "",
             "password": "",
-            "stayLoggedIn": false,
           }
         }
         onSubmit={[Function]}
@@ -2460,7 +2431,6 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                   onBlur={[Function]}
                   onChange={[Function]}
                   type="checkbox"
-                  value={false}
                 />
               </Field>
               <label
@@ -2488,7 +2458,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
         </Form>
       </Formik>
       <UserCreateError />
-    </Component>
+    </OauthCreateAccount>
   </Component>
 </div>
 `;

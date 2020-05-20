@@ -11,13 +11,13 @@ import { facebookOfficial } from 'react-icons-kit/fa/facebookOfficial'
 import { github } from 'react-icons-kit/fa/github'
 
 import { useToken, useAppConfig, useAppId } from '../auth'
-import { useCsrfToken, useCsrfMutation } from '../hooks'
+import { useCsrfMutation } from '../hooks'
 import { InputLabel, InputComponentType } from './form-util'
 import { ErrorMessage } from '../errors'
 import { useGetRecoveryCodeCount } from '../recoverycodes'
 import { ReauthContext } from '../reauth'
 import { PasswordScore, RequestPasswordResetForm } from './password-components'
-import { TotpTokenForm } from './totp-components'
+import { MFAForm } from './totp-components'
 import { useReauthToken } from '../reauth'
 
 import { useClearTotpMutation } from '../../gen/operations'
@@ -38,12 +38,14 @@ const GithubLogo = (props: IconProps) => <Icon icon={github} {...props} />
 import {
   useCreateAccount,
   useOauthToken,
-  useOauthLogin,
   useLogin,
   useLogout,
-  CreateAccountArgs,
-  LoginSubmitArgs
 } from '../login'
+
+import {
+  LoginMutationVariables,
+  CreateAccountMutationVariables
+} from '../../gen/operations'
 
 const getId = (prefix: string | undefined, suffix: string) => {
   if (prefix) {
@@ -275,14 +277,57 @@ const SocialButtons: React.FC<{popupWindow: ChildWindow, className?: string}> = 
   }
 }
 
-export const OauthLogin: React.FC<{onLogin?: () => void, children: ReactNode}> = ({onLogin, children}) => {
+// Return a child window that, when opened, can initiate the oauth redirect,
+// and sends the oauthToken back to the opener once it is received.
+const useGetOauthToken = (onToken: (token: string) => void) => {
+
+  const popupWindow = usePopupWindow({onToken})
+
+  // oauthToken becomes non-null in the child window after the oauth redirect
+  // completes
   const oauthToken = useOauthToken()
-  const { error, loading } = useOauthLogin({ onLogin, oauthToken })
+
+  // Send the token back to window.opener once we have it. This will never
+  // execute in the parent window.
+  useEffect(() => {
+    if (oauthToken && window.opener != null) {
+      window.opener.postMessage({ oauthToken })
+      window.close()
+    }
+  }, [oauthToken])
+
+  return { popupWindow }
+}
+
+type OauthLoginProps = LoginFormProps & { children: ReactNode }
+
+const OauthCreateAccount: React.FC<OauthLoginProps> = ({
+  onLogin, children
+}) => {
+
+  const [submit, { loading, error }] = useLogin({
+    onCompleted: () => { onLogin?.() }
+  })
+  const [oauthToken, setOauthToken] = useState<string | undefined>()
+  const { popupWindow } = useGetOauthToken(setOauthToken)
+
+  useEffect(() => {
+    if (oauthToken) {
+      submit({
+        credential: { oauthToken },
+        stayLoggedIn: false,
+      })
+    }
+  }, [oauthToken])
+
   if (oauthToken == null) {
-    return <>{children}</>
+    return <>
+      <SocialButtons popupWindow={popupWindow} className="my-3"/>
+      {children}
+    </>
   } else {
     return <>
-      <ErrorMessage error={error}/>
+      <ErrorMessage error={error} />
       { loading && <div className="alert alert-info">
         Please wait while we process your login...
       </div> }
@@ -290,15 +335,11 @@ export const OauthLogin: React.FC<{onLogin?: () => void, children: ReactNode}> =
   }
 }
 
-const usePopupWindow = ({onLogin, refetch}: { onLogin?: () => void, refetch: () => void }) => (
+const usePopupWindow = ({onToken}: { onToken: (token: string) => void }) => (
   useChildWindow('social-login-popup',
     async (msg: any) => {
-      if (msg === 'LOGGED_IN') {
-        // TODO: just update the cache manually instead of refetching the query
-        await refetch()
-        if (onLogin != null) {
-          onLogin()
-        }
+      if (msg.oauthToken) {
+        onToken(msg.oauthToken)
       }
     }
   )
@@ -306,9 +347,10 @@ const usePopupWindow = ({onLogin, refetch}: { onLogin?: () => void, refetch: () 
 
 const loginInitialValues = {
   email: '',
-  password: '',
-  stayLoggedIn: false
+  password: ''
 }
+
+type LoginSubmitArgs = typeof loginInitialValues
 
 const validateLogin = (values: FormikValues) => {
   const errors: FormikErrors<typeof loginInitialValues> = {}
@@ -386,6 +428,28 @@ const PostRecoveryCode: React.FC<{dismiss: () => void }> = ({dismiss}) => {
   </div>
 }
 
+const TOTPFlow: React.FC<{
+  idPrefix?: string,
+  error?: ApolloError,
+  loading: boolean,
+  submit: (totpCode: string) => void,
+  totpRequired: boolean,
+  TotpInputComponent?: InputComponentType,
+  RecoveryCodeInputComponent?: InputComponentType
+}> = ({
+  idPrefix, error, loading, submit, totpRequired, TotpInputComponent, RecoveryCodeInputComponent
+}) => (
+  <div className="d-flex flex-column align-items-center">
+    { // Don't display the error message that says we need a code...
+      !totpRequired && <ErrorMessage error={error} /> }
+    <MFAForm submit={submit} idPrefix={idPrefix}
+       TotpInputComponent={TotpInputComponent}
+       RecoveryCodeInputComponent={RecoveryCodeInputComponent}
+    />
+    { loading && <div>Please wait...</div> }
+  </div>
+)
+
 export const LoginForm: React.FC<LoginFormProps> = ({
   onLogin,
   idPrefix,
@@ -396,22 +460,47 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
   const labelsFirst = labelsFirstArg ?? true
 
+  // State
   const [mode, setMode] = useState<LoginMode>('login')
   const [submittedData, setSubmittedData] =
-    useState<LoginSubmitArgs | undefined>(undefined)
-
-  const [submit, { loading, error, called, success, data }] = useLogin()
-
-  const { id, loading: tokenLoading } = useToken()
-
-  const { refetch } = useCsrfToken()
-
+    useState<LoginMutationVariables | undefined>(undefined)
+  const [oauthToken, setOauthToken] = useState<string | undefined>()
   const [successViaRecoveryCodeDismissed, setSuccessViaRecoveryCodeDismissed] =
     useState<boolean>(false)
+  const [stayLoggedIn, setStayLoggedIn] = useState<boolean>(false)
 
+  // are we logged in?
+  const { id, loading: tokenLoading } = useToken()
+
+  // the login mutation
+  const [submit, { loading, error, called, success, data }] = useLogin()
+
+  const submitWrapper = (variables: LoginMutationVariables) => {
+    submit(variables)
+    setSubmittedData(variables)
+  }
+
+  const { popupWindow } = useGetOauthToken(setOauthToken)
+
+  // derived state...
+  const totpRequired = Boolean(error?.graphQLErrors.find(
+    e => e.extensions?.exception?.code === 'TOTP_REQUIRED'
+  ))
+
+  const totpCode = submittedData?.credential.totpCode
   const successViaRecoveryCode = called && success
-    && submittedData?.totpCode
-    && /^[-0-9A-Z]{14}$/.test(submittedData.totpCode)
+    && totpCode && /^[-0-9A-Z]{14}$/.test(totpCode)
+
+  // Do the oauth login as soon as we have a token.
+  useEffect(() => {
+    if (oauthToken) {
+      submitWrapper({
+        stayLoggedIn,
+        ...submittedData,
+        credential: { oauthToken }
+      })
+    }
+  }, [oauthToken])
 
   useEffect(() => {
     // We need to wait until the credential context is reporting that we are logged in,
@@ -425,9 +514,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   }, [called, success, id, tokenLoading, onLogin,
       successViaRecoveryCode, successViaRecoveryCodeDismissed])
 
-  const totpRequired = Boolean(error?.graphQLErrors.find(
-    e => e.extensions?.exception?.code === 'TOTP_REQUIRED'
-  ))
 
   useEffect(() => {
     if (mode !== 'totp' && totpRequired) {
@@ -435,48 +521,40 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     }
   }, [totpRequired, mode])
 
-  const onLoginWrapper = () => {
-    if (window.opener != null) {
-      window.opener.postMessage('LOGGED_IN')
-      window.close()
-    }
-    if (onLogin != null) {
-      onLogin()
-    }
-  }
-
-  const popupWindow = usePopupWindow({onLogin: onLoginWrapper, refetch})
+  //const popupWindow = usePopupWindow({onLogin: onLoginWrapper, refetch})
 
   if (successViaRecoveryCode) {
     const dismiss = () => {
       setSuccessViaRecoveryCodeDismissed(true)
     }
-    return <ReauthContext.Provider value={data?.loginPassword?.reauthToken ?? ''}>
+    return <ReauthContext.Provider value={data?.login?.reauthToken ?? ''}>
       <PostRecoveryCode dismiss={dismiss}/>
     </ReauthContext.Provider>
   }
 
   if (mode === 'totp') {
-    if (submittedData == null) {
-      throw new Error("login data must be saved before entering totp mode")
-    }
     const submitCode = (totpCode: string) => {
-      const variables = { ...submittedData, totpCode }
-      submit(variables)
-      setSubmittedData(variables)
+      if (oauthToken) {
+        submitWrapper({
+          credential: { oauthToken, totpCode },
+          stayLoggedIn
+        })
+      } else if (submittedData) {
+        const variables = { ...submittedData, totpCode }
+        submitWrapper(variables)
+      } else {
+        throw new Error("no oauthToken or saved login data")
+      }
     }
-    return <div className="d-flex flex-column align-items-center">
-      <div className="w-75 text-muted p-3">
-        Please Enter the 6 digit code from your authenticator app:
-      </div>
-      { // Don't display the error message that says we need a code...
-        !totpRequired && <ErrorMessage error={error} /> }
-      <TotpTokenForm submit={submitCode} idPrefix={idPrefix}
-         TotpInputComponent={TotpInputComponent}
-         RecoveryCodeInputComponent={RecoveryCodeInputComponent}
-      />
-      { loading && <div>Please wait...</div> }
-    </div>
+    return <TOTPFlow
+      submit={submitCode}
+      idPrefix={idPrefix}
+      error={error}
+      loading={loading}
+      TotpInputComponent={TotpInputComponent}
+      RecoveryCodeInputComponent={RecoveryCodeInputComponent}
+      totpRequired={totpRequired}
+    />
   } else if (mode === 'forgotpw') {
     return <div>
       <div>
@@ -487,13 +565,16 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     </div>
   } else if (mode === 'login') {
 
-    const onSubmit = (values: FormikValues) => {
-      const variables = { ...values } as LoginSubmitArgs
-      submit(variables)
-      setSubmittedData(variables)
+    const onSubmit = (values: LoginSubmitArgs) => {
+      const { password, email } = values
+      const variables = {
+        credential: { password: { password, email } },
+        stayLoggedIn
+      }
+      submitWrapper(variables)
     }
 
-    return <OauthLogin onLogin={onLoginWrapper}>
+    return <>
       <SocialButtons popupWindow={popupWindow} className="my-3"/>
       <Formik initialValues={loginInitialValues}
               onSubmit={onSubmit}
@@ -518,9 +599,16 @@ export const LoginForm: React.FC<LoginFormProps> = ({
               </InputLabel>
             </div>
 
+            { /* Note - this input isn't hooked up to the form, because we need to
+                 read it for oauth logins also. */ }
             <div className="custom-control custom-checkbox mb-2">
-              <Field type="checkbox" className="custom-control-input" name="stayLoggedIn"
-                     id={getId(idPrefix, "login-stay-logged-in")} />
+              <input type="checkbox" className="custom-control-input"
+                     onChange={(e) => {
+                       e.preventDefault()
+                       setStayLoggedIn(e.target.checked)
+                     }}
+                     id={getId(idPrefix, "login-stay-logged-in")}
+              />
               <label className="custom-control-label" htmlFor={getId(idPrefix, "login-stay-logged-in")}>
                 Remember me
               </label>
@@ -537,7 +625,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           </Form>
         )}
       </Formik>
-    </OauthLogin>
+    </>
   }
   throw new Error("unreachable")
 }
@@ -603,9 +691,6 @@ export const AccountCreationForm: React.FC<AccountCreationProps> = ({
 
   const { id } = useToken()
   const [submit, { error, success }] = useCreateAccount()
-  const { refetch } = useCsrfToken()
-
-  const popupWindow = usePopupWindow({onLogin, refetch})
 
   useEffect(() => {
     if (success && id && onLogin) {
@@ -613,12 +698,11 @@ export const AccountCreationForm: React.FC<AccountCreationProps> = ({
     }
   })
 
-  const onSubmit = (variables: FormikValues) => {
-    submit(variables as CreateAccountArgs)
+  const onSubmit = (variables: CreateAccountMutationVariables) => {
+    submit(variables)
   }
 
-  return <OauthLogin onLogin={onLogin}>
-    <SocialButtons popupWindow={popupWindow} className="my-3"/>
+  return <OauthCreateAccount onLogin={onLogin}>
     <Formik initialValues={loginInitialValues}
             onSubmit={onSubmit}
             validate={validateLogin}>
@@ -662,7 +746,7 @@ export const AccountCreationForm: React.FC<AccountCreationProps> = ({
     )}
     </Formik>
     <UserCreateError error={error} />
-  </OauthLogin>
+  </OauthCreateAccount>
 }
 
 export const LogoutButton: React.FC<{}> = () => {

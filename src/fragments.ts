@@ -82,27 +82,11 @@ export const GET_RECOVERY_CODES_COUNT_QUERY = gql`
 `
 
 export const LOGIN_MUT = gql`
-  mutation loginPassword(
-    $email: String!,
-    $password: String!,
-    $totpCode: String,
+  mutation login(
+    $credential: LoginCredentialInput!,
     $stayLoggedIn: Boolean!
   ) {
-    loginPassword(
-      email: $email,
-      password: $password,
-      totpCode: $totpCode,
-      stayLoggedIn: $stayLoggedIn
-    ) {
-      userJwt
-      reauthToken
-    }
-  }
-`
-
-export const OAUTH_LOGIN_MUT = gql`
-  mutation loginOauth($oauthToken: String!, $totpCode: String, $stayLoggedIn: Boolean) {
-    loginOauth(oauthToken: $oauthToken, totpCode: $totpCode, stayLoggedIn: $stayLoggedIn) {
+    login(credential: $credential, stayLoggedIn: $stayLoggedIn) {
       userJwt
       reauthToken
     }
