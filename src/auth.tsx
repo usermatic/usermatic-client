@@ -12,16 +12,25 @@ import jwtDecode from 'jwt-decode'
 import fetch from 'isomorphic-unfetch'
 import { createHttpLink } from "apollo-link-http"
 import { ApolloClient, NormalizedCacheObject } from 'apollo-boost'
-import { InMemoryCache } from "apollo-cache-inmemory"
+
+import {
+  InMemoryCache,
+  defaultDataIdFromObject
+} from 'apollo-cache-inmemory'
 
 import { ApolloError } from 'apollo-client'
 import { getApolloContext } from '@apollo/react-common'
 
-import { useGetSessionJwtQuery, AppConfig } from '../gen/operations'
+import {
+  useGetAppConfigQuery,
+  useGetSessionJwtMutation,
+  useGetAuthenticatedUserQuery,
+  AppConfig
+} from '../gen/operations'
 
 import { ReauthCacheProvider } from './reauth'
 import { ErrorMessage } from './errors'
-import { CsrfContext } from './hooks'
+import { CsrfContext, useCsrfQuery, useCsrfToken } from './hooks'
 
 export type ClientType =
   ApolloClient<NormalizedCacheObject> |
@@ -54,6 +63,16 @@ export const makeClient = (uri: string, appId: string): ClientType => {
 
   const finalUri = url.format(parsed)
   if (!(finalUri in clientCache)) {
+    // see https://medium.com/@danielrearden/a-better-refetch-flow-for-apollo-client-7ff06817b052
+    const cache = new InMemoryCache({
+      dataIdFromObject: object => {
+        switch (object.__typename) {
+          case 'Query': return 'ROOT_QUERY'
+          default: return defaultDataIdFromObject(object)
+        }
+      },
+    })
+
     clientCache[finalUri] = new ApolloClient({
       link: createHttpLink({
         uri: finalUri,
@@ -61,7 +80,7 @@ export const makeClient = (uri: string, appId: string): ClientType => {
         credentials: 'include',
         headers: { 'X-Usermatic': 'Usermatic' }
       }),
-      cache: new InMemoryCache()
+      cache
     })
   }
 
@@ -72,12 +91,6 @@ export const makeClient = (uri: string, appId: string): ClientType => {
 // we can't just use ApolloProvider, as that would conflict with the user's
 // ApolloProvider (if they are using apollo).
 export const UMApolloContext = createContext<ClientType | undefined>(undefined)
-
-export const TokenContext = createContext<AuthTokenData | undefined>(undefined)
-
-const AppConfigContext = createContext<AppConfig>(defaultAppConfig)
-
-export const AppConfigConsumer = AppConfigContext.Consumer
 
 export const AppIdContext = createContext<string | undefined>(undefined)
 
@@ -90,11 +103,27 @@ export const useAppId = (): string => {
 }
 
 export const useToken = (): AuthTokenData => {
-  const tokenData = useContext(TokenContext)
-  if (!tokenData) {
-    throw new Error("useToken must be called inside a TokenContext.Provider")
+  const { data, loading, error } = useAuthenticatedUser()
+
+  let userJwt: string | undefined, id: string | undefined
+
+  if (!loading && !error && data?.getAuthenticatedUser) {
+    userJwt = data.getAuthenticatedUser.userJwt ?? undefined
+    if (userJwt) {
+      try {
+        const decoded = jwtDecode(userJwt) as Record<string, string>
+        id = decoded.id
+      } catch (err) {
+        console.error(`invalid token '${userJwt}'`, err)
+      }
+    }
   }
-  return tokenData
+  return {
+    error,
+    loading,
+    id,
+    userJwt
+  }
 }
 
 const formatAppId = (appId: string | undefined) => {
@@ -177,31 +206,43 @@ const Diagnostics: React.FC<{appId?: string, error?: ApolloError}> = ({appId, er
   </div>
 }
 
+export const AuthenticatedUserContext = React.createContext<
+  ReturnType<typeof useGetAuthenticatedUserQuery> | undefined
+>(undefined)
+
+export const useAuthenticatedUser = () => {
+  const ret = useContext(AuthenticatedUserContext)
+  if (!ret) {
+    throw new Error("useAuthenticatedUser must be inside AuthenticatedUserProvider")
+  }
+  return ret
+}
+
+const AuthenticatedUserProvider: React.FC<{children: ReactNode}> = ({children}) => {
+  const { csrfToken } = useCsrfToken()
+  const value = useCsrfQuery(useGetAuthenticatedUserQuery, { skip: !csrfToken })
+  return <AuthenticatedUserContext.Provider value={value}>
+    {children}
+  </AuthenticatedUserContext.Provider>
+}
+
 const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics: boolean}> =
   ({children, showDiagnostics}) => {
 
   const client = useContext(UMApolloContext)
   const appId = useAppId()
 
-  const {data, error, loading, refetch} = useGetSessionJwtQuery(
-    { variables: { appId }, client
-  })
+  const [submit, {data, error, loading}] = useGetSessionJwtMutation(
+    { client }
+  )
 
-  let appConfig: AppConfig = { ...defaultAppConfig }
+  useEffect(() => {
+    submit({ variables: { appId } })
+  }, [appId])
 
-  const tokenValue: AuthTokenData = { error, loading }
   let csrfToken
   if (!loading && !error && data && data.getSessionJWT) {
     csrfToken = data.getSessionJWT.csrfToken
-    // TODO: if csrfToken is missing, most/all subsequent requests will fail.
-    const { auth, config } = data.getSessionJWT
-    if (auth) {
-      const { userJwt } = auth
-      const { id } = jwtDecode(userJwt) as Record<string, string>
-      tokenValue.id = id
-      tokenValue.userJwt = userJwt
-    }
-    appConfig = config
   }
 
   useEffect(() => {
@@ -216,16 +257,14 @@ const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics: boole
     }
   }, [error, showDiagnostics])
 
-  return <CsrfContext.Provider value={{ csrfToken, refetch }}>
-    <AppConfigContext.Provider value={appConfig}>
-      <TokenContext.Provider value={tokenValue}>
-        <ReauthCacheProvider>
-          <HttpWarning />
-          {error && showDiagnostics && <Diagnostics appId={appId} error={error} />}
-          {children}
-        </ReauthCacheProvider>
-      </TokenContext.Provider>
-    </AppConfigContext.Provider>
+  return <CsrfContext.Provider value={{ csrfToken }}>
+    <AuthenticatedUserProvider>
+      <ReauthCacheProvider>
+        <HttpWarning />
+        {error && showDiagnostics && <Diagnostics appId={appId} error={error} />}
+        {children}
+      </ReauthCacheProvider>
+    </AuthenticatedUserProvider>
   </CsrfContext.Provider>
 }
 
@@ -259,5 +298,13 @@ export const AuthProvider: React.FC<AuthProviderProps> =
 }
 
 export const useAppConfig = () => {
-  return useContext(AppConfigContext)
+  const appId = useAppId()
+  const { loading, error, data } = useCsrfQuery(useGetAppConfigQuery, {
+    variables: { appId }
+  })
+  if (loading || error || !data) {
+    return defaultAppConfig
+  } else {
+    return data.getAppConfig
+  }
 }

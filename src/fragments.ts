@@ -8,6 +8,9 @@ export const USER_FRAGMENT = gql`
     primaryEmail
     name { given family full }
     credentials { id type email emailIsVerified provider providerID photoURL }
+    recoveryCodesRemaining
+    userJwt
+    reauthToken
   }
 `
 
@@ -31,19 +34,36 @@ export const SIGN_REAUTH_TOKEN_QUERY = gql`
   }
 `
 
-export const SESSION_QUERY = gql`
-query getSessionJWT($appId: ID!) {
+export const APP_CONFIG_QUERY = gql`
+query getAppConfig($appId: ID!) {
+  getAppConfig(appId: $appId) { ...AppConfigParts }
+}
+`
+
+export const SESSION_MUT = gql`
+mutation getSessionJWT($appId: ID!) {
   getSessionJWT(appId: $appId) {
-    auth { userJwt }
     csrfToken
-    config { ...AppConfigParts }
+    refetch {
+      getAppConfig(appId: $appId) { ...AppConfigParts }
+      getAuthenticatedUser { ...UserParts }
+    }
   }
 }
 ${APP_CONFIG_FRAGMENT}
+${USER_FRAGMENT}
 `
 
+// TODO: delete this after getting rid of the last few refetchQueries users
 export const PROFILE_QUERY = gql`
   query getProfile {
+    getAuthenticatedUser { ...UserParts }
+  }
+  ${USER_FRAGMENT}
+`
+
+export const AUTHENTICATED_USER_QUERY = gql`
+  query getAuthenticatedUser {
     getAuthenticatedUser { ...UserParts }
   }
   ${USER_FRAGMENT}
@@ -63,21 +83,27 @@ export const ADD_TOTP_MUT = gql`
 
 export const CLEAR_TOTP_MUT = gql`
   mutation clearTotp($reauthToken: String!) {
-    clearTotp(reauthToken: $reauthToken)
+    clearTotp(reauthToken: $reauthToken) {
+      success
+      refetch {
+        getAuthenticatedUser { ...UserParts }
+      }
+    }
   }
+${ USER_FRAGMENT }
 `
 
 export const CREATE_RECOVERY_CODES_MUT = gql`
   mutation createRecoveryCodes($reauthToken: String!) {
     createRecoveryCodes(reauthToken: $reauthToken) {
       codes
+      refetch {
+        getAuthenticatedUser {
+          id
+          recoveryCodesRemaining
+        }
+      }
     }
-  }
-`
-
-export const GET_RECOVERY_CODES_COUNT_QUERY = gql`
-  query getRecoveryCodesCount {
-    getRecoveryCodesCount
   }
 `
 
@@ -87,10 +113,13 @@ export const LOGIN_MUT = gql`
     $stayLoggedIn: Boolean!
   ) {
     login(credential: $credential, stayLoggedIn: $stayLoggedIn) {
-      userJwt
-      reauthToken
+      user { ...UserParts }
+      refetch {
+        getAuthenticatedUser { id userJwt }
+      }
     }
   }
+${ USER_FRAGMENT }
 `
 
 export const RESET_PW_MUT = gql`
@@ -105,7 +134,12 @@ export const RESET_PW_MUT = gql`
       newPassword: $newPassword,
       loginAfterReset: $loginAfterReset,
       stayLoggedIn: $stayLoggedIn
-    ) { redirectUri }
+    ) {
+      redirectUri
+      refetch {
+        getAuthenticatedUser { ...UserParts }
+      }
+    }
   }
 `
 
@@ -127,7 +161,15 @@ export const ADD_PW_MUT = gql`
   }
 `
 
-export const LOGOUT_MUT = gql`mutation logout { logout }`
+export const LOGOUT_MUT = gql`
+  mutation logout {
+    logout {
+      refetch {
+        getAuthenticatedUser { id userJwt }
+      }
+    }
+  }
+`
 
 export const CREATE_ACCOUNT_MUT = gql`
   mutation createAccount($email: String!, $password: String!,
@@ -137,8 +179,14 @@ export const CREATE_ACCOUNT_MUT = gql`
       password: $password,
       loginAfterCreation: $loginAfterCreation,
       stayLoggedIn: $stayLoggedIn
-    ) { userJwt reauthToken }
+    ) {
+      user { ...UserParts }
+      refetch {
+        getAuthenticatedUser { id userJwt }
+      }
+    }
   }
+${ USER_FRAGMENT }
 `
 
 export const VERIFY_EMAIL_MUT = gql`

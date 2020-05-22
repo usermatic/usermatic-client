@@ -44,7 +44,7 @@ export const useAddTotp = (options: AddTotpMutationOptions = {}) => {
   }
 
   const { loading, error, data } = ret
-  const success = !loading && !error && data
+  const success = Boolean(!loading && !error && data)
   const retObj = { ...ret, success }
   return [submitWrapper, retObj] as [typeof submitWrapper, typeof retObj]
 }

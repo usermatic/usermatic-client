@@ -11,9 +11,8 @@ import { QueryResult } from '@apollo/react-common'
 import { UMApolloContext } from './auth'
 type CsrfData = {
   csrfToken?: string
-  refetch: () => void
 }
-export const CsrfContext = createContext<CsrfData>({ refetch: () => {} })
+export const CsrfContext = createContext<CsrfData>({})
 
 export const useCsrfToken = () => {
   return useContext(CsrfContext)
@@ -21,7 +20,7 @@ export const useCsrfToken = () => {
 
 export const useCsrfMutation = <TData, TVar> (
   operation: (opts?: MutationHookOptions<TData, TVar>) => MutationTuple<TData, TVar>,
-  options: MutationHookOptions<TData, TVar>
+  options: MutationHookOptions<TData, TVar> = {}
 ) => {
   const client = useContext(UMApolloContext)
   const { csrfToken } = useCsrfToken()
@@ -46,11 +45,11 @@ export const useCsrfMutation = <TData, TVar> (
 
 export const useCsrfQuery = <TData, TVar> (
   operation: (opts?: QueryHookOptions<TData, TVar>) => QueryResult<TData, TVar>,
-  options: QueryHookOptions<TData, TVar>
+  options: QueryHookOptions<TData, TVar> = {}
 ) => {
   const client = useContext(UMApolloContext)
   const { csrfToken } = useCsrfToken()
-  if (!csrfToken) {
+  if (!csrfToken && !options.skip) {
     console.warn("calling csrf query before csrfToken is ready")
   }
 

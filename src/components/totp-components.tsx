@@ -201,7 +201,8 @@ export const MFAForm: React.FC<{
           InputComponent={TotpInputComponent} />
     }
     { recoveryMode
-      ? <button className="btn btn-outline-secondary btn-block" onClick={exitRecoveryMode}>
+      ? <button id={getId(idPrefix, "recovery-code-cancel")}
+                className="btn btn-outline-secondary btn-block" onClick={exitRecoveryMode}>
           Cancel
         </button>
       : <button id={getId(idPrefix, "recovery-code-button")}

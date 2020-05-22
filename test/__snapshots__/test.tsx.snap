@@ -550,7 +550,7 @@ exports[`<LoginForm> TOTP 1`] = `
 >
   <Component
     idPrefix="test"
-    onLogin={[MockFunction]}
+    onLogin={[MockFunction onLogin]}
   >
     <SocialButtons
       className="my-3"
@@ -566,6 +566,7 @@ exports[`<LoginForm> TOTP 1`] = `
         Object {
           "email": "",
           "password": "",
+          "stayLoggedIn": false,
         }
       }
       onSubmit={[Function]}
@@ -655,8 +656,11 @@ exports[`<LoginForm> TOTP 1`] = `
             <input
               className="custom-control-input"
               id="test-login-stay-logged-in"
+              name="stayLoggedIn"
+              onBlur={[Function]}
               onChange={[Function]}
               type="checkbox"
+              value={false}
             />
             <label
               className="custom-control-label"
@@ -698,7 +702,7 @@ exports[`<LoginForm> TOTP 2`] = `
 >
   <Component
     idPrefix="test"
-    onLogin={[MockFunction]}
+    onLogin={[MockFunction onLogin]}
   >
     <TOTPFlow
       error={[Error: GraphQL error: totp required]}
@@ -788,7 +792,7 @@ exports[`<LoginForm> TOTP 3`] = `
 >
   <Component
     idPrefix="test"
-    onLogin={[MockFunction]}
+    onLogin={[MockFunction onLogin]}
   >
     <TOTPFlow
       error={[Error: GraphQL error: totp required]}
@@ -871,6 +875,7 @@ exports[`<LoginForm> TOTP 3`] = `
           </RecoveryCodeForm>
           <button
             className="btn btn-outline-secondary btn-block"
+            id="test-recovery-code-cancel"
             onClick={[Function]}
           >
             Cancel
@@ -889,7 +894,7 @@ exports[`<LoginForm> login 1`] = `
   <Component
     idPrefix="test"
     onLogin={
-      [MockFunction] {
+      [MockFunction onLogin] {
         "calls": Array [
           Array [],
         ],
@@ -916,6 +921,7 @@ exports[`<LoginForm> login 1`] = `
         Object {
           "email": "",
           "password": "",
+          "stayLoggedIn": false,
         }
       }
       onSubmit={[Function]}
@@ -1005,6 +1011,8 @@ exports[`<LoginForm> login 1`] = `
             <input
               className="custom-control-input"
               id="test-login-stay-logged-in"
+              name="stayLoggedIn"
+              onBlur={[Function]}
               onChange={[Function]}
               type="checkbox"
             />
@@ -1063,6 +1071,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
         Object {
           "email": "",
           "password": "",
+          "stayLoggedIn": false,
         }
       }
       onSubmit={[Function]}
@@ -1152,8 +1161,11 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
             <input
               className="custom-control-input"
               id="test-login-stay-logged-in"
+              name="stayLoggedIn"
+              onBlur={[Function]}
               onChange={[Function]}
               type="checkbox"
+              value={false}
             />
             <label
               className="custom-control-label"
@@ -1202,6 +1214,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
           Object {
             "email": "",
             "password": "",
+            "stayLoggedIn": false,
           }
         }
         onSubmit={[Function]}
@@ -1305,6 +1318,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
                   onBlur={[Function]}
                   onChange={[Function]}
                   type="checkbox"
+                  value={false}
                 />
               </Field>
               <label
@@ -1449,6 +1463,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
           Object {
             "email": "",
             "password": "",
+            "stayLoggedIn": false,
           }
         }
         onSubmit={[Function]}
@@ -1552,6 +1567,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                   onBlur={[Function]}
                   onChange={[Function]}
                   type="checkbox"
+                  value={false}
                 />
               </Field>
               <label
@@ -1896,6 +1912,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
         Object {
           "email": "",
           "password": "",
+          "stayLoggedIn": false,
         }
       }
       onSubmit={[Function]}
@@ -1985,8 +2002,11 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
             <input
               className="custom-control-input"
               id="um3kfiekd-login-stay-logged-in"
+              name="stayLoggedIn"
+              onBlur={[Function]}
               onChange={[Function]}
               type="checkbox"
+              value={false}
             />
             <label
               className="custom-control-label"
@@ -2328,6 +2348,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
           Object {
             "email": "",
             "password": "",
+            "stayLoggedIn": false,
           }
         }
         onSubmit={[Function]}
@@ -2431,6 +2452,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                   onBlur={[Function]}
                   onChange={[Function]}
                   type="checkbox"
+                  value={false}
                 />
               </Field>
               <label

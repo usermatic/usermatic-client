@@ -1,16 +1,10 @@
 
 import { ApolloError } from 'apollo-client'
 
-import { useToken } from './auth'
-import { useCsrfQuery } from './hooks'
-
-import {
-  useGetProfileQuery
-} from '../gen/operations'
+import { useAuthenticatedUser } from './auth'
 
 export const useProfile = () => {
-  const { id } = useToken()
-  const ret = useCsrfQuery(useGetProfileQuery, { skip: id == null })
+  const ret = useAuthenticatedUser()
 
   const { loading, error, data } = ret
   let profile

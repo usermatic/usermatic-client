@@ -22,10 +22,6 @@ import { useReauthToken } from '../reauth'
 
 import { useClearTotpMutation } from '../../gen/operations'
 
-import {
-  PROFILE_QUERY
-} from '../fragments'
-
 type IconProps = {
   color?: string,
   size?: string | number
@@ -39,12 +35,12 @@ import {
   useCreateAccount,
   useOauthToken,
   useLogin,
-  useLogout,
+  useLogout
 } from '../login'
 
 import {
-  LoginMutationVariables,
-  CreateAccountMutationVariables
+  CreateAccountMutationVariables,
+  LoginMutationVariables
 } from '../../gen/operations'
 
 const getId = (prefix: string | undefined, suffix: string) => {
@@ -347,7 +343,8 @@ const usePopupWindow = ({onToken}: { onToken: (token: string) => void }) => (
 
 const loginInitialValues = {
   email: '',
-  password: ''
+  password: '',
+  stayLoggedIn: false
 }
 
 type LoginSubmitArgs = typeof loginInitialValues
@@ -374,9 +371,7 @@ const PostRecoveryCode: React.FC<{dismiss: () => void }> = ({dismiss}) => {
 
   const reauthToken = useReauthToken()
   const { count, loading: countLoading } = useGetRecoveryCodeCount()
-  const [submit, { called, loading, error }] = useCsrfMutation(useClearTotpMutation, {
-    refetchQueries: [{ query: PROFILE_QUERY }]
-  })
+  const [submit, { called, loading, error }] = useCsrfMutation(useClearTotpMutation)
 
   const reset2FA = (e: MouseEvent) => {
     e.preventDefault()
@@ -521,13 +516,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     }
   }, [totpRequired, mode])
 
-  //const popupWindow = usePopupWindow({onLogin: onLoginWrapper, refetch})
-
   if (successViaRecoveryCode) {
     const dismiss = () => {
       setSuccessViaRecoveryCodeDismissed(true)
     }
-    return <ReauthContext.Provider value={data?.login?.reauthToken ?? ''}>
+    return <ReauthContext.Provider value={data?.login?.user.reauthToken ?? ''}>
       <PostRecoveryCode dismiss={dismiss}/>
     </ReauthContext.Provider>
   }
@@ -540,7 +533,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           stayLoggedIn
         })
       } else if (submittedData) {
-        const variables = { ...submittedData, totpCode }
+        const variables = {
+          ...submittedData,
+          credential: {
+            ...submittedData.credential,
+            totpCode
+          }
+        }
         submitWrapper(variables)
       } else {
         throw new Error("no oauthToken or saved login data")
@@ -579,8 +578,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       <Formik initialValues={loginInitialValues}
               onSubmit={onSubmit}
               validate={validateLogin}>
-        {(props) => (
-          <Form>
+        {(props) => {
+          const {
+            onChange: onStayLoggedInChange,
+            ...stayLoggedInRest
+          } = props.getFieldProps('stayLoggedIn')
+          return <Form>
             <div className="form-label-group mb-2">
               <InputLabel flip={labelsFirst}>
                 <Field type="email" name="email" className="form-control"
@@ -599,15 +602,16 @@ export const LoginForm: React.FC<LoginFormProps> = ({
               </InputLabel>
             </div>
 
-            { /* Note - this input isn't hooked up to the form, because we need to
-                 read it for oauth logins also. */ }
             <div className="custom-control custom-checkbox mb-2">
               <input type="checkbox" className="custom-control-input"
+                     id={getId(idPrefix, "login-stay-logged-in")}
                      onChange={(e) => {
-                       e.preventDefault()
+                       onStayLoggedInChange(e)
+                       // We also need to store this outside the form, so that
+                       // oauth logins can use it.
                        setStayLoggedIn(e.target.checked)
                      }}
-                     id={getId(idPrefix, "login-stay-logged-in")}
+                     {...stayLoggedInRest}
               />
               <label className="custom-control-label" htmlFor={getId(idPrefix, "login-stay-logged-in")}>
                 Remember me
@@ -623,7 +627,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             </div>
             <ErrorMessage error={error} />
           </Form>
-        )}
+        }}
       </Formik>
     </>
   }

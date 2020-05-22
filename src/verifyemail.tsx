@@ -11,7 +11,7 @@ export const useSendVerificationEmail = (email: string) => {
     { variables: { email } }
   )
   const { loading, error, data } = ret
-  const success = !loading && !error && data
+  const success = Boolean(!loading && !error && data)
   const retObj = { ...ret, success }
   return [submit, retObj] as [typeof submit, typeof retObj]
 }
@@ -20,7 +20,7 @@ export const useEmailVerifier = () => {
   const [submit, ret] = useCsrfMutation(useVerifyEmailMutation, {})
   const { loading, error, data } = ret
 
-  const success = !loading && !error && data
+  const success = Boolean(!loading && !error && data)
   const retObj = { ...ret, success }
   return [submit, retObj] as [typeof submit, typeof retObj]
 }

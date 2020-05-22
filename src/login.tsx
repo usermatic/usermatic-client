@@ -1,14 +1,9 @@
 
 import urllib from 'url'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import jwtDecode from 'jwt-decode'
 
-import { AppIdContext, useAppId } from './auth'
 import { useCsrfMutation } from './hooks'
-
-import {
-  SESSION_QUERY
-} from './fragments'
 
 import {
   useLogoutMutation,
@@ -16,71 +11,46 @@ import {
   useCreateAccountMutation,
   LoginMutationVariables,
   LoginMutationOptions,
+  CreateAccountMutationOptions,
   CreateAccountMutationVariables
 } from '../gen/operations'
 
 export const useLogout = () => {
-  const appId = useAppId()
-
-  const [submit, ret] =
-    useCsrfMutation(
-      useLogoutMutation,
-      {
-        refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }]
-      }
-    )
+  const [submit, ret] = useCsrfMutation(useLogoutMutation)
 
   const { loading, error, data } = ret
 
-  const success = !loading && !error && data
+  const success = Boolean(!loading && !error && data)
   const retObj = { ...ret, success }
   return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
 export const useLogin = (options: LoginMutationOptions = {}) => {
-  const appId = useContext(AppIdContext)
 
-  if (options.refetchQueries) {
-    console.warn('overwriting default options.refetchQueries')
-  }
-
-  const [submitLogin, ret] =
-    useCsrfMutation(
-      useLoginMutation,
-      {
-        refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }],
-        ...options
-      }
-    )
+  const [submitLogin, ret] = useCsrfMutation(useLoginMutation, options)
 
   const { loading, error, data } = ret
 
-  const submit = (values: LoginMutationVariables) => {
-    submitLogin({ variables: values })
+  const submit = (variables: LoginMutationVariables) => {
+    submitLogin({ variables })
   }
 
-  const success = !loading && !error && data
+  const success = Boolean(!loading && !error && data)
   const retObj = { ...ret, success }
   // typescript can't infer tuples :(
   return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
-export const useCreateAccount = () => {
-  const appId = useContext(AppIdContext)
-  const [submitCreateAccount, ret] =
-    useCsrfMutation(
-      useCreateAccountMutation,
-      {
-        refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }]
-      })
+export const useCreateAccount = (options: CreateAccountMutationOptions = {}) => {
+  const [submitCreateAccount, ret] = useCsrfMutation(useCreateAccountMutation, options)
 
   const { loading, error, data } = ret
 
-  const submit = (values: CreateAccountMutationVariables) => {
-    submitCreateAccount({ variables: values })
+  const submit = (variables: CreateAccountMutationVariables) => {
+    submitCreateAccount({ variables })
   }
 
-  const success = !loading && !error && data
+  const success = Boolean(!loading && !error && data)
   const retObj = { ...ret, success }
   // typescript can't infer tuples :(
   return [submit, retObj] as [typeof submit, typeof retObj]
@@ -130,60 +100,3 @@ export const useOauthToken = () => {
 
   return token
 }
-
-/*
-type useOauthLoginArgs = {
-  onLogin?: () => void,
-  oauthToken?: string,
-  totpCode?: string
-}
-*/
-
-/*
-export const useOauthLogin = ({onLogin, oauthToken, totpCode}: useOauthLoginArgs) => {
-  const { csrfToken } = useCsrfToken()
-  const appId = useAppId()
-  const { id, loading: tokenLoading } = useToken()
-
-  const [success, setSuccess] = useState<boolean>(false)
-
-  const [submit, { data, loading, error, called }] = useCsrfMutation(
-    useLoginOauthMutation,
-    {
-      refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }],
-      onCompleted: () => { setSuccess(true) }
-    }
-  )
-
-  useEffect(() => {
-    // need to wait until the login mutation is complete *and* we've updated the
-    // token.
-    if (success && id && !tokenLoading) {
-      if (onLogin != null) {
-        onLogin()
-      }
-
-      // we've logged in successfully, remove the token from the url if onLogin
-      // hasn't already done so for us.
-      // We need a short delay as applications may be using an asynchronous method
-      // to update the URL, e.g. router.replace() in nextjs.
-      setTimeout(() => {
-        const parsed = urllib.parse(location.href, true)
-        if (parsed.query.umOauthToken) {
-          delete parsed.search
-          delete parsed.query.umOauthToken
-          location.href = urllib.format(parsed)
-        }
-      }, 500)
-    }
-  }, [success, id, tokenLoading, onLogin])
-
-  useEffect(() => {
-    if (oauthToken == null || csrfToken == null || success) { return }
-    const variables = { oauthToken, totpCode}
-    submit({ variables })
-  }, [oauthToken, csrfToken, called, totpCode])
-
-  return { error, loading, data }
-}
-*/

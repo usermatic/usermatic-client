@@ -4,15 +4,13 @@ import {
   MutationHookOptions,
 } from '@apollo/react-hooks'
 
-import { useAppId } from './auth'
 import { useCsrfMutation } from './hooks'
 
 // @ts-ignore
 import zxcvbnAsync from 'zxcvbn-async'
 
 import {
-  PROFILE_QUERY,
-  SESSION_QUERY
+  PROFILE_QUERY
 } from './fragments'
 
 import {
@@ -37,7 +35,7 @@ const useApiMutation = <TData, TVar> (
     submit({ variables })
   }
 
-  const success = !loading && !error && data
+  const success = Boolean(!loading && !error && data)
   const retObj = { ...ret, success }
   return [submitWrapper, retObj] as [typeof submitWrapper, typeof retObj]
 }
@@ -67,20 +65,14 @@ export const useRequestPasswordResetEmail = (options: RequestPwResetEmailMutatio
   return useApiMutation(useRequestPwResetEmailMutation, options)
 }
 
-export const useResetPassword = (optionsArg: ResetPasswordMutationOptions = {}) => {
-  const appId = useAppId()
-
-  const options = {
-    refetchQueries: [{ query: SESSION_QUERY, variables: { appId } }],
-    ...optionsArg
-  }
+export const useResetPassword = (options: ResetPasswordMutationOptions = {}) => {
 
   const [submitResetPassword, ret] = useCsrfMutation(useResetPasswordMutation, options)
   const {loading, error, data} = ret
   const submit = (variables: ResetPasswordMutationVariables) => {
     submitResetPassword({ variables })
   }
-  const success = !loading && !error && data
+  const success = Boolean(!loading && !error && data)
   const retObj = { ...ret, success }
   return [submit, retObj] as [typeof submit, typeof retObj]
 }

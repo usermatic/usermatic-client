@@ -17,7 +17,7 @@ import {
 import { GraphQLError } from 'graphql'
 
 import { ApolloClient } from 'apollo-client'
-import { InMemoryCache } from 'apollo-cache-inmemory'
+import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory'
 import { SchemaLink } from 'apollo-link-schema'
 import { ApolloProvider } from '@apollo/react-common'
 
@@ -38,7 +38,14 @@ const credentialId = 'a31d68e6-898f-4998-9e6d-25ef1a62f62c'
 
 const defaultMocks = {
   AppConfig: () => ({ minPasswordStrength: 3 }),
-  LoginData: () => ({ userJwt: jwt.sign({ id: userId }, 'abc') })
+  LoginData: () => ({ userJwt: jwt.sign({ id: userId }, 'abc') }),
+  User: () => ({}),
+  LoginPayload: () => ({
+    refetch: () => ({})
+  }),
+  PasswordResetPayload: () => ({
+    refetch: () => ({})
+  })
 }
 
 const extendMocks = (mocks: object) => {
@@ -58,7 +65,8 @@ const userWithPassword = () => ({
       email: email,
       emailIsVerified: true
     }
-  ]
+  ],
+  userJwt: jwt.sign({ id: userId }, 'abc')
 })
 
 const userWithoutPassword = () => ({
@@ -72,7 +80,8 @@ const userWithoutPassword = () => ({
       providerId: 'abc',
       photoURL: '/photo'
     }
-  ]
+  ],
+  userJwt: jwt.sign({ id: userId }, 'abc')
 })
 
 const configNoOauth = {
@@ -104,11 +113,17 @@ const exists = (selector: string) => {
   return ret
 }
 
+const hasBeenCalled = (mockFn: jest.Mock) => {
+  const ret = () => (mockFn.mock.calls.length > 0)
+  ret.toString = () => mockFn.getMockName()
+  return ret
+}
+
 const waitUntil = async (
   wrapper: ReactWrapper,
   fn: (w: ReactWrapper) => boolean
 ): Promise<'finished'> => {
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 20; i++) {
     await act(async () => {
       jest.runAllTimers()
     })
@@ -116,11 +131,8 @@ const waitUntil = async (
     if (fn(wrapper)) {
       return 'finished'
     }
-    if (i >= 9) {
-      throw new Error(`waitUntil(${fn}) timed out`)
-    }
   }
-  throw new Error('unreachable')
+  throw new Error(`waitUntil(${fn}) timed out`)
 }
 
 const CsrfTokenWrapper: React.FC<{children: ReactNode}> = ({children}) => {
@@ -135,8 +147,17 @@ const TestWrapper: React.FC<{children: ReactNode, mocks: any}> = ({children, moc
   const schema = makeExecutableSchema({ typeDefs: schemaStr });
   addMocksToSchema({ schema, mocks });
 
+  const cache = new InMemoryCache({
+    dataIdFromObject: object => {
+      switch (object.__typename) {
+        case 'Query': return 'ROOT_QUERY'
+        default: return defaultDataIdFromObject(object)
+      }
+    },
+  })
+
   const apolloClient = new ApolloClient({
-    cache: new InMemoryCache(),
+    cache,
     link: new SchemaLink({ schema })
   });
 
@@ -155,6 +176,9 @@ test('<LoginForm>/<AccountCreationForm> forgot password', async () => {
   const requestPasswordResetEmail = jest.fn().mockReturnValue(true)
   const mocks = extendMocks({
     AppConfig: () => configNoOauth,
+    Query: () => ({
+      getAuthenticatedUser: () => null
+    }),
     Mutation: () => ({
       requestPasswordResetEmail
     })
@@ -193,7 +217,10 @@ test('<LoginForm>/<AccountCreationForm> oauth', async () => {
   jest.useFakeTimers()
 
   const mocks = extendMocks({
-    AppConfig: () => (configOauth)
+    AppConfig: () => (configOauth),
+    Query: () => ({
+      getAuthenticatedUser: () => null
+    }),
   })
 
   const wrapper = mount(
@@ -229,15 +256,25 @@ test('<LoginForm> login', async () => {
   const email = 'bob@bob.com'
   const password = 'hunter2'
 
-  const login = jest.fn().mockReturnValue({})
+  const login = jest.fn().mockReturnValue({
+    user: userWithPassword()
+  })
   const mocks = extendMocks({
     AppConfig: () => (configNoOauth),
     Mutation: () => ({
       login
+    }),
+    Query: () => ({
+      getAuthenticatedUser: () => {
+        if (login.mock.calls.length === 0) {
+          return null
+        }
+        return userWithPassword()
+      }
     })
   })
 
-  const onLogin = jest.fn()
+  const onLogin = jest.fn().mockName('onLogin')
   const wrapper = mount(
     <TestWrapper mocks={mocks}>
       <div id="client-test-div">
@@ -266,6 +303,7 @@ test('<LoginForm> login', async () => {
     credential: { password: { email, password } },
     stayLoggedIn: true
   })
+  await waitUntil(wrapper, hasBeenCalled(onLogin))
   expect(onLogin).toHaveBeenCalled()
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 })
@@ -281,12 +319,15 @@ test('<LoginForm> TOTP', async () => {
   const email = 'bob@bob.com'
   const password = 'hunter2'
 
+  let loginSuccess = false
+
   const login = jest.fn().mockImplementation(
-    (root, { password, email, totpCode }) => {
+    (root, { credential: { totpCode }, stayLoggedIn }) => {
       if (!totpCode) {
         throw codeError('totp required', 'TOTP_REQUIRED')
       }
-      return {}
+      loginSuccess = true
+      return { user: userWithPassword() }
     }
   )
 
@@ -294,10 +335,18 @@ test('<LoginForm> TOTP', async () => {
     AppConfig: () => (configNoOauth),
     Mutation: () => ({
       login
+    }),
+    Query: () => ({
+      getAuthenticatedUser: () => {
+        if (!loginSuccess) {
+          return null
+        }
+        return userWithPassword()
+      }
     })
   })
 
-  const onLogin = jest.fn()
+  const onLogin = jest.fn().mockName('onLogin')
   const wrapper = mount(
     <TestWrapper mocks={mocks}>
       <div id="client-test-div">
@@ -324,6 +373,13 @@ test('<LoginForm> TOTP', async () => {
   await waitUntil(wrapper, exists('input#test-recovery-code'))
 
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+
+  wrapper.find('#test-recovery-code-cancel').simulate('click')
+
+  setInput(wrapper, 'code', 'input#test-totp-code', '012345')
+
+  await waitUntil(wrapper, hasBeenCalled(onLogin))
+
 })
 
 test('<ChangePasswordForm> with password', async () => {
@@ -521,6 +577,9 @@ test('<ResetPasswordForm> invalid token', async () => {
   const mocks = extendMocks({
     AppConfig: () => (configNoOauth),
     User: userWithPassword,
+    Query: () => ({
+      getAuthenticatedUser: () => null
+    }),
     Mutation: () => ({
       resetPassword
     })
@@ -555,7 +614,14 @@ test('<ResetPasswordForm>', async () => {
   })
   const mocks = extendMocks({
     AppConfig: () => (configNoOauth),
-    User: userWithPassword,
+    Query: () => ({
+      getAuthenticatedUser: () => {
+        if (resetPassword.mock.calls.length === 0) {
+          return null
+        }
+        return userWithPassword()
+      }
+    }),
     Mutation: () => ({
       resetPassword
     })
@@ -590,14 +656,13 @@ test('<ResetPasswordForm>', async () => {
   setCheckbox(wrapper, 'loginAfterReset', 'input#test-reset-password-login-after-reset', true)
   wrapper.find('form#reset-password-form').simulate('submit')
 
-  await act(async () => { jest.runAllTimers() })
-  wrapper.update()
-  await act(async () => { jest.runAllTimers() })
-  wrapper.update()
+  await waitUntil(wrapper, hasBeenCalled(resetPassword))
 
   expect(resetPassword.mock.calls[0][1]).toMatchObject(
     { token, newPassword }
   )
+
+  await waitUntil(wrapper, hasBeenCalled(onLogin))
   expect(onLogin).toHaveBeenCalled()
 
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
@@ -641,7 +706,7 @@ test('<GenRecoveryCodesForm>', async () => {
   jest.useFakeTimers()
 
   const signReauthenticationToken = mockSignReauthenticationToken()
-  const getRecoveryCodesCount = jest.fn().mockReturnValue(10)
+  const recoveryCodesRemaining = jest.fn().mockReturnValue(10)
   const createRecoveryCodes = jest.fn().mockReturnValue({
     codes: [
       'ACDF01AB234A', 'ACDF01AB234A', 'ACDF01AB234A', 'ACDF01AB234A', 'ACDF01AB234A',
@@ -652,7 +717,9 @@ test('<GenRecoveryCodesForm>', async () => {
     AppConfig: () => (configNoOauth),
     User: userWithPassword,
     Query: () => ({
-      getRecoveryCodesCount
+      getAuthenticatedUser: () => ({
+        recoveryCodesRemaining
+      })
     }),
     Mutation: () => ({
       signReauthenticationToken,
