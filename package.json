@@ -15,7 +15,7 @@
   "scripts": {
     "build": "yarn codegen && yarn tsc",
     "test": "yarn jest",
-    "prepare": "yarn build && yarn test",
+    "prepare": "! git grep --recurse-submodules  -wI '[X]XX' && yarn build && yarn test",
     "codegen": "yarn run -s build-schema && yarn graphql-codegen",
     "build-schema": "node -e 'process.stdout.write(require(\"../schemas/api-schema.js\"))' > gen/schema.graphql"
   },
