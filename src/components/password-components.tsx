@@ -431,7 +431,7 @@ export const PasswordScore: React.FC<PasswordScoreProps> = ({password, username}
     scorePassword()
   }, [password, username])
 
-  if (password == null || passwordScore.score == null) {
+  if (!password || passwordScore.score == null) {
     return null
   }
 
