@@ -6,10 +6,14 @@ import jwtDecode from 'jwt-decode'
 import classNames from 'classnames'
 
 import { useAppConfig, useToken } from '../auth'
-import { usePasswordCredential, usePrimaryEmail } from '../user'
 import { InputLabel } from './form-util'
 import { ErrorMessage } from '../errors'
 import { useDebounce } from '../use-debounce'
+
+import {
+  usePasswordCredential,
+  usePrimaryEmail
+} from '../user'
 
 // @ts-ignore
 import zxcvbnAsync from 'zxcvbn-async'
@@ -22,8 +26,8 @@ import {
 } from '../passwords'
 
 import {
-  ChangePwMutationOptions,
-  AddPasswordMutationOptions
+  ChangePwMutationVariables,
+  AddPasswordMutationVariables
 } from '../../gen/operations'
 
 const getId = (prefix: string | undefined, suffix: string) => {
@@ -36,20 +40,7 @@ const getId = (prefix: string | undefined, suffix: string) => {
   }
 }
 
-type UseOrChangeOptions = ChangePwMutationOptions & AddPasswordMutationOptions
-
-const useAddOrChangePassword = (options: UseOrChangeOptions) => {
-  const { passwordCredential } = usePasswordCredential()
-
-  const change = useChangePassword(options)
-  const add = useAddPassword(options)
-
-  if (passwordCredential != null) {
-    return change
-  } else {
-    return add
-  }
-}
+type UseOrChangeVariables = ChangePwMutationVariables & AddPasswordMutationVariables
 
 type ChangePasswordFormProps = {
   onSuccess?: () => void,
@@ -57,25 +48,35 @@ type ChangePasswordFormProps = {
   labelsFirst?: boolean
 }
 
-export const ChangePasswordForm: React.FC<ChangePasswordFormProps> =
-  ({onSuccess, idPrefix, labelsFirst: labelsFirstArg}) => {
+export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
+  onSuccess,
+  idPrefix,
+  labelsFirst: labelsFirstArg,
+}) => {
 
   const { email: primaryEmail } = usePrimaryEmail()
   const { loading: pwLoading, error: pwError, passwordCredential } = usePasswordCredential()
-  const [submit, { loading, error }] = useAddOrChangePassword({
-    onCompleted: () => { if (onSuccess) { onSuccess() } }
-  })
+
+  const onCompleted = () => { if (onSuccess) { onSuccess() } }
+  const change = useChangePassword({ onCompleted })
+  const add = useAddPassword({ onCompleted })
+
+  if (pwLoading) {
+    return null
+  }
+  if (pwError) { return <ErrorMessage error={pwError}/> }
+
+  const addPasswordMode = passwordCredential == null
+
+  const { loading, error } = addPasswordMode ? add[1] : change[1]
 
   const labelsFirst = labelsFirstArg ?? true
 
-  if (pwLoading) { return null }
-  if (pwError) { return <ErrorMessage error={pwError}/> }
-
-  const email = passwordCredential?.email ?? primaryEmail
+  const email = passwordCredential?.email ?? primaryEmail ?? ''
 
   const initialValues = {
-    email: passwordCredential ? undefined : email,
-    oldPassword: passwordCredential ? '' : undefined,
+    email,
+    oldPassword: '',
     newPassword: ''
   }
 
@@ -90,14 +91,19 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> =
     return errors
   }
 
-  const onSubmit = (values: FormikValues) => {
-    const variables = values as NonNullable<UseOrChangeOptions['variables']>
-    submit(variables)
+  const onSubmit = (values: UseOrChangeVariables) => {
+    const { email, oldPassword, newPassword } = values
+    if (addPasswordMode) {
+      add[0]({ email, newPassword })
+    } else {
+      change[0]({ oldPassword, newPassword })
+    }
   }
 
   return <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
     {(props) => (
       <Form>
+
         { // if there is no password credential, ChangePassword adds a password to the account
         passwordCredential
         ? <div className="form-label-group">
@@ -416,11 +422,12 @@ export const PasswordScore: React.FC<PasswordScoreProps> = ({password, username}
   const [passwordScore, setPasswordScore] = useState({} as Record<string, any>)
 
   useEffect(() => {
-    if (password == null) {
-      return
-    }
+    if (password == null) { return }
+    let mounted = true
+
     const scorePassword = async () => {
       const loaded = await zxcvbnAsync.load({})
+      if (!mounted) { return }
       const dict = ['usermatic']
       if (username) {
         dict.push(username)
@@ -429,6 +436,8 @@ export const PasswordScore: React.FC<PasswordScoreProps> = ({password, username}
       setPasswordScore(results)
     }
     scorePassword()
+
+    return () => { mounted = false }
   }, [password, username])
 
   if (!password || passwordScore.score == null) {

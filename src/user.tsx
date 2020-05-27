@@ -1,4 +1,6 @@
 
+import { useMemo } from 'react'
+
 import { ApolloError } from 'apollo-client'
 
 import { useAuthenticatedUser } from './auth'
@@ -65,11 +67,12 @@ export const useCredentials = (): {
 } => {
   const { loading, error, profile } = useProfile()
 
-  if (!loading && !error && profile) {
-    return {
-      loading,
-      error,
-      credentials: profile.credentials.map((c): Credential => {
+  const profileCredentials = profile?.credentials
+
+  const credentials = useMemo(() => (
+    profileCredentials == null
+    ? undefined
+    : profileCredentials.map((c): Credential => {
         if (c.type === 'PASSWORD') {
           return {
             type: c.type,
@@ -87,7 +90,14 @@ export const useCredentials = (): {
             email: (c.email != null) ? c.email : undefined,
           }
         }
-      })
+    })
+  ), [profileCredentials])
+
+  if (!loading && !error && profile) {
+    return {
+      loading,
+      error,
+      credentials
     }
   } else {
     return { loading, error }

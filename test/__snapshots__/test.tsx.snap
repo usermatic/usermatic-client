@@ -118,7 +118,7 @@ exports[`<ChangePasswordForm> with password 1`] = `
     <Formik
       initialValues={
         Object {
-          "email": undefined,
+          "email": "bob@bob.com",
           "newPassword": "",
           "oldPassword": "",
         }
@@ -253,7 +253,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
         Object {
           "email": "bob@bob.com",
           "newPassword": "",
-          "oldPassword": undefined,
+          "oldPassword": "",
         }
       }
       onSubmit={[Function]}

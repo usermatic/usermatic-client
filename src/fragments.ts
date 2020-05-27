@@ -157,7 +157,12 @@ export const CHANGE_PW_MUT = gql`
 
 export const ADD_PW_MUT = gql`
   mutation addPassword($email: String!, $newPassword: String!) {
-    addPassword(email: $email, password: $newPassword)
+    addPassword(email: $email, password: $newPassword) {
+      success
+      refetch {
+        getAuthenticatedUser { ...UserParts }
+      }
+    }
   }
 `
 

@@ -10,10 +10,6 @@ import { useCsrfMutation } from './hooks'
 import zxcvbnAsync from 'zxcvbn-async'
 
 import {
-  PROFILE_QUERY
-} from './fragments'
-
-import {
   useChangePwMutation,
   useAddPasswordMutation,
   useRequestPwResetEmailMutation,
@@ -21,8 +17,7 @@ import {
   ChangePwMutationOptions,
   AddPasswordMutationOptions,
   RequestPwResetEmailMutationOptions,
-  ResetPasswordMutationOptions,
-  ResetPasswordMutationVariables
+  ResetPasswordMutationOptions
 } from '../gen/operations'
 
 const useApiMutation = <TData, TVar> (
@@ -41,24 +36,11 @@ const useApiMutation = <TData, TVar> (
 }
 
 export const useChangePassword = (options: ChangePwMutationOptions = {}) => {
-  if (options.refetchQueries) {
-    console.warn('overwriting default options.refetchQueries')
-  }
-
-  return useApiMutation(useChangePwMutation, {
-    refetchQueries: [{ query: PROFILE_QUERY }],
-    ...options,
-  })
+  return useApiMutation(useChangePwMutation, options)
 }
 
 export const useAddPassword = (options: AddPasswordMutationOptions = {}) => {
-  if (options.refetchQueries) {
-    console.warn('overwriting default options.refetchQueries')
-  }
-  return useApiMutation(useAddPasswordMutation, {
-    refetchQueries: [{ query: PROFILE_QUERY }],
-    ...options,
-  })
+  return useApiMutation(useAddPasswordMutation, options)
 }
 
 export const useRequestPasswordResetEmail = (options: RequestPwResetEmailMutationOptions = {}) => {
@@ -66,13 +48,5 @@ export const useRequestPasswordResetEmail = (options: RequestPwResetEmailMutatio
 }
 
 export const useResetPassword = (options: ResetPasswordMutationOptions = {}) => {
-
-  const [submitResetPassword, ret] = useCsrfMutation(useResetPasswordMutation, options)
-  const {loading, error, data} = ret
-  const submit = (variables: ResetPasswordMutationVariables) => {
-    submitResetPassword({ variables })
-  }
-  const success = Boolean(!loading && !error && data)
-  const retObj = { ...ret, success }
-  return [submit, retObj] as [typeof submit, typeof retObj]
+  return useApiMutation(useResetPasswordMutation, options)
 }
