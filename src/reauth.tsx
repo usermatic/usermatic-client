@@ -86,7 +86,7 @@ export const useReauthenticate = (contentsArg: string | object) => {
   const ret = useCsrfMutation(useSignReauthenticationTokenMutation, {})
   const { data } = ret[1]
   if (data && data.signReauthenticationToken) {
-    cache.cacheToken(contents, data.signReauthenticationToken)
+    cache.cacheToken(contents, data.signReauthenticationToken.token)
   }
 
   const [submit, obj] = ret

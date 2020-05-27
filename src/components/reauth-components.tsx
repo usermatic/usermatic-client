@@ -47,7 +47,8 @@ export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
 
   const token = cachedToken != null
     ? cachedToken
-    : (called && !error && !loading && data) ? data.signReauthenticationToken : null
+    : (called && !error && !loading && data && data.signReauthenticationToken)
+      ? data.signReauthenticationToken.token : null
 
   if (token) {
     return <ReauthContext.Provider value={token}>

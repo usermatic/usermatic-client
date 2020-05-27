@@ -30,7 +30,9 @@ export const APP_CONFIG_FRAGMENT = gql`
 
 export const SIGN_REAUTH_TOKEN_QUERY = gql`
   mutation signReauthenticationToken($contents: String!, $password: String) {
-    signReauthenticationToken(contents: $contents, password: $password)
+    signReauthenticationToken(contents: $contents, password: $password) {
+      token
+    }
   }
 `
 
@@ -150,13 +152,17 @@ export const RESET_PW_MUT = gql`
 
 export const REQUEST_PW_RESET_EMAIL = gql`
   mutation requestPwResetEmail($email: String!) {
-    requestPasswordResetEmail(email: $email)
+    requestPasswordResetEmail(email: $email) {
+      success
+    }
   }
 `
 
 export const CHANGE_PW_MUT = gql`
   mutation changePw($oldPassword: String!, $newPassword: String!) {
-    changePassword(oldPassword: $oldPassword, newPassword: $newPassword)
+    changePassword(oldPassword: $oldPassword, newPassword: $newPassword) {
+      success
+    }
   }
 `
 
@@ -207,6 +213,8 @@ export const VERIFY_EMAIL_MUT = gql`
 
 export const SEND_VERIFICATION_EMAIL_MUT = gql`
   mutation sendVerificationEmail($email: String!) {
-    sendVerificationEmail(email: $email)
+    sendVerificationEmail(email: $email) {
+      success
+    }
   }
 `

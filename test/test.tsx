@@ -504,13 +504,13 @@ test('useSendVerificationEmail', async () => {
 
 const mockSignReauthenticationToken = () => (
   jest.fn().mockImplementation(
-    (root, { contents, password }) => (
-      jwt.sign({
+    (root, { contents, password }) => ({
+      token: jwt.sign({
         id: userId,
         userContents: contents,
         reauthenticationMethods: ['password']
       }, 'abc')
-    )
+    })
   )
 )
 
