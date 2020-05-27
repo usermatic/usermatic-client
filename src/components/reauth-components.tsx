@@ -4,10 +4,10 @@ import React, {
   MouseEvent
 } from 'react'
 
-import classNames from 'classnames'
-import { Formik, Form, Field, FormikValues, FormikErrors } from 'formik'
+import { Formik, FormikValues, FormikErrors } from 'formik'
 
 import { ErrorMessage } from '../errors'
+import { useComponents, FormComponents } from './form-util'
 
 import {
   useReauthenticate,
@@ -15,19 +15,14 @@ import {
   ReauthContext
 } from '../reauth'
 
-export type ReauthPromptComponent = React.FC<{}>
-
 type ReauthenticateGuardProps = {
   children: ReactNode
   tokenContents: string | object
   maxTokenAge?: string
   onClose?: () => void
-  prompt?: ReauthPromptComponent
+  prompt?: ReactNode
+  components?: FormComponents
 }
-
-const DefaultPromptComponent: ReauthPromptComponent = () => (
-  <div className="mb-3">Please enter your password:</div>
-)
 
 // Hides some other component behind a reauthentication prompt. After the
 // user reauthenticates successfully, the children are displayed, and the
@@ -39,8 +34,15 @@ export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
   tokenContents,
   maxTokenAge = "2m",
   onClose,
-  prompt: Prompt = DefaultPromptComponent
+  components,
+  prompt
 }) => {
+
+  const {
+    Button,
+    PasswordInput,
+    ReauthFormComponent
+  } = useComponents(components)
 
   const [submit, { data, called, loading, error }] = useReauthenticate(tokenContents)
   const cachedToken = useCachedReauthToken(tokenContents, maxTokenAge)
@@ -79,29 +81,48 @@ export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
     if (onClose) { onClose() }
   }
 
-  const buttonClasses = classNames("btn btn-primary", loading && "disabled")
-  const cancelButtonClasses = "btn btn-secondary"
+  if (!prompt) {
+    prompt = <>Please enter your password:</>
+  }
 
-  return <div>
-    <ErrorMessage error={error} />
-    <Prompt/>
-    <Formik onSubmit={onSubmit} initialValues={initialValues} validate={validate} >
-      {(props) => (
-        <Form id="reauth-guard-form">
-          <div className="form-label-group">
-            <Field id="reauth-guard-password" name="password" type="password"
-                   className="form-control" placeholder="password" autoFocus />
-          </div>
-          <div className="d-flex justify-content-between">
-            <button className={buttonClasses} type="submit">
-              { loading ? 'Please wait...' : 'Submit' }
-            </button>
-            <button className={cancelButtonClasses} onClick={onClick}>
-              Cancel
-            </button>
-          </div>
-        </Form>
-      )}
-    </Formik>
-  </div>
+  return <Formik onSubmit={onSubmit} initialValues={initialValues} validate={validate} >
+    {(props) => {
+      const { handleReset, handleSubmit } = props
+      const formProps = {
+        onSubmit: handleSubmit,
+        onReset: handleReset,
+        id: "reauth-guard-form"
+      }
+
+      return <ReauthFormComponent
+        formProps={formProps}
+        error={<ErrorMessage error={error} />}
+        prompt={prompt}
+
+        passwordInput={
+          <PasswordInput type="password"
+            id="reauth-guard-password"
+            placeholder="password" autoFocus
+            {...props.getFieldProps('password')}
+          />
+        }
+
+        submitButton={
+          <Button role="submit" name="submit-reauth" type="submit"
+            disabled={loading}
+          >
+            { loading ? 'Please wait...' : 'Submit' }
+          </Button>
+        }
+
+        cancelButton={
+          <Button role="cancel" name="cancel-reauth" onClick={onClick}
+            disabled={loading}
+          >
+            Cancel
+          </Button>
+        }
+      />
+    }}
+  </Formik>
 }

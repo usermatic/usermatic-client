@@ -22,8 +22,7 @@ export {
 } from './verifyemail-components'
 
 export {
-  ReauthenticateGuard,
-  ReauthPromptComponent
+  ReauthenticateGuard
 } from './reauth-components'
 
 export {
@@ -32,5 +31,9 @@ export {
 
 export {
   InputComponentType,
-  DefaultInputComponent
+  DefaultInputComponent,
+  FormComponents,
+  ComponentProvider,
+  PasswordFormType,
+  ButtonType
 } from './form-util'

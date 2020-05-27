@@ -1,14 +1,17 @@
 
-import React, { useState, useEffect, useMemo } from 'react'
-import { Formik, Form, Field, FormikValues, FormikErrors } from 'formik'
+import React, { useState, useEffect, useMemo, MouseEvent } from 'react'
+import { Formik, FormikValues, FormikErrors } from 'formik'
 
 import jwtDecode from 'jwt-decode'
-import classNames from 'classnames'
 
 import { useAppConfig, useToken } from '../auth'
-import { InputLabel } from './form-util'
 import { ErrorMessage } from '../errors'
 import { useDebounce } from '../use-debounce'
+
+import {
+  useComponents,
+  FormComponents
+} from './form-util'
 
 import {
   usePasswordCredential,
@@ -17,6 +20,8 @@ import {
 
 // @ts-ignore
 import zxcvbnAsync from 'zxcvbn-async'
+
+import { ZXCVBNResult } from 'zxcvbn'
 
 import {
   useChangePassword,
@@ -46,13 +51,22 @@ type ChangePasswordFormProps = {
   onSuccess?: () => void,
   idPrefix?: string,
   labelsFirst?: boolean
+  components?: FormComponents
 }
 
 export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
   onSuccess,
   idPrefix,
-  labelsFirst: labelsFirstArg,
+  components
 }) => {
+
+  const {
+    EmailAddressInput,
+    PasswordInput,
+    Button,
+    ChangePasswordFormComponent,
+    AddPasswordFormComponent
+  } = useComponents(components)
 
   const { email: primaryEmail } = usePrimaryEmail()
   const { loading: pwLoading, error: pwError, passwordCredential } = usePasswordCredential()
@@ -69,8 +83,6 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
   const addPasswordMode = passwordCredential == null
 
   const { loading, error } = addPasswordMode ? add[1] : change[1]
-
-  const labelsFirst = labelsFirstArg ?? true
 
   const email = passwordCredential?.email ?? primaryEmail ?? ''
 
@@ -101,48 +113,75 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
   }
 
   return <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
-    {(props) => (
-      <Form>
+    {(props) => {
+      const { handleReset, handleSubmit } = props
+      const formProps = {
+        onSubmit: handleSubmit,
+        onReset: handleReset,
+      }
 
-        { // if there is no password credential, ChangePassword adds a password to the account
-        passwordCredential
-        ? <div className="form-label-group">
-            <InputLabel flip={labelsFirst}>
-              <Field type="password" className="form-control" name="oldPassword"
-                     id={getId(idPrefix, "change-password-old-password")}
-                     placeholder="Old Password" required autoFocus />
-              <label htmlFor={getId(idPrefix, "change-password-old-password")}>Old Password</label>
-            </InputLabel>
-          </div>
-        : <div className="form-label-group">
-            <InputLabel flip={labelsFirst}>
-              <Field type="text" className="form-control" name="email"
-                     id={getId(idPrefix, "change-password-email")}
-                     placeholder="Email" required />
-              <label htmlFor={getId(idPrefix, "change-password-email")}>Email</label>
-            </InputLabel>
-          </div>
-        }
+      const oldPasswordInput = <PasswordInput
+         type="password"
+         id={getId(idPrefix, "change-password-old-password")}
+         placeholder="Old Password" required autoFocus
+         labelText="Old Password"
+         {...props.getFieldProps('oldPassword')}
+      />
 
-        <div className="form-label-group">
-          <InputLabel flip={labelsFirst}>
-            <Field type="password" className="form-control" name="newPassword"
-                   id={getId(idPrefix, "change-password-new-password")}
-                   placeholder="New Password" required
-                   autoFocus={passwordCredential ? undefined : true} />
-            <label htmlFor={getId(idPrefix, "change-password-new-password")}>New Password</label>
-          </InputLabel>
-        </div>
-        <DebouncedPasswordScore password={props.values.newPassword} username={email} />
+      const newPasswordInput = <PasswordInput
+         type="password"
+         id={getId(idPrefix, "change-password-new-password")}
+         placeholder="New Password" required autoFocus
+         labelText="New Password"
+         {...props.getFieldProps('newPassword')}
+      />
 
-        <button className={`btn btn-lg btn-primary ${ loading ? 'disabled' : '' }`} type="submit">
-          { loading
-            ? 'Please wait...'
-            : (passwordCredential ? 'Change Password' : 'Set Password') }
-        </button>
-        <ErrorMessage error={error} />
-      </Form>
-    )}
+      const passwordScore = <DebouncedPasswordScore
+        password={props.values.newPassword}
+        username={email}
+      />
+
+      if (addPasswordMode) {
+        return <AddPasswordFormComponent formProps={formProps}
+          emailInput={
+            <EmailAddressInput
+               type="email"
+               id={getId(idPrefix, "change-password-email")}
+               placeholder="Email" required autoFocus
+               labelText="Email"
+               {...props.getFieldProps('email')}
+            />
+          }
+
+          newPasswordInput={newPasswordInput}
+          passwordScore={passwordScore}
+
+          submitButton={
+            <Button role="submit" name="set-password"
+              disabled={loading} type="submit">
+              { loading ? 'Please wait...' : 'Set Password' }
+            </Button>
+          }
+
+          error={<ErrorMessage error={error} />}
+        />
+      } else {
+        return <ChangePasswordFormComponent formProps={formProps}
+          oldPasswordInput={oldPasswordInput}
+          newPasswordInput={newPasswordInput}
+          passwordScore={passwordScore}
+
+          submitButton={
+            <Button role="submit" name="change-password"
+              disabled={loading} type="submit">
+              { loading ? 'Please wait...' : 'Change Password' }
+            </Button>
+          }
+
+          error={<ErrorMessage error={error} />}
+        />
+      }
+    }}
   </Formik>
 }
 
@@ -156,19 +195,27 @@ type ResetPasswordFormProps = {
   // whether to expose the loginAfterReset checkbox
   exposeLoginAfterReset?: boolean
   redirectAfterReset?: boolean
+  components?: FormComponents
 }
 
 export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   token,
   onLogin,
   idPrefix,
-  labelsFirst: labelsFirstArg = true,
+  components,
   loginAfterReset: loginAfterResetArg = true,
   exposeLoginAfterReset: allowLoginAfterResetArg = true,
-  redirectAfterReset: redirectAfterResetArg = false
+  redirectAfterReset: redirectAfterResetArg = false,
 }) => {
 
-  const labelsFirst = labelsFirstArg
+  const {
+    AlertComponent,
+    Button,
+    PasswordInput,
+    CheckboxComponent,
+    ResetPasswordFormComponent
+  } = useComponents(components)
+
   const loginAfterReset = loginAfterResetArg
   const exposeLoginAfterReset = allowLoginAfterResetArg
   const redirectAfterReset = redirectAfterResetArg
@@ -204,10 +251,23 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
     }
   }, [redirectAfterReset, success, redirectUri])
 
+  const successMessage = useMemo(() => {
+    if (!success) {
+      return null
+    }
+    return <AlertComponent role="success">
+      Your password has been reset successfully.
+      { redirectAfterReset && redirectUri && <>
+        You will be redirected to <a href="{redirectUri}">{redirectUri}</a> shortly.
+        </>
+      }
+    </AlertComponent>
+  }, [AlertComponent, success, redirectAfterReset, redirectUri])
+
   if (email == null) {
-    return <div className="alert alert-danger">
+    return <AlertComponent role="error">
       Invalid token <pre>{token}</pre>
-    </div>
+    </AlertComponent>
   }
 
   const submitWrapper = (values: FormikValues) => {
@@ -229,68 +289,83 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
     return errors
   }
 
-  return <div>
-    <ErrorMessage error={error} />
-    <Formik initialValues={initialValues} validate={validate} onSubmit={submitWrapper}>
+  return <Formik initialValues={initialValues} validate={validate} onSubmit={submitWrapper}>
     {(props) => {
-      if (success) {
-        const redirectUri = data?.resetPassword && data?.resetPassword.redirectUri
-        return <div className="alert alert-success">
-          Your password has been reset successfully.
-          { redirectAfterReset && redirectUri &&
-            <>You will be redirected to <a href="{redirectUri}">{redirectUri}</a> shortly.</>
-          }
-        </div>
+      const { handleSubmit, handleReset } = props
+
+      const formProps = {
+        onSubmit: handleSubmit,
+        onReset: handleReset,
+        id: getId(idPrefix, "reset-password-form")
       }
+      return <ResetPasswordFormComponent
+        formProps={formProps}
+        error={<ErrorMessage error={error} />}
+        successMessage={successMessage}
 
-      return <Form id="reset-password-form">
-        <div className="form-label-group">
-          <InputLabel flip={labelsFirst}>
-            <Field type="password" name="newPassword" className="form-control"
-                   id={getId(idPrefix, "reset-password-new-password")}
-                   placeholder="New Password" required autoFocus />
-            <label htmlFor={getId(idPrefix, "reset-password-new-password")}>New Password</label>
-          </InputLabel>
-        </div>
-
-        { exposeLoginAfterReset &&
-          <>
-            <div className="custom-control custom-checkbox mb-3 justify-content-between d-flex">
-              <Field type="checkbox" className="custom-control-input" name="loginAfterReset"
-                     id={getId(idPrefix, "reset-password-login-after-reset")} />
-              <label className="custom-control-label" htmlFor={getId(idPrefix, "reset-password-login-after-reset")}>
-                Log in now?
-              </label>
-            </div>
-
-            <div className="custom-control custom-checkbox mb-3 justify-content-between d-flex">
-              <Field type="checkbox" className="custom-control-input" name="stayLoggedIn"
-                     disabled={!props.values.loginAfterReset}
-                     id={getId(idPrefix, "reset-password-stay-logged-in")} />
-              <label className="custom-control-label" htmlFor={getId(idPrefix, "reset-password-stay-logged-in")}>
-                Remember me
-              </label>
-            </div>
-          </>
+        newPasswordInput={
+          <PasswordInput
+            type="password"
+            id={getId(idPrefix, "reset-password-new-password")}
+            placeholder="New Password"
+            labelText="New Password"
+            required autoFocus
+            {...props.getFieldProps('newPassword')}
+          />
         }
 
-        <button className="btn btn-primary btn-block" type="submit">Reset Password</button>
-      </Form>
+        passwordScore={
+          <DebouncedPasswordScore
+            password={props.values.newPassword}
+            username={email}
+          />
+        }
+
+        loginAfterResetInput={exposeLoginAfterReset
+          ? <CheckboxComponent
+              type="checkbox"
+              id={getId(idPrefix, "reset-password-login-after-reset")}
+              labelText="Log in now?"
+              {...props.getFieldProps('loginAfterReset')}
+            />
+          : null
+        }
+
+        stayLoggedInInput={exposeLoginAfterReset
+          ? <CheckboxComponent
+              type="checkbox"
+              id={getId(idPrefix, "reset-password-stay-logged-in")}
+              labelText="Remember me"
+              {...props.getFieldProps('stayLoggedIn')}
+            />
+          : null
+        }
+
+        submitButton={
+          <Button role="submit" name="reset-password" type="submit">Reset Password</Button>
+        }
+      />
     }}
-    </Formik>
-  </div>
+  </Formik>
 }
 
 type RequestPasswordResetFormProps = {
   idPrefix?: string,
-  labelsFirst?: boolean,
   onCancel?: () => void,
+  components?: FormComponents
 }
 
-export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> =
-  ({idPrefix, labelsFirst: labelsFirstArg, onCancel}) => {
+export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> = ({
+  idPrefix,
+  onCancel,
+  components
+}) => {
 
-  const labelsFirst = labelsFirstArg ?? true
+  const {
+    EmailAddressInput,
+    Button,
+    ForgotPasswordFormComponent
+  } = useComponents(components)
 
   const [submit, { loading, error, success }] = useRequestPasswordResetEmail()
 
@@ -314,112 +389,77 @@ export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> =
     setSubmittedEmail(variables.email)
   }
 
+  const onClickCancel = (e: MouseEvent) => {
+    e.preventDefault()
+    onCancel?.()
+  }
   return <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate} >
-    {(props) => <>
-      <ErrorMessage error={error} />
-      <Form id={getId(idPrefix, "request-password-reset-form")}>
-        <div className="form-label-group mb-2">
-          <InputLabel flip={labelsFirst}>
-            <Field type="email" name="email" className="form-control"
-                   id={getId(idPrefix, "request-password-reset-email")}
-                   placeholder="Email address" required autoFocus />
-            <label htmlFor={getId(idPrefix, "request-password-reset-email")}>Email address</label>
-          </InputLabel>
-        </div>
+    {(props) => {
+      const { handleReset, handleSubmit } = props
+      const formProps = {
+        onSubmit: handleSubmit,
+        onReset: handleReset,
+        id: getId(idPrefix, "request-password-reset-form")
+      }
+      return <ForgotPasswordFormComponent
+        formProps={formProps}
+        emailInput={
+          <EmailAddressInput
+            type="email"
+            id={getId(idPrefix, "request-password-reset-email")}
+            placeholder="Email address" required autoFocus
+            labelText="Email address"
+            {...props.getFieldProps('email')}
+          />
+        }
 
-        <div className="d-flex justify-content-between mb-3">
-          <button className={`btn btn-primary ${ loading ? 'disabled' : ''}`}
-                  id="request-pw-reset-button" type="submit">
+        submitButton={
+          <Button role="submit" name="request-password-reset"
+            id="request-pw-reset-button" type="submit">
             { loading ? 'Please wait...' : 'Submit' }
-          </button>
-          {onCancel &&
-            <button className="btn btn-outline-secondary" type="button"
-                    onClick={(e) => { e.preventDefault(); onCancel(); }}>
-              Cancel
-            </button>
-          }
-        </div>
-      </Form>
+          </Button>
+        }
 
-      {success
-        ? <div className="alert alert-success m-3">A password reset link was sent to {submittedEmail}. Please look for it in your
-              inbox, and click the link to reset your password.
-          </div>
+        cancelButton={
+          onCancel &&
+          <Button role="cancel" name="cancel-password-reset"
+            type="button" onClick={onClickCancel}>
+            Cancel
+          </Button>
+        }
+
+        error={<ErrorMessage error={error} />}
+
+        successMessage={success ?
+          <>
+            A password reset link was sent to {submittedEmail}. Please look
+            for it in your inbox, and click the link to reset your password.
+          </>
         : null }
-    </>}
+      />
+    }}
   </Formik>
 }
 
-type PwScoreRecord = Record<string, any>
-
-const PasswordStrengthText: React.FC<{pwScore: PwScoreRecord}> = ({pwScore}) => {
-  const { score } = pwScore
-  const scoreDisplay = (() => {
-    switch (score) {
-      case 0: return 'Very weak'
-      case 1: return 'Very weak'
-      case 2: return 'Weak'
-      case 3: return 'Moderate'
-      case 4: return 'Strong'
-      case 5: return 'Very strong'
-      default:
-        console.error(`unexpected password score ${score}`)
-        return '???'
-    }
-  })()
-
-  const classes = ['badge']
-  if (score > 3) {
-    classes.push('badge-success')
-  } else if (score > 2) {
-    classes.push('badge-warning')
-  } else {
-    classes.push('badge-danger')
-  }
-
-  return <div className="small p-1">
-    Password Strength <span className={classNames(classes)}>{scoreDisplay}</span>
-  </div>
-}
-
-const PasswordStrengthCheck: React.FC<{pwScore: PwScoreRecord}> = ({pwScore}) => {
-
-  const config = useAppConfig()
-  if (config == null) {
-    return null
-  }
-  let { minPasswordStrength } = config
-  if (minPasswordStrength == null) {
-    minPasswordStrength = 0
-  }
-
-  if (pwScore.score >= minPasswordStrength || pwScore.feedback == null) {
-    return null
-  }
-
-  return <div className="alert alert-warning">
-    <div>Please choose a stronger password.</div>
-    <div>{pwScore.feedback.warning}</div>
-    {pwScore.feedback.suggestions && pwScore.feedback.suggestions.length > 0 &&
-    <>
-      <div>Suggestions:</div>
-      <ul>
-        { pwScore.feedback.suggestions.map((s: string, i: number) => (
-          <li key={i}>{s}</li>
-        ))}
-      </ul>
-    </>}
-  </div>
-}
+type PwScoreRecord = ZXCVBNResult
 
 type PasswordScoreProps = {
   password?: string,
-  username?: string
+  username?: string,
+  components?: FormComponents
 }
 
-export const PasswordScore: React.FC<PasswordScoreProps> = ({password, username}) => {
+export const PasswordScore: React.FC<PasswordScoreProps> = ({
+  password, username, components
+}) => {
 
-  const [passwordScore, setPasswordScore] = useState({} as Record<string, any>)
+  const {
+    PasswordScoreComponent
+  } = useComponents(components)
+
+  const [passwordScore, setPasswordScore] = useState<PwScoreRecord | undefined>()
+
+  const config = useAppConfig()
 
   useEffect(() => {
     if (password == null) { return }
@@ -440,17 +480,27 @@ export const PasswordScore: React.FC<PasswordScoreProps> = ({password, username}
     return () => { mounted = false }
   }, [password, username])
 
-  if (!password || passwordScore.score == null) {
+  if (config == null) {
     return null
   }
 
-  return <div className="text-muted mb-2">
-    <PasswordStrengthText pwScore={passwordScore} />
-    <PasswordStrengthCheck pwScore={passwordScore} />
-  </div>
+  let { minPasswordStrength } = config
+  if (minPasswordStrength == null) {
+    minPasswordStrength = 0
+  }
+
+  if (!password || !passwordScore || passwordScore.score == null) {
+    return null
+  }
+
+  return <PasswordScoreComponent
+    minPasswordStrength={minPasswordStrength}
+    passwordScore={passwordScore}
+  />
 }
 
-const DebouncedPasswordScore: React.FC<PasswordScoreProps> = ({password, username}) => {
+export const DebouncedPasswordScore: React.FC<PasswordScoreProps> = ({password, username}) => {
   const debouncedPw = useDebounce(password, 300)
   return <PasswordScore password={debouncedPw} username={username} />
 }
+DebouncedPasswordScore.displayName = 'DebouncedPasswordScore'

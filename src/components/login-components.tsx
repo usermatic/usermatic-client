@@ -1,35 +1,21 @@
 
 import React, { ReactNode, useEffect, useState, MouseEvent } from 'react'
-import { Formik, Form, Field, FormikValues, FormikErrors } from 'formik'
-import { ApolloError } from 'apollo-client'
-import { GraphQLError } from 'graphql'
-import classNames from 'classnames'
-
-import { Icon } from 'react-icons-kit'
-import { google } from 'react-icons-kit/fa/google'
-import { facebookOfficial } from 'react-icons-kit/fa/facebookOfficial'
-import { github } from 'react-icons-kit/fa/github'
+import { Formik, FormikValues, FormikErrors } from 'formik'
 
 import { useToken, useAppConfig, useAppId } from '../auth'
 import { useCsrfMutation } from '../hooks'
-import { InputLabel, InputComponentType } from './form-util'
-import { ErrorMessage } from '../errors'
+import { ErrorMessage, ErrorMessageCase } from '../errors'
 import { useGetRecoveryCodeCount } from '../recoverycodes'
 import { ReauthContext } from '../reauth'
-import { PasswordScore, RequestPasswordResetForm } from './password-components'
+import { DebouncedPasswordScore, RequestPasswordResetForm } from './password-components'
 import { MFAForm } from './totp-components'
 import { useReauthToken } from '../reauth'
+import {
+  useComponents,
+  FormComponents
+} from './form-util'
 
 import { useClearTotpMutation } from '../../gen/operations'
-
-type IconProps = {
-  color?: string,
-  size?: string | number
-}
-
-const GoogleLogo = (props: IconProps) => <Icon icon={google} {...props} />
-const FbLogo = (props: IconProps) => <Icon icon={facebookOfficial} {...props} />
-const GithubLogo = (props: IconProps) => <Icon icon={github} {...props} />
 
 import {
   useCreateAccount,
@@ -62,27 +48,8 @@ type LoginFormProps = {
   // in the same page.
   idPrefix?: string
 
-  // Render labels before inputs in the form (default true)
-  labelsFirst?: boolean
-
-  // Provide a special input component for the TOTP token input and Recovery Code
-  // input
-  TotpInputComponent?: InputComponentType
-  RecoveryCodeInputComponent?: InputComponentType
+  components?: FormComponents
 }
-
-const SocialLoginButton: React.FC<{
-  onClick: (e: MouseEvent) => void,
-  buttonClasses: string,
-  children: ReactNode
-}> = ({onClick, buttonClasses, children}) => (
-  <div className="d-flex justify-content-center my-2">
-    <button className={classNames("btn btn-block btn-outline-primary d-flex align-items-center justify-content-between", buttonClasses)}
-      onClick={onClick}>
-      {children}
-    </button>
-  </div>
-)
 
 type ChildWindow = {
   open: (url: string) => void
@@ -193,7 +160,17 @@ const makeLoginFn = (childWindow: ChildWindow, appId: string, url: string) => (
   }
 )
 
-const SocialButtons: React.FC<{popupWindow: ChildWindow, className?: string}> = ({popupWindow, className}) => {
+const SocialButtons: React.FC<{
+  popupWindow: ChildWindow,
+  components?: FormComponents
+}> = ({popupWindow, components}) => {
+
+  const {
+    SocialButtonsComponent,
+    GithubButton,
+    FacebookButton,
+    GoogleButton
+  } = useComponents(components)
 
   const appId = useAppId()
 
@@ -213,63 +190,11 @@ const SocialButtons: React.FC<{popupWindow: ChildWindow, className?: string}> = 
   if (!fbLoginEnabled && !googleLoginEnabled && !githubLoginEnabled) {
     return null
   } else {
-    // poor man's name mangling... We just need to avoid
-    // conflicting with apps that use this library.
-    const nonce = '3kdic7az9'
-    const buttonClass = (provider: string) => {
-      return `${provider}-login-btn-${nonce}`
-    }
-    return <div className={classNames(className)}>
-      <style>{`
-          .facebook-login-btn-${nonce} {
-            color: white !important;
-            background-color: #4267b2 !important;
-            border-color: #4267b2 !important;
-          }
-          .facebook-login-btn-${nonce}:hover {
-            color: #4267b2 !important;
-            background-color: white !important;
-          }
-
-          .google-login-btn-${nonce} {
-            color: white !important;
-            background-color: #ea4335 !important;
-            border-color: #ea4335 !important;
-          }
-          .google-login-btn-${nonce}:hover {
-            color: #ea4335 !important;
-            background-color: white !important;
-          }
-
-          .github-login-btn-${nonce} {
-            color: white !important;
-            background-color: rgb(21, 20, 19) !important;
-            border-color: rgb(21, 20, 19) !important;
-          }
-          .github-login-btn-${nonce}:hover {
-            color: rgb(21, 20, 19) !important;
-            background-color: white !important;
-          }
-      `}</style>
-      { githubLoginEnabled &&
-        <SocialLoginButton onClick={loginWithGithub} buttonClasses={buttonClass('github')}>
-          <GithubLogo size="2em"/>
-          <div className="flex-grow-1 font-weight-bold">Login with GitHub</div>
-        </SocialLoginButton>
-      }
-      { fbLoginEnabled &&
-        <SocialLoginButton onClick={loginWithFacebook} buttonClasses={buttonClass('facebook')}>
-          <FbLogo size="2em"/>
-          <div className="flex-grow-1 font-weight-bold">Login with Facebook</div>
-        </SocialLoginButton>
-      }
-      { googleLoginEnabled &&
-        <SocialLoginButton onClick={loginWithGoogle} buttonClasses={buttonClass('google')}>
-          <GoogleLogo size="2em"/>
-          <div className="flex-grow-1 font-weight-bold">Login with Google</div>
-        </SocialLoginButton>
-      }
-    </div>
+    return <SocialButtonsComponent
+      githubButton={githubLoginEnabled && <GithubButton onClick={loginWithGithub} />}
+      facebookButton={fbLoginEnabled && <FacebookButton onClick={loginWithFacebook} />}
+      googleButton={googleLoginEnabled && <GoogleButton onClick={loginWithGoogle} />}
+    />
   }
 }
 
@@ -298,8 +223,12 @@ const useGetOauthToken = (onToken: (token: string) => void) => {
 type OauthLoginProps = LoginFormProps & { children: ReactNode }
 
 const OauthCreateAccount: React.FC<OauthLoginProps> = ({
-  onLogin, children
+  onLogin, children, components
 }) => {
+
+  const {
+    AlertComponent
+  } = useComponents(components)
 
   const [submit, { loading, error }] = useLogin({
     onCompleted: () => { onLogin?.() }
@@ -318,15 +247,15 @@ const OauthCreateAccount: React.FC<OauthLoginProps> = ({
 
   if (oauthToken == null) {
     return <>
-      <SocialButtons popupWindow={popupWindow} className="my-3"/>
+      <SocialButtons popupWindow={popupWindow} components={components} />
       {children}
     </>
   } else {
     return <>
       <ErrorMessage error={error} />
-      { loading && <div className="alert alert-info">
+      { loading && <AlertComponent role="info">
         Please wait while we process your login...
-      </div> }
+      </AlertComponent> }
     </>
   }
 }
@@ -367,7 +296,15 @@ const validateLogin = (values: FormikValues) => {
 
 type LoginMode = 'login' | 'forgotpw' | 'totp'
 
-const PostRecoveryCode: React.FC<{dismiss: () => void }> = ({dismiss}) => {
+const PostRecoveryCode: React.FC<{
+  dismiss: () => void,
+  components?: FormComponents
+}> = ({dismiss, components}) => {
+
+  const {
+    Button,
+    PostRecoveryCodeFormComponent
+  } = useComponents(components)
 
   const reauthToken = useReauthToken()
   const { count, loading: countLoading } = useGetRecoveryCodeCount()
@@ -383,77 +320,51 @@ const PostRecoveryCode: React.FC<{dismiss: () => void }> = ({dismiss}) => {
     dismiss()
   }
 
-  if (called && !loading && !error) {
-    return <div>
-      <div className="alert alert-info">
-        You have disabled 2FA. Please consider re-enabling it as soon as possible.
-      </div>
-      <button className="btn btn-outline-primary btn-block" onClick={onClickDismiss}>
+  return <PostRecoveryCodeFormComponent
+    mfaDisabled={Boolean(called && !loading && !error)}
+    error={<ErrorMessage error={error} />}
+    recoveryCodesRemaining={countLoading ? undefined : count}
+
+    dismissButton={
+      <Button role="dismiss" name="dismiss-2fa-disabled" onClick={onClickDismiss}>
         Okay
-      </button>
-    </div>
-  }
+      </Button>
+    }
 
-  const buttonClasses = "btn btn-outline-primary btn-block font-weight-bolder"
+    resetButton={
+      <Button role="secondary" name="reset-2fa" disabled={loading} onClick={reset2FA}>
+        { loading
+          ? 'Please wait...'
+          : 'I lost my phone and need to turn 2FA off for now.' }
+      </Button>
+    }
 
-  return <div>
-    <div className="alert alert-secondary">
-      You have logged in via a recovery code.
-      The code you just used will no longer work.
-      { !countLoading && <>You have {count} recovery codes remaining.</> }
-    </div>
-    <div className="my-3 d-flex justify-content-center">
-      Do you need to reset your 2FA codes?
-    </div>
-    <ErrorMessage error={error} />
-    <button
-      className={classNames(buttonClasses, "mb-3", loading && 'disabled')}
-      onClick={reset2FA}
-    >
-      { loading
-        ? 'Please wait...'
-        : 'I lost my phone and need to turn 2FA off for now.' }
-    </button>
-    <button
-      className={classNames(buttonClasses, called && 'disabled')}
-      onClick={dismiss}
-    >
-      I still have my phone, but not with me. Leave 2FA on.
-    </button>
-  </div>
+    dontResetButton={
+      <Button
+        role="dismiss"
+        name="leave-2fa-enabled"
+        disabled={called}
+        onClick={dismiss}
+      >
+        I still have my phone, but not with me. Leave 2FA on.
+      </Button>
+    }
+  />
 }
-
-const TOTPFlow: React.FC<{
-  idPrefix?: string,
-  error?: ApolloError,
-  loading: boolean,
-  submit: (totpCode: string) => void,
-  totpRequired: boolean,
-  TotpInputComponent?: InputComponentType,
-  RecoveryCodeInputComponent?: InputComponentType
-}> = ({
-  idPrefix, error, loading, submit, totpRequired, TotpInputComponent, RecoveryCodeInputComponent
-}) => (
-  <div className="d-flex flex-column align-items-center">
-    { // Don't display the error message that says we need a code...
-      !totpRequired && <ErrorMessage error={error} /> }
-    <MFAForm submit={submit} idPrefix={idPrefix}
-       TotpInputComponent={TotpInputComponent}
-       RecoveryCodeInputComponent={RecoveryCodeInputComponent}
-    />
-    { loading && <div>Please wait...</div> }
-  </div>
-)
 
 export const LoginForm: React.FC<LoginFormProps> = ({
   onLogin,
   idPrefix,
-  labelsFirst: labelsFirstArg,
-  TotpInputComponent,
-  RecoveryCodeInputComponent
+  components
 }) => {
 
-  const labelsFirst = labelsFirstArg ?? true
+  const {
+    PasswordFormComponent,
+    EmailAddressInput,
+    PasswordInput,
+    StayLoggedInInput,
+    Button
+  } = useComponents(components)
 
   // State
   const [mode, setMode] = useState<LoginMode>('login')
@@ -521,7 +432,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       setSuccessViaRecoveryCodeDismissed(true)
     }
     return <ReauthContext.Provider value={data?.login?.user.reauthToken ?? ''}>
-      <PostRecoveryCode dismiss={dismiss}/>
+      <PostRecoveryCode dismiss={dismiss} components={components} />
     </ReauthContext.Provider>
   }
 
@@ -545,23 +456,18 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         throw new Error("no oauthToken or saved login data")
       }
     }
-    return <TOTPFlow
-      submit={submitCode}
-      idPrefix={idPrefix}
-      error={error}
-      loading={loading}
-      TotpInputComponent={TotpInputComponent}
-      RecoveryCodeInputComponent={RecoveryCodeInputComponent}
-      totpRequired={totpRequired}
+
+    return <MFAForm
+       submit={submitCode}
+       idPrefix={idPrefix}
+       // Don't display the error message that says we need a code...
+       error={totpRequired ? undefined : error}
+       loading={loading}
+       components={components}
     />
   } else if (mode === 'forgotpw') {
-    return <div>
-      <div>
-        Enter your email to get a password reset link.
-      </div>
-      <RequestPasswordResetForm idPrefix={idPrefix} labelsFirst={labelsFirst}
-        onCancel={() => { setMode('login')}} />
-    </div>
+    return <RequestPasswordResetForm idPrefix={idPrefix}
+            onCancel={() => { setMode('login')}} />
   } else if (mode === 'login') {
 
     const onSubmit = (values: LoginSubmitArgs) => {
@@ -574,95 +480,80 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     }
 
     return <>
-      <SocialButtons popupWindow={popupWindow} className="my-3"/>
+      <SocialButtons popupWindow={popupWindow} components={components} />
       <Formik initialValues={loginInitialValues}
               onSubmit={onSubmit}
               validate={validateLogin}>
         {(props) => {
+          const { handleReset, handleSubmit } = props
+          const formProps = {
+            onSubmit: handleSubmit,
+            onReset: handleReset,
+          }
+
           const {
             onChange: onStayLoggedInChange,
             ...stayLoggedInRest
           } = props.getFieldProps('stayLoggedIn')
-          return <Form>
-            <div className="form-label-group mb-2">
-              <InputLabel flip={labelsFirst}>
-                <Field type="email" name="email" className="form-control"
-                       id={getId(idPrefix, "login-email")}
-                       placeholder="Email address" required autoFocus />
-                <label htmlFor={getId(idPrefix, "login-email")}>Email address</label>
-              </InputLabel>
-            </div>
 
-            <div className="form-label-group mb-2">
-              <InputLabel flip={labelsFirst}>
-                <Field type="password" name="password" className="form-control"
-                       id={getId(idPrefix, "login-password")}
-                       placeholder="Password" required />
-                <label htmlFor={getId(idPrefix, "login-password")}>Password</label>
-              </InputLabel>
-            </div>
-
-            <div className="custom-control custom-checkbox mb-2">
-              <input type="checkbox" className="custom-control-input"
-                     id={getId(idPrefix, "login-stay-logged-in")}
-                     onChange={(e) => {
-                       onStayLoggedInChange(e)
-                       // We also need to store this outside the form, so that
-                       // oauth logins can use it.
-                       setStayLoggedIn(e.target.checked)
-                     }}
-                     {...stayLoggedInRest}
+          return <PasswordFormComponent
+            formProps={formProps}
+            emailInput={
+              <EmailAddressInput
+                type="email"
+                id={getId(idPrefix, "login-email")}
+                placeholder="Email address" required autoFocus
+                labelText="Email address"
+                {...props.getFieldProps('email')}
               />
-              <label className="custom-control-label" htmlFor={getId(idPrefix, "login-stay-logged-in")}>
-                Remember me
-              </label>
-            </div>
+            }
 
-            <div className="mb-3 justify-content-between d-flex">
-              <button id="login-button" className="btn btn-primary" type="submit">Sign in</button>
-              <button id="forgot-pw-button" className="btn btn-outline-primary" type="button"
+            passwordInput={
+              <PasswordInput
+                 type="password"
+                 id={getId(idPrefix, "login-password")}
+                 placeholder="Password" required
+                 labelText="Password"
+                 {...props.getFieldProps('password')}
+              />
+            }
+
+            stayLoggedInInput={
+              <StayLoggedInInput
+                type="checkbox"
+                id={getId(idPrefix, "login-stay-logged-in")}
+                onChange={(e) => {
+                  onStayLoggedInChange(e)
+                  // We also need to store this outside the form, so that
+                  // oauth logins can use it.
+                  setStayLoggedIn(e.target.checked)
+                }}
+                {...stayLoggedInRest}
+                labelText="Remember me"
+              />
+            }
+
+            signinButton={
+              <Button role='submit' name='login' id="login-button" type="submit">
+                Sign in
+              </Button>
+            }
+
+            forgotPasswordButton={
+              <Button role="secondary" name="forgot-password"
+                      id="forgot-pw-button" type="button"
                       onClick={(e) => { e.preventDefault(); setMode('forgotpw'); }}>
                 Forgot Password?
-              </button>
-            </div>
-            <ErrorMessage error={error} />
-          </Form>
+              </Button>
+            }
+
+            error={<ErrorMessage error={error} />}
+          />
         }}
       </Formik>
     </>
   }
   throw new Error("unreachable")
-}
-
-// User creation error messages are likely to occur in normal situations,
-// so they get a bit more attention than ErrorMessage can give.
-const UserCreateError: React.FC<{error?: ApolloError}> = ({error}) => {
-  if (!error) { return null }
-
-  const formatMsg = (e: GraphQLError) => {
-    if (e.extensions == null) {
-      return null
-    }
-    const { exception } = e.extensions
-    if (exception) {
-      switch (exception.code) {
-        case 'EMAIL_EXISTS':
-          return <>
-            An account with the email address {e.extensions.email} already exists.
-          </>
-      }
-    }
-
-    return e.message
-  }
-
-  return <>
-    {error.graphQLErrors.map((e, i) => (
-      <div className="alert alert-danger" role="alert" key={i}>
-        {formatMsg(e) || 'uknown error'}
-      </div>
-    ))}
-  </>
 }
 
 type AccountCreationProps = {
@@ -675,6 +566,8 @@ type AccountCreationProps = {
   // in the same page.
   idPrefix?: string
 
+  components?: FormComponents
+
   // Render labels before inputs in the form (default true)
   labelsFirst?: boolean
 
@@ -686,11 +579,19 @@ export const AccountCreationForm: React.FC<AccountCreationProps> = ({
   loginAfterCreation: loginAfterCreationArg = true,
   onLogin,
   idPrefix,
+  components,
   labelsFirst: labelsFirstArg = true,
   showPasswordScore = true
 }) => {
 
-  const labelsFirst = labelsFirstArg
+  const {
+    CreateAccountForm,
+    EmailAddressInput,
+    PasswordInput,
+    StayLoggedInInput,
+    Button
+  } = useComponents(components)
+
   const loginAfterCreation = loginAfterCreationArg
 
   const { id } = useToken()
@@ -706,54 +607,84 @@ export const AccountCreationForm: React.FC<AccountCreationProps> = ({
     submit(variables)
   }
 
-  return <OauthCreateAccount onLogin={onLogin}>
+  return <OauthCreateAccount onLogin={onLogin} components={components}>
     <Formik initialValues={loginInitialValues}
             onSubmit={onSubmit}
             validate={validateLogin}>
-    {(props) => (
-      <Form autoComplete="off">
-        <div className="form-label-group mb-2">
-          <InputLabel flip={labelsFirst}>
-            <Field type="email" name="email" className="form-control"
-                   id={getId(idPrefix, "account-creation-email")}
-                   placeholder="Email address" required autoFocus />
-            <label htmlFor={getId(idPrefix, "account-creation-email")}>Email address</label>
-          </InputLabel>
-        </div>
+    {(props) => {
+      const { handleReset, handleSubmit } = props
+      const formProps = {
+        onSubmit: handleSubmit,
+        onReset: handleReset,
+        autoComplete: 'off'
+      }
 
-        <div className="form-label-group mb-2">
-          <InputLabel flip={labelsFirst}>
-            <Field type="password" name="password" className="form-control"
-                   id={getId(idPrefix, "account-creation-password")}
-                   placeholder="Password" required />
-            <label htmlFor={getId(idPrefix, "account-creation-password")}>Password</label>
-          </InputLabel>
-        </div>
-
-        { loginAfterCreation &&
-        <div className="custom-control custom-checkbox mb-2">
-          <Field type="checkbox" className="custom-control-input" name="stayLoggedIn"
-                 id={getId(idPrefix, "account-creation-stay-logged-in")} />
-          <label className="custom-control-label" htmlFor={getId(idPrefix, "account-creation-stay-logged-in")}>
-            Remember me
-          </label>
-        </div> }
-
-        { showPasswordScore &&
-          <PasswordScore password={props.values.password} username={props.values.email} />
+      return <CreateAccountForm
+        formProps={formProps}
+        emailInput={
+          <EmailAddressInput
+            type="email"
+            id={getId(idPrefix, "account-creation-email")}
+            placeholder="Email address" required autoFocus
+            labelText="Email address"
+            {...props.getFieldProps('email')}
+          />
         }
 
-        <div className="mb-3">
-          <button className="btn btn-primary" type="submit">Create Account</button>
-        </div>
-      </Form>
-    )}
+        passwordInput={
+          <PasswordInput
+             type="password"
+             id={getId(idPrefix, "account-creation-password")}
+             placeholder="Password" required
+             labelText="Password"
+             {...props.getFieldProps('password')}
+          />
+        }
+
+        stayLoggedInInput={
+          loginAfterCreation &&
+          <StayLoggedInInput
+            type="checkbox"
+            id={getId(idPrefix, "account-creation-stay-logged-in")}
+            labelText="Remember me"
+            {...props.getFieldProps('stayLoggedIn')}
+          />
+        }
+
+        passwordScore={
+          showPasswordScore &&
+          <DebouncedPasswordScore
+            password={props.values.password}
+            username={props.values.email}
+          />
+        }
+
+        createAccountButton={
+          <Button role="submit" name="create-account" id="create-account-button" type="submit">
+            Create Account
+          </Button>
+        }
+
+        error={
+          <ErrorMessage error={error}>
+            <ErrorMessageCase code='EMAIL_EXISTS'>
+              An account with the email address {props.values.email} already exists.
+            </ErrorMessageCase>
+          </ErrorMessage>
+        }
+      />
+    }}
     </Formik>
-    <UserCreateError error={error} />
   </OauthCreateAccount>
 }
 
-export const LogoutButton: React.FC<{}> = () => {
+export const LogoutButton: React.FC<{
+  components: FormComponents
+}> = ({components}) => {
+
+  const {
+    Button
+  } = useComponents(components)
 
   const [submit, { error }] = useLogout()
 
@@ -763,7 +694,7 @@ export const LogoutButton: React.FC<{}> = () => {
   }
 
   return <>
-    <button className="btn btn-outline-primary" type="button" onClick={onClick}>Logout</button>
+    <Button role="secondary" name="logout" onClick={onClick}>Logout</Button>
     <ErrorMessage error={error} />
   </>
 }

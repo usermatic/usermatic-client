@@ -2,14 +2,27 @@
 import React, { useEffect } from 'react'
 
 import { useCsrfToken } from '../hooks'
+import { ErrorMessage } from '../errors'
+import {
+  useComponents,
+  FormComponents
+} from './form-util'
 
 import {
   useEmailVerifier
 } from '../verifyemail'
 
-export const EmailVerifier: React.FC<{token: string}> = ({token}) => {
+export const EmailVerifier: React.FC<{
+  token: string,
+  components: FormComponents
+}> = ({token, components}) => {
 
-  const [submit, { error, success, called, data }] = useEmailVerifier()
+  const {
+    EmailVerificationComponent,
+    LoadingMessageComponent
+  } = useComponents(components)
+
+  const [submit, { error, loading, success, called, data }] = useEmailVerifier()
   const { csrfToken } = useCsrfToken()
 
   useEffect(() => {
@@ -25,20 +38,14 @@ export const EmailVerifier: React.FC<{token: string}> = ({token}) => {
     }
   }, [called, csrfToken, success])
 
-  if (success && data) {
-    const { redirectUri } = data.verifyEmail
-    return <div>Your email is now verified! You will be automatically
-      redirected to <a href={redirectUri}>{redirectUri}</a>.
-      (Please click the above link if you are not redirected shortly.)
-    </div>
-  } else if (error) {
-    return <div>We could not verify your email address - The link you clicked may be expired.</div>
+  if (loading) {
+    return <LoadingMessageComponent/>
   }
 
-  return <>
-    <div><h4>Verifying email, please wait...</h4></div>
-    <div className="spinner-border" role="status">
-      <span className="sr-only">Loading...</span>
-    </div>
-  </>
+  const redirectUri = data?.verifyEmail?.redirectUri
+  return <EmailVerificationComponent
+    success={success}
+    redirectUri={redirectUri}
+    error={<ErrorMessage error={error}/>}
+  />
 }

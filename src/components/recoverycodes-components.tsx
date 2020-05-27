@@ -1,51 +1,53 @@
 
 import React, { MouseEvent, useEffect } from 'react'
-//import { Formik, Form, FormikValues, FormikErrors } from 'formik'
 
 import { ErrorMessage } from '../errors'
 import { useReauthToken } from '../reauth'
 import { useCreateRecoveryCodes, useGetRecoveryCodeCount } from '../recoverycodes'
-import { ReauthenticateGuard, ReauthPromptComponent } from './reauth-components'
+import { ReauthenticateGuard } from './reauth-components'
+
+import {
+  useComponents,
+  FormComponents
+} from './form-util'
 
 const GenRecoveryCodesFormInner: React.FC<{
   codeCount: number,
-  onSuccess: () => void
-}> = ({codeCount, onSuccess}) => {
-  const [submit, { success, called, loading, error, data }] = useCreateRecoveryCodes({
+  onSuccess: () => void,
+  components?: FormComponents
+}> = ({codeCount, onSuccess, components}) => {
+
+  const {
+    Button,
+    RecoveryCodeDisplayComponent,
+    RecoveryCodeRegenerationPromptComponent,
+    LoadingMessageComponent
+  } = useComponents(components)
+
+  const [submit, { called, loading, error, data }] = useCreateRecoveryCodes({
     onCompleted: () => { onSuccess() }
   })
   const reauthToken = useReauthToken()
 
   useEffect(() => {
     // submit immediately if there are no codes left anyway
-    if (codeCount === 0) {
+    if (!called && codeCount === 0) {
       submit({ reauthToken })
     }
-  }, [])
+  }, [codeCount, called])
 
   if (loading) {
-    return <div>Please wait...</div>
+    return <LoadingMessageComponent/>
   }
 
-  if (success) {
-    // display codes
-    return <div>
-      <ErrorMessage error={error} />
-      <div className="p-5">
-        Here are your recovery codes. Treat them like passwords and store them
-        somewhere safe.
-        <div className="d-flex justify-content-center">
-          <pre id="pre-codes">
-            { data?.createRecoveryCodes?.codes
-                .map(c => c.match(/.{1,4}/g)?.join('-'))
-                .join('\n')
-            }
-          </pre>
-        </div>
-        You will not be able to view these codes again later.
-        If you lose them, you can generate new ones.
-      </div>
-    </div>
+  if (called) {
+    const codes = data?.createRecoveryCodes?.codes
+                  .map((c => c.match(/.{1,4}/g)?.join('-')))
+                  .filter((c): c is string => typeof c === 'string')
+    return <RecoveryCodeDisplayComponent
+      codes={codes}
+      error={error && <ErrorMessage error={error}/>}
+    />
   }
 
   const confirm = (e: MouseEvent) => {
@@ -53,40 +55,48 @@ const GenRecoveryCodesFormInner: React.FC<{
     submit({ reauthToken })
   }
 
-  if (codeCount > 0 && !called) {
-    return <div className="d-flex flex-column align-items-center">
-      <div className="alert alert-warning">
-        Warning: After you generate new codes, your old codes will no longer
-        work. Make sure you store the new codes securely.
-      </div>
-      <button id="gen-new-codes-confirm-btn" className="btn btn-danger" onClick={confirm}>
-        Invalidate my old codes and create new ones.
-      </button>
-    </div>
+  // if codeCount is 0 we don't ask for confirmation.
+  if (codeCount > 0) {
+    return <RecoveryCodeRegenerationPromptComponent
+      confirmButton={
+        <Button id="gen-new-codes-confirm-btn"
+          role="danger" name="regenerate-recovery-codes"
+          onClick={confirm}
+        >
+          Invalidate my old codes and create new ones.
+        </Button>
+      }
+    />
   }
 
-  return <div>
-  </div>
+  return null
 }
 
-const Prompt: ReauthPromptComponent = () => (
-  <div className="mb-3 h4">Please enter your password to generate new account recovery codes.</div>
-)
-
 export const GenRecoveryCodesForm: React.FC<{
-  onSuccess?: () => void
+  onSuccess?: () => void,
+  components?: FormComponents
 }> = ({
-  onSuccess = () => {}
+  onSuccess = () => {},
+  components
 }) => {
+
+  const { LoadingMessageComponent } = useComponents(components)
 
   const { loading, error, count } = useGetRecoveryCodeCount()
 
-  if (loading) { return <div>Please wait...</div> }
+  if (loading) { return <LoadingMessageComponent/> }
   if (count == null) { return null }
   if (error) { return <ErrorMessage error={error}/> }
 
-  return <ReauthenticateGuard tokenContents={{ operations: ['gen-recovery-codes'] }}
-                       prompt={Prompt}>
-    <GenRecoveryCodesFormInner codeCount={count} onSuccess={onSuccess} />
+  const prompt = <>
+    Please enter your password to generate new account recovery codes.
+  </>
+  return <ReauthenticateGuard
+    tokenContents={{ operations: ['gen-recovery-codes'] }}
+    prompt={prompt}
+  >
+    <GenRecoveryCodesFormInner codeCount={count} onSuccess={onSuccess}
+      components={components}
+    />
   </ReauthenticateGuard>
 }

@@ -201,7 +201,7 @@ test('<LoginForm>/<AccountCreationForm> forgot password', async () => {
 
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 
-  wrapper.find('#forgot-pw-button').simulate('click')
+  wrapper.find('button#forgot-pw-button').simulate('click')
   wrapper.update()
 
   await act(async () => { jest.runAllTimers() })
@@ -371,13 +371,13 @@ test('<LoginForm> TOTP', async () => {
 
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 
-  wrapper.find('#test-recovery-code-button').simulate('click')
+  wrapper.find('button#test-recovery-code-button').simulate('click')
 
   await waitUntil(wrapper, exists('input#test-recovery-code'))
 
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 
-  wrapper.find('#test-recovery-code-cancel').simulate('click')
+  wrapper.find('button#test-recovery-code-cancel').simulate('click')
 
   setInput(wrapper, 'code', 'input#test-totp-code', '012345')
 
@@ -657,7 +657,7 @@ test('<ResetPasswordForm>', async () => {
   const newPassword = 'abc123'
   setInput(wrapper, 'newPassword', 'input#test-reset-password-new-password', newPassword)
   setCheckbox(wrapper, 'loginAfterReset', 'input#test-reset-password-login-after-reset', true)
-  wrapper.find('form#reset-password-form').simulate('submit')
+  wrapper.find('form#test-reset-password-form').simulate('submit')
 
   await waitUntil(wrapper, hasBeenCalled(resetPassword))
 
@@ -753,11 +753,11 @@ test('<GenRecoveryCodesForm>', async () => {
 
   wrapper.find('form#reauth-guard-form').simulate('submit')
 
-  await waitUntil(wrapper, exists('#gen-new-codes-confirm-btn'))
+  await waitUntil(wrapper, exists('button#gen-new-codes-confirm-btn'))
 
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 
-  wrapper.find('#gen-new-codes-confirm-btn').simulate('click')
+  wrapper.find('button#gen-new-codes-confirm-btn').simulate('click')
 
   await waitUntil(wrapper, exists('#pre-codes'))
 

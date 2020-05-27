@@ -2,10 +2,17 @@
 import React, { ChangeEvent, MouseEvent, useState } from 'react'
 import { useQRCode } from 'react-qrcode'
 import { Formik, Form, FormikValues, FormikErrors } from 'formik'
+import { ApolloError } from 'apollo-client'
 
 import jwtDecode from 'jwt-decode'
 
-import { InputComponentType } from './form-util'
+import {
+  useComponents,
+  FormComponents,
+  ButtonType,
+  InputComponentType
+} from './form-util'
+
 import { ErrorMessage } from '../errors'
 import { useAddTotp, useGetTotpKey } from '../totp'
 
@@ -24,37 +31,14 @@ export const QRCode: React.FC<{otpauthUrl: string}> = ({otpauthUrl}) => {
   return <img src={dataUrl} />
 }
 
-export const ManualEntry: React.FC<{token: string}> = ({token}) => {
-  const [reveal, setReveal] = useState(false)
-  const { secretBase32 } = jwtDecode(token)
-  const chunks = secretBase32.match(/.{1,4}/g)
-  const onClick = (e: MouseEvent) => {
-    e.preventDefault()
-    setReveal(true)
-  }
-
-  return <div className="d-flex flex-column align-items-center text-muted">
-    { reveal
-      ? <div>Enter this code into your authenticator app:</div>
-      : <div onClick={onClick}>click for manual entry</div> }
-    { reveal && <div><code>{chunks.join(' ')}</code></div> }
-  </div>
-}
-
-const DefaultCodeInput: InputComponentType = (props) => (
-  <div>
-    <input className="form-control" {...props} />
-  </div>
-)
-
 const TotpTokenForm: React.FC<{
   submit: (code: string) => void,
-  InputComponent?: InputComponentType,
+  InputComponent: InputComponentType,
   idPrefix?: string
 }> = ({
   submit,
   idPrefix,
-  InputComponent = DefaultCodeInput
+  InputComponent
 }) => {
 
   const initialValues = {
@@ -72,9 +56,8 @@ const TotpTokenForm: React.FC<{
     submit(values.code)
   }
 
-  return <div>
-    <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
-    {({values, handleChange, submitForm, resetForm}) => {
+  return <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
+    {({values, handleChange, submitForm, resetForm, getFieldProps}) => {
 
       const handleChangeWrapper = (e: ChangeEvent<HTMLInputElement>) => {
         if (/^[0-9]{0,6}$/.test(e.target.value)) {
@@ -84,29 +67,29 @@ const TotpTokenForm: React.FC<{
           submitForm()
         }
       }
-      return <>
-        <Form>
-          <InputComponent
-            type="text" name="code"
-            onChange={handleChangeWrapper}
-            value={values.code}
-            id={getId(idPrefix, "totp-code")}
-            required autoFocus />
-        </Form>
-      </>
+      return <Form>
+        <InputComponent
+          type="text"
+          id={getId(idPrefix, "totp-code")}
+          required autoFocus
+          {...getFieldProps('code')}
+          onChange={handleChangeWrapper}
+        />
+      </Form>
     }}
-    </Formik>
-  </div>
+  </Formik>
 }
 
 const RecoveryCodeForm: React.FC<{
   submit: (code: string) => void,
-  InputComponent?: InputComponentType,
+  InputComponent: InputComponentType,
+  Button: ButtonType,
   idPrefix?: string
 }> = ({
   submit,
   idPrefix,
-  InputComponent = DefaultCodeInput
+  InputComponent,
+  Button
 }) => {
 
   const initialValues = {
@@ -124,9 +107,8 @@ const RecoveryCodeForm: React.FC<{
     submit(values.code)
   }
 
-  return <div className="w-100 d-flex justify-content-center">
-    <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
-    {({values, handleChange, submitForm, resetForm}) => {
+  return <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
+    {({values, handleChange, submitForm, resetForm, getFieldProps}) => {
       const handleChangeWrapper = (e: ChangeEvent<HTMLInputElement>) => {
         const { selectionStart, selectionEnd } = e.target
         const upper = e.target.value.toUpperCase()
@@ -142,35 +124,44 @@ const RecoveryCodeForm: React.FC<{
         }
       }
       return <>
-        <Form className="w-100 d-flex flex-column align-items-center">
+        <Form>
           <InputComponent
-            type="text" name="code"
-            onChange={handleChangeWrapper}
-            value={values.code}
+            type="text"
             id={getId(idPrefix, "recovery-code")}
             required autoFocus
+            {...getFieldProps('code')}
+            onChange={handleChangeWrapper}
           />
-          <button className="btn btn-primary btn-block mb-3" type="submit">
+          <Button role="submit" name="submit-recovery-code" type="submit">
             Submit Recovery Code
-          </button>
+          </Button>
         </Form>
       </>
     }}
-    </Formik>
-  </div>
+  </Formik>
 }
 
 export const MFAForm: React.FC<{
   submit: (code: string) => void,
-  TotpInputComponent?: InputComponentType,
-  RecoveryCodeInputComponent?: InputComponentType,
+  loading: boolean,
+  error?: ApolloError,
+  components?: FormComponents,
   idPrefix?: string
 }> = ({
   submit,
+  loading,
+  error,
   idPrefix,
-  TotpInputComponent = DefaultCodeInput,
-  RecoveryCodeInputComponent = DefaultCodeInput
+  components
 }) => {
+
+  const {
+    LoadingMessageComponent,
+    MFAFormComponent,
+    TotpInputComponent,
+    RecoveryCodeInputComponent,
+    Button
+  } = useComponents(components)
 
   const [recoveryMode, setRecoveryMode] = useState<boolean>(false)
   const [stateKey, setStateKey] = useState<number>(0)
@@ -187,41 +178,61 @@ export const MFAForm: React.FC<{
     setStateKey(stateKey + 1)
   }
 
-  return <>
-    <div className="text-muted p-3">
-      { recoveryMode
-        ? <>Please enter your recovery code:</>
-        : <>Please enter the 6 digit code from your authenticator app:</>
-      }
-    </div>
-    { recoveryMode
-      ? <RecoveryCodeForm key={stateKey} submit={submit} idPrefix={idPrefix}
+  return <MFAFormComponent
+    error={<ErrorMessage error={error} />}
+    loading={loading && <LoadingMessageComponent />}
+    recoveryMode={recoveryMode}
+
+    recoveryCodeInput={
+      <RecoveryCodeForm key={stateKey} submit={submit} idPrefix={idPrefix}
+          Button={Button}
           InputComponent={RecoveryCodeInputComponent} />
-      : <TotpTokenForm key={stateKey} submit={submit} idPrefix={idPrefix}
+    }
+    totpTokenInput={
+      <TotpTokenForm key={stateKey} submit={submit} idPrefix={idPrefix}
           InputComponent={TotpInputComponent} />
     }
-    { recoveryMode
-      ? <button id={getId(idPrefix, "recovery-code-cancel")}
-                className="btn btn-outline-secondary btn-block" onClick={exitRecoveryMode}>
-          Cancel
-        </button>
-      : <button id={getId(idPrefix, "recovery-code-button")}
-                className="my-3 btn btn-outline-secondary" onClick={enterRecoveryMode}>
-          I need to use a 2FA recovery code
-        </button>
+
+    enterRecoveryModeButton={
+      <Button
+        role='secondary' name='enter-recovery-mode'
+        id={getId(idPrefix, "recovery-code-button")}
+        onClick={enterRecoveryMode}
+      >
+        I need to use a 2FA recovery code
+      </Button>
     }
-  </>
+
+    exitRecoveryModeButton={
+      <Button
+        role="cancel" name="exit-recovery-mode"
+        id={getId(idPrefix, "recovery-code-cancel")}
+        onClick={exitRecoveryMode}
+      >
+        Cancel
+      </Button>
+    }
+  />
 }
+MFAForm.displayName = 'MFAForm'
 
 export const AddTotpForm: React.FC<{
   idPrefix?: string,
   onSuccess?: () => void,
+  components?: FormComponents
   inputComponent?: InputComponentType
 }> = ({
   idPrefix,
   onSuccess,
-  inputComponent: TotpInputComponent = DefaultCodeInput
+  components
 }) => {
+
+  const {
+    AddTotpFormComponent,
+    TotpInputComponent,
+    LoadingMessageComponent
+  } = useComponents(components)
+
   const { loading, error, otpauthUrl, token } = useGetTotpKey()
 
   const [submit, { success, loading: mutLoading, error: mutError }] = useAddTotp({
@@ -245,27 +256,20 @@ export const AddTotpForm: React.FC<{
     submit({ code, token })
   }
 
-  if (success) {
-    return <div className="alert alert-success mt-3">
-      Your authenticator app has been successfully configured.
-      You will need your authenticator app in order to log in to
-      your account from now on.
-    </div>
-  }
-
-  return <div>
-    <div className="d-flex flex-column align-items-center">
-      <div>1. Scan this QRCode with your authenticator app</div>
-      <div><QRCode otpauthUrl={otpauthUrl} /></div>
-      <ManualEntry token={token} />
-      <div>2. Then, enter the 6 digit code from the authenticator app here:</div>
-      <ErrorMessage error={mutError} />
+  const { secretBase32 } = jwtDecode(token)
+  const textCode = secretBase32.match(/.{1,4}/g).join(' ')
+  return <AddTotpFormComponent
+    success={success}
+    error={<ErrorMessage error={mutError} />}
+    loading={mutLoading && <LoadingMessageComponent/>}
+    qrCode={<QRCode otpauthUrl={otpauthUrl} />}
+    textCode={textCode}
+    totpTokenForm={
       <TotpTokenForm
         idPrefix={idPrefix}
         InputComponent={TotpInputComponent}
         submit={submitCode}
       />
-      { mutLoading && <div>Please wait...</div> }
-    </div>
-  </div>
+    }
+  />
 }

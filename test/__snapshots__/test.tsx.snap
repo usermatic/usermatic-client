@@ -8,7 +8,24 @@ exports[`<AddTotpForm> 1`] = `
     idPrefix="test"
     onSuccess={[MockFunction onSuccess]}
   >
-    <div>
+    <DefaultAddTotpFormComponent
+      error={<ErrorMessage />}
+      loading={false}
+      qrCode={
+        <Unknown
+          otpauthUrl="/url"
+        />
+      }
+      success={false}
+      textCode="H8AU H2N4 XYKM NUUO"
+      totpTokenForm={
+        <TotpTokenForm
+          InputComponent={[Function]}
+          idPrefix="test"
+          submit={[Function]}
+        />
+      }
+    >
       <div
         className="d-flex flex-column align-items-center"
       >
@@ -24,19 +41,15 @@ exports[`<AddTotpForm> 1`] = `
             />
           </Component>
         </div>
-        <Component
-          token="eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJhcHBJZCI6IjI0OGU1NDczLWQ5YTYtNDQ4Ny05MTY0LTI0YzMwNTJkMjg5OCIsInNlY3JldEJhc2UzMiI6Ikg4QVVIMk40WFlLTU5VVU8iLCJpYXQiOjEwMDB9."
+        <div
+          className="d-flex flex-column align-items-center text-muted"
         >
           <div
-            className="d-flex flex-column align-items-center text-muted"
+            onClick={[Function]}
           >
-            <div
-              onClick={[Function]}
-            >
-              click for manual entry
-            </div>
+            click for manual entry
           </div>
-        </Component>
+        </div>
         <div>
           2. Then, enter the 6 digit code from the authenticator app here:
         </div>
@@ -46,51 +59,51 @@ exports[`<AddTotpForm> 1`] = `
           idPrefix="test"
           submit={[Function]}
         >
-          <div>
-            <Formik
-              initialValues={
-                Object {
-                  "code": "",
-                }
+          <Formik
+            initialValues={
+              Object {
+                "code": "",
               }
-              onSubmit={[Function]}
-              validate={[Function]}
-            >
-              <Form>
-                <form
-                  action="#"
-                  onReset={[Function]}
-                  onSubmit={[Function]}
+            }
+            onSubmit={[Function]}
+            validate={[Function]}
+          >
+            <Form>
+              <form
+                action="#"
+                onReset={[Function]}
+                onSubmit={[Function]}
+              >
+                <DefaultCodeInput
+                  autoFocus={true}
+                  id="test-totp-code"
+                  name="code"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  required={true}
+                  type="text"
+                  value=""
                 >
-                  <DefaultCodeInput
-                    autoFocus={true}
-                    id="test-totp-code"
-                    name="code"
-                    onChange={[Function]}
-                    required={true}
-                    type="text"
-                    value=""
-                  >
-                    <div>
-                      <input
-                        autoFocus={true}
-                        className="form-control"
-                        id="test-totp-code"
-                        name="code"
-                        onChange={[Function]}
-                        required={true}
-                        type="text"
-                        value=""
-                      />
-                    </div>
-                  </DefaultCodeInput>
-                </form>
-              </Form>
-            </Formik>
-          </div>
+                  <div>
+                    <input
+                      autoFocus={true}
+                      className="form-control"
+                      id="test-totp-code"
+                      name="code"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      required={true}
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </DefaultCodeInput>
+              </form>
+            </Form>
+          </Formik>
         </TotpTokenForm>
       </div>
-    </div>
+    </DefaultAddTotpFormComponent>
   </Component>
 </div>
 `;
@@ -115,11 +128,30 @@ exports[`<AddTotpForm> 2`] = `
       }
     }
   >
-    <div
-      className="alert alert-success mt-3"
+    <DefaultAddTotpFormComponent
+      error={<ErrorMessage />}
+      loading={false}
+      qrCode={
+        <Unknown
+          otpauthUrl="/url"
+        />
+      }
+      success={true}
+      textCode="H8AU H2N4 XYKM NUUO"
+      totpTokenForm={
+        <TotpTokenForm
+          InputComponent={[Function]}
+          idPrefix="test"
+          submit={[Function]}
+        />
+      }
     >
-      Your authenticator app has been successfully configured. You will need your authenticator app in order to log in to your account from now on.
-    </div>
+      <div
+        className="alert alert-success mt-3"
+      >
+        Your authenticator app has been successfully configured. You will need your authenticator app in order to log in to your account from now on.
+      </div>
+    </DefaultAddTotpFormComponent>
   </Component>
 </div>
 `;
@@ -156,84 +188,131 @@ exports[`<ChangePasswordForm> with password 1`] = `
       onSubmit={[Function]}
       validate={[Function]}
     >
-      <Form>
+      <DefaultChangePasswordForm
+        error={<ErrorMessage />}
+        formProps={
+          Object {
+            "onReset": [Function],
+            "onSubmit": [Function],
+          }
+        }
+        newPasswordInput={
+          <DefaultInputComponent
+            autoFocus={true}
+            id="test-change-password-new-password"
+            labelText="New Password"
+            name="newPassword"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="New Password"
+            required={true}
+            type="password"
+            value="hunter3"
+          />
+        }
+        oldPasswordInput={
+          <DefaultInputComponent
+            autoFocus={true}
+            id="test-change-password-old-password"
+            labelText="Old Password"
+            name="oldPassword"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Old Password"
+            required={true}
+            type="password"
+            value="hunter2"
+          />
+        }
+        passwordScore={
+          <DebouncedPasswordScore
+            password="hunter3"
+            username="bob@bob.com"
+          />
+        }
+        submitButton={
+          <Unknown
+            disabled={false}
+            name="change-password"
+            role="submit"
+            type="submit"
+          >
+            Change Password
+          </Unknown>
+        }
+      >
         <form
-          action="#"
           onReset={[Function]}
           onSubmit={[Function]}
         >
-          <div
-            className="form-label-group"
+          <DefaultInputComponent
+            autoFocus={true}
+            id="test-change-password-old-password"
+            labelText="Old Password"
+            name="oldPassword"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Old Password"
+            required={true}
+            type="password"
+            value="hunter2"
           >
-            <Component
-              flip={false}
+            <div
+              className="form-label-group"
             >
-              <Field
-                autoFocus={true}
-                className="form-control"
-                id="test-change-password-old-password"
-                key=".0"
-                name="oldPassword"
-                placeholder="Old Password"
-                required={true}
-                type="password"
-              >
-                <input
-                  autoFocus={true}
-                  className="form-control"
-                  id="test-change-password-old-password"
-                  name="oldPassword"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  placeholder="Old Password"
-                  required={true}
-                  type="password"
-                  value="hunter2"
-                />
-              </Field>
               <label
                 htmlFor="test-change-password-old-password"
-                key=".1"
               >
                 Old Password
               </label>
-            </Component>
-          </div>
-          <div
-            className="form-label-group"
-          >
-            <Component
-              flip={false}
-            >
-              <Field
+              <input
+                autoFocus={true}
                 className="form-control"
-                id="test-change-password-new-password"
-                key=".0"
-                name="newPassword"
-                placeholder="New Password"
+                id="test-change-password-old-password"
+                name="oldPassword"
+                onBlur={[Function]}
+                onChange={[Function]}
+                placeholder="Old Password"
                 required={true}
                 type="password"
-              >
-                <input
-                  className="form-control"
-                  id="test-change-password-new-password"
-                  name="newPassword"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  placeholder="New Password"
-                  required={true}
-                  type="password"
-                  value="hunter3"
-                />
-              </Field>
+                value="hunter2"
+              />
+            </div>
+          </DefaultInputComponent>
+          <DefaultInputComponent
+            autoFocus={true}
+            id="test-change-password-new-password"
+            labelText="New Password"
+            name="newPassword"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="New Password"
+            required={true}
+            type="password"
+            value="hunter3"
+          >
+            <div
+              className="form-label-group"
+            >
               <label
                 htmlFor="test-change-password-new-password"
-                key=".1"
               >
                 New Password
               </label>
-            </Component>
-          </div>
+              <input
+                autoFocus={true}
+                className="form-control"
+                id="test-change-password-new-password"
+                name="newPassword"
+                onBlur={[Function]}
+                onChange={[Function]}
+                placeholder="New Password"
+                required={true}
+                type="password"
+                value="hunter3"
+              />
+            </div>
+          </DefaultInputComponent>
           <DebouncedPasswordScore
             password="hunter3"
             username="bob@bob.com"
@@ -243,15 +322,22 @@ exports[`<ChangePasswordForm> with password 1`] = `
               username="bob@bob.com"
             />
           </DebouncedPasswordScore>
-          <button
-            className="btn btn-lg btn-primary "
+          <Component
+            disabled={false}
+            name="change-password"
+            role="submit"
             type="submit"
           >
-            Change Password
-          </button>
+            <button
+              className="btn btn-primary btn-lg"
+              type="submit"
+            >
+              Change Password
+            </button>
+          </Component>
           <ErrorMessage />
         </form>
-      </Form>
+      </DefaultChangePasswordForm>
     </Formik>
   </Component>
 </div>
@@ -289,84 +375,131 @@ exports[`<ChangePasswordForm> without password 1`] = `
       onSubmit={[Function]}
       validate={[Function]}
     >
-      <Form>
+      <DefaultAddPasswordForm
+        emailInput={
+          <DefaultInputComponent
+            autoFocus={true}
+            id="test-change-password-email"
+            labelText="Email"
+            name="email"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Email"
+            required={true}
+            type="email"
+            value="bob@bob.com"
+          />
+        }
+        error={<ErrorMessage />}
+        formProps={
+          Object {
+            "onReset": [Function],
+            "onSubmit": [Function],
+          }
+        }
+        newPasswordInput={
+          <DefaultInputComponent
+            autoFocus={true}
+            id="test-change-password-new-password"
+            labelText="New Password"
+            name="newPassword"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="New Password"
+            required={true}
+            type="password"
+            value="hunter3"
+          />
+        }
+        passwordScore={
+          <DebouncedPasswordScore
+            password="hunter3"
+            username="bob@bob.com"
+          />
+        }
+        submitButton={
+          <Unknown
+            disabled={false}
+            name="set-password"
+            role="submit"
+            type="submit"
+          >
+            Set Password
+          </Unknown>
+        }
+      >
         <form
-          action="#"
           onReset={[Function]}
           onSubmit={[Function]}
         >
-          <div
-            className="form-label-group"
+          <DefaultInputComponent
+            autoFocus={true}
+            id="test-change-password-email"
+            labelText="Email"
+            name="email"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Email"
+            required={true}
+            type="email"
+            value="bob@bob.com"
           >
-            <Component
-              flip={false}
+            <div
+              className="form-label-group"
             >
-              <Field
-                className="form-control"
-                id="test-change-password-email"
-                key=".0"
-                name="email"
-                placeholder="Email"
-                required={true}
-                type="text"
-              >
-                <input
-                  className="form-control"
-                  id="test-change-password-email"
-                  name="email"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  placeholder="Email"
-                  required={true}
-                  type="text"
-                  value="bob@bob.com"
-                />
-              </Field>
               <label
                 htmlFor="test-change-password-email"
-                key=".1"
               >
                 Email
               </label>
-            </Component>
-          </div>
-          <div
-            className="form-label-group"
-          >
-            <Component
-              flip={false}
-            >
-              <Field
+              <input
                 autoFocus={true}
                 className="form-control"
-                id="test-change-password-new-password"
-                key=".0"
-                name="newPassword"
-                placeholder="New Password"
+                id="test-change-password-email"
+                name="email"
+                onBlur={[Function]}
+                onChange={[Function]}
+                placeholder="Email"
                 required={true}
-                type="password"
-              >
-                <input
-                  autoFocus={true}
-                  className="form-control"
-                  id="test-change-password-new-password"
-                  name="newPassword"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  placeholder="New Password"
-                  required={true}
-                  type="password"
-                  value="hunter3"
-                />
-              </Field>
+                type="email"
+                value="bob@bob.com"
+              />
+            </div>
+          </DefaultInputComponent>
+          <DefaultInputComponent
+            autoFocus={true}
+            id="test-change-password-new-password"
+            labelText="New Password"
+            name="newPassword"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="New Password"
+            required={true}
+            type="password"
+            value="hunter3"
+          >
+            <div
+              className="form-label-group"
+            >
               <label
                 htmlFor="test-change-password-new-password"
-                key=".1"
               >
                 New Password
               </label>
-            </Component>
-          </div>
+              <input
+                autoFocus={true}
+                className="form-control"
+                id="test-change-password-new-password"
+                name="newPassword"
+                onBlur={[Function]}
+                onChange={[Function]}
+                placeholder="New Password"
+                required={true}
+                type="password"
+                value="hunter3"
+              />
+            </div>
+          </DefaultInputComponent>
           <DebouncedPasswordScore
             password="hunter3"
             username="bob@bob.com"
@@ -376,15 +509,22 @@ exports[`<ChangePasswordForm> without password 1`] = `
               username="bob@bob.com"
             />
           </DebouncedPasswordScore>
-          <button
-            className="btn btn-lg btn-primary "
+          <Component
+            disabled={false}
+            name="set-password"
+            role="submit"
             type="submit"
           >
-            Set Password
-          </button>
+            <button
+              className="btn btn-primary btn-lg"
+              type="submit"
+            >
+              Set Password
+            </button>
+          </Component>
           <ErrorMessage />
         </form>
-      </Form>
+      </DefaultAddPasswordForm>
     </Formik>
   </Component>
 </div>
@@ -396,7 +536,11 @@ exports[`<GenRecoveryCodesForm> 1`] = `
 >
   <Component>
     <Component
-      prompt={[Function]}
+      prompt={
+        <React.Fragment>
+          Please enter your password to generate new account recovery codes.
+        </React.Fragment>
+      }
       tokenContents={
         Object {
           "operations": Array [
@@ -405,43 +549,86 @@ exports[`<GenRecoveryCodesForm> 1`] = `
         }
       }
     >
-      <div>
-        <ErrorMessage />
-        <Prompt>
-          <div
-            className="mb-3 h4"
-          >
-            Please enter your password to generate new account recovery codes.
-          </div>
-        </Prompt>
-        <Formik
-          initialValues={
+      <Formik
+        initialValues={
+          Object {
+            "password": "",
+          }
+        }
+        onSubmit={[Function]}
+        validate={[Function]}
+      >
+        <DefaultReauthFormComponent
+          cancelButton={
+            <Unknown
+              disabled={false}
+              name="cancel-reauth"
+              onClick={[Function]}
+              role="cancel"
+            >
+              Cancel
+            </Unknown>
+          }
+          error={<ErrorMessage />}
+          formProps={
             Object {
-              "password": "",
+              "id": "reauth-guard-form",
+              "onReset": [Function],
+              "onSubmit": [Function],
             }
           }
-          onSubmit={[Function]}
-          validate={[Function]}
+          passwordInput={
+            <DefaultInputComponent
+              autoFocus={true}
+              id="reauth-guard-password"
+              name="password"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="password"
+              type="password"
+              value=""
+            />
+          }
+          prompt={
+            <React.Fragment>
+              Please enter your password to generate new account recovery codes.
+            </React.Fragment>
+          }
+          submitButton={
+            <Unknown
+              disabled={false}
+              name="submit-reauth"
+              role="submit"
+              type="submit"
+            >
+              Submit
+            </Unknown>
+          }
         >
-          <Form
-            id="reauth-guard-form"
-          >
+          <div>
+            <div
+              className="mb-3"
+            >
+              Please enter your password to generate new account recovery codes.
+            </div>
             <form
-              action="#"
               id="reauth-guard-form"
               onReset={[Function]}
               onSubmit={[Function]}
             >
-              <div
-                className="form-label-group"
+              <ErrorMessage />
+              <DefaultInputComponent
+                autoFocus={true}
+                id="reauth-guard-password"
+                name="password"
+                onBlur={[Function]}
+                onChange={[Function]}
+                placeholder="password"
+                type="password"
+                value=""
               >
-                <Field
-                  autoFocus={true}
-                  className="form-control"
-                  id="reauth-guard-password"
-                  name="password"
-                  placeholder="password"
-                  type="password"
+                <div
+                  className="form-label-group"
                 >
                   <input
                     autoFocus={true}
@@ -454,28 +641,42 @@ exports[`<GenRecoveryCodesForm> 1`] = `
                     type="password"
                     value=""
                   />
-                </Field>
-              </div>
+                </div>
+              </DefaultInputComponent>
               <div
                 className="d-flex justify-content-between"
               >
-                <button
-                  className="btn btn-primary"
+                <Component
+                  disabled={false}
+                  name="submit-reauth"
+                  role="submit"
                   type="submit"
                 >
-                  Submit
-                </button>
-                <button
-                  className="btn btn-secondary"
+                  <button
+                    className="btn btn-primary"
+                    type="submit"
+                  >
+                    Submit
+                  </button>
+                </Component>
+                <Component
+                  disabled={false}
+                  name="cancel-reauth"
                   onClick={[Function]}
+                  role="cancel"
                 >
-                  Cancel
-                </button>
+                  <button
+                    className="btn btn-outline-secondary"
+                    onClick={[Function]}
+                  >
+                    Cancel
+                  </button>
+                </Component>
               </div>
             </form>
-          </Form>
-        </Formik>
-      </div>
+          </div>
+        </DefaultReauthFormComponent>
+      </Formik>
     </Component>
   </Component>
 </div>
@@ -487,7 +688,11 @@ exports[`<GenRecoveryCodesForm> 2`] = `
 >
   <Component>
     <Component
-      prompt={[Function]}
+      prompt={
+        <React.Fragment>
+          Please enter your password to generate new account recovery codes.
+        </React.Fragment>
+      }
       tokenContents={
         Object {
           "operations": Array [
@@ -500,22 +705,42 @@ exports[`<GenRecoveryCodesForm> 2`] = `
         codeCount={10}
         onSuccess={[Function]}
       >
-        <div
-          className="d-flex flex-column align-items-center"
+        <DefaultRecoveryCodeRegenerationPromptComponent
+          confirmButton={
+            <Unknown
+              id="gen-new-codes-confirm-btn"
+              name="regenerate-recovery-codes"
+              onClick={[Function]}
+              role="danger"
+            >
+              Invalidate my old codes and create new ones.
+            </Unknown>
+          }
         >
           <div
-            className="alert alert-warning"
+            className="d-flex flex-column align-items-center"
           >
-            Warning: After you generate new codes, your old codes will no longer work. Make sure you store the new codes securely.
+            <div
+              className="alert alert-warning"
+            >
+              Warning: After you generate new codes, your old codes will no longer work. Make sure you store the new codes securely.
+            </div>
+            <Component
+              id="gen-new-codes-confirm-btn"
+              name="regenerate-recovery-codes"
+              onClick={[Function]}
+              role="danger"
+            >
+              <button
+                className="btn btn-danger"
+                id="gen-new-codes-confirm-btn"
+                onClick={[Function]}
+              >
+                Invalidate my old codes and create new ones.
+              </button>
+            </Component>
           </div>
-          <button
-            className="btn btn-danger"
-            id="gen-new-codes-confirm-btn"
-            onClick={[Function]}
-          >
-            Invalidate my old codes and create new ones.
-          </button>
-        </div>
+        </DefaultRecoveryCodeRegenerationPromptComponent>
       </GenRecoveryCodesFormInner>
     </Component>
   </Component>
@@ -528,7 +753,11 @@ exports[`<GenRecoveryCodesForm> 3`] = `
 >
   <Component>
     <Component
-      prompt={[Function]}
+      prompt={
+        <React.Fragment>
+          Please enter your password to generate new account recovery codes.
+        </React.Fragment>
+      }
       tokenContents={
         Object {
           "operations": Array [
@@ -541,8 +770,22 @@ exports[`<GenRecoveryCodesForm> 3`] = `
         codeCount={10}
         onSuccess={[Function]}
       >
-        <div>
-          <ErrorMessage />
+        <Component
+          codes={
+            Array [
+              "ACDF-01AB-234A",
+              "ACDF-01AB-234A",
+              "ACDF-01AB-234A",
+              "ACDF-01AB-234A",
+              "ACDF-01AB-234A",
+              "ACDF-01AB-234A",
+              "ACDF-01AB-234A",
+              "ACDF-01AB-234A",
+              "ACDF-01AB-234A",
+              "ACDF-01AB-234A",
+            ]
+          }
+        >
           <div
             className="p-5"
           >
@@ -567,7 +810,7 @@ ACDF-01AB-234A
             </div>
             You will not be able to view these codes again later. If you lose them, you can generate new ones.
           </div>
-        </div>
+        </Component>
       </GenRecoveryCodesFormInner>
     </Component>
   </Component>
@@ -583,7 +826,6 @@ exports[`<LoginForm> TOTP 1`] = `
     onLogin={[MockFunction onLogin]}
   >
     <SocialButtons
-      className="my-3"
       popupWindow={
         Object {
           "close": [Function],
@@ -602,125 +844,210 @@ exports[`<LoginForm> TOTP 1`] = `
       onSubmit={[Function]}
       validate={[Function]}
     >
-      <Form>
+      <DefaultPasswordForm
+        emailInput={
+          <DefaultInputComponent
+            autoFocus={true}
+            id="test-login-email"
+            labelText="Email address"
+            name="email"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Email address"
+            required={true}
+            type="email"
+            value=""
+          />
+        }
+        error={<ErrorMessage />}
+        forgotPasswordButton={
+          <Unknown
+            id="forgot-pw-button"
+            name="forgot-password"
+            onClick={[Function]}
+            role="secondary"
+            type="button"
+          >
+            Forgot Password?
+          </Unknown>
+        }
+        formProps={
+          Object {
+            "onReset": [Function],
+            "onSubmit": [Function],
+          }
+        }
+        passwordInput={
+          <DefaultInputComponent
+            id="test-login-password"
+            labelText="Password"
+            name="password"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Password"
+            required={true}
+            type="password"
+            value=""
+          />
+        }
+        signinButton={
+          <Unknown
+            id="login-button"
+            name="login"
+            role="submit"
+            type="submit"
+          >
+            Sign in
+          </Unknown>
+        }
+        stayLoggedInInput={
+          <DefaultCheckboxComponent
+            id="test-login-stay-logged-in"
+            labelText="Remember me"
+            name="stayLoggedIn"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="checkbox"
+            value={false}
+          />
+        }
+      >
         <form
-          action="#"
           onReset={[Function]}
           onSubmit={[Function]}
         >
-          <div
-            className="form-label-group mb-2"
+          <DefaultInputComponent
+            autoFocus={true}
+            id="test-login-email"
+            labelText="Email address"
+            name="email"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Email address"
+            required={true}
+            type="email"
+            value=""
           >
-            <Component
-              flip={true}
+            <div
+              className="form-label-group"
             >
               <label
                 htmlFor="test-login-email"
-                key=".1"
               >
                 Email address
               </label>
-              <Field
+              <input
                 autoFocus={true}
                 className="form-control"
                 id="test-login-email"
-                key=".0"
                 name="email"
+                onBlur={[Function]}
+                onChange={[Function]}
                 placeholder="Email address"
                 required={true}
                 type="email"
-              >
-                <input
-                  autoFocus={true}
-                  className="form-control"
-                  id="test-login-email"
-                  name="email"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  placeholder="Email address"
-                  required={true}
-                  type="email"
-                  value=""
-                />
-              </Field>
-            </Component>
-          </div>
-          <div
-            className="form-label-group mb-2"
+                value=""
+              />
+            </div>
+          </DefaultInputComponent>
+          <DefaultInputComponent
+            id="test-login-password"
+            labelText="Password"
+            name="password"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Password"
+            required={true}
+            type="password"
+            value=""
           >
-            <Component
-              flip={true}
+            <div
+              className="form-label-group"
             >
               <label
                 htmlFor="test-login-password"
-                key=".1"
               >
                 Password
               </label>
-              <Field
+              <input
                 className="form-control"
                 id="test-login-password"
-                key=".0"
                 name="password"
+                onBlur={[Function]}
+                onChange={[Function]}
                 placeholder="Password"
                 required={true}
                 type="password"
-              >
-                <input
-                  className="form-control"
-                  id="test-login-password"
-                  name="password"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  placeholder="Password"
-                  required={true}
-                  type="password"
-                  value=""
-                />
-              </Field>
-            </Component>
-          </div>
-          <div
-            className="custom-control custom-checkbox mb-2"
+                value=""
+              />
+            </div>
+          </DefaultInputComponent>
+          <DefaultCheckboxComponent
+            id="test-login-stay-logged-in"
+            labelText="Remember me"
+            name="stayLoggedIn"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="checkbox"
+            value={false}
           >
-            <input
-              className="custom-control-input"
-              id="test-login-stay-logged-in"
-              name="stayLoggedIn"
-              onBlur={[Function]}
-              onChange={[Function]}
-              type="checkbox"
-              value={false}
-            />
-            <label
-              className="custom-control-label"
-              htmlFor="test-login-stay-logged-in"
+            <div
+              className="custom-control custom-checkbox"
             >
-              Remember me
-            </label>
-          </div>
+              <input
+                className="custom-control-input"
+                id="test-login-stay-logged-in"
+                name="stayLoggedIn"
+                onBlur={[Function]}
+                onChange={[Function]}
+                type="checkbox"
+                value={false}
+              />
+              <label
+                className="custom-control-label"
+                htmlFor="test-login-stay-logged-in"
+              >
+                Remember me
+              </label>
+            </div>
+          </DefaultCheckboxComponent>
           <div
             className="mb-3 justify-content-between d-flex"
           >
-            <button
-              className="btn btn-primary"
+            <Component
               id="login-button"
+              name="login"
+              role="submit"
               type="submit"
             >
-              Sign in
-            </button>
-            <button
-              className="btn btn-outline-primary"
+              <button
+                className="btn btn-primary"
+                id="login-button"
+                type="submit"
+              >
+                Sign in
+              </button>
+            </Component>
+            <Component
               id="forgot-pw-button"
+              name="forgot-password"
               onClick={[Function]}
+              role="secondary"
               type="button"
             >
-              Forgot Password?
-            </button>
+              <button
+                className="btn btn-outline-primary"
+                id="forgot-pw-button"
+                onClick={[Function]}
+                type="button"
+              >
+                Forgot Password?
+              </button>
+            </Component>
           </div>
           <ErrorMessage />
         </form>
-      </Form>
+      </DefaultPasswordForm>
     </Formik>
   </Component>
 </div>
@@ -734,20 +1061,55 @@ exports[`<LoginForm> TOTP 2`] = `
     idPrefix="test"
     onLogin={[MockFunction onLogin]}
   >
-    <TOTPFlow
-      error={[Error: GraphQL error: totp required]}
+    <MFAForm
       idPrefix="test"
       loading={false}
       submit={[Function]}
-      totpRequired={true}
     >
-      <div
-        className="d-flex flex-column align-items-center"
+      <DefaultMFAForm
+        enterRecoveryModeButton={
+          <Unknown
+            id="test-recovery-code-button"
+            name="enter-recovery-mode"
+            onClick={[Function]}
+            role="secondary"
+          >
+            I need to use a 2FA recovery code
+          </Unknown>
+        }
+        error={<ErrorMessage />}
+        exitRecoveryModeButton={
+          <Unknown
+            id="test-recovery-code-cancel"
+            name="exit-recovery-mode"
+            onClick={[Function]}
+            role="cancel"
+          >
+            Cancel
+          </Unknown>
+        }
+        loading={false}
+        recoveryCodeInput={
+          <RecoveryCodeForm
+            Button={[Function]}
+            InputComponent={[Function]}
+            idPrefix="test"
+            submit={[Function]}
+          />
+        }
+        recoveryMode={false}
+        totpTokenInput={
+          <TotpTokenForm
+            InputComponent={[Function]}
+            idPrefix="test"
+            submit={[Function]}
+          />
+        }
       >
-        <Component
-          idPrefix="test"
-          submit={[Function]}
+        <div
+          className="d-flex flex-column align-items-center"
         >
+          <ErrorMessage />
           <div
             className="text-muted p-3"
           >
@@ -759,59 +1121,66 @@ exports[`<LoginForm> TOTP 2`] = `
             key="0"
             submit={[Function]}
           >
-            <div>
-              <Formik
-                initialValues={
-                  Object {
-                    "code": "",
-                  }
+            <Formik
+              initialValues={
+                Object {
+                  "code": "",
                 }
-                onSubmit={[Function]}
-                validate={[Function]}
-              >
-                <Form>
-                  <form
-                    action="#"
-                    onReset={[Function]}
-                    onSubmit={[Function]}
+              }
+              onSubmit={[Function]}
+              validate={[Function]}
+            >
+              <Form>
+                <form
+                  action="#"
+                  onReset={[Function]}
+                  onSubmit={[Function]}
+                >
+                  <DefaultCodeInput
+                    autoFocus={true}
+                    id="test-totp-code"
+                    name="code"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    required={true}
+                    type="text"
+                    value=""
                   >
-                    <DefaultCodeInput
-                      autoFocus={true}
-                      id="test-totp-code"
-                      name="code"
-                      onChange={[Function]}
-                      required={true}
-                      type="text"
-                      value=""
-                    >
-                      <div>
-                        <input
-                          autoFocus={true}
-                          className="form-control"
-                          id="test-totp-code"
-                          name="code"
-                          onChange={[Function]}
-                          required={true}
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                    </DefaultCodeInput>
-                  </form>
-                </Form>
-              </Formik>
-            </div>
+                    <div>
+                      <input
+                        autoFocus={true}
+                        className="form-control"
+                        id="test-totp-code"
+                        name="code"
+                        onBlur={[Function]}
+                        onChange={[Function]}
+                        required={true}
+                        type="text"
+                        value=""
+                      />
+                    </div>
+                  </DefaultCodeInput>
+                </form>
+              </Form>
+            </Formik>
           </TotpTokenForm>
-          <button
-            className="my-3 btn btn-outline-secondary"
+          <Component
             id="test-recovery-code-button"
+            name="enter-recovery-mode"
             onClick={[Function]}
+            role="secondary"
           >
-            I need to use a 2FA recovery code
-          </button>
-        </Component>
-      </div>
-    </TOTPFlow>
+            <button
+              className="btn btn-outline-primary"
+              id="test-recovery-code-button"
+              onClick={[Function]}
+            >
+              I need to use a 2FA recovery code
+            </button>
+          </Component>
+        </div>
+      </DefaultMFAForm>
+    </MFAForm>
   </Component>
 </div>
 `;
@@ -824,95 +1193,147 @@ exports[`<LoginForm> TOTP 3`] = `
     idPrefix="test"
     onLogin={[MockFunction onLogin]}
   >
-    <TOTPFlow
-      error={[Error: GraphQL error: totp required]}
+    <MFAForm
       idPrefix="test"
       loading={false}
       submit={[Function]}
-      totpRequired={true}
     >
-      <div
-        className="d-flex flex-column align-items-center"
+      <DefaultMFAForm
+        enterRecoveryModeButton={
+          <Unknown
+            id="test-recovery-code-button"
+            name="enter-recovery-mode"
+            onClick={[Function]}
+            role="secondary"
+          >
+            I need to use a 2FA recovery code
+          </Unknown>
+        }
+        error={<ErrorMessage />}
+        exitRecoveryModeButton={
+          <Unknown
+            id="test-recovery-code-cancel"
+            name="exit-recovery-mode"
+            onClick={[Function]}
+            role="cancel"
+          >
+            Cancel
+          </Unknown>
+        }
+        loading={false}
+        recoveryCodeInput={
+          <RecoveryCodeForm
+            Button={[Function]}
+            InputComponent={[Function]}
+            idPrefix="test"
+            submit={[Function]}
+          />
+        }
+        recoveryMode={true}
+        totpTokenInput={
+          <TotpTokenForm
+            InputComponent={[Function]}
+            idPrefix="test"
+            submit={[Function]}
+          />
+        }
       >
-        <Component
-          idPrefix="test"
-          submit={[Function]}
+        <div
+          className="d-flex flex-column align-items-center"
         >
+          <ErrorMessage />
           <div
             className="text-muted p-3"
           >
             Please enter your recovery code:
           </div>
-          <RecoveryCodeForm
-            InputComponent={[Function]}
-            idPrefix="test"
-            key="1"
-            submit={[Function]}
+          <div
+            className="w-100 d-flex justify-content-center"
           >
             <div
-              className="w-100 d-flex justify-content-center"
+              className="w-100 d-flex flex-column align-items-center"
             >
-              <Formik
-                initialValues={
-                  Object {
-                    "code": "",
-                  }
-                }
-                onSubmit={[Function]}
-                validate={[Function]}
+              <RecoveryCodeForm
+                Button={[Function]}
+                InputComponent={[Function]}
+                idPrefix="test"
+                key="1"
+                submit={[Function]}
               >
-                <Form
-                  className="w-100 d-flex flex-column align-items-center"
+                <Formik
+                  initialValues={
+                    Object {
+                      "code": "",
+                    }
+                  }
+                  onSubmit={[Function]}
+                  validate={[Function]}
                 >
-                  <form
-                    action="#"
-                    className="w-100 d-flex flex-column align-items-center"
-                    onReset={[Function]}
-                    onSubmit={[Function]}
-                  >
-                    <DefaultCodeInput
-                      autoFocus={true}
-                      id="test-recovery-code"
-                      name="code"
-                      onChange={[Function]}
-                      required={true}
-                      type="text"
-                      value=""
+                  <Form>
+                    <form
+                      action="#"
+                      onReset={[Function]}
+                      onSubmit={[Function]}
                     >
-                      <div>
-                        <input
-                          autoFocus={true}
-                          className="form-control"
-                          id="test-recovery-code"
-                          name="code"
-                          onChange={[Function]}
-                          required={true}
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                    </DefaultCodeInput>
-                    <button
-                      className="btn btn-primary btn-block mb-3"
-                      type="submit"
-                    >
-                      Submit Recovery Code
-                    </button>
-                  </form>
-                </Form>
-              </Formik>
+                      <DefaultCodeInput
+                        autoFocus={true}
+                        id="test-recovery-code"
+                        name="code"
+                        onBlur={[Function]}
+                        onChange={[Function]}
+                        required={true}
+                        type="text"
+                        value=""
+                      >
+                        <div>
+                          <input
+                            autoFocus={true}
+                            className="form-control"
+                            id="test-recovery-code"
+                            name="code"
+                            onBlur={[Function]}
+                            onChange={[Function]}
+                            required={true}
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </DefaultCodeInput>
+                      <Component
+                        name="submit-recovery-code"
+                        role="submit"
+                        type="submit"
+                      >
+                        <button
+                          className="btn btn-primary btn-block"
+                          type="submit"
+                        >
+                          Submit Recovery Code
+                        </button>
+                      </Component>
+                    </form>
+                  </Form>
+                </Formik>
+              </RecoveryCodeForm>
             </div>
-          </RecoveryCodeForm>
-          <button
-            className="btn btn-outline-secondary btn-block"
+          </div>
+          <Component
             id="test-recovery-code-cancel"
+            name="exit-recovery-mode"
             onClick={[Function]}
+            role="cancel"
           >
-            Cancel
-          </button>
-        </Component>
-      </div>
-    </TOTPFlow>
+            <button
+              className="btn btn-outline-secondary btn-block"
+              id="test-recovery-code-cancel"
+              onClick={[Function]}
+            >
+              Cancel
+            </button>
+          </Component>
+        </div>
+      </DefaultMFAForm>
+    </MFAForm>
   </Component>
 </div>
 `;
@@ -938,7 +1359,6 @@ exports[`<LoginForm> login 1`] = `
     }
   >
     <SocialButtons
-      className="my-3"
       popupWindow={
         Object {
           "close": [Function],
@@ -957,124 +1377,207 @@ exports[`<LoginForm> login 1`] = `
       onSubmit={[Function]}
       validate={[Function]}
     >
-      <Form>
+      <DefaultPasswordForm
+        emailInput={
+          <DefaultInputComponent
+            autoFocus={true}
+            id="test-login-email"
+            labelText="Email address"
+            name="email"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Email address"
+            required={true}
+            type="email"
+            value="bob@bob.com"
+          />
+        }
+        error={<ErrorMessage />}
+        forgotPasswordButton={
+          <Unknown
+            id="forgot-pw-button"
+            name="forgot-password"
+            onClick={[Function]}
+            role="secondary"
+            type="button"
+          >
+            Forgot Password?
+          </Unknown>
+        }
+        formProps={
+          Object {
+            "onReset": [Function],
+            "onSubmit": [Function],
+          }
+        }
+        passwordInput={
+          <DefaultInputComponent
+            id="test-login-password"
+            labelText="Password"
+            name="password"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Password"
+            required={true}
+            type="password"
+            value="hunter2"
+          />
+        }
+        signinButton={
+          <Unknown
+            id="login-button"
+            name="login"
+            role="submit"
+            type="submit"
+          >
+            Sign in
+          </Unknown>
+        }
+        stayLoggedInInput={
+          <DefaultCheckboxComponent
+            id="test-login-stay-logged-in"
+            labelText="Remember me"
+            name="stayLoggedIn"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="checkbox"
+          />
+        }
+      >
         <form
-          action="#"
           onReset={[Function]}
           onSubmit={[Function]}
         >
-          <div
-            className="form-label-group mb-2"
+          <DefaultInputComponent
+            autoFocus={true}
+            id="test-login-email"
+            labelText="Email address"
+            name="email"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Email address"
+            required={true}
+            type="email"
+            value="bob@bob.com"
           >
-            <Component
-              flip={true}
+            <div
+              className="form-label-group"
             >
               <label
                 htmlFor="test-login-email"
-                key=".1"
               >
                 Email address
               </label>
-              <Field
+              <input
                 autoFocus={true}
                 className="form-control"
                 id="test-login-email"
-                key=".0"
                 name="email"
+                onBlur={[Function]}
+                onChange={[Function]}
                 placeholder="Email address"
                 required={true}
                 type="email"
-              >
-                <input
-                  autoFocus={true}
-                  className="form-control"
-                  id="test-login-email"
-                  name="email"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  placeholder="Email address"
-                  required={true}
-                  type="email"
-                  value="bob@bob.com"
-                />
-              </Field>
-            </Component>
-          </div>
-          <div
-            className="form-label-group mb-2"
+                value="bob@bob.com"
+              />
+            </div>
+          </DefaultInputComponent>
+          <DefaultInputComponent
+            id="test-login-password"
+            labelText="Password"
+            name="password"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Password"
+            required={true}
+            type="password"
+            value="hunter2"
           >
-            <Component
-              flip={true}
+            <div
+              className="form-label-group"
             >
               <label
                 htmlFor="test-login-password"
-                key=".1"
               >
                 Password
               </label>
-              <Field
+              <input
                 className="form-control"
                 id="test-login-password"
-                key=".0"
                 name="password"
+                onBlur={[Function]}
+                onChange={[Function]}
                 placeholder="Password"
                 required={true}
                 type="password"
-              >
-                <input
-                  className="form-control"
-                  id="test-login-password"
-                  name="password"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  placeholder="Password"
-                  required={true}
-                  type="password"
-                  value="hunter2"
-                />
-              </Field>
-            </Component>
-          </div>
-          <div
-            className="custom-control custom-checkbox mb-2"
+                value="hunter2"
+              />
+            </div>
+          </DefaultInputComponent>
+          <DefaultCheckboxComponent
+            id="test-login-stay-logged-in"
+            labelText="Remember me"
+            name="stayLoggedIn"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="checkbox"
           >
-            <input
-              className="custom-control-input"
-              id="test-login-stay-logged-in"
-              name="stayLoggedIn"
-              onBlur={[Function]}
-              onChange={[Function]}
-              type="checkbox"
-            />
-            <label
-              className="custom-control-label"
-              htmlFor="test-login-stay-logged-in"
+            <div
+              className="custom-control custom-checkbox"
             >
-              Remember me
-            </label>
-          </div>
+              <input
+                className="custom-control-input"
+                id="test-login-stay-logged-in"
+                name="stayLoggedIn"
+                onBlur={[Function]}
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <label
+                className="custom-control-label"
+                htmlFor="test-login-stay-logged-in"
+              >
+                Remember me
+              </label>
+            </div>
+          </DefaultCheckboxComponent>
           <div
             className="mb-3 justify-content-between d-flex"
           >
-            <button
-              className="btn btn-primary"
+            <Component
               id="login-button"
+              name="login"
+              role="submit"
               type="submit"
             >
-              Sign in
-            </button>
-            <button
-              className="btn btn-outline-primary"
+              <button
+                className="btn btn-primary"
+                id="login-button"
+                type="submit"
+              >
+                Sign in
+              </button>
+            </Component>
+            <Component
               id="forgot-pw-button"
+              name="forgot-password"
               onClick={[Function]}
+              role="secondary"
               type="button"
             >
-              Forgot Password?
-            </button>
+              <button
+                className="btn btn-outline-primary"
+                id="forgot-pw-button"
+                onClick={[Function]}
+                type="button"
+              >
+                Forgot Password?
+              </button>
+            </Component>
           </div>
           <ErrorMessage />
         </form>
-      </Form>
+      </DefaultPasswordForm>
     </Formik>
   </Component>
 </div>
@@ -1088,7 +1591,6 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
     idPrefix="test"
   >
     <SocialButtons
-      className="my-3"
       popupWindow={
         Object {
           "close": [Function],
@@ -1107,131 +1609,215 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
       onSubmit={[Function]}
       validate={[Function]}
     >
-      <Form>
+      <DefaultPasswordForm
+        emailInput={
+          <DefaultInputComponent
+            autoFocus={true}
+            id="test-login-email"
+            labelText="Email address"
+            name="email"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Email address"
+            required={true}
+            type="email"
+            value=""
+          />
+        }
+        error={<ErrorMessage />}
+        forgotPasswordButton={
+          <Unknown
+            id="forgot-pw-button"
+            name="forgot-password"
+            onClick={[Function]}
+            role="secondary"
+            type="button"
+          >
+            Forgot Password?
+          </Unknown>
+        }
+        formProps={
+          Object {
+            "onReset": [Function],
+            "onSubmit": [Function],
+          }
+        }
+        passwordInput={
+          <DefaultInputComponent
+            id="test-login-password"
+            labelText="Password"
+            name="password"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Password"
+            required={true}
+            type="password"
+            value=""
+          />
+        }
+        signinButton={
+          <Unknown
+            id="login-button"
+            name="login"
+            role="submit"
+            type="submit"
+          >
+            Sign in
+          </Unknown>
+        }
+        stayLoggedInInput={
+          <DefaultCheckboxComponent
+            id="test-login-stay-logged-in"
+            labelText="Remember me"
+            name="stayLoggedIn"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="checkbox"
+            value={false}
+          />
+        }
+      >
         <form
-          action="#"
           onReset={[Function]}
           onSubmit={[Function]}
         >
-          <div
-            className="form-label-group mb-2"
+          <DefaultInputComponent
+            autoFocus={true}
+            id="test-login-email"
+            labelText="Email address"
+            name="email"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Email address"
+            required={true}
+            type="email"
+            value=""
           >
-            <Component
-              flip={true}
+            <div
+              className="form-label-group"
             >
               <label
                 htmlFor="test-login-email"
-                key=".1"
               >
                 Email address
               </label>
-              <Field
+              <input
                 autoFocus={true}
                 className="form-control"
                 id="test-login-email"
-                key=".0"
                 name="email"
+                onBlur={[Function]}
+                onChange={[Function]}
                 placeholder="Email address"
                 required={true}
                 type="email"
-              >
-                <input
-                  autoFocus={true}
-                  className="form-control"
-                  id="test-login-email"
-                  name="email"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  placeholder="Email address"
-                  required={true}
-                  type="email"
-                  value=""
-                />
-              </Field>
-            </Component>
-          </div>
-          <div
-            className="form-label-group mb-2"
+                value=""
+              />
+            </div>
+          </DefaultInputComponent>
+          <DefaultInputComponent
+            id="test-login-password"
+            labelText="Password"
+            name="password"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Password"
+            required={true}
+            type="password"
+            value=""
           >
-            <Component
-              flip={true}
+            <div
+              className="form-label-group"
             >
               <label
                 htmlFor="test-login-password"
-                key=".1"
               >
                 Password
               </label>
-              <Field
+              <input
                 className="form-control"
                 id="test-login-password"
-                key=".0"
                 name="password"
+                onBlur={[Function]}
+                onChange={[Function]}
                 placeholder="Password"
                 required={true}
                 type="password"
-              >
-                <input
-                  className="form-control"
-                  id="test-login-password"
-                  name="password"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  placeholder="Password"
-                  required={true}
-                  type="password"
-                  value=""
-                />
-              </Field>
-            </Component>
-          </div>
-          <div
-            className="custom-control custom-checkbox mb-2"
+                value=""
+              />
+            </div>
+          </DefaultInputComponent>
+          <DefaultCheckboxComponent
+            id="test-login-stay-logged-in"
+            labelText="Remember me"
+            name="stayLoggedIn"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="checkbox"
+            value={false}
           >
-            <input
-              className="custom-control-input"
-              id="test-login-stay-logged-in"
-              name="stayLoggedIn"
-              onBlur={[Function]}
-              onChange={[Function]}
-              type="checkbox"
-              value={false}
-            />
-            <label
-              className="custom-control-label"
-              htmlFor="test-login-stay-logged-in"
+            <div
+              className="custom-control custom-checkbox"
             >
-              Remember me
-            </label>
-          </div>
+              <input
+                className="custom-control-input"
+                id="test-login-stay-logged-in"
+                name="stayLoggedIn"
+                onBlur={[Function]}
+                onChange={[Function]}
+                type="checkbox"
+                value={false}
+              />
+              <label
+                className="custom-control-label"
+                htmlFor="test-login-stay-logged-in"
+              >
+                Remember me
+              </label>
+            </div>
+          </DefaultCheckboxComponent>
           <div
             className="mb-3 justify-content-between d-flex"
           >
-            <button
-              className="btn btn-primary"
+            <Component
               id="login-button"
+              name="login"
+              role="submit"
               type="submit"
             >
-              Sign in
-            </button>
-            <button
-              className="btn btn-outline-primary"
+              <button
+                className="btn btn-primary"
+                id="login-button"
+                type="submit"
+              >
+                Sign in
+              </button>
+            </Component>
+            <Component
               id="forgot-pw-button"
+              name="forgot-password"
               onClick={[Function]}
+              role="secondary"
               type="button"
             >
-              Forgot Password?
-            </button>
+              <button
+                className="btn btn-outline-primary"
+                id="forgot-pw-button"
+                onClick={[Function]}
+                type="button"
+              >
+                Forgot Password?
+              </button>
+            </Component>
           </div>
           <ErrorMessage />
         </form>
-      </Form>
+      </DefaultPasswordForm>
     </Formik>
   </Component>
   <Component>
     <OauthCreateAccount>
       <SocialButtons
-        className="my-3"
         popupWindow={
           Object {
             "close": [Function],
@@ -1250,98 +1836,164 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
         onSubmit={[Function]}
         validate={[Function]}
       >
-        <Form
-          autoComplete="off"
+        <DefaultCreateAccountForm
+          createAccountButton={
+            <Unknown
+              id="create-account-button"
+              name="create-account"
+              role="submit"
+              type="submit"
+            >
+              Create Account
+            </Unknown>
+          }
+          emailInput={
+            <DefaultInputComponent
+              autoFocus={true}
+              id="um3kfiekd-account-creation-email"
+              labelText="Email address"
+              name="email"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="Email address"
+              required={true}
+              type="email"
+              value=""
+            />
+          }
+          error={
+            <ErrorMessage>
+              <ErrorMessageCase
+                code="EMAIL_EXISTS"
+              >
+                An account with the email address 
+                
+                 already exists.
+              </ErrorMessageCase>
+            </ErrorMessage>
+          }
+          formProps={
+            Object {
+              "autoComplete": "off",
+              "onReset": [Function],
+              "onSubmit": [Function],
+            }
+          }
+          passwordInput={
+            <DefaultInputComponent
+              id="um3kfiekd-account-creation-password"
+              labelText="Password"
+              name="password"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="Password"
+              required={true}
+              type="password"
+              value=""
+            />
+          }
+          passwordScore={
+            <DebouncedPasswordScore
+              password=""
+              username=""
+            />
+          }
+          stayLoggedInInput={
+            <DefaultCheckboxComponent
+              id="um3kfiekd-account-creation-stay-logged-in"
+              labelText="Remember me"
+              name="stayLoggedIn"
+              onBlur={[Function]}
+              onChange={[Function]}
+              type="checkbox"
+              value={false}
+            />
+          }
         >
           <form
-            action="#"
             autoComplete="off"
             onReset={[Function]}
             onSubmit={[Function]}
           >
-            <div
-              className="form-label-group mb-2"
+            <DefaultInputComponent
+              autoFocus={true}
+              id="um3kfiekd-account-creation-email"
+              labelText="Email address"
+              name="email"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="Email address"
+              required={true}
+              type="email"
+              value=""
             >
-              <Component
-                flip={true}
+              <div
+                className="form-label-group"
               >
                 <label
                   htmlFor="um3kfiekd-account-creation-email"
-                  key=".1"
                 >
                   Email address
                 </label>
-                <Field
+                <input
                   autoFocus={true}
                   className="form-control"
                   id="um3kfiekd-account-creation-email"
-                  key=".0"
                   name="email"
+                  onBlur={[Function]}
+                  onChange={[Function]}
                   placeholder="Email address"
                   required={true}
                   type="email"
-                >
-                  <input
-                    autoFocus={true}
-                    className="form-control"
-                    id="um3kfiekd-account-creation-email"
-                    name="email"
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    placeholder="Email address"
-                    required={true}
-                    type="email"
-                    value=""
-                  />
-                </Field>
-              </Component>
-            </div>
-            <div
-              className="form-label-group mb-2"
+                  value=""
+                />
+              </div>
+            </DefaultInputComponent>
+            <DefaultInputComponent
+              id="um3kfiekd-account-creation-password"
+              labelText="Password"
+              name="password"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="Password"
+              required={true}
+              type="password"
+              value=""
             >
-              <Component
-                flip={true}
+              <div
+                className="form-label-group"
               >
                 <label
                   htmlFor="um3kfiekd-account-creation-password"
-                  key=".1"
                 >
                   Password
                 </label>
-                <Field
+                <input
                   className="form-control"
                   id="um3kfiekd-account-creation-password"
-                  key=".0"
                   name="password"
+                  onBlur={[Function]}
+                  onChange={[Function]}
                   placeholder="Password"
                   required={true}
                   type="password"
-                >
-                  <input
-                    className="form-control"
-                    id="um3kfiekd-account-creation-password"
-                    name="password"
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    placeholder="Password"
-                    required={true}
-                    type="password"
-                    value=""
-                  />
-                </Field>
-              </Component>
-            </div>
-            <div
-              className="custom-control custom-checkbox mb-2"
+                  value=""
+                />
+              </div>
+            </DefaultInputComponent>
+            <DefaultCheckboxComponent
+              id="um3kfiekd-account-creation-stay-logged-in"
+              labelText="Remember me"
+              name="stayLoggedIn"
+              onBlur={[Function]}
+              onChange={[Function]}
+              type="checkbox"
+              value={false}
             >
-              <Field
-                className="custom-control-input"
-                id="um3kfiekd-account-creation-stay-logged-in"
-                name="stayLoggedIn"
-                type="checkbox"
+              <div
+                className="custom-control custom-checkbox"
               >
                 <input
-                  checked={false}
                   className="custom-control-input"
                   id="um3kfiekd-account-creation-stay-logged-in"
                   name="stayLoggedIn"
@@ -1350,32 +2002,45 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
                   type="checkbox"
                   value={false}
                 />
-              </Field>
-              <label
-                className="custom-control-label"
-                htmlFor="um3kfiekd-account-creation-stay-logged-in"
-              >
-                Remember me
-              </label>
-            </div>
-            <Component
+                <label
+                  className="custom-control-label"
+                  htmlFor="um3kfiekd-account-creation-stay-logged-in"
+                >
+                  Remember me
+                </label>
+              </div>
+            </DefaultCheckboxComponent>
+            <DebouncedPasswordScore
               password=""
               username=""
-            />
+            >
+              <Component
+                password=""
+                username=""
+              />
+            </DebouncedPasswordScore>
             <div
               className="mb-3"
             >
-              <button
-                className="btn btn-primary"
+              <Component
+                id="create-account-button"
+                name="create-account"
+                role="submit"
                 type="submit"
               >
-                Create Account
-              </button>
+                <button
+                  className="btn btn-primary"
+                  id="create-account-button"
+                  type="submit"
+                >
+                  Create Account
+                </button>
+              </Component>
             </div>
           </form>
-        </Form>
+          <ErrorMessage />
+        </DefaultCreateAccountForm>
       </Formik>
-      <UserCreateError />
     </OauthCreateAccount>
   </Component>
 </div>
@@ -1388,99 +2053,149 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
   <Component
     idPrefix="test"
   >
-    <div>
-      <div>
-        Enter your email to get a password reset link.
-      </div>
-      <Component
-        idPrefix="test"
-        labelsFirst={true}
-        onCancel={[Function]}
+    <Component
+      idPrefix="test"
+      onCancel={[Function]}
+    >
+      <Formik
+        initialValues={
+          Object {
+            "email": "",
+          }
+        }
+        onSubmit={[Function]}
+        validate={[Function]}
       >
-        <Formik
-          initialValues={
+        <DefaultForgotPasswordForm
+          cancelButton={
+            <Unknown
+              name="cancel-password-reset"
+              onClick={[Function]}
+              role="cancel"
+              type="button"
+            >
+              Cancel
+            </Unknown>
+          }
+          emailInput={
+            <DefaultInputComponent
+              autoFocus={true}
+              id="test-request-password-reset-email"
+              labelText="Email address"
+              name="email"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="Email address"
+              required={true}
+              type="email"
+              value=""
+            />
+          }
+          error={<ErrorMessage />}
+          formProps={
             Object {
-              "email": "",
+              "id": "test-request-password-reset-form",
+              "onReset": [Function],
+              "onSubmit": [Function],
             }
           }
-          onSubmit={[Function]}
-          validate={[Function]}
+          submitButton={
+            <Unknown
+              id="request-pw-reset-button"
+              name="request-password-reset"
+              role="submit"
+              type="submit"
+            >
+              Submit
+            </Unknown>
+          }
+          successMessage={null}
         >
-          <ErrorMessage />
-          <Form
-            id="test-request-password-reset-form"
-          >
+          <div>
+            <div>
+              Enter your email to get a password reset link.
+            </div>
+            <ErrorMessage />
             <form
-              action="#"
               id="test-request-password-reset-form"
               onReset={[Function]}
               onSubmit={[Function]}
             >
-              <div
-                className="form-label-group mb-2"
+              <DefaultInputComponent
+                autoFocus={true}
+                id="test-request-password-reset-email"
+                labelText="Email address"
+                name="email"
+                onBlur={[Function]}
+                onChange={[Function]}
+                placeholder="Email address"
+                required={true}
+                type="email"
+                value=""
               >
-                <Component
-                  flip={true}
+                <div
+                  className="form-label-group"
                 >
                   <label
                     htmlFor="test-request-password-reset-email"
-                    key=".1"
                   >
                     Email address
                   </label>
-                  <Field
+                  <input
                     autoFocus={true}
                     className="form-control"
                     id="test-request-password-reset-email"
-                    key=".0"
                     name="email"
+                    onBlur={[Function]}
+                    onChange={[Function]}
                     placeholder="Email address"
                     required={true}
                     type="email"
-                  >
-                    <input
-                      autoFocus={true}
-                      className="form-control"
-                      id="test-request-password-reset-email"
-                      name="email"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      placeholder="Email address"
-                      required={true}
-                      type="email"
-                      value=""
-                    />
-                  </Field>
-                </Component>
-              </div>
+                    value=""
+                  />
+                </div>
+              </DefaultInputComponent>
               <div
                 className="d-flex justify-content-between mb-3"
               >
-                <button
-                  className="btn btn-primary "
+                <Component
                   id="request-pw-reset-button"
+                  name="request-password-reset"
+                  role="submit"
                   type="submit"
                 >
-                  Submit
-                </button>
-                <button
-                  className="btn btn-outline-secondary"
+                  <button
+                    className="btn btn-primary"
+                    id="request-pw-reset-button"
+                    type="submit"
+                  >
+                    Submit
+                  </button>
+                </Component>
+                <Component
+                  name="cancel-password-reset"
                   onClick={[Function]}
+                  role="cancel"
                   type="button"
                 >
-                  Cancel
-                </button>
+                  <button
+                    className="btn btn-outline-secondary"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Cancel
+                  </button>
+                </Component>
               </div>
             </form>
-          </Form>
-        </Formik>
-      </Component>
-    </div>
+          </div>
+        </DefaultForgotPasswordForm>
+      </Formik>
+    </Component>
   </Component>
   <Component>
     <OauthCreateAccount>
       <SocialButtons
-        className="my-3"
         popupWindow={
           Object {
             "close": [Function],
@@ -1499,98 +2214,164 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
         onSubmit={[Function]}
         validate={[Function]}
       >
-        <Form
-          autoComplete="off"
+        <DefaultCreateAccountForm
+          createAccountButton={
+            <Unknown
+              id="create-account-button"
+              name="create-account"
+              role="submit"
+              type="submit"
+            >
+              Create Account
+            </Unknown>
+          }
+          emailInput={
+            <DefaultInputComponent
+              autoFocus={true}
+              id="um3kfiekd-account-creation-email"
+              labelText="Email address"
+              name="email"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="Email address"
+              required={true}
+              type="email"
+              value=""
+            />
+          }
+          error={
+            <ErrorMessage>
+              <ErrorMessageCase
+                code="EMAIL_EXISTS"
+              >
+                An account with the email address 
+                
+                 already exists.
+              </ErrorMessageCase>
+            </ErrorMessage>
+          }
+          formProps={
+            Object {
+              "autoComplete": "off",
+              "onReset": [Function],
+              "onSubmit": [Function],
+            }
+          }
+          passwordInput={
+            <DefaultInputComponent
+              id="um3kfiekd-account-creation-password"
+              labelText="Password"
+              name="password"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="Password"
+              required={true}
+              type="password"
+              value=""
+            />
+          }
+          passwordScore={
+            <DebouncedPasswordScore
+              password=""
+              username=""
+            />
+          }
+          stayLoggedInInput={
+            <DefaultCheckboxComponent
+              id="um3kfiekd-account-creation-stay-logged-in"
+              labelText="Remember me"
+              name="stayLoggedIn"
+              onBlur={[Function]}
+              onChange={[Function]}
+              type="checkbox"
+              value={false}
+            />
+          }
         >
           <form
-            action="#"
             autoComplete="off"
             onReset={[Function]}
             onSubmit={[Function]}
           >
-            <div
-              className="form-label-group mb-2"
+            <DefaultInputComponent
+              autoFocus={true}
+              id="um3kfiekd-account-creation-email"
+              labelText="Email address"
+              name="email"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="Email address"
+              required={true}
+              type="email"
+              value=""
             >
-              <Component
-                flip={true}
+              <div
+                className="form-label-group"
               >
                 <label
                   htmlFor="um3kfiekd-account-creation-email"
-                  key=".1"
                 >
                   Email address
                 </label>
-                <Field
+                <input
                   autoFocus={true}
                   className="form-control"
                   id="um3kfiekd-account-creation-email"
-                  key=".0"
                   name="email"
+                  onBlur={[Function]}
+                  onChange={[Function]}
                   placeholder="Email address"
                   required={true}
                   type="email"
-                >
-                  <input
-                    autoFocus={true}
-                    className="form-control"
-                    id="um3kfiekd-account-creation-email"
-                    name="email"
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    placeholder="Email address"
-                    required={true}
-                    type="email"
-                    value=""
-                  />
-                </Field>
-              </Component>
-            </div>
-            <div
-              className="form-label-group mb-2"
+                  value=""
+                />
+              </div>
+            </DefaultInputComponent>
+            <DefaultInputComponent
+              id="um3kfiekd-account-creation-password"
+              labelText="Password"
+              name="password"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="Password"
+              required={true}
+              type="password"
+              value=""
             >
-              <Component
-                flip={true}
+              <div
+                className="form-label-group"
               >
                 <label
                   htmlFor="um3kfiekd-account-creation-password"
-                  key=".1"
                 >
                   Password
                 </label>
-                <Field
+                <input
                   className="form-control"
                   id="um3kfiekd-account-creation-password"
-                  key=".0"
                   name="password"
+                  onBlur={[Function]}
+                  onChange={[Function]}
                   placeholder="Password"
                   required={true}
                   type="password"
-                >
-                  <input
-                    className="form-control"
-                    id="um3kfiekd-account-creation-password"
-                    name="password"
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    placeholder="Password"
-                    required={true}
-                    type="password"
-                    value=""
-                  />
-                </Field>
-              </Component>
-            </div>
-            <div
-              className="custom-control custom-checkbox mb-2"
+                  value=""
+                />
+              </div>
+            </DefaultInputComponent>
+            <DefaultCheckboxComponent
+              id="um3kfiekd-account-creation-stay-logged-in"
+              labelText="Remember me"
+              name="stayLoggedIn"
+              onBlur={[Function]}
+              onChange={[Function]}
+              type="checkbox"
+              value={false}
             >
-              <Field
-                className="custom-control-input"
-                id="um3kfiekd-account-creation-stay-logged-in"
-                name="stayLoggedIn"
-                type="checkbox"
+              <div
+                className="custom-control custom-checkbox"
               >
                 <input
-                  checked={false}
                   className="custom-control-input"
                   id="um3kfiekd-account-creation-stay-logged-in"
                   name="stayLoggedIn"
@@ -1599,32 +2380,45 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                   type="checkbox"
                   value={false}
                 />
-              </Field>
-              <label
-                className="custom-control-label"
-                htmlFor="um3kfiekd-account-creation-stay-logged-in"
-              >
-                Remember me
-              </label>
-            </div>
-            <Component
+                <label
+                  className="custom-control-label"
+                  htmlFor="um3kfiekd-account-creation-stay-logged-in"
+                >
+                  Remember me
+                </label>
+              </div>
+            </DefaultCheckboxComponent>
+            <DebouncedPasswordScore
               password=""
               username=""
-            />
+            >
+              <Component
+                password=""
+                username=""
+              />
+            </DebouncedPasswordScore>
             <div
               className="mb-3"
             >
-              <button
-                className="btn btn-primary"
+              <Component
+                id="create-account-button"
+                name="create-account"
+                role="submit"
                 type="submit"
               >
-                Create Account
-              </button>
+                <button
+                  className="btn btn-primary"
+                  id="create-account-button"
+                  type="submit"
+                >
+                  Create Account
+                </button>
+              </Component>
             </div>
           </form>
-        </Form>
+          <ErrorMessage />
+        </DefaultCreateAccountForm>
       </Formik>
-      <UserCreateError />
     </OauthCreateAccount>
   </Component>
 </div>
@@ -1636,7 +2430,6 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
 >
   <Component>
     <SocialButtons
-      className="my-3"
       popupWindow={
         Object {
           "close": [Function],
@@ -1644,83 +2437,78 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
         }
       }
     >
-      <div
-        className="my-3"
+      <DefaultSocialButtonsComponent
+        facebookButton={
+          <DefaultFacebookButton
+            onClick={[Function]}
+          />
+        }
+        githubButton={
+          <DefaultGithubButton
+            onClick={[Function]}
+          />
+        }
+        googleButton={
+          <DefaultGoogleButton
+            onClick={[Function]}
+          />
+        }
       >
-        <style>
-          
-          .facebook-login-btn-3kdic7az9 {
-            color: white !important;
-            background-color: #4267b2 !important;
-            border-color: #4267b2 !important;
-          }
-          .facebook-login-btn-3kdic7az9:hover {
-            color: #4267b2 !important;
-            background-color: white !important;
-          }
-
-          .google-login-btn-3kdic7az9 {
-            color: white !important;
-            background-color: #ea4335 !important;
-            border-color: #ea4335 !important;
-          }
-          .google-login-btn-3kdic7az9:hover {
-            color: #ea4335 !important;
-            background-color: white !important;
-          }
-
-          .github-login-btn-3kdic7az9 {
-            color: white !important;
-            background-color: rgb(21, 20, 19) !important;
-            border-color: rgb(21, 20, 19) !important;
-          }
-          .github-login-btn-3kdic7az9:hover {
-            color: rgb(21, 20, 19) !important;
-            background-color: white !important;
-          }
-      
-        </style>
-        <SocialLoginButton
-          buttonClasses="github-login-btn-3kdic7az9"
-          onClick={[Function]}
+        <div
+          className="my-3"
         >
-          <div
-            className="d-flex justify-content-center my-2"
+          <style>
+            
+        .facebook-login-btn-3kdic7az9 {
+          color: white !important;
+          background-color: #4267b2 !important;
+          border-color: #4267b2 !important;
+        }
+        .facebook-login-btn-3kdic7az9:hover {
+          color: #4267b2 !important;
+          background-color: white !important;
+        }
+
+        .google-login-btn-3kdic7az9 {
+          color: white !important;
+          background-color: #ea4335 !important;
+          border-color: #ea4335 !important;
+        }
+        .google-login-btn-3kdic7az9:hover {
+          color: #ea4335 !important;
+          background-color: white !important;
+        }
+
+        .github-login-btn-3kdic7az9 {
+          color: white !important;
+          background-color: rgb(21, 20, 19) !important;
+          border-color: rgb(21, 20, 19) !important;
+        }
+        .github-login-btn-3kdic7az9:hover {
+          color: rgb(21, 20, 19) !important;
+          background-color: white !important;
+        }
+    
+          </style>
+          <DefaultGithubButton
+            onClick={[Function]}
           >
-            <button
-              className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between github-login-btn-3kdic7az9"
+            <SocialLoginButton
               onClick={[Function]}
+              providerClass="github-login-btn-3kdic7az9"
             >
-              <GithubLogo
-                size="2em"
+              <div
+                className="d-flex justify-content-center my-2"
               >
-                <Icon
-                  fill="currentColor"
-                  icon={
-                    Object {
-                      "children": Array [
-                        Object {
-                          "attribs": Object {
-                            "d": "M768 128q209 0 385.5 103t279.5 279.5 103 385.5q0 251-146.5 451.5t-378.5 277.5q-27 5-40-7t-13-30q0-3 0.5-76.5t0.5-134.5q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105 20.5-150.5q0-119-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27t-83.5-38.5-85-13.5q-45 113-8 204-79 87-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-39 36-49 103-21 10-45 15t-57 5-65.5-21.5-55.5-62.5q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 0.5 88.5t0.5 54.5q0 18-13 30t-40 7q-232-77-378.5-277.5t-146.5-451.5q0-209 103-385.5t279.5-279.5 385.5-103zM291 1231q3-7-7-12-10-3-13 2-3 7 7 12 9 6 13-2zM322 1265q7-5-2-16-10-9-16-3-7 5 2 16 10 10 16 3zM352 1310q9-7 0-19-8-13-17-6-9 5 0 18t17 7zM394 1352q8-8-4-19-12-12-20-3-9 8 4 19 12 12 20 3zM451 1377q3-11-13-16-15-4-19 7t13 15q15 6 19-6zM514 1382q0-13-17-11-16 0-16 11 0 13 17 11 16 0 16-11zM572 1372q-2-11-18-9-16 3-14 15t18 8 14-14z",
-                          },
-                          "name": "path",
-                        },
-                      ],
-                      "viewBox": "0 0 1536 1792",
-                    }
-                  }
-                  size="2em"
-                  tag="i"
+                <button
+                  className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between github-login-btn-3kdic7az9"
+                  onClick={[Function]}
                 >
-                  <i
-                    fill="currentColor"
-                    style={
-                      Object {
-                        "display": "inline-block",
-                      }
-                    }
+                  <GithubLogo
+                    size="2em"
                   >
-                    <SvgIcon
+                    <Icon
+                      fill="currentColor"
                       icon={
                         Object {
                           "children": Array [
@@ -1735,77 +2523,81 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                         }
                       }
                       size="2em"
+                      tag="i"
                     >
-                      <svg
+                      <i
                         fill="currentColor"
-                        height="2em"
                         style={
                           Object {
                             "display": "inline-block",
-                            "verticalAlign": "middle",
                           }
                         }
-                        viewBox="0 0 1536 1792"
-                        width="2em"
                       >
-                        <path
-                          d="M768 128q209 0 385.5 103t279.5 279.5 103 385.5q0 251-146.5 451.5t-378.5 277.5q-27 5-40-7t-13-30q0-3 0.5-76.5t0.5-134.5q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105 20.5-150.5q0-119-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27t-83.5-38.5-85-13.5q-45 113-8 204-79 87-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-39 36-49 103-21 10-45 15t-57 5-65.5-21.5-55.5-62.5q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 0.5 88.5t0.5 54.5q0 18-13 30t-40 7q-232-77-378.5-277.5t-146.5-451.5q0-209 103-385.5t279.5-279.5 385.5-103zM291 1231q3-7-7-12-10-3-13 2-3 7 7 12 9 6 13-2zM322 1265q7-5-2-16-10-9-16-3-7 5 2 16 10 10 16 3zM352 1310q9-7 0-19-8-13-17-6-9 5 0 18t17 7zM394 1352q8-8-4-19-12-12-20-3-9 8 4 19 12 12 20 3zM451 1377q3-11-13-16-15-4-19 7t13 15q15 6 19-6zM514 1382q0-13-17-11-16 0-16 11 0 13 17 11 16 0 16-11zM572 1372q-2-11-18-9-16 3-14 15t18 8 14-14z"
-                          key="0"
-                        />
-                      </svg>
-                    </SvgIcon>
-                  </i>
-                </Icon>
-              </GithubLogo>
-              <div
-                className="flex-grow-1 font-weight-bold"
-              >
-                Login with GitHub
-              </div>
-            </button>
-          </div>
-        </SocialLoginButton>
-        <SocialLoginButton
-          buttonClasses="facebook-login-btn-3kdic7az9"
-          onClick={[Function]}
-        >
-          <div
-            className="d-flex justify-content-center my-2"
-          >
-            <button
-              className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between facebook-login-btn-3kdic7az9"
-              onClick={[Function]}
-            >
-              <FbLogo
-                size="2em"
-              >
-                <Icon
-                  fill="currentColor"
-                  icon={
-                    Object {
-                      "children": Array [
-                        Object {
-                          "attribs": Object {
-                            "d": "M1451 128q35 0 60 25t25 60v1366q0 35-25 60t-60 25h-391v-595h199l30-232h-229v-148q0-56 23.5-84t91.5-28l122-1v-207q-63-9-178-9-136 0-217.5 80t-81.5 226v171h-200v232h200v595h-735q-35 0-60-25t-25-60v-1366q0-35 25-60t60-25h1366z",
-                          },
-                          "name": "path",
-                        },
-                      ],
-                      "viewBox": "0 0 1536 1792",
-                    }
-                  }
-                  size="2em"
-                  tag="i"
-                >
-                  <i
-                    fill="currentColor"
-                    style={
-                      Object {
-                        "display": "inline-block",
-                      }
-                    }
+                        <SvgIcon
+                          icon={
+                            Object {
+                              "children": Array [
+                                Object {
+                                  "attribs": Object {
+                                    "d": "M768 128q209 0 385.5 103t279.5 279.5 103 385.5q0 251-146.5 451.5t-378.5 277.5q-27 5-40-7t-13-30q0-3 0.5-76.5t0.5-134.5q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105 20.5-150.5q0-119-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27t-83.5-38.5-85-13.5q-45 113-8 204-79 87-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-39 36-49 103-21 10-45 15t-57 5-65.5-21.5-55.5-62.5q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 0.5 88.5t0.5 54.5q0 18-13 30t-40 7q-232-77-378.5-277.5t-146.5-451.5q0-209 103-385.5t279.5-279.5 385.5-103zM291 1231q3-7-7-12-10-3-13 2-3 7 7 12 9 6 13-2zM322 1265q7-5-2-16-10-9-16-3-7 5 2 16 10 10 16 3zM352 1310q9-7 0-19-8-13-17-6-9 5 0 18t17 7zM394 1352q8-8-4-19-12-12-20-3-9 8 4 19 12 12 20 3zM451 1377q3-11-13-16-15-4-19 7t13 15q15 6 19-6zM514 1382q0-13-17-11-16 0-16 11 0 13 17 11 16 0 16-11zM572 1372q-2-11-18-9-16 3-14 15t18 8 14-14z",
+                                  },
+                                  "name": "path",
+                                },
+                              ],
+                              "viewBox": "0 0 1536 1792",
+                            }
+                          }
+                          size="2em"
+                        >
+                          <svg
+                            fill="currentColor"
+                            height="2em"
+                            style={
+                              Object {
+                                "display": "inline-block",
+                                "verticalAlign": "middle",
+                              }
+                            }
+                            viewBox="0 0 1536 1792"
+                            width="2em"
+                          >
+                            <path
+                              d="M768 128q209 0 385.5 103t279.5 279.5 103 385.5q0 251-146.5 451.5t-378.5 277.5q-27 5-40-7t-13-30q0-3 0.5-76.5t0.5-134.5q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105 20.5-150.5q0-119-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27t-83.5-38.5-85-13.5q-45 113-8 204-79 87-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-39 36-49 103-21 10-45 15t-57 5-65.5-21.5-55.5-62.5q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 0.5 88.5t0.5 54.5q0 18-13 30t-40 7q-232-77-378.5-277.5t-146.5-451.5q0-209 103-385.5t279.5-279.5 385.5-103zM291 1231q3-7-7-12-10-3-13 2-3 7 7 12 9 6 13-2zM322 1265q7-5-2-16-10-9-16-3-7 5 2 16 10 10 16 3zM352 1310q9-7 0-19-8-13-17-6-9 5 0 18t17 7zM394 1352q8-8-4-19-12-12-20-3-9 8 4 19 12 12 20 3zM451 1377q3-11-13-16-15-4-19 7t13 15q15 6 19-6zM514 1382q0-13-17-11-16 0-16 11 0 13 17 11 16 0 16-11zM572 1372q-2-11-18-9-16 3-14 15t18 8 14-14z"
+                              key="0"
+                            />
+                          </svg>
+                        </SvgIcon>
+                      </i>
+                    </Icon>
+                  </GithubLogo>
+                  <div
+                    className="flex-grow-1 font-weight-bold"
                   >
-                    <SvgIcon
+                    Login with GitHub
+                  </div>
+                </button>
+              </div>
+            </SocialLoginButton>
+          </DefaultGithubButton>
+          <DefaultFacebookButton
+            onClick={[Function]}
+          >
+            <SocialLoginButton
+              onClick={[Function]}
+              providerClass="facebook-login-btn-3kdic7az9"
+            >
+              <div
+                className="d-flex justify-content-center my-2"
+              >
+                <button
+                  className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between facebook-login-btn-3kdic7az9"
+                  onClick={[Function]}
+                >
+                  <FbLogo
+                    size="2em"
+                  >
+                    <Icon
+                      fill="currentColor"
                       icon={
                         Object {
                           "children": Array [
@@ -1820,77 +2612,81 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                         }
                       }
                       size="2em"
+                      tag="i"
                     >
-                      <svg
+                      <i
                         fill="currentColor"
-                        height="2em"
                         style={
                           Object {
                             "display": "inline-block",
-                            "verticalAlign": "middle",
                           }
                         }
-                        viewBox="0 0 1536 1792"
-                        width="2em"
                       >
-                        <path
-                          d="M1451 128q35 0 60 25t25 60v1366q0 35-25 60t-60 25h-391v-595h199l30-232h-229v-148q0-56 23.5-84t91.5-28l122-1v-207q-63-9-178-9-136 0-217.5 80t-81.5 226v171h-200v232h200v595h-735q-35 0-60-25t-25-60v-1366q0-35 25-60t60-25h1366z"
-                          key="0"
-                        />
-                      </svg>
-                    </SvgIcon>
-                  </i>
-                </Icon>
-              </FbLogo>
-              <div
-                className="flex-grow-1 font-weight-bold"
-              >
-                Login with Facebook
-              </div>
-            </button>
-          </div>
-        </SocialLoginButton>
-        <SocialLoginButton
-          buttonClasses="google-login-btn-3kdic7az9"
-          onClick={[Function]}
-        >
-          <div
-            className="d-flex justify-content-center my-2"
-          >
-            <button
-              className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between google-login-btn-3kdic7az9"
-              onClick={[Function]}
-            >
-              <GoogleLogo
-                size="2em"
-              >
-                <Icon
-                  fill="currentColor"
-                  icon={
-                    Object {
-                      "children": Array [
-                        Object {
-                          "attribs": Object {
-                            "d": "M768 786h725q12 67 12 128 0 217-91 387.5t-259.5 266.5-386.5 96q-157 0-299-60.5t-245-163.5-163.5-245-60.5-299 60.5-299 163.5-245 245-163.5 299-60.5q300 0 515 201l-209 201q-123-119-306-119-129 0-238.5 65t-173.5 176.5-64 243.5 64 243.5 173.5 176.5 238.5 65q87 0 160-24t120-60 82-82 51.5-87 22.5-78h-436v-264z",
-                          },
-                          "name": "path",
-                        },
-                      ],
-                      "viewBox": "0 0 1536 1792",
-                    }
-                  }
-                  size="2em"
-                  tag="i"
-                >
-                  <i
-                    fill="currentColor"
-                    style={
-                      Object {
-                        "display": "inline-block",
-                      }
-                    }
+                        <SvgIcon
+                          icon={
+                            Object {
+                              "children": Array [
+                                Object {
+                                  "attribs": Object {
+                                    "d": "M1451 128q35 0 60 25t25 60v1366q0 35-25 60t-60 25h-391v-595h199l30-232h-229v-148q0-56 23.5-84t91.5-28l122-1v-207q-63-9-178-9-136 0-217.5 80t-81.5 226v171h-200v232h200v595h-735q-35 0-60-25t-25-60v-1366q0-35 25-60t60-25h1366z",
+                                  },
+                                  "name": "path",
+                                },
+                              ],
+                              "viewBox": "0 0 1536 1792",
+                            }
+                          }
+                          size="2em"
+                        >
+                          <svg
+                            fill="currentColor"
+                            height="2em"
+                            style={
+                              Object {
+                                "display": "inline-block",
+                                "verticalAlign": "middle",
+                              }
+                            }
+                            viewBox="0 0 1536 1792"
+                            width="2em"
+                          >
+                            <path
+                              d="M1451 128q35 0 60 25t25 60v1366q0 35-25 60t-60 25h-391v-595h199l30-232h-229v-148q0-56 23.5-84t91.5-28l122-1v-207q-63-9-178-9-136 0-217.5 80t-81.5 226v171h-200v232h200v595h-735q-35 0-60-25t-25-60v-1366q0-35 25-60t60-25h1366z"
+                              key="0"
+                            />
+                          </svg>
+                        </SvgIcon>
+                      </i>
+                    </Icon>
+                  </FbLogo>
+                  <div
+                    className="flex-grow-1 font-weight-bold"
                   >
-                    <SvgIcon
+                    Login with Facebook
+                  </div>
+                </button>
+              </div>
+            </SocialLoginButton>
+          </DefaultFacebookButton>
+          <DefaultGoogleButton
+            onClick={[Function]}
+          >
+            <SocialLoginButton
+              onClick={[Function]}
+              providerClass="google-login-btn-3kdic7az9"
+            >
+              <div
+                className="d-flex justify-content-center my-2"
+              >
+                <button
+                  className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between google-login-btn-3kdic7az9"
+                  onClick={[Function]}
+                >
+                  <GoogleLogo
+                    size="2em"
+                  >
+                    <Icon
+                      fill="currentColor"
                       icon={
                         Object {
                           "children": Array [
@@ -1905,37 +2701,64 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                         }
                       }
                       size="2em"
+                      tag="i"
                     >
-                      <svg
+                      <i
                         fill="currentColor"
-                        height="2em"
                         style={
                           Object {
                             "display": "inline-block",
-                            "verticalAlign": "middle",
                           }
                         }
-                        viewBox="0 0 1536 1792"
-                        width="2em"
                       >
-                        <path
-                          d="M768 786h725q12 67 12 128 0 217-91 387.5t-259.5 266.5-386.5 96q-157 0-299-60.5t-245-163.5-163.5-245-60.5-299 60.5-299 163.5-245 245-163.5 299-60.5q300 0 515 201l-209 201q-123-119-306-119-129 0-238.5 65t-173.5 176.5-64 243.5 64 243.5 173.5 176.5 238.5 65q87 0 160-24t120-60 82-82 51.5-87 22.5-78h-436v-264z"
-                          key="0"
-                        />
-                      </svg>
-                    </SvgIcon>
-                  </i>
-                </Icon>
-              </GoogleLogo>
-              <div
-                className="flex-grow-1 font-weight-bold"
-              >
-                Login with Google
+                        <SvgIcon
+                          icon={
+                            Object {
+                              "children": Array [
+                                Object {
+                                  "attribs": Object {
+                                    "d": "M768 786h725q12 67 12 128 0 217-91 387.5t-259.5 266.5-386.5 96q-157 0-299-60.5t-245-163.5-163.5-245-60.5-299 60.5-299 163.5-245 245-163.5 299-60.5q300 0 515 201l-209 201q-123-119-306-119-129 0-238.5 65t-173.5 176.5-64 243.5 64 243.5 173.5 176.5 238.5 65q87 0 160-24t120-60 82-82 51.5-87 22.5-78h-436v-264z",
+                                  },
+                                  "name": "path",
+                                },
+                              ],
+                              "viewBox": "0 0 1536 1792",
+                            }
+                          }
+                          size="2em"
+                        >
+                          <svg
+                            fill="currentColor"
+                            height="2em"
+                            style={
+                              Object {
+                                "display": "inline-block",
+                                "verticalAlign": "middle",
+                              }
+                            }
+                            viewBox="0 0 1536 1792"
+                            width="2em"
+                          >
+                            <path
+                              d="M768 786h725q12 67 12 128 0 217-91 387.5t-259.5 266.5-386.5 96q-157 0-299-60.5t-245-163.5-163.5-245-60.5-299 60.5-299 163.5-245 245-163.5 299-60.5q300 0 515 201l-209 201q-123-119-306-119-129 0-238.5 65t-173.5 176.5-64 243.5 64 243.5 173.5 176.5 238.5 65q87 0 160-24t120-60 82-82 51.5-87 22.5-78h-436v-264z"
+                              key="0"
+                            />
+                          </svg>
+                        </SvgIcon>
+                      </i>
+                    </Icon>
+                  </GoogleLogo>
+                  <div
+                    className="flex-grow-1 font-weight-bold"
+                  >
+                    Login with Google
+                  </div>
+                </button>
               </div>
-            </button>
-          </div>
-        </SocialLoginButton>
-      </div>
+            </SocialLoginButton>
+          </DefaultGoogleButton>
+        </div>
+      </DefaultSocialButtonsComponent>
     </SocialButtons>
     <Formik
       initialValues={
@@ -1948,131 +2771,215 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
       onSubmit={[Function]}
       validate={[Function]}
     >
-      <Form>
+      <DefaultPasswordForm
+        emailInput={
+          <DefaultInputComponent
+            autoFocus={true}
+            id="um3kfiekd-login-email"
+            labelText="Email address"
+            name="email"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Email address"
+            required={true}
+            type="email"
+            value=""
+          />
+        }
+        error={<ErrorMessage />}
+        forgotPasswordButton={
+          <Unknown
+            id="forgot-pw-button"
+            name="forgot-password"
+            onClick={[Function]}
+            role="secondary"
+            type="button"
+          >
+            Forgot Password?
+          </Unknown>
+        }
+        formProps={
+          Object {
+            "onReset": [Function],
+            "onSubmit": [Function],
+          }
+        }
+        passwordInput={
+          <DefaultInputComponent
+            id="um3kfiekd-login-password"
+            labelText="Password"
+            name="password"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Password"
+            required={true}
+            type="password"
+            value=""
+          />
+        }
+        signinButton={
+          <Unknown
+            id="login-button"
+            name="login"
+            role="submit"
+            type="submit"
+          >
+            Sign in
+          </Unknown>
+        }
+        stayLoggedInInput={
+          <DefaultCheckboxComponent
+            id="um3kfiekd-login-stay-logged-in"
+            labelText="Remember me"
+            name="stayLoggedIn"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="checkbox"
+            value={false}
+          />
+        }
+      >
         <form
-          action="#"
           onReset={[Function]}
           onSubmit={[Function]}
         >
-          <div
-            className="form-label-group mb-2"
+          <DefaultInputComponent
+            autoFocus={true}
+            id="um3kfiekd-login-email"
+            labelText="Email address"
+            name="email"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Email address"
+            required={true}
+            type="email"
+            value=""
           >
-            <Component
-              flip={true}
+            <div
+              className="form-label-group"
             >
               <label
                 htmlFor="um3kfiekd-login-email"
-                key=".1"
               >
                 Email address
               </label>
-              <Field
+              <input
                 autoFocus={true}
                 className="form-control"
                 id="um3kfiekd-login-email"
-                key=".0"
                 name="email"
+                onBlur={[Function]}
+                onChange={[Function]}
                 placeholder="Email address"
                 required={true}
                 type="email"
-              >
-                <input
-                  autoFocus={true}
-                  className="form-control"
-                  id="um3kfiekd-login-email"
-                  name="email"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  placeholder="Email address"
-                  required={true}
-                  type="email"
-                  value=""
-                />
-              </Field>
-            </Component>
-          </div>
-          <div
-            className="form-label-group mb-2"
+                value=""
+              />
+            </div>
+          </DefaultInputComponent>
+          <DefaultInputComponent
+            id="um3kfiekd-login-password"
+            labelText="Password"
+            name="password"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Password"
+            required={true}
+            type="password"
+            value=""
           >
-            <Component
-              flip={true}
+            <div
+              className="form-label-group"
             >
               <label
                 htmlFor="um3kfiekd-login-password"
-                key=".1"
               >
                 Password
               </label>
-              <Field
+              <input
                 className="form-control"
                 id="um3kfiekd-login-password"
-                key=".0"
                 name="password"
+                onBlur={[Function]}
+                onChange={[Function]}
                 placeholder="Password"
                 required={true}
                 type="password"
-              >
-                <input
-                  className="form-control"
-                  id="um3kfiekd-login-password"
-                  name="password"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  placeholder="Password"
-                  required={true}
-                  type="password"
-                  value=""
-                />
-              </Field>
-            </Component>
-          </div>
-          <div
-            className="custom-control custom-checkbox mb-2"
+                value=""
+              />
+            </div>
+          </DefaultInputComponent>
+          <DefaultCheckboxComponent
+            id="um3kfiekd-login-stay-logged-in"
+            labelText="Remember me"
+            name="stayLoggedIn"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="checkbox"
+            value={false}
           >
-            <input
-              className="custom-control-input"
-              id="um3kfiekd-login-stay-logged-in"
-              name="stayLoggedIn"
-              onBlur={[Function]}
-              onChange={[Function]}
-              type="checkbox"
-              value={false}
-            />
-            <label
-              className="custom-control-label"
-              htmlFor="um3kfiekd-login-stay-logged-in"
+            <div
+              className="custom-control custom-checkbox"
             >
-              Remember me
-            </label>
-          </div>
+              <input
+                className="custom-control-input"
+                id="um3kfiekd-login-stay-logged-in"
+                name="stayLoggedIn"
+                onBlur={[Function]}
+                onChange={[Function]}
+                type="checkbox"
+                value={false}
+              />
+              <label
+                className="custom-control-label"
+                htmlFor="um3kfiekd-login-stay-logged-in"
+              >
+                Remember me
+              </label>
+            </div>
+          </DefaultCheckboxComponent>
           <div
             className="mb-3 justify-content-between d-flex"
           >
-            <button
-              className="btn btn-primary"
+            <Component
               id="login-button"
+              name="login"
+              role="submit"
               type="submit"
             >
-              Sign in
-            </button>
-            <button
-              className="btn btn-outline-primary"
+              <button
+                className="btn btn-primary"
+                id="login-button"
+                type="submit"
+              >
+                Sign in
+              </button>
+            </Component>
+            <Component
               id="forgot-pw-button"
+              name="forgot-password"
               onClick={[Function]}
+              role="secondary"
               type="button"
             >
-              Forgot Password?
-            </button>
+              <button
+                className="btn btn-outline-primary"
+                id="forgot-pw-button"
+                onClick={[Function]}
+                type="button"
+              >
+                Forgot Password?
+              </button>
+            </Component>
           </div>
           <ErrorMessage />
         </form>
-      </Form>
+      </DefaultPasswordForm>
     </Formik>
   </Component>
   <Component>
     <OauthCreateAccount>
       <SocialButtons
-        className="my-3"
         popupWindow={
           Object {
             "close": [Function],
@@ -2080,83 +2987,78 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
           }
         }
       >
-        <div
-          className="my-3"
+        <DefaultSocialButtonsComponent
+          facebookButton={
+            <DefaultFacebookButton
+              onClick={[Function]}
+            />
+          }
+          githubButton={
+            <DefaultGithubButton
+              onClick={[Function]}
+            />
+          }
+          googleButton={
+            <DefaultGoogleButton
+              onClick={[Function]}
+            />
+          }
         >
-          <style>
-            
-          .facebook-login-btn-3kdic7az9 {
-            color: white !important;
-            background-color: #4267b2 !important;
-            border-color: #4267b2 !important;
-          }
-          .facebook-login-btn-3kdic7az9:hover {
-            color: #4267b2 !important;
-            background-color: white !important;
-          }
-
-          .google-login-btn-3kdic7az9 {
-            color: white !important;
-            background-color: #ea4335 !important;
-            border-color: #ea4335 !important;
-          }
-          .google-login-btn-3kdic7az9:hover {
-            color: #ea4335 !important;
-            background-color: white !important;
-          }
-
-          .github-login-btn-3kdic7az9 {
-            color: white !important;
-            background-color: rgb(21, 20, 19) !important;
-            border-color: rgb(21, 20, 19) !important;
-          }
-          .github-login-btn-3kdic7az9:hover {
-            color: rgb(21, 20, 19) !important;
-            background-color: white !important;
-          }
-      
-          </style>
-          <SocialLoginButton
-            buttonClasses="github-login-btn-3kdic7az9"
-            onClick={[Function]}
+          <div
+            className="my-3"
           >
-            <div
-              className="d-flex justify-content-center my-2"
+            <style>
+              
+        .facebook-login-btn-3kdic7az9 {
+          color: white !important;
+          background-color: #4267b2 !important;
+          border-color: #4267b2 !important;
+        }
+        .facebook-login-btn-3kdic7az9:hover {
+          color: #4267b2 !important;
+          background-color: white !important;
+        }
+
+        .google-login-btn-3kdic7az9 {
+          color: white !important;
+          background-color: #ea4335 !important;
+          border-color: #ea4335 !important;
+        }
+        .google-login-btn-3kdic7az9:hover {
+          color: #ea4335 !important;
+          background-color: white !important;
+        }
+
+        .github-login-btn-3kdic7az9 {
+          color: white !important;
+          background-color: rgb(21, 20, 19) !important;
+          border-color: rgb(21, 20, 19) !important;
+        }
+        .github-login-btn-3kdic7az9:hover {
+          color: rgb(21, 20, 19) !important;
+          background-color: white !important;
+        }
+    
+            </style>
+            <DefaultGithubButton
+              onClick={[Function]}
             >
-              <button
-                className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between github-login-btn-3kdic7az9"
+              <SocialLoginButton
                 onClick={[Function]}
+                providerClass="github-login-btn-3kdic7az9"
               >
-                <GithubLogo
-                  size="2em"
+                <div
+                  className="d-flex justify-content-center my-2"
                 >
-                  <Icon
-                    fill="currentColor"
-                    icon={
-                      Object {
-                        "children": Array [
-                          Object {
-                            "attribs": Object {
-                              "d": "M768 128q209 0 385.5 103t279.5 279.5 103 385.5q0 251-146.5 451.5t-378.5 277.5q-27 5-40-7t-13-30q0-3 0.5-76.5t0.5-134.5q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105 20.5-150.5q0-119-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27t-83.5-38.5-85-13.5q-45 113-8 204-79 87-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-39 36-49 103-21 10-45 15t-57 5-65.5-21.5-55.5-62.5q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 0.5 88.5t0.5 54.5q0 18-13 30t-40 7q-232-77-378.5-277.5t-146.5-451.5q0-209 103-385.5t279.5-279.5 385.5-103zM291 1231q3-7-7-12-10-3-13 2-3 7 7 12 9 6 13-2zM322 1265q7-5-2-16-10-9-16-3-7 5 2 16 10 10 16 3zM352 1310q9-7 0-19-8-13-17-6-9 5 0 18t17 7zM394 1352q8-8-4-19-12-12-20-3-9 8 4 19 12 12 20 3zM451 1377q3-11-13-16-15-4-19 7t13 15q15 6 19-6zM514 1382q0-13-17-11-16 0-16 11 0 13 17 11 16 0 16-11zM572 1372q-2-11-18-9-16 3-14 15t18 8 14-14z",
-                            },
-                            "name": "path",
-                          },
-                        ],
-                        "viewBox": "0 0 1536 1792",
-                      }
-                    }
-                    size="2em"
-                    tag="i"
+                  <button
+                    className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between github-login-btn-3kdic7az9"
+                    onClick={[Function]}
                   >
-                    <i
-                      fill="currentColor"
-                      style={
-                        Object {
-                          "display": "inline-block",
-                        }
-                      }
+                    <GithubLogo
+                      size="2em"
                     >
-                      <SvgIcon
+                      <Icon
+                        fill="currentColor"
                         icon={
                           Object {
                             "children": Array [
@@ -2171,77 +3073,81 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                           }
                         }
                         size="2em"
+                        tag="i"
                       >
-                        <svg
+                        <i
                           fill="currentColor"
-                          height="2em"
                           style={
                             Object {
                               "display": "inline-block",
-                              "verticalAlign": "middle",
                             }
                           }
-                          viewBox="0 0 1536 1792"
-                          width="2em"
                         >
-                          <path
-                            d="M768 128q209 0 385.5 103t279.5 279.5 103 385.5q0 251-146.5 451.5t-378.5 277.5q-27 5-40-7t-13-30q0-3 0.5-76.5t0.5-134.5q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105 20.5-150.5q0-119-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27t-83.5-38.5-85-13.5q-45 113-8 204-79 87-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-39 36-49 103-21 10-45 15t-57 5-65.5-21.5-55.5-62.5q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 0.5 88.5t0.5 54.5q0 18-13 30t-40 7q-232-77-378.5-277.5t-146.5-451.5q0-209 103-385.5t279.5-279.5 385.5-103zM291 1231q3-7-7-12-10-3-13 2-3 7 7 12 9 6 13-2zM322 1265q7-5-2-16-10-9-16-3-7 5 2 16 10 10 16 3zM352 1310q9-7 0-19-8-13-17-6-9 5 0 18t17 7zM394 1352q8-8-4-19-12-12-20-3-9 8 4 19 12 12 20 3zM451 1377q3-11-13-16-15-4-19 7t13 15q15 6 19-6zM514 1382q0-13-17-11-16 0-16 11 0 13 17 11 16 0 16-11zM572 1372q-2-11-18-9-16 3-14 15t18 8 14-14z"
-                            key="0"
-                          />
-                        </svg>
-                      </SvgIcon>
-                    </i>
-                  </Icon>
-                </GithubLogo>
-                <div
-                  className="flex-grow-1 font-weight-bold"
-                >
-                  Login with GitHub
-                </div>
-              </button>
-            </div>
-          </SocialLoginButton>
-          <SocialLoginButton
-            buttonClasses="facebook-login-btn-3kdic7az9"
-            onClick={[Function]}
-          >
-            <div
-              className="d-flex justify-content-center my-2"
-            >
-              <button
-                className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between facebook-login-btn-3kdic7az9"
-                onClick={[Function]}
-              >
-                <FbLogo
-                  size="2em"
-                >
-                  <Icon
-                    fill="currentColor"
-                    icon={
-                      Object {
-                        "children": Array [
-                          Object {
-                            "attribs": Object {
-                              "d": "M1451 128q35 0 60 25t25 60v1366q0 35-25 60t-60 25h-391v-595h199l30-232h-229v-148q0-56 23.5-84t91.5-28l122-1v-207q-63-9-178-9-136 0-217.5 80t-81.5 226v171h-200v232h200v595h-735q-35 0-60-25t-25-60v-1366q0-35 25-60t60-25h1366z",
-                            },
-                            "name": "path",
-                          },
-                        ],
-                        "viewBox": "0 0 1536 1792",
-                      }
-                    }
-                    size="2em"
-                    tag="i"
-                  >
-                    <i
-                      fill="currentColor"
-                      style={
-                        Object {
-                          "display": "inline-block",
-                        }
-                      }
+                          <SvgIcon
+                            icon={
+                              Object {
+                                "children": Array [
+                                  Object {
+                                    "attribs": Object {
+                                      "d": "M768 128q209 0 385.5 103t279.5 279.5 103 385.5q0 251-146.5 451.5t-378.5 277.5q-27 5-40-7t-13-30q0-3 0.5-76.5t0.5-134.5q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105 20.5-150.5q0-119-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27t-83.5-38.5-85-13.5q-45 113-8 204-79 87-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-39 36-49 103-21 10-45 15t-57 5-65.5-21.5-55.5-62.5q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 0.5 88.5t0.5 54.5q0 18-13 30t-40 7q-232-77-378.5-277.5t-146.5-451.5q0-209 103-385.5t279.5-279.5 385.5-103zM291 1231q3-7-7-12-10-3-13 2-3 7 7 12 9 6 13-2zM322 1265q7-5-2-16-10-9-16-3-7 5 2 16 10 10 16 3zM352 1310q9-7 0-19-8-13-17-6-9 5 0 18t17 7zM394 1352q8-8-4-19-12-12-20-3-9 8 4 19 12 12 20 3zM451 1377q3-11-13-16-15-4-19 7t13 15q15 6 19-6zM514 1382q0-13-17-11-16 0-16 11 0 13 17 11 16 0 16-11zM572 1372q-2-11-18-9-16 3-14 15t18 8 14-14z",
+                                    },
+                                    "name": "path",
+                                  },
+                                ],
+                                "viewBox": "0 0 1536 1792",
+                              }
+                            }
+                            size="2em"
+                          >
+                            <svg
+                              fill="currentColor"
+                              height="2em"
+                              style={
+                                Object {
+                                  "display": "inline-block",
+                                  "verticalAlign": "middle",
+                                }
+                              }
+                              viewBox="0 0 1536 1792"
+                              width="2em"
+                            >
+                              <path
+                                d="M768 128q209 0 385.5 103t279.5 279.5 103 385.5q0 251-146.5 451.5t-378.5 277.5q-27 5-40-7t-13-30q0-3 0.5-76.5t0.5-134.5q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105 20.5-150.5q0-119-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27t-83.5-38.5-85-13.5q-45 113-8 204-79 87-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-39 36-49 103-21 10-45 15t-57 5-65.5-21.5-55.5-62.5q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 0.5 88.5t0.5 54.5q0 18-13 30t-40 7q-232-77-378.5-277.5t-146.5-451.5q0-209 103-385.5t279.5-279.5 385.5-103zM291 1231q3-7-7-12-10-3-13 2-3 7 7 12 9 6 13-2zM322 1265q7-5-2-16-10-9-16-3-7 5 2 16 10 10 16 3zM352 1310q9-7 0-19-8-13-17-6-9 5 0 18t17 7zM394 1352q8-8-4-19-12-12-20-3-9 8 4 19 12 12 20 3zM451 1377q3-11-13-16-15-4-19 7t13 15q15 6 19-6zM514 1382q0-13-17-11-16 0-16 11 0 13 17 11 16 0 16-11zM572 1372q-2-11-18-9-16 3-14 15t18 8 14-14z"
+                                key="0"
+                              />
+                            </svg>
+                          </SvgIcon>
+                        </i>
+                      </Icon>
+                    </GithubLogo>
+                    <div
+                      className="flex-grow-1 font-weight-bold"
                     >
-                      <SvgIcon
+                      Login with GitHub
+                    </div>
+                  </button>
+                </div>
+              </SocialLoginButton>
+            </DefaultGithubButton>
+            <DefaultFacebookButton
+              onClick={[Function]}
+            >
+              <SocialLoginButton
+                onClick={[Function]}
+                providerClass="facebook-login-btn-3kdic7az9"
+              >
+                <div
+                  className="d-flex justify-content-center my-2"
+                >
+                  <button
+                    className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between facebook-login-btn-3kdic7az9"
+                    onClick={[Function]}
+                  >
+                    <FbLogo
+                      size="2em"
+                    >
+                      <Icon
+                        fill="currentColor"
                         icon={
                           Object {
                             "children": Array [
@@ -2256,77 +3162,81 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                           }
                         }
                         size="2em"
+                        tag="i"
                       >
-                        <svg
+                        <i
                           fill="currentColor"
-                          height="2em"
                           style={
                             Object {
                               "display": "inline-block",
-                              "verticalAlign": "middle",
                             }
                           }
-                          viewBox="0 0 1536 1792"
-                          width="2em"
                         >
-                          <path
-                            d="M1451 128q35 0 60 25t25 60v1366q0 35-25 60t-60 25h-391v-595h199l30-232h-229v-148q0-56 23.5-84t91.5-28l122-1v-207q-63-9-178-9-136 0-217.5 80t-81.5 226v171h-200v232h200v595h-735q-35 0-60-25t-25-60v-1366q0-35 25-60t60-25h1366z"
-                            key="0"
-                          />
-                        </svg>
-                      </SvgIcon>
-                    </i>
-                  </Icon>
-                </FbLogo>
-                <div
-                  className="flex-grow-1 font-weight-bold"
-                >
-                  Login with Facebook
-                </div>
-              </button>
-            </div>
-          </SocialLoginButton>
-          <SocialLoginButton
-            buttonClasses="google-login-btn-3kdic7az9"
-            onClick={[Function]}
-          >
-            <div
-              className="d-flex justify-content-center my-2"
-            >
-              <button
-                className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between google-login-btn-3kdic7az9"
-                onClick={[Function]}
-              >
-                <GoogleLogo
-                  size="2em"
-                >
-                  <Icon
-                    fill="currentColor"
-                    icon={
-                      Object {
-                        "children": Array [
-                          Object {
-                            "attribs": Object {
-                              "d": "M768 786h725q12 67 12 128 0 217-91 387.5t-259.5 266.5-386.5 96q-157 0-299-60.5t-245-163.5-163.5-245-60.5-299 60.5-299 163.5-245 245-163.5 299-60.5q300 0 515 201l-209 201q-123-119-306-119-129 0-238.5 65t-173.5 176.5-64 243.5 64 243.5 173.5 176.5 238.5 65q87 0 160-24t120-60 82-82 51.5-87 22.5-78h-436v-264z",
-                            },
-                            "name": "path",
-                          },
-                        ],
-                        "viewBox": "0 0 1536 1792",
-                      }
-                    }
-                    size="2em"
-                    tag="i"
-                  >
-                    <i
-                      fill="currentColor"
-                      style={
-                        Object {
-                          "display": "inline-block",
-                        }
-                      }
+                          <SvgIcon
+                            icon={
+                              Object {
+                                "children": Array [
+                                  Object {
+                                    "attribs": Object {
+                                      "d": "M1451 128q35 0 60 25t25 60v1366q0 35-25 60t-60 25h-391v-595h199l30-232h-229v-148q0-56 23.5-84t91.5-28l122-1v-207q-63-9-178-9-136 0-217.5 80t-81.5 226v171h-200v232h200v595h-735q-35 0-60-25t-25-60v-1366q0-35 25-60t60-25h1366z",
+                                    },
+                                    "name": "path",
+                                  },
+                                ],
+                                "viewBox": "0 0 1536 1792",
+                              }
+                            }
+                            size="2em"
+                          >
+                            <svg
+                              fill="currentColor"
+                              height="2em"
+                              style={
+                                Object {
+                                  "display": "inline-block",
+                                  "verticalAlign": "middle",
+                                }
+                              }
+                              viewBox="0 0 1536 1792"
+                              width="2em"
+                            >
+                              <path
+                                d="M1451 128q35 0 60 25t25 60v1366q0 35-25 60t-60 25h-391v-595h199l30-232h-229v-148q0-56 23.5-84t91.5-28l122-1v-207q-63-9-178-9-136 0-217.5 80t-81.5 226v171h-200v232h200v595h-735q-35 0-60-25t-25-60v-1366q0-35 25-60t60-25h1366z"
+                                key="0"
+                              />
+                            </svg>
+                          </SvgIcon>
+                        </i>
+                      </Icon>
+                    </FbLogo>
+                    <div
+                      className="flex-grow-1 font-weight-bold"
                     >
-                      <SvgIcon
+                      Login with Facebook
+                    </div>
+                  </button>
+                </div>
+              </SocialLoginButton>
+            </DefaultFacebookButton>
+            <DefaultGoogleButton
+              onClick={[Function]}
+            >
+              <SocialLoginButton
+                onClick={[Function]}
+                providerClass="google-login-btn-3kdic7az9"
+              >
+                <div
+                  className="d-flex justify-content-center my-2"
+                >
+                  <button
+                    className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between google-login-btn-3kdic7az9"
+                    onClick={[Function]}
+                  >
+                    <GoogleLogo
+                      size="2em"
+                    >
+                      <Icon
+                        fill="currentColor"
                         icon={
                           Object {
                             "children": Array [
@@ -2341,37 +3251,64 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                           }
                         }
                         size="2em"
+                        tag="i"
                       >
-                        <svg
+                        <i
                           fill="currentColor"
-                          height="2em"
                           style={
                             Object {
                               "display": "inline-block",
-                              "verticalAlign": "middle",
                             }
                           }
-                          viewBox="0 0 1536 1792"
-                          width="2em"
                         >
-                          <path
-                            d="M768 786h725q12 67 12 128 0 217-91 387.5t-259.5 266.5-386.5 96q-157 0-299-60.5t-245-163.5-163.5-245-60.5-299 60.5-299 163.5-245 245-163.5 299-60.5q300 0 515 201l-209 201q-123-119-306-119-129 0-238.5 65t-173.5 176.5-64 243.5 64 243.5 173.5 176.5 238.5 65q87 0 160-24t120-60 82-82 51.5-87 22.5-78h-436v-264z"
-                            key="0"
-                          />
-                        </svg>
-                      </SvgIcon>
-                    </i>
-                  </Icon>
-                </GoogleLogo>
-                <div
-                  className="flex-grow-1 font-weight-bold"
-                >
-                  Login with Google
+                          <SvgIcon
+                            icon={
+                              Object {
+                                "children": Array [
+                                  Object {
+                                    "attribs": Object {
+                                      "d": "M768 786h725q12 67 12 128 0 217-91 387.5t-259.5 266.5-386.5 96q-157 0-299-60.5t-245-163.5-163.5-245-60.5-299 60.5-299 163.5-245 245-163.5 299-60.5q300 0 515 201l-209 201q-123-119-306-119-129 0-238.5 65t-173.5 176.5-64 243.5 64 243.5 173.5 176.5 238.5 65q87 0 160-24t120-60 82-82 51.5-87 22.5-78h-436v-264z",
+                                    },
+                                    "name": "path",
+                                  },
+                                ],
+                                "viewBox": "0 0 1536 1792",
+                              }
+                            }
+                            size="2em"
+                          >
+                            <svg
+                              fill="currentColor"
+                              height="2em"
+                              style={
+                                Object {
+                                  "display": "inline-block",
+                                  "verticalAlign": "middle",
+                                }
+                              }
+                              viewBox="0 0 1536 1792"
+                              width="2em"
+                            >
+                              <path
+                                d="M768 786h725q12 67 12 128 0 217-91 387.5t-259.5 266.5-386.5 96q-157 0-299-60.5t-245-163.5-163.5-245-60.5-299 60.5-299 163.5-245 245-163.5 299-60.5q300 0 515 201l-209 201q-123-119-306-119-129 0-238.5 65t-173.5 176.5-64 243.5 64 243.5 173.5 176.5 238.5 65q87 0 160-24t120-60 82-82 51.5-87 22.5-78h-436v-264z"
+                                key="0"
+                              />
+                            </svg>
+                          </SvgIcon>
+                        </i>
+                      </Icon>
+                    </GoogleLogo>
+                    <div
+                      className="flex-grow-1 font-weight-bold"
+                    >
+                      Login with Google
+                    </div>
+                  </button>
                 </div>
-              </button>
-            </div>
-          </SocialLoginButton>
-        </div>
+              </SocialLoginButton>
+            </DefaultGoogleButton>
+          </div>
+        </DefaultSocialButtonsComponent>
       </SocialButtons>
       <Formik
         initialValues={
@@ -2384,98 +3321,164 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
         onSubmit={[Function]}
         validate={[Function]}
       >
-        <Form
-          autoComplete="off"
+        <DefaultCreateAccountForm
+          createAccountButton={
+            <Unknown
+              id="create-account-button"
+              name="create-account"
+              role="submit"
+              type="submit"
+            >
+              Create Account
+            </Unknown>
+          }
+          emailInput={
+            <DefaultInputComponent
+              autoFocus={true}
+              id="um3kfiekd-account-creation-email"
+              labelText="Email address"
+              name="email"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="Email address"
+              required={true}
+              type="email"
+              value=""
+            />
+          }
+          error={
+            <ErrorMessage>
+              <ErrorMessageCase
+                code="EMAIL_EXISTS"
+              >
+                An account with the email address 
+                
+                 already exists.
+              </ErrorMessageCase>
+            </ErrorMessage>
+          }
+          formProps={
+            Object {
+              "autoComplete": "off",
+              "onReset": [Function],
+              "onSubmit": [Function],
+            }
+          }
+          passwordInput={
+            <DefaultInputComponent
+              id="um3kfiekd-account-creation-password"
+              labelText="Password"
+              name="password"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="Password"
+              required={true}
+              type="password"
+              value=""
+            />
+          }
+          passwordScore={
+            <DebouncedPasswordScore
+              password=""
+              username=""
+            />
+          }
+          stayLoggedInInput={
+            <DefaultCheckboxComponent
+              id="um3kfiekd-account-creation-stay-logged-in"
+              labelText="Remember me"
+              name="stayLoggedIn"
+              onBlur={[Function]}
+              onChange={[Function]}
+              type="checkbox"
+              value={false}
+            />
+          }
         >
           <form
-            action="#"
             autoComplete="off"
             onReset={[Function]}
             onSubmit={[Function]}
           >
-            <div
-              className="form-label-group mb-2"
+            <DefaultInputComponent
+              autoFocus={true}
+              id="um3kfiekd-account-creation-email"
+              labelText="Email address"
+              name="email"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="Email address"
+              required={true}
+              type="email"
+              value=""
             >
-              <Component
-                flip={true}
+              <div
+                className="form-label-group"
               >
                 <label
                   htmlFor="um3kfiekd-account-creation-email"
-                  key=".1"
                 >
                   Email address
                 </label>
-                <Field
+                <input
                   autoFocus={true}
                   className="form-control"
                   id="um3kfiekd-account-creation-email"
-                  key=".0"
                   name="email"
+                  onBlur={[Function]}
+                  onChange={[Function]}
                   placeholder="Email address"
                   required={true}
                   type="email"
-                >
-                  <input
-                    autoFocus={true}
-                    className="form-control"
-                    id="um3kfiekd-account-creation-email"
-                    name="email"
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    placeholder="Email address"
-                    required={true}
-                    type="email"
-                    value=""
-                  />
-                </Field>
-              </Component>
-            </div>
-            <div
-              className="form-label-group mb-2"
+                  value=""
+                />
+              </div>
+            </DefaultInputComponent>
+            <DefaultInputComponent
+              id="um3kfiekd-account-creation-password"
+              labelText="Password"
+              name="password"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="Password"
+              required={true}
+              type="password"
+              value=""
             >
-              <Component
-                flip={true}
+              <div
+                className="form-label-group"
               >
                 <label
                   htmlFor="um3kfiekd-account-creation-password"
-                  key=".1"
                 >
                   Password
                 </label>
-                <Field
+                <input
                   className="form-control"
                   id="um3kfiekd-account-creation-password"
-                  key=".0"
                   name="password"
+                  onBlur={[Function]}
+                  onChange={[Function]}
                   placeholder="Password"
                   required={true}
                   type="password"
-                >
-                  <input
-                    className="form-control"
-                    id="um3kfiekd-account-creation-password"
-                    name="password"
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    placeholder="Password"
-                    required={true}
-                    type="password"
-                    value=""
-                  />
-                </Field>
-              </Component>
-            </div>
-            <div
-              className="custom-control custom-checkbox mb-2"
+                  value=""
+                />
+              </div>
+            </DefaultInputComponent>
+            <DefaultCheckboxComponent
+              id="um3kfiekd-account-creation-stay-logged-in"
+              labelText="Remember me"
+              name="stayLoggedIn"
+              onBlur={[Function]}
+              onChange={[Function]}
+              type="checkbox"
+              value={false}
             >
-              <Field
-                className="custom-control-input"
-                id="um3kfiekd-account-creation-stay-logged-in"
-                name="stayLoggedIn"
-                type="checkbox"
+              <div
+                className="custom-control custom-checkbox"
               >
                 <input
-                  checked={false}
                   className="custom-control-input"
                   id="um3kfiekd-account-creation-stay-logged-in"
                   name="stayLoggedIn"
@@ -2484,32 +3487,45 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                   type="checkbox"
                   value={false}
                 />
-              </Field>
-              <label
-                className="custom-control-label"
-                htmlFor="um3kfiekd-account-creation-stay-logged-in"
-              >
-                Remember me
-              </label>
-            </div>
-            <Component
+                <label
+                  className="custom-control-label"
+                  htmlFor="um3kfiekd-account-creation-stay-logged-in"
+                >
+                  Remember me
+                </label>
+              </div>
+            </DefaultCheckboxComponent>
+            <DebouncedPasswordScore
               password=""
               username=""
-            />
+            >
+              <Component
+                password=""
+                username=""
+              />
+            </DebouncedPasswordScore>
             <div
               className="mb-3"
             >
-              <button
-                className="btn btn-primary"
+              <Component
+                id="create-account-button"
+                name="create-account"
+                role="submit"
                 type="submit"
               >
-                Create Account
-              </button>
+                <button
+                  className="btn btn-primary"
+                  id="create-account-button"
+                  type="submit"
+                >
+                  Create Account
+                </button>
+              </Component>
             </div>
           </form>
-        </Form>
+          <ErrorMessage />
+        </DefaultCreateAccountForm>
       </Formik>
-      <UserCreateError />
     </OauthCreateAccount>
   </Component>
 </div>
@@ -2522,43 +3538,86 @@ exports[`<ReauthenticateGuard> 1`] = `
   <Component
     tokenContents="a token"
   >
-    <div>
-      <ErrorMessage />
-      <DefaultPromptComponent>
-        <div
-          className="mb-3"
-        >
-          Please enter your password:
-        </div>
-      </DefaultPromptComponent>
-      <Formik
-        initialValues={
+    <Formik
+      initialValues={
+        Object {
+          "password": "",
+        }
+      }
+      onSubmit={[Function]}
+      validate={[Function]}
+    >
+      <DefaultReauthFormComponent
+        cancelButton={
+          <Unknown
+            disabled={false}
+            name="cancel-reauth"
+            onClick={[Function]}
+            role="cancel"
+          >
+            Cancel
+          </Unknown>
+        }
+        error={<ErrorMessage />}
+        formProps={
           Object {
-            "password": "",
+            "id": "reauth-guard-form",
+            "onReset": [Function],
+            "onSubmit": [Function],
           }
         }
-        onSubmit={[Function]}
-        validate={[Function]}
+        passwordInput={
+          <DefaultInputComponent
+            autoFocus={true}
+            id="reauth-guard-password"
+            name="password"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="password"
+            type="password"
+            value=""
+          />
+        }
+        prompt={
+          <React.Fragment>
+            Please enter your password:
+          </React.Fragment>
+        }
+        submitButton={
+          <Unknown
+            disabled={false}
+            name="submit-reauth"
+            role="submit"
+            type="submit"
+          >
+            Submit
+          </Unknown>
+        }
       >
-        <Form
-          id="reauth-guard-form"
-        >
+        <div>
+          <div
+            className="mb-3"
+          >
+            Please enter your password:
+          </div>
           <form
-            action="#"
             id="reauth-guard-form"
             onReset={[Function]}
             onSubmit={[Function]}
           >
-            <div
-              className="form-label-group"
+            <ErrorMessage />
+            <DefaultInputComponent
+              autoFocus={true}
+              id="reauth-guard-password"
+              name="password"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="password"
+              type="password"
+              value=""
             >
-              <Field
-                autoFocus={true}
-                className="form-control"
-                id="reauth-guard-password"
-                name="password"
-                placeholder="password"
-                type="password"
+              <div
+                className="form-label-group"
               >
                 <input
                   autoFocus={true}
@@ -2571,28 +3630,42 @@ exports[`<ReauthenticateGuard> 1`] = `
                   type="password"
                   value=""
                 />
-              </Field>
-            </div>
+              </div>
+            </DefaultInputComponent>
             <div
               className="d-flex justify-content-between"
             >
-              <button
-                className="btn btn-primary"
+              <Component
+                disabled={false}
+                name="submit-reauth"
+                role="submit"
                 type="submit"
               >
-                Submit
-              </button>
-              <button
-                className="btn btn-secondary"
+                <button
+                  className="btn btn-primary"
+                  type="submit"
+                >
+                  Submit
+                </button>
+              </Component>
+              <Component
+                disabled={false}
+                name="cancel-reauth"
                 onClick={[Function]}
+                role="cancel"
               >
-                Cancel
-              </button>
+                <button
+                  className="btn btn-outline-secondary"
+                  onClick={[Function]}
+                >
+                  Cancel
+                </button>
+              </Component>
             </div>
           </form>
-        </Form>
-      </Formik>
-    </div>
+        </div>
+      </DefaultReauthFormComponent>
+    </Formik>
   </Component>
 </div>
 `;
@@ -2624,85 +3697,149 @@ exports[`<ResetPasswordForm> 1`] = `
     onLogin={[MockFunction]}
     token="eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJlbWFpbCI6ImJvYkBib2IuY29tIiwiY3JlZGVudGlhbElkIjoiYTMxZDY4ZTYtODk4Zi00OTk4LTllNmQtMjVlZjFhNjJmNjJjIiwiaWQiOiI5MTVjYjNjMC1hM2FjLTQ0YmUtYTJhOC02ZWRiMjViZmVhY2MiLCJhcHBJZCI6IjI0OGU1NDczLWQ5YTYtNDQ4Ny05MTY0LTI0YzMwNTJkMjg5OCIsImFjdGlvbiI6IlJFU0VUX1BXIiwiaWF0IjoxMDAwfQ."
   >
-    <div>
-      <ErrorMessage />
-      <Formik
-        initialValues={
+    <Formik
+      initialValues={
+        Object {
+          "loginAfterReset": true,
+          "newPassword": "",
+          "stayLoggedIn": false,
+        }
+      }
+      onSubmit={[Function]}
+      validate={[Function]}
+    >
+      <DefaultResetPasswordForm
+        error={<ErrorMessage />}
+        formProps={
           Object {
-            "loginAfterReset": true,
-            "newPassword": "",
-            "stayLoggedIn": false,
+            "id": "test-reset-password-form",
+            "onReset": [Function],
+            "onSubmit": [Function],
           }
         }
-        onSubmit={[Function]}
-        validate={[Function]}
+        loginAfterResetInput={
+          <DefaultCheckboxComponent
+            id="test-reset-password-login-after-reset"
+            labelText="Log in now?"
+            name="loginAfterReset"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="checkbox"
+            value={true}
+          />
+        }
+        newPasswordInput={
+          <DefaultInputComponent
+            autoFocus={true}
+            id="test-reset-password-new-password"
+            labelText="New Password"
+            name="newPassword"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="New Password"
+            required={true}
+            type="password"
+            value=""
+          />
+        }
+        passwordScore={
+          <DebouncedPasswordScore
+            password=""
+            username="bob@bob.com"
+          />
+        }
+        stayLoggedInInput={
+          <DefaultCheckboxComponent
+            id="test-reset-password-stay-logged-in"
+            labelText="Remember me"
+            name="stayLoggedIn"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="checkbox"
+            value={false}
+          />
+        }
+        submitButton={
+          <Unknown
+            name="reset-password"
+            role="submit"
+            type="submit"
+          >
+            Reset Password
+          </Unknown>
+        }
+        successMessage={null}
       >
-        <Form
-          id="reset-password-form"
+        <form
+          id="test-reset-password-form"
+          onReset={[Function]}
+          onSubmit={[Function]}
         >
-          <form
-            action="#"
-            id="reset-password-form"
-            onReset={[Function]}
-            onSubmit={[Function]}
+          <ErrorMessage />
+          <DefaultInputComponent
+            autoFocus={true}
+            id="test-reset-password-new-password"
+            labelText="New Password"
+            name="newPassword"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="New Password"
+            required={true}
+            type="password"
+            value=""
           >
             <div
               className="form-label-group"
             >
-              <Component
-                flip={true}
+              <label
+                htmlFor="test-reset-password-new-password"
               >
-                <label
-                  htmlFor="test-reset-password-new-password"
-                  key=".1"
-                >
-                  New Password
-                </label>
-                <Field
-                  autoFocus={true}
-                  className="form-control"
-                  id="test-reset-password-new-password"
-                  key=".0"
-                  name="newPassword"
-                  placeholder="New Password"
-                  required={true}
-                  type="password"
-                >
-                  <input
-                    autoFocus={true}
-                    className="form-control"
-                    id="test-reset-password-new-password"
-                    name="newPassword"
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    placeholder="New Password"
-                    required={true}
-                    type="password"
-                    value=""
-                  />
-                </Field>
-              </Component>
+                New Password
+              </label>
+              <input
+                autoFocus={true}
+                className="form-control"
+                id="test-reset-password-new-password"
+                name="newPassword"
+                onBlur={[Function]}
+                onChange={[Function]}
+                placeholder="New Password"
+                required={true}
+                type="password"
+                value=""
+              />
             </div>
+          </DefaultInputComponent>
+          <DebouncedPasswordScore
+            password=""
+            username="bob@bob.com"
+          >
+            <Component
+              password=""
+              username="bob@bob.com"
+            />
+          </DebouncedPasswordScore>
+          <DefaultCheckboxComponent
+            id="test-reset-password-login-after-reset"
+            labelText="Log in now?"
+            name="loginAfterReset"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="checkbox"
+            value={true}
+          >
             <div
-              className="custom-control custom-checkbox mb-3 justify-content-between d-flex"
+              className="custom-control custom-checkbox"
             >
-              <Field
+              <input
                 className="custom-control-input"
                 id="test-reset-password-login-after-reset"
                 name="loginAfterReset"
+                onBlur={[Function]}
+                onChange={[Function]}
                 type="checkbox"
-              >
-                <input
-                  checked={true}
-                  className="custom-control-input"
-                  id="test-reset-password-login-after-reset"
-                  name="loginAfterReset"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  type="checkbox"
-                  value={true}
-                />
-              </Field>
+                value={true}
+              />
               <label
                 className="custom-control-label"
                 htmlFor="test-reset-password-login-after-reset"
@@ -2710,28 +3847,28 @@ exports[`<ResetPasswordForm> 1`] = `
                 Log in now?
               </label>
             </div>
+          </DefaultCheckboxComponent>
+          <DefaultCheckboxComponent
+            id="test-reset-password-stay-logged-in"
+            labelText="Remember me"
+            name="stayLoggedIn"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="checkbox"
+            value={false}
+          >
             <div
-              className="custom-control custom-checkbox mb-3 justify-content-between d-flex"
+              className="custom-control custom-checkbox"
             >
-              <Field
+              <input
                 className="custom-control-input"
-                disabled={false}
                 id="test-reset-password-stay-logged-in"
                 name="stayLoggedIn"
+                onBlur={[Function]}
+                onChange={[Function]}
                 type="checkbox"
-              >
-                <input
-                  checked={false}
-                  className="custom-control-input"
-                  disabled={false}
-                  id="test-reset-password-stay-logged-in"
-                  name="stayLoggedIn"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  type="checkbox"
-                  value={false}
-                />
-              </Field>
+                value={false}
+              />
               <label
                 className="custom-control-label"
                 htmlFor="test-reset-password-stay-logged-in"
@@ -2739,16 +3876,22 @@ exports[`<ResetPasswordForm> 1`] = `
                 Remember me
               </label>
             </div>
+          </DefaultCheckboxComponent>
+          <Component
+            name="reset-password"
+            role="submit"
+            type="submit"
+          >
             <button
               className="btn btn-primary btn-block"
               type="submit"
             >
               Reset Password
             </button>
-          </form>
-        </Form>
-      </Formik>
-    </div>
+          </Component>
+        </form>
+      </DefaultResetPasswordForm>
+    </Formik>
   </Component>
 </div>
 `;
@@ -2775,26 +3918,95 @@ exports[`<ResetPasswordForm> 2`] = `
     }
     token="eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJlbWFpbCI6ImJvYkBib2IuY29tIiwiY3JlZGVudGlhbElkIjoiYTMxZDY4ZTYtODk4Zi00OTk4LTllNmQtMjVlZjFhNjJmNjJjIiwiaWQiOiI5MTVjYjNjMC1hM2FjLTQ0YmUtYTJhOC02ZWRiMjViZmVhY2MiLCJhcHBJZCI6IjI0OGU1NDczLWQ5YTYtNDQ4Ny05MTY0LTI0YzMwNTJkMjg5OCIsImFjdGlvbiI6IlJFU0VUX1BXIiwiaWF0IjoxMDAwfQ."
   >
-    <div>
-      <ErrorMessage />
-      <Formik
-        initialValues={
+    <Formik
+      initialValues={
+        Object {
+          "loginAfterReset": true,
+          "newPassword": "",
+          "stayLoggedIn": false,
+        }
+      }
+      onSubmit={[Function]}
+      validate={[Function]}
+    >
+      <DefaultResetPasswordForm
+        error={<ErrorMessage />}
+        formProps={
           Object {
-            "loginAfterReset": true,
-            "newPassword": "",
-            "stayLoggedIn": false,
+            "id": "test-reset-password-form",
+            "onReset": [Function],
+            "onSubmit": [Function],
           }
         }
-        onSubmit={[Function]}
-        validate={[Function]}
+        loginAfterResetInput={
+          <DefaultCheckboxComponent
+            id="test-reset-password-login-after-reset"
+            labelText="Log in now?"
+            name="loginAfterReset"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="checkbox"
+          />
+        }
+        newPasswordInput={
+          <DefaultInputComponent
+            autoFocus={true}
+            id="test-reset-password-new-password"
+            labelText="New Password"
+            name="newPassword"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="New Password"
+            required={true}
+            type="password"
+            value="abc123"
+          />
+        }
+        passwordScore={
+          <DebouncedPasswordScore
+            password="abc123"
+            username="bob@bob.com"
+          />
+        }
+        stayLoggedInInput={
+          <DefaultCheckboxComponent
+            id="test-reset-password-stay-logged-in"
+            labelText="Remember me"
+            name="stayLoggedIn"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="checkbox"
+            value={false}
+          />
+        }
+        submitButton={
+          <Unknown
+            name="reset-password"
+            role="submit"
+            type="submit"
+          >
+            Reset Password
+          </Unknown>
+        }
+        successMessage={
+          <DefaultAlertComponent
+            role="success"
+          >
+            Your password has been reset successfully.
+          </DefaultAlertComponent>
+        }
       >
-        <div
-          className="alert alert-success"
+        <DefaultAlertComponent
+          role="success"
         >
-          Your password has been reset successfully.
-        </div>
-      </Formik>
-    </div>
+          <div
+            className="alert alert-success"
+          >
+            Your password has been reset successfully.
+          </div>
+        </DefaultAlertComponent>
+      </DefaultResetPasswordForm>
+    </Formik>
   </Component>
 </div>
 `;
@@ -2806,14 +4018,18 @@ exports[`<ResetPasswordForm> invalid token 1`] = `
   <Component
     token="eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJjcmVkZW50aWFsSWQiOiJhMzFkNjhlNi04OThmLTQ5OTgtOWU2ZC0yNWVmMWE2MmY2MmMiLCJpZCI6IjkxNWNiM2MwLWEzYWMtNDRiZS1hMmE4LTZlZGIyNWJmZWFjYyIsImFwcElkIjoiMjQ4ZTU0NzMtZDlhNi00NDg3LTkxNjQtMjRjMzA1MmQyODk4IiwiYWN0aW9uIjoiUkVTRVRfUFciLCJpYXQiOjEwMDB9."
   >
-    <div
-      className="alert alert-danger"
+    <DefaultAlertComponent
+      role="error"
     >
-      Invalid token 
-      <pre>
-        eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJjcmVkZW50aWFsSWQiOiJhMzFkNjhlNi04OThmLTQ5OTgtOWU2ZC0yNWVmMWE2MmY2MmMiLCJpZCI6IjkxNWNiM2MwLWEzYWMtNDRiZS1hMmE4LTZlZGIyNWJmZWFjYyIsImFwcElkIjoiMjQ4ZTU0NzMtZDlhNi00NDg3LTkxNjQtMjRjMzA1MmQyODk4IiwiYWN0aW9uIjoiUkVTRVRfUFciLCJpYXQiOjEwMDB9.
-      </pre>
-    </div>
+      <div
+        className="alert alert-danger"
+      >
+        Invalid token 
+        <pre>
+          eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJjcmVkZW50aWFsSWQiOiJhMzFkNjhlNi04OThmLTQ5OTgtOWU2ZC0yNWVmMWE2MmY2MmMiLCJpZCI6IjkxNWNiM2MwLWEzYWMtNDRiZS1hMmE4LTZlZGIyNWJmZWFjYyIsImFwcElkIjoiMjQ4ZTU0NzMtZDlhNi00NDg3LTkxNjQtMjRjMzA1MmQyODk4IiwiYWN0aW9uIjoiUkVTRVRfUFciLCJpYXQiOjEwMDB9.
+        </pre>
+      </div>
+    </DefaultAlertComponent>
   </Component>
 </div>
 `;
