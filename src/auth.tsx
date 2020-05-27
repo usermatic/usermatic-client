@@ -5,7 +5,8 @@ import React, {
   createContext,
   useContext,
   useState,
-  useEffect
+  useEffect,
+  useMemo
 } from 'react'
 
 import jwtDecode from 'jwt-decode'
@@ -54,37 +55,31 @@ const defaultAppConfig: AppConfig = {
   githubLoginUrl: 'https://usermatic.io/auth/github',
 }
 
-const clientCache: Record<string, any> = {}
-
 export const makeClient = (uri: string, appId: string): ClientType => {
   const parsed = url.parse(uri, true)
   delete parsed.search
   parsed.query.appId = appId
 
   const finalUri = url.format(parsed)
-  if (!(finalUri in clientCache)) {
-    // see https://medium.com/@danielrearden/a-better-refetch-flow-for-apollo-client-7ff06817b052
-    const cache = new InMemoryCache({
-      dataIdFromObject: object => {
-        switch (object.__typename) {
-          case 'Query': return 'ROOT_QUERY'
-          default: return defaultDataIdFromObject(object)
-        }
-      },
-    })
 
-    clientCache[finalUri] = new ApolloClient({
-      link: createHttpLink({
-        uri: finalUri,
-        fetch,
-        credentials: 'include',
-        headers: { 'X-Usermatic': 'Usermatic' }
-      }),
-      cache
-    })
-  }
+  const cache = new InMemoryCache({
+    dataIdFromObject: object => {
+      switch (object.__typename) {
+        case 'Query': return 'ROOT_QUERY'
+        default: return defaultDataIdFromObject(object)
+      }
+    },
+  })
 
-  return clientCache[finalUri]
+  return new ApolloClient({
+    link: createHttpLink({
+      uri: finalUri,
+      fetch,
+      credentials: 'include',
+      headers: { 'X-Usermatic': 'Usermatic' }
+    }),
+    cache
+  })
 }
 
 // We want to provide an apollo client to everything in the app, but
@@ -276,15 +271,19 @@ type AuthProviderProps = {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> =
-  ({children, uri, appId, showDiagnostics = false}) => {
+  ({children, uri: uriArg, appId, showDiagnostics = false}) => {
 
-  if (!uri) {
-    uri = 'https://api.usermatic.io/graphql'
-  }
+  const uri = uriArg ?? 'https://api.usermatic.io/graphql'
 
-  const apolloCtx = getApolloContext()
-  const apolloVal = useContext(apolloCtx)
-  const client = apolloVal.client ?? makeClient(uri, appId)
+  const apolloVal = useContext(getApolloContext())
+
+  const client = useMemo(() => {
+    if (apolloVal.client) {
+      return apolloVal.client
+    } else {
+      return makeClient(uri, appId)
+    }
+  }, [apolloVal, uri, appId])
 
   return (
     <AppIdContext.Provider value={appId}>
