@@ -77,14 +77,18 @@ export const TOTP_QUERY = gql`
 
 export const ADD_TOTP_MUT = gql`
   mutation addTotp($token: String!, $code: String!) {
-    addTotp(token: $token, code: $code)
+    addTotp(token: $token, code: $code) {
+      refetch {
+        getAuthenticatedUser { ...UserParts }
+      }
+    }
   }
+  ${USER_FRAGMENT}
 `
 
 export const CLEAR_TOTP_MUT = gql`
   mutation clearTotp($reauthToken: String!) {
     clearTotp(reauthToken: $reauthToken) {
-      success
       refetch {
         getAuthenticatedUser { ...UserParts }
       }
@@ -141,6 +145,7 @@ export const RESET_PW_MUT = gql`
       }
     }
   }
+  ${USER_FRAGMENT}
 `
 
 export const REQUEST_PW_RESET_EMAIL = gql`
@@ -158,12 +163,12 @@ export const CHANGE_PW_MUT = gql`
 export const ADD_PW_MUT = gql`
   mutation addPassword($email: String!, $newPassword: String!) {
     addPassword(email: $email, password: $newPassword) {
-      success
       refetch {
         getAuthenticatedUser { ...UserParts }
       }
     }
   }
+  ${USER_FRAGMENT}
 `
 
 export const LOGOUT_MUT = gql`

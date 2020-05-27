@@ -6,6 +6,7 @@ exports[`<AddTotpForm> 1`] = `
 >
   <Component
     idPrefix="test"
+    onSuccess={[MockFunction onSuccess]}
   >
     <div>
       <div
@@ -89,6 +90,35 @@ exports[`<AddTotpForm> 1`] = `
           </div>
         </TotpTokenForm>
       </div>
+    </div>
+  </Component>
+</div>
+`;
+
+exports[`<AddTotpForm> 2`] = `
+<div
+  id="client-test-div"
+>
+  <Component
+    idPrefix="test"
+    onSuccess={
+      [MockFunction onSuccess] {
+        "calls": Array [
+          Array [],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      }
+    }
+  >
+    <div
+      className="alert alert-success mt-3"
+    >
+      Your authenticator app has been successfully configured. You will need your authenticator app in order to log in to your account from now on.
     </div>
   </Component>
 </div>

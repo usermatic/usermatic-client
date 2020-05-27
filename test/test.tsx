@@ -40,6 +40,9 @@ const defaultMocks = {
   AppConfig: () => ({ minPasswordStrength: 3 }),
   LoginData: () => ({ userJwt: jwt.sign({ id: userId }, 'abc') }),
   User: () => ({}),
+  EmptyPayload: () => ({
+    refetch: () => ({})
+  }),
   LoginPayload: () => ({
     refetch: () => ({})
   }),
@@ -686,10 +689,11 @@ test('<AddTotpForm>', async () => {
     })
   })
 
+  const onSuccess = jest.fn().mockName('onSuccess')
   const wrapper = mount(
     <TestWrapper mocks={mocks}>
       <div id="client-test-div">
-        <components.AddTotpForm idPrefix="test" />
+        <components.AddTotpForm onSuccess={onSuccess} idPrefix="test" />
       </div>
     </TestWrapper>
   )
@@ -698,6 +702,12 @@ test('<AddTotpForm>', async () => {
     const img = wrapper.find('#client-test-div img')
     return Boolean(img.props().src)
   })
+
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+
+  setInput(wrapper, 'code', 'input#test-totp-code', '012345')
+
+  await waitUntil(wrapper, hasBeenCalled(onSuccess))
 
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 })
