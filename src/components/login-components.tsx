@@ -682,7 +682,7 @@ export const AccountCreationForm: React.FC<AccountCreationProps> = ({
 }
 
 export const LogoutButton: React.FC<{
-  components: FormComponents
+  components?: FormComponents
 }> = ({components}) => {
 
   const {

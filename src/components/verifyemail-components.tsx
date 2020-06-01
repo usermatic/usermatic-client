@@ -12,7 +12,7 @@ import {
 
 export const EmailVerifier: React.FC<{
   token: string,
-  components: FormComponents
+  components?: FormComponents
 }> = ({token, components}) => {
 
   const {
