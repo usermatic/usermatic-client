@@ -6,10 +6,8 @@ import { useReauthToken } from '../reauth'
 import { useCreateRecoveryCodes, useGetRecoveryCodeCount } from '../recoverycodes'
 import { ReauthenticateGuard } from './reauth-components'
 
-import {
-  useComponents,
-  FormComponents
-} from './form-util'
+import { useComponents } from './component-lib'
+import { FormComponents } from './component-types'
 
 const GenRecoveryCodesFormInner: React.FC<{
   codeCount: number,

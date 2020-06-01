@@ -6,12 +6,13 @@ import { ApolloError } from 'apollo-client'
 
 import jwtDecode from 'jwt-decode'
 
+import { useComponents } from './component-lib'
+
 import {
-  useComponents,
   FormComponents,
   ButtonType,
   InputComponentType
-} from './form-util'
+} from './component-types'
 
 import { ErrorMessage } from '../errors'
 import { useAddTotp, useGetTotpKey } from '../totp'

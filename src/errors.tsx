@@ -8,7 +8,8 @@ import React, {
 import { ApolloError } from 'apollo-client'
 import { GraphQLError } from 'graphql'
 
-import { useComponents, FormComponents } from './components/form-util'
+import { useComponents } from './components/component-lib'
+import { FormComponents } from './components/component-types'
 
 export type ConciseError = {
   code: string

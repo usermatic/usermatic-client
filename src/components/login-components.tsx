@@ -10,10 +10,8 @@ import { ReauthContext } from '../reauth'
 import { DebouncedPasswordScore, RequestPasswordResetForm } from './password-components'
 import { MFAForm } from './totp-components'
 import { useReauthToken } from '../reauth'
-import {
-  useComponents,
-  FormComponents
-} from './form-util'
+import { useComponents } from './component-lib'
+import { FormComponents } from './component-types'
 
 import { useClearTotpMutation } from '../../gen/operations'
 
@@ -585,7 +583,7 @@ export const AccountCreationForm: React.FC<AccountCreationProps> = ({
 }) => {
 
   const {
-    CreateAccountForm,
+    CreateAccountFormComponent,
     EmailAddressInput,
     PasswordInput,
     StayLoggedInInput,
@@ -619,7 +617,7 @@ export const AccountCreationForm: React.FC<AccountCreationProps> = ({
         autoComplete: 'off'
       }
 
-      return <CreateAccountForm
+      return <CreateAccountFormComponent
         formProps={formProps}
         emailInput={
           <EmailAddressInput

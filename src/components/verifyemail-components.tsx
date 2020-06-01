@@ -3,10 +3,8 @@ import React, { useEffect } from 'react'
 
 import { useCsrfToken } from '../hooks'
 import { ErrorMessage } from '../errors'
-import {
-  useComponents,
-  FormComponents
-} from './form-util'
+import { useComponents } from './component-lib'
+import { FormComponents } from './component-types'
 
 import {
   useEmailVerifier

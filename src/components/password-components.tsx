@@ -8,10 +8,8 @@ import { useAppConfig, useToken } from '../auth'
 import { ErrorMessage } from '../errors'
 import { useDebounce } from '../use-debounce'
 
-import {
-  useComponents,
-  FormComponents
-} from './form-util'
+import { useComponents } from './component-lib'
+import { FormComponents } from './component-types'
 
 import {
   usePasswordCredential,

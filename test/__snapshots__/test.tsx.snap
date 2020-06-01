@@ -231,14 +231,14 @@ exports[`<ChangePasswordForm> with password 1`] = `
           />
         }
         submitButton={
-          <Unknown
+          <DefaultButton
             disabled={false}
             name="change-password"
             role="submit"
             type="submit"
           >
             Change Password
-          </Unknown>
+          </DefaultButton>
         }
       >
         <form
@@ -322,7 +322,7 @@ exports[`<ChangePasswordForm> with password 1`] = `
               username="bob@bob.com"
             />
           </DebouncedPasswordScore>
-          <Component
+          <DefaultButton
             disabled={false}
             name="change-password"
             role="submit"
@@ -334,7 +334,7 @@ exports[`<ChangePasswordForm> with password 1`] = `
             >
               Change Password
             </button>
-          </Component>
+          </DefaultButton>
           <ErrorMessage />
         </form>
       </DefaultChangePasswordForm>
@@ -418,14 +418,14 @@ exports[`<ChangePasswordForm> without password 1`] = `
           />
         }
         submitButton={
-          <Unknown
+          <DefaultButton
             disabled={false}
             name="set-password"
             role="submit"
             type="submit"
           >
             Set Password
-          </Unknown>
+          </DefaultButton>
         }
       >
         <form
@@ -509,7 +509,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
               username="bob@bob.com"
             />
           </DebouncedPasswordScore>
-          <Component
+          <DefaultButton
             disabled={false}
             name="set-password"
             role="submit"
@@ -521,7 +521,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
             >
               Set Password
             </button>
-          </Component>
+          </DefaultButton>
           <ErrorMessage />
         </form>
       </DefaultAddPasswordForm>
@@ -560,14 +560,14 @@ exports[`<GenRecoveryCodesForm> 1`] = `
       >
         <DefaultReauthFormComponent
           cancelButton={
-            <Unknown
+            <DefaultButton
               disabled={false}
               name="cancel-reauth"
               onClick={[Function]}
               role="cancel"
             >
               Cancel
-            </Unknown>
+            </DefaultButton>
           }
           error={<ErrorMessage />}
           formProps={
@@ -595,14 +595,14 @@ exports[`<GenRecoveryCodesForm> 1`] = `
             </React.Fragment>
           }
           submitButton={
-            <Unknown
+            <DefaultButton
               disabled={false}
               name="submit-reauth"
               role="submit"
               type="submit"
             >
               Submit
-            </Unknown>
+            </DefaultButton>
           }
         >
           <div>
@@ -646,7 +646,7 @@ exports[`<GenRecoveryCodesForm> 1`] = `
               <div
                 className="d-flex justify-content-between"
               >
-                <Component
+                <DefaultButton
                   disabled={false}
                   name="submit-reauth"
                   role="submit"
@@ -658,8 +658,8 @@ exports[`<GenRecoveryCodesForm> 1`] = `
                   >
                     Submit
                   </button>
-                </Component>
-                <Component
+                </DefaultButton>
+                <DefaultButton
                   disabled={false}
                   name="cancel-reauth"
                   onClick={[Function]}
@@ -671,7 +671,7 @@ exports[`<GenRecoveryCodesForm> 1`] = `
                   >
                     Cancel
                   </button>
-                </Component>
+                </DefaultButton>
               </div>
             </form>
           </div>
@@ -707,14 +707,14 @@ exports[`<GenRecoveryCodesForm> 2`] = `
       >
         <DefaultRecoveryCodeRegenerationPromptComponent
           confirmButton={
-            <Unknown
+            <DefaultButton
               id="gen-new-codes-confirm-btn"
               name="regenerate-recovery-codes"
               onClick={[Function]}
               role="danger"
             >
               Invalidate my old codes and create new ones.
-            </Unknown>
+            </DefaultButton>
           }
         >
           <div
@@ -725,7 +725,7 @@ exports[`<GenRecoveryCodesForm> 2`] = `
             >
               Warning: After you generate new codes, your old codes will no longer work. Make sure you store the new codes securely.
             </div>
-            <Component
+            <DefaultButton
               id="gen-new-codes-confirm-btn"
               name="regenerate-recovery-codes"
               onClick={[Function]}
@@ -738,7 +738,7 @@ exports[`<GenRecoveryCodesForm> 2`] = `
               >
                 Invalidate my old codes and create new ones.
               </button>
-            </Component>
+            </DefaultButton>
           </div>
         </DefaultRecoveryCodeRegenerationPromptComponent>
       </GenRecoveryCodesFormInner>
@@ -770,7 +770,7 @@ exports[`<GenRecoveryCodesForm> 3`] = `
         codeCount={10}
         onSuccess={[Function]}
       >
-        <Component
+        <DefaultRecoveryCodeDisplayComponent
           codes={
             Array [
               "ACDF-01AB-234A",
@@ -810,7 +810,7 @@ ACDF-01AB-234A
             </div>
             You will not be able to view these codes again later. If you lose them, you can generate new ones.
           </div>
-        </Component>
+        </DefaultRecoveryCodeDisplayComponent>
       </GenRecoveryCodesFormInner>
     </Component>
   </Component>
@@ -861,7 +861,7 @@ exports[`<LoginForm> TOTP 1`] = `
         }
         error={<ErrorMessage />}
         forgotPasswordButton={
-          <Unknown
+          <DefaultButton
             id="forgot-pw-button"
             name="forgot-password"
             onClick={[Function]}
@@ -869,7 +869,7 @@ exports[`<LoginForm> TOTP 1`] = `
             type="button"
           >
             Forgot Password?
-          </Unknown>
+          </DefaultButton>
         }
         formProps={
           Object {
@@ -891,14 +891,14 @@ exports[`<LoginForm> TOTP 1`] = `
           />
         }
         signinButton={
-          <Unknown
+          <DefaultButton
             id="login-button"
             name="login"
             role="submit"
             type="submit"
           >
             Sign in
-          </Unknown>
+          </DefaultButton>
         }
         stayLoggedInInput={
           <DefaultCheckboxComponent
@@ -1014,7 +1014,7 @@ exports[`<LoginForm> TOTP 1`] = `
           <div
             className="mb-3 justify-content-between d-flex"
           >
-            <Component
+            <DefaultButton
               id="login-button"
               name="login"
               role="submit"
@@ -1027,8 +1027,8 @@ exports[`<LoginForm> TOTP 1`] = `
               >
                 Sign in
               </button>
-            </Component>
-            <Component
+            </DefaultButton>
+            <DefaultButton
               id="forgot-pw-button"
               name="forgot-password"
               onClick={[Function]}
@@ -1043,7 +1043,7 @@ exports[`<LoginForm> TOTP 1`] = `
               >
                 Forgot Password?
               </button>
-            </Component>
+            </DefaultButton>
           </div>
           <ErrorMessage />
         </form>
@@ -1068,25 +1068,25 @@ exports[`<LoginForm> TOTP 2`] = `
     >
       <DefaultMFAForm
         enterRecoveryModeButton={
-          <Unknown
+          <DefaultButton
             id="test-recovery-code-button"
             name="enter-recovery-mode"
             onClick={[Function]}
             role="secondary"
           >
             I need to use a 2FA recovery code
-          </Unknown>
+          </DefaultButton>
         }
         error={<ErrorMessage />}
         exitRecoveryModeButton={
-          <Unknown
+          <DefaultButton
             id="test-recovery-code-cancel"
             name="exit-recovery-mode"
             onClick={[Function]}
             role="cancel"
           >
             Cancel
-          </Unknown>
+          </DefaultButton>
         }
         loading={false}
         recoveryCodeInput={
@@ -1164,7 +1164,7 @@ exports[`<LoginForm> TOTP 2`] = `
               </Form>
             </Formik>
           </TotpTokenForm>
-          <Component
+          <DefaultButton
             id="test-recovery-code-button"
             name="enter-recovery-mode"
             onClick={[Function]}
@@ -1177,7 +1177,7 @@ exports[`<LoginForm> TOTP 2`] = `
             >
               I need to use a 2FA recovery code
             </button>
-          </Component>
+          </DefaultButton>
         </div>
       </DefaultMFAForm>
     </MFAForm>
@@ -1200,25 +1200,25 @@ exports[`<LoginForm> TOTP 3`] = `
     >
       <DefaultMFAForm
         enterRecoveryModeButton={
-          <Unknown
+          <DefaultButton
             id="test-recovery-code-button"
             name="enter-recovery-mode"
             onClick={[Function]}
             role="secondary"
           >
             I need to use a 2FA recovery code
-          </Unknown>
+          </DefaultButton>
         }
         error={<ErrorMessage />}
         exitRecoveryModeButton={
-          <Unknown
+          <DefaultButton
             id="test-recovery-code-cancel"
             name="exit-recovery-mode"
             onClick={[Function]}
             role="cancel"
           >
             Cancel
-          </Unknown>
+          </DefaultButton>
         }
         loading={false}
         recoveryCodeInput={
@@ -1299,7 +1299,7 @@ exports[`<LoginForm> TOTP 3`] = `
                           />
                         </div>
                       </DefaultCodeInput>
-                      <Component
+                      <DefaultButton
                         name="submit-recovery-code"
                         role="submit"
                         type="submit"
@@ -1310,14 +1310,14 @@ exports[`<LoginForm> TOTP 3`] = `
                         >
                           Submit Recovery Code
                         </button>
-                      </Component>
+                      </DefaultButton>
                     </form>
                   </Form>
                 </Formik>
               </RecoveryCodeForm>
             </div>
           </div>
-          <Component
+          <DefaultButton
             id="test-recovery-code-cancel"
             name="exit-recovery-mode"
             onClick={[Function]}
@@ -1330,7 +1330,7 @@ exports[`<LoginForm> TOTP 3`] = `
             >
               Cancel
             </button>
-          </Component>
+          </DefaultButton>
         </div>
       </DefaultMFAForm>
     </MFAForm>
@@ -1394,7 +1394,7 @@ exports[`<LoginForm> login 1`] = `
         }
         error={<ErrorMessage />}
         forgotPasswordButton={
-          <Unknown
+          <DefaultButton
             id="forgot-pw-button"
             name="forgot-password"
             onClick={[Function]}
@@ -1402,7 +1402,7 @@ exports[`<LoginForm> login 1`] = `
             type="button"
           >
             Forgot Password?
-          </Unknown>
+          </DefaultButton>
         }
         formProps={
           Object {
@@ -1424,14 +1424,14 @@ exports[`<LoginForm> login 1`] = `
           />
         }
         signinButton={
-          <Unknown
+          <DefaultButton
             id="login-button"
             name="login"
             role="submit"
             type="submit"
           >
             Sign in
-          </Unknown>
+          </DefaultButton>
         }
         stayLoggedInInput={
           <DefaultCheckboxComponent
@@ -1544,7 +1544,7 @@ exports[`<LoginForm> login 1`] = `
           <div
             className="mb-3 justify-content-between d-flex"
           >
-            <Component
+            <DefaultButton
               id="login-button"
               name="login"
               role="submit"
@@ -1557,8 +1557,8 @@ exports[`<LoginForm> login 1`] = `
               >
                 Sign in
               </button>
-            </Component>
-            <Component
+            </DefaultButton>
+            <DefaultButton
               id="forgot-pw-button"
               name="forgot-password"
               onClick={[Function]}
@@ -1573,7 +1573,7 @@ exports[`<LoginForm> login 1`] = `
               >
                 Forgot Password?
               </button>
-            </Component>
+            </DefaultButton>
           </div>
           <ErrorMessage />
         </form>
@@ -1626,7 +1626,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
         }
         error={<ErrorMessage />}
         forgotPasswordButton={
-          <Unknown
+          <DefaultButton
             id="forgot-pw-button"
             name="forgot-password"
             onClick={[Function]}
@@ -1634,7 +1634,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
             type="button"
           >
             Forgot Password?
-          </Unknown>
+          </DefaultButton>
         }
         formProps={
           Object {
@@ -1656,14 +1656,14 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
           />
         }
         signinButton={
-          <Unknown
+          <DefaultButton
             id="login-button"
             name="login"
             role="submit"
             type="submit"
           >
             Sign in
-          </Unknown>
+          </DefaultButton>
         }
         stayLoggedInInput={
           <DefaultCheckboxComponent
@@ -1779,7 +1779,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
           <div
             className="mb-3 justify-content-between d-flex"
           >
-            <Component
+            <DefaultButton
               id="login-button"
               name="login"
               role="submit"
@@ -1792,8 +1792,8 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
               >
                 Sign in
               </button>
-            </Component>
-            <Component
+            </DefaultButton>
+            <DefaultButton
               id="forgot-pw-button"
               name="forgot-password"
               onClick={[Function]}
@@ -1808,7 +1808,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
               >
                 Forgot Password?
               </button>
-            </Component>
+            </DefaultButton>
           </div>
           <ErrorMessage />
         </form>
@@ -1838,14 +1838,14 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
       >
         <DefaultCreateAccountForm
           createAccountButton={
-            <Unknown
+            <DefaultButton
               id="create-account-button"
               name="create-account"
               role="submit"
               type="submit"
             >
               Create Account
-            </Unknown>
+            </DefaultButton>
           }
           emailInput={
             <DefaultInputComponent
@@ -2022,7 +2022,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
             <div
               className="mb-3"
             >
-              <Component
+              <DefaultButton
                 id="create-account-button"
                 name="create-account"
                 role="submit"
@@ -2035,7 +2035,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
                 >
                   Create Account
                 </button>
-              </Component>
+              </DefaultButton>
             </div>
           </form>
           <ErrorMessage />
@@ -2068,14 +2068,14 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
       >
         <DefaultForgotPasswordForm
           cancelButton={
-            <Unknown
+            <DefaultButton
               name="cancel-password-reset"
               onClick={[Function]}
               role="cancel"
               type="button"
             >
               Cancel
-            </Unknown>
+            </DefaultButton>
           }
           emailInput={
             <DefaultInputComponent
@@ -2100,14 +2100,14 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
             }
           }
           submitButton={
-            <Unknown
+            <DefaultButton
               id="request-pw-reset-button"
               name="request-password-reset"
               role="submit"
               type="submit"
             >
               Submit
-            </Unknown>
+            </DefaultButton>
           }
           successMessage={null}
         >
@@ -2158,7 +2158,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
               <div
                 className="d-flex justify-content-between mb-3"
               >
-                <Component
+                <DefaultButton
                   id="request-pw-reset-button"
                   name="request-password-reset"
                   role="submit"
@@ -2171,8 +2171,8 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                   >
                     Submit
                   </button>
-                </Component>
-                <Component
+                </DefaultButton>
+                <DefaultButton
                   name="cancel-password-reset"
                   onClick={[Function]}
                   role="cancel"
@@ -2185,7 +2185,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                   >
                     Cancel
                   </button>
-                </Component>
+                </DefaultButton>
               </div>
             </form>
           </div>
@@ -2216,14 +2216,14 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
       >
         <DefaultCreateAccountForm
           createAccountButton={
-            <Unknown
+            <DefaultButton
               id="create-account-button"
               name="create-account"
               role="submit"
               type="submit"
             >
               Create Account
-            </Unknown>
+            </DefaultButton>
           }
           emailInput={
             <DefaultInputComponent
@@ -2400,7 +2400,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
             <div
               className="mb-3"
             >
-              <Component
+              <DefaultButton
                 id="create-account-button"
                 name="create-account"
                 role="submit"
@@ -2413,7 +2413,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                 >
                   Create Account
                 </button>
-              </Component>
+              </DefaultButton>
             </div>
           </form>
           <ErrorMessage />
@@ -2788,7 +2788,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
         }
         error={<ErrorMessage />}
         forgotPasswordButton={
-          <Unknown
+          <DefaultButton
             id="forgot-pw-button"
             name="forgot-password"
             onClick={[Function]}
@@ -2796,7 +2796,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
             type="button"
           >
             Forgot Password?
-          </Unknown>
+          </DefaultButton>
         }
         formProps={
           Object {
@@ -2818,14 +2818,14 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
           />
         }
         signinButton={
-          <Unknown
+          <DefaultButton
             id="login-button"
             name="login"
             role="submit"
             type="submit"
           >
             Sign in
-          </Unknown>
+          </DefaultButton>
         }
         stayLoggedInInput={
           <DefaultCheckboxComponent
@@ -2941,7 +2941,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
           <div
             className="mb-3 justify-content-between d-flex"
           >
-            <Component
+            <DefaultButton
               id="login-button"
               name="login"
               role="submit"
@@ -2954,8 +2954,8 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
               >
                 Sign in
               </button>
-            </Component>
-            <Component
+            </DefaultButton>
+            <DefaultButton
               id="forgot-pw-button"
               name="forgot-password"
               onClick={[Function]}
@@ -2970,7 +2970,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
               >
                 Forgot Password?
               </button>
-            </Component>
+            </DefaultButton>
           </div>
           <ErrorMessage />
         </form>
@@ -3323,14 +3323,14 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
       >
         <DefaultCreateAccountForm
           createAccountButton={
-            <Unknown
+            <DefaultButton
               id="create-account-button"
               name="create-account"
               role="submit"
               type="submit"
             >
               Create Account
-            </Unknown>
+            </DefaultButton>
           }
           emailInput={
             <DefaultInputComponent
@@ -3507,7 +3507,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
             <div
               className="mb-3"
             >
-              <Component
+              <DefaultButton
                 id="create-account-button"
                 name="create-account"
                 role="submit"
@@ -3520,7 +3520,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                 >
                   Create Account
                 </button>
-              </Component>
+              </DefaultButton>
             </div>
           </form>
           <ErrorMessage />
@@ -3549,14 +3549,14 @@ exports[`<ReauthenticateGuard> 1`] = `
     >
       <DefaultReauthFormComponent
         cancelButton={
-          <Unknown
+          <DefaultButton
             disabled={false}
             name="cancel-reauth"
             onClick={[Function]}
             role="cancel"
           >
             Cancel
-          </Unknown>
+          </DefaultButton>
         }
         error={<ErrorMessage />}
         formProps={
@@ -3584,14 +3584,14 @@ exports[`<ReauthenticateGuard> 1`] = `
           </React.Fragment>
         }
         submitButton={
-          <Unknown
+          <DefaultButton
             disabled={false}
             name="submit-reauth"
             role="submit"
             type="submit"
           >
             Submit
-          </Unknown>
+          </DefaultButton>
         }
       >
         <div>
@@ -3635,7 +3635,7 @@ exports[`<ReauthenticateGuard> 1`] = `
             <div
               className="d-flex justify-content-between"
             >
-              <Component
+              <DefaultButton
                 disabled={false}
                 name="submit-reauth"
                 role="submit"
@@ -3647,8 +3647,8 @@ exports[`<ReauthenticateGuard> 1`] = `
                 >
                   Submit
                 </button>
-              </Component>
-              <Component
+              </DefaultButton>
+              <DefaultButton
                 disabled={false}
                 name="cancel-reauth"
                 onClick={[Function]}
@@ -3660,7 +3660,7 @@ exports[`<ReauthenticateGuard> 1`] = `
                 >
                   Cancel
                 </button>
-              </Component>
+              </DefaultButton>
             </div>
           </form>
         </div>
@@ -3760,13 +3760,13 @@ exports[`<ResetPasswordForm> 1`] = `
           />
         }
         submitButton={
-          <Unknown
+          <DefaultButton
             name="reset-password"
             role="submit"
             type="submit"
           >
             Reset Password
-          </Unknown>
+          </DefaultButton>
         }
         successMessage={null}
       >
@@ -3877,7 +3877,7 @@ exports[`<ResetPasswordForm> 1`] = `
               </label>
             </div>
           </DefaultCheckboxComponent>
-          <Component
+          <DefaultButton
             name="reset-password"
             role="submit"
             type="submit"
@@ -3888,7 +3888,7 @@ exports[`<ResetPasswordForm> 1`] = `
             >
               Reset Password
             </button>
-          </Component>
+          </DefaultButton>
         </form>
       </DefaultResetPasswordForm>
     </Formik>
@@ -3980,13 +3980,13 @@ exports[`<ResetPasswordForm> 2`] = `
           />
         }
         submitButton={
-          <Unknown
+          <DefaultButton
             name="reset-password"
             role="submit"
             type="submit"
           >
             Reset Password
-          </Unknown>
+          </DefaultButton>
         }
         successMessage={
           <DefaultAlertComponent

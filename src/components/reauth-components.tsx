@@ -7,7 +7,8 @@ import React, {
 import { Formik, FormikValues, FormikErrors } from 'formik'
 
 import { ErrorMessage } from '../errors'
-import { useComponents, FormComponents } from './form-util'
+import { useComponents } from './component-lib'
+import { FormComponents } from './component-types'
 
 import {
   useReauthenticate,

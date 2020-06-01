@@ -22,7 +22,13 @@ import {
 import { ApolloError } from 'apollo-client'
 import { getApolloContext } from '@apollo/react-common'
 
-import { ComponentProvider, FormComponents } from './components/form-util'
+import {
+  ComponentProvider
+} from './components/component-lib'
+
+import {
+  FormComponents
+} from './components/component-types'
 
 import {
   useGetAppConfigQuery,
