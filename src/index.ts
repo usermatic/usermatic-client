@@ -1,6 +1,6 @@
 
 export {
-  AuthProvider,
+  Usermatic,
   useToken,
   useAppId,
   useAppConfig

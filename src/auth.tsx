@@ -22,6 +22,8 @@ import {
 import { ApolloError } from 'apollo-client'
 import { getApolloContext } from '@apollo/react-common'
 
+import { ComponentProvider, FormComponents } from './components/form-util'
+
 import {
   useGetAppConfigQuery,
   useGetSessionJwtMutation,
@@ -55,7 +57,7 @@ const defaultAppConfig: AppConfig = {
   githubLoginUrl: 'https://usermatic.io/auth/github',
 }
 
-export const makeClient = (uri: string, appId: string): ClientType => {
+const makeClient = (uri: string, appId: string): ClientType => {
   const parsed = url.parse(uri, true)
   delete parsed.search
   parsed.query.appId = appId
@@ -92,7 +94,7 @@ export const AppIdContext = createContext<string | undefined>(undefined)
 export const useAppId = (): string => {
   const ret = useContext(AppIdContext)
   if (typeof ret !== 'string') {
-    throw new Error("useAppId() must be used from within an AuthProvider")
+    throw new Error("useAppId() must be used from within an Usermatic")
   }
   return ret
 }
@@ -179,13 +181,13 @@ const Diagnostics: React.FC<{appId?: string, error?: ApolloError}> = ({appId, er
     { isValidAppId(appId)
       ? <>
           You've provided the valid-looking <code>appId</code> property <code>{formatAppId(appId)}</code>
-          {' '}to <code>&lt;AuthProvider&gt;</code>, but
+          {' '}to <code>&lt;Usermatic&gt;</code>, but
           it is either not a known appId, or the app to which it refers is not configured to accept
           authentication requests from the current origin, which is <code>{document.location.origin}</code>.
         </>
       : <>
           It appears that you have not provided a valid <code>appId</code> property to
-          the <code>&lt;AuthProvider&gt;</code> component.
+          the <code>&lt;Usermatic&gt;</code> component.
           <p/>
           The <code>appId</code> propertry should be a UUID such as <code>e3ede2c8-2809-498c-a047-4994e4fee393</code>.
           <p/>
@@ -221,11 +223,13 @@ const AuthenticatedUserProvider: React.FC<{children: ReactNode}> = ({children}) 
   </AuthenticatedUserContext.Provider>
 }
 
-const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics: boolean}> =
-  ({children, showDiagnostics}) => {
+const CsrfTokenProvider: React.FC<{
+  appId: string,
+  showDiagnostics: boolean,
+  children: ReactNode
+}> = ({appId, showDiagnostics, children}) => {
 
   const client = useContext(UMApolloContext)
-  const appId = useAppId()
 
   const [submit, {data, error, loading}] = useGetSessionJwtMutation(
     { client }
@@ -235,7 +239,7 @@ const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics: boole
     submit({ variables: { appId } })
   }, [appId])
 
-  let csrfToken
+  let csrfToken: string | undefined
   if (!loading && !error && data && data.getSessionJWT) {
     csrfToken = data.getSessionJWT.csrfToken
   }
@@ -246,32 +250,24 @@ const WrappedAuthProvider: React.FC<{children: ReactNode, showDiagnostics: boole
       console.error("Error:", error)
       if (!showDiagnostics) {
         console.error('To enable diagnostics, add the `showDiagnostics`'
-          + 'property to your <AuthProvider> component, as follows:\n\n'
-          + '  <AuthProvider showDiagnostics appId={appId}>')
+          + 'property to your <Usermatic> component, as follows:\n\n'
+          + '  <Usermatic showDiagnostics appId={appId}>')
       }
     }
   }, [error, showDiagnostics])
 
-  return <CsrfContext.Provider value={{ csrfToken }}>
-    <AuthenticatedUserProvider>
-      <ReauthCacheProvider>
-        <HttpWarning />
-        {error && showDiagnostics && <Diagnostics appId={appId} error={error} />}
-        {children}
-      </ReauthCacheProvider>
-    </AuthenticatedUserProvider>
+  const value = useMemo(() => ({ csrfToken }), [csrfToken])
+  return <CsrfContext.Provider value={value}>
+    {error && showDiagnostics && <Diagnostics appId={appId} error={error} />}
+    {children}
   </CsrfContext.Provider>
 }
 
-type AuthProviderProps = {
-  children: ReactNode,
+const UMApolloProvider: React.FC<{
   uri?: string,
   appId: string,
-  showDiagnostics?: boolean
-}
-
-export const AuthProvider: React.FC<AuthProviderProps> =
-  ({children, uri: uriArg, appId, showDiagnostics = false}) => {
+  children: ReactNode
+}> = ({uri: uriArg, appId, children}) => {
 
   const uri = uriArg ?? 'https://api.usermatic.io/graphql'
 
@@ -285,16 +281,41 @@ export const AuthProvider: React.FC<AuthProviderProps> =
     }
   }, [apolloVal, uri, appId])
 
-  return (
-    <AppIdContext.Provider value={appId}>
-      <UMApolloContext.Provider value={client}>
-        <WrappedAuthProvider showDiagnostics={showDiagnostics}>
-          {children}
-        </WrappedAuthProvider>
-      </UMApolloContext.Provider>
-    </AppIdContext.Provider>
-  )
+  return <UMApolloContext.Provider value={client}>
+    {children}
+  </UMApolloContext.Provider>
 }
+
+type UsermaticProps = {
+  children: ReactNode,
+  uri?: string,
+  appId: string,
+  showDiagnostics?: boolean,
+  components?: FormComponents
+}
+
+export const Usermatic: React.FC<UsermaticProps> = ({
+  children,
+  uri,
+  appId,
+  components,
+  showDiagnostics = false
+}) => (
+  <AppIdContext.Provider value={appId}>
+    <UMApolloProvider uri={uri} appId={appId}>
+      <CsrfTokenProvider appId={appId} showDiagnostics={showDiagnostics}>
+        <AuthenticatedUserProvider>
+          <ReauthCacheProvider>
+            <HttpWarning />
+            <ComponentProvider components={components}>
+              {children}
+            </ComponentProvider>
+          </ReauthCacheProvider>
+        </AuthenticatedUserProvider>
+      </CsrfTokenProvider>
+    </UMApolloProvider>
+  </AppIdContext.Provider>
+)
 
 export const useAppConfig = () => {
   const appId = useAppId()

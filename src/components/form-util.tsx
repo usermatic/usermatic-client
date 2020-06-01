@@ -979,7 +979,7 @@ export const useComponents = (propComponents: FormComponents = {}): DefiniteForm
 }
 
 export const ComponentProvider: React.FC<{
-  components: FormComponents,
+  components?: FormComponents,
   children: ReactNode
 }> = ({components: propComponents, children}) => {
 

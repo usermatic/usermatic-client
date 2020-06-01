@@ -165,11 +165,11 @@ const TestWrapper: React.FC<{children: ReactNode, mocks: any}> = ({children, moc
   });
 
   return <ApolloProvider client={apolloClient}>
-    <client.AuthProvider appId={appId}>
+    <client.Usermatic appId={appId}>
       <CsrfTokenWrapper>
         {children}
       </CsrfTokenWrapper>
-    </client.AuthProvider>
+    </client.Usermatic>
   </ApolloProvider>
 }
 
