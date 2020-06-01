@@ -605,8 +605,13 @@ export const AccountCreationForm: React.FC<AccountCreationProps> = ({
     submit(variables)
   }
 
+  const initialValues = {
+    ...loginInitialValues,
+    loginAfterCreation
+  }
+
   return <OauthCreateAccount onLogin={onLogin} components={components}>
-    <Formik initialValues={loginInitialValues}
+    <Formik initialValues={initialValues}
             onSubmit={onSubmit}
             validate={validateLogin}>
     {(props) => {

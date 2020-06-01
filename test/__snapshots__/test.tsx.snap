@@ -1829,6 +1829,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
         initialValues={
           Object {
             "email": "",
+            "loginAfterCreation": true,
             "password": "",
             "stayLoggedIn": false,
           }
@@ -2207,6 +2208,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
         initialValues={
           Object {
             "email": "",
+            "loginAfterCreation": true,
             "password": "",
             "stayLoggedIn": false,
           }
@@ -3314,6 +3316,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
         initialValues={
           Object {
             "email": "",
+            "loginAfterCreation": true,
             "password": "",
             "stayLoggedIn": false,
           }
