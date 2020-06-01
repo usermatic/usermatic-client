@@ -258,7 +258,7 @@ exports[`<ChangePasswordForm> with password 1`] = `
             value="hunter2"
           >
             <div
-              className="form-label-group"
+              className="form-group"
             >
               <label
                 htmlFor="test-change-password-old-password"
@@ -292,7 +292,7 @@ exports[`<ChangePasswordForm> with password 1`] = `
             value="hunter3"
           >
             <div
-              className="form-label-group"
+              className="form-group"
             >
               <label
                 htmlFor="test-change-password-new-password"
@@ -445,7 +445,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
             value="bob@bob.com"
           >
             <div
-              className="form-label-group"
+              className="form-group"
             >
               <label
                 htmlFor="test-change-password-email"
@@ -479,7 +479,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
             value="hunter3"
           >
             <div
-              className="form-label-group"
+              className="form-group"
             >
               <label
                 htmlFor="test-change-password-new-password"
@@ -628,7 +628,7 @@ exports[`<GenRecoveryCodesForm> 1`] = `
                 value=""
               >
                 <div
-                  className="form-label-group"
+                  className="form-group"
                 >
                   <input
                     autoFocus={true}
@@ -929,7 +929,7 @@ exports[`<LoginForm> TOTP 1`] = `
             value=""
           >
             <div
-              className="form-label-group"
+              className="form-group"
             >
               <label
                 htmlFor="test-login-email"
@@ -962,7 +962,7 @@ exports[`<LoginForm> TOTP 1`] = `
             value=""
           >
             <div
-              className="form-label-group"
+              className="form-group"
             >
               <label
                 htmlFor="test-login-password"
@@ -1461,7 +1461,7 @@ exports[`<LoginForm> login 1`] = `
             value="bob@bob.com"
           >
             <div
-              className="form-label-group"
+              className="form-group"
             >
               <label
                 htmlFor="test-login-email"
@@ -1494,7 +1494,7 @@ exports[`<LoginForm> login 1`] = `
             value="hunter2"
           >
             <div
-              className="form-label-group"
+              className="form-group"
             >
               <label
                 htmlFor="test-login-password"
@@ -1694,7 +1694,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
             value=""
           >
             <div
-              className="form-label-group"
+              className="form-group"
             >
               <label
                 htmlFor="test-login-email"
@@ -1727,7 +1727,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
             value=""
           >
             <div
-              className="form-label-group"
+              className="form-group"
             >
               <label
                 htmlFor="test-login-password"
@@ -1929,7 +1929,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
               value=""
             >
               <div
-                className="form-label-group"
+                className="form-group"
               >
                 <label
                   htmlFor="um3kfiekd-account-creation-email"
@@ -1962,7 +1962,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
               value=""
             >
               <div
-                className="form-label-group"
+                className="form-group"
               >
                 <label
                   htmlFor="um3kfiekd-account-creation-password"
@@ -2135,7 +2135,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                 value=""
               >
                 <div
-                  className="form-label-group"
+                  className="form-group"
                 >
                   <label
                     htmlFor="test-request-password-reset-email"
@@ -2308,7 +2308,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
               value=""
             >
               <div
-                className="form-label-group"
+                className="form-group"
               >
                 <label
                   htmlFor="um3kfiekd-account-creation-email"
@@ -2341,7 +2341,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
               value=""
             >
               <div
-                className="form-label-group"
+                className="form-group"
               >
                 <label
                   htmlFor="um3kfiekd-account-creation-password"
@@ -2858,7 +2858,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
             value=""
           >
             <div
-              className="form-label-group"
+              className="form-group"
             >
               <label
                 htmlFor="um3kfiekd-login-email"
@@ -2891,7 +2891,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
             value=""
           >
             <div
-              className="form-label-group"
+              className="form-group"
             >
               <label
                 htmlFor="um3kfiekd-login-password"
@@ -3416,7 +3416,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
               value=""
             >
               <div
-                className="form-label-group"
+                className="form-group"
               >
                 <label
                   htmlFor="um3kfiekd-account-creation-email"
@@ -3449,7 +3449,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
               value=""
             >
               <div
-                className="form-label-group"
+                className="form-group"
               >
                 <label
                   htmlFor="um3kfiekd-account-creation-password"
@@ -3620,7 +3620,7 @@ exports[`<ReauthenticateGuard> 1`] = `
               value=""
             >
               <div
-                className="form-label-group"
+                className="form-group"
               >
                 <input
                   autoFocus={true}
@@ -3792,7 +3792,7 @@ exports[`<ResetPasswordForm> 1`] = `
             value=""
           >
             <div
-              className="form-label-group"
+              className="form-group"
             >
               <label
                 htmlFor="test-reset-password-new-password"

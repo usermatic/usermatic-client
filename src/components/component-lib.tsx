@@ -153,7 +153,7 @@ const DefaultInputComponent: InputComponentType = ({
   labelText,
   ...props
 }) => (
-  <div className="form-label-group">
+  <div className="form-group">
     { labelText &&
       <label htmlFor={props.id}>
         {labelText}
