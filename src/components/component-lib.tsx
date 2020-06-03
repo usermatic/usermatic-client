@@ -51,6 +51,22 @@ const GoogleLogo = (props: IconProps) => <Icon icon={google} {...props} />
 const FbLogo = (props: IconProps) => <Icon icon={facebookOfficial} {...props} />
 const GithubLogo = (props: IconProps) => <Icon icon={github} {...props} />
 
+type classNamesArg = Parameters<typeof classNames>[0]
+const useClassnames = (bootstrapClasses: classNamesArg, umClasses: classNamesArg) => {
+  const { useBootstrap, useUmClasses } = useContext(ComponentContext)
+
+  const ret = classNames(
+    useBootstrap ? bootstrapClasses : null,
+    useUmClasses ? umClasses : null
+  )
+
+  if (ret.length === 0) {
+    return undefined
+  } else {
+    return ret
+  }
+}
+
 const DefaultAlertComponent: AlertComponentType = ({children, role}) => {
   const classes = ['alert']
   classes.push((() => {
@@ -62,7 +78,9 @@ const DefaultAlertComponent: AlertComponentType = ({children, role}) => {
     }
   })())
 
-  return <div className={classNames(classes)}>
+  const className = useClassnames(classes, ['um-alert', `um-alert-${role}`])
+
+  return <div className={className}>
     {children}
   </div>
 }
@@ -121,6 +139,8 @@ const classesForName = (name: ButtonName): string => {
       return 'btn-lg'
 
     case 'exit-recovery-mode':
+      return 'btn-block mt-4'
+
     case 'submit-recovery-code':
     case 'dismiss-2fa-disabled':
     case 'leave-2fa-enabled':
@@ -137,53 +157,63 @@ const buttonClasses = (role: ButtonRole, name: ButtonName) => {
   ]
 }
 
-const DefaultButton: ButtonType = ({className, role, name, disabled, ...props}) => (
-  <button
-    className={
-      classNames('btn',
-        disabled && 'disabled',
-        buttonClasses(role, name)
-      )
-    }
+const DefaultButton: ButtonType = ({role, name, disabled, ...props}) => {
+  const bootstrapClasses = classNames(
+    'btn',
+    disabled && 'disabled',
+    buttonClasses(role, name)
+  )
+  const className = useClassnames(
+    bootstrapClasses,
+    ['um-btn', `um-btn-${role}`, `um-btn-${name}`]
+  )
+  return <button
+    className={className}
     {...props}
   />
-)
+}
 
 const DefaultInputComponent: InputComponentType = ({
   labelText,
   ...props
-}) => (
-  <div className="form-group">
+}) => {
+  const divClass = useClassnames('form-group', 'um-form-group')
+  const inputClass = useClassnames('form-control', 'um-form-control')
+  return <div className={divClass}>
     { labelText &&
       <label htmlFor={props.id}>
         {labelText}
       </label>
     }
-    <input className="form-control" {...props} />
+    <input className={inputClass} {...props} />
   </div>
-)
+}
 DefaultInputComponent.displayName = 'DefaultInputComponent'
 
 const DefaultCheckboxComponent: InputComponentType = ({
   labelText,
   ...props
-}) => (
-  <div className="custom-control custom-checkbox">
-    <input className="custom-control-input" {...props} />
+}) => {
+  const divClass = useClassnames('custom-control custom-checkbox', 'um-checkbox-container')
+  const inputClass = useClassnames('custom-control-input', 'um-checkbox-input')
+  const labelClass = useClassnames('custom-control-label', 'um-checkbox-label')
+  return <div className={divClass}>
+    <input className={inputClass} {...props} />
     { labelText &&
-      <label className="custom-control-label" htmlFor={props.id}>
+      <label className={labelClass} htmlFor={props.id}>
         {labelText}
       </label>
     }
   </div>
-)
+}
 DefaultCheckboxComponent.displayName = 'DefaultCheckboxComponent'
 
-const DefaultCodeInput: InputComponentType = (props) => (
-  <div>
-    <input className="form-control" {...props} />
+const DefaultCodeInput: InputComponentType = (props) => {
+  const className = useClassnames("form-control", 'um-code-input')
+  return <div>
+    <input className={className} {...props} />
   </div>
-)
+}
 DefaultCodeInput.displayName = 'DefaultCodeInput'
 
 const DefaultResetPasswordForm: ResetPasswordFormType = ({
@@ -251,26 +281,36 @@ const DefaultForgotPasswordForm: ForgotPasswordFormType = ({
   cancelButton,
   successMessage,
   error
-}) => (
-  <div>
-    <div>
+}) => {
+  const outerClasses = useClassnames('', 'um-forgot-password-container')
+  const promptClasses = useClassnames('mb-3', 'um-forgot-password-prompt')
+  const buttonContainer = useClassnames(
+    'd-flex justify-content-between mb-3',
+    'um-forgot-password-buttons'
+  )
+  const successClasses = useClassnames(
+    'alert alert-success m-3', 'um-forgot-password-success'
+  )
+
+  return <div className={outerClasses}>
+    <div className={promptClasses}>
       Enter your email to get a password reset link.
     </div>
     {error}
     <form {...formProps}>
       {emailInput}
-      <div className="d-flex justify-content-between mb-3">
+      <div className={buttonContainer}>
         {submitButton}
         {cancelButton}
       </div>
     </form>
     {successMessage &&
-      <div className="alert alert-success m-3">
+      <div className={successClasses}>
         {successMessage}
       </div>
     }
   </div>
-)
+}
 
 const DefaultPasswordForm: PasswordFormType = ({
   formProps,
@@ -280,20 +320,24 @@ const DefaultPasswordForm: PasswordFormType = ({
   signinButton,
   forgotPasswordButton,
   error
-}) => (
-  <form {...formProps}>
+}) => {
+  const submitClasses = useClassnames(
+    'mb-3 justify-content-between d-flex', 'um-password-signin-button-container'
+  )
+
+  return <form {...formProps}>
     {emailInput}
     {passwordInput}
     {stayLoggedInInput}
 
-    <div className="mb-3 justify-content-between d-flex">
+    <div className={submitClasses}>
       {signinButton}
       {forgotPasswordButton}
     </div>
 
     {error}
   </form>
-)
+}
 
 const PasswordStrengthText: React.FC<{pwScore: PwScoreRecord}> = ({pwScore}) => {
   const { score } = pwScore
@@ -310,17 +354,21 @@ const PasswordStrengthText: React.FC<{pwScore: PwScoreRecord}> = ({pwScore}) => 
     }
   })()
 
-  const classes = ['badge']
+  const bootstrapClasses = ['badge']
   if (score > 3) {
-    classes.push('badge-success')
+    bootstrapClasses.push('badge-success')
   } else if (score > 2) {
-    classes.push('badge-warning')
+    bootstrapClasses.push('badge-warning')
   } else {
-    classes.push('badge-danger')
+    bootstrapClasses.push('badge-danger')
   }
+  const umClass = `um-password-score-${score}`
 
-  return <div className="small p-1">
-    Password Strength <span className={classNames(classes)}>{scoreDisplay}</span>
+  const divClass = useClassnames('small p-1', 'um-password-strength-text')
+  const spanClass = useClassnames(bootstrapClasses, umClass)
+
+  return <div className={divClass}>
+    Password Strength <span className={spanClass}>{scoreDisplay}</span>
   </div>
 }
 
@@ -333,7 +381,7 @@ const PasswordStrengthDiagnostic: React.FC<{
     return null
   }
 
-  return <div className="alert alert-warning">
+  return <div className={useClassnames('alert alert-warning', 'um-password-diagnostic')}>
     <div>Please choose a stronger password.</div>
     <div>{pwScore.feedback.warning}</div>
     {pwScore.feedback.suggestions && pwScore.feedback.suggestions.length > 0 &&
@@ -350,15 +398,16 @@ const PasswordStrengthDiagnostic: React.FC<{
 
 const DefaultPasswordScoreComponent: PasswordScoreType = ({
   passwordScore, minPasswordStrength
-}) => (
-  <div className="text-muted mb-2">
+}) => {
+  const classes = useClassnames('text-muted mb-2', 'um-password-strength')
+  return <div className={classes}>
     <PasswordStrengthText pwScore={passwordScore} />
     <PasswordStrengthDiagnostic
       minPasswordStrength={minPasswordStrength}
       pwScore={passwordScore}
     />
   </div>
-)
+}
 
 const DefaultMFAForm: MFAFormType = ({
   error,
@@ -368,27 +417,25 @@ const DefaultMFAForm: MFAFormType = ({
   totpTokenInput,
   enterRecoveryModeButton,
   exitRecoveryModeButton
-}) => (
-  <div className="d-flex flex-column align-items-center">
+}) => {
+  const outerClasses = useClassnames(
+    'd-flex flex-column align-items-center',
+    'um-mfa-container'
+  )
+  const promptClasses = useClassnames('text-muted p-3 text-center', 'um-mfa-prompt')
+  return <div className={outerClasses}>
     {error}
-    <div className="text-muted p-3">
+    <div className={promptClasses}>
       { recoveryMode
         ? <>Please enter your recovery code:</>
         : <>Please enter the 6 digit code from your authenticator app:</>
       }
     </div>
-    { recoveryMode
-      ? <div className="w-100 d-flex justify-content-center">
-          <div className="w-100 d-flex flex-column align-items-center">
-              {recoveryCodeInput}
-          </div>
-        </div>
-
-      : totpTokenInput }
+    { recoveryMode ? recoveryCodeInput : totpTokenInput }
     {recoveryMode ? exitRecoveryModeButton : enterRecoveryModeButton}
     {loading}
   </div>
-)
+}
 
 const DefaultPostRecoveryCodeForm: PostRecoveryCodeType = ({
   mfaDisabled,
@@ -398,24 +445,32 @@ const DefaultPostRecoveryCodeForm: PostRecoveryCodeType = ({
   resetButton,
   dontResetButton
 }) => {
+
+  const promptClasses = useClassnames(
+    'my-3 d-flex justify-content-center',
+    'um-2fa-reset-prompt'
+  )
+
+  const alertClasses = useClassnames('alert alert-secondary', 'um-post-recovery-code-alert')
+
   if (mfaDisabled) {
     return <div>
-      <div className="alert alert-info">
+      <DefaultAlertComponent role="info">
         You have disabled 2FA. Please consider re-enabling it as soon as possible.
-      </div>
+      </DefaultAlertComponent>
       {dismissButton}
     </div>
   }
 
   return <div>
-    <div className="alert alert-secondary">
+    <div className={alertClasses}>
       You have logged in via a recovery code.
       The code you just used will no longer work.
       { (recoveryCodesRemaining != null) &&
         <>You have {recoveryCodesRemaining} recovery codes remaining.</>
       }
     </div>
-    <div className="my-3 d-flex justify-content-center">
+    <div className={promptClasses}>
       Do you need to reset your 2FA codes?
     </div>
     {error}
@@ -438,9 +493,7 @@ const DefaultCreateAccountForm: CreateAccountFormType = ({
     {passwordInput}
     {stayLoggedInInput}
     {passwordScore}
-    <div className="mb-3">
-      {createAccountButton}
-    </div>
+    {createAccountButton}
   </form>
   {error}
 </>
@@ -460,18 +513,27 @@ const DefaultAddTotpFormComponent: AddTotpFormType = ({
     setReveal(true)
   }
 
+  const successClasses = useClassnames('alert alert-success mt-3', 'um-add-totp-success')
+  const instructionClasses = useClassnames(
+    'd-flex flex-column align-items-center', 'um-add-totp-instructions'
+  )
+  const manualClasses = useClassnames(
+    'd-flex flex-column align-items-center text-muted',
+    'um-add-totp-manual'
+  )
+
   if (success) {
-    return <div className="alert alert-success mt-3">
+    return <div className={successClasses}>
       Your authenticator app has been successfully configured.
       You will need your authenticator app in order to log in to
       your account from now on.
     </div>
   } else {
-    return <div className="d-flex flex-column align-items-center">
+    return <div className={instructionClasses}>
       <div>1. Scan this QRCode with your authenticator app</div>
       <div>{qrCode}</div>
 
-      <div className="d-flex flex-column align-items-center text-muted">
+      <div className={manualClasses}>
         { reveal
           ? <div>Enter this code into your authenticator app:</div>
           : <div onClick={onClick}>click for manual entry</div> }
@@ -497,44 +559,59 @@ const buttonClass = (provider: string) => {
 
 const SocialLoginButton: React.FC<{
   onClick: ButtonProps['onClick'],
-  providerClass: string,
+  provider: string,
   children: ReactNode
-}> = ({onClick, providerClass, children}) => (
-  <div className="d-flex justify-content-center my-2">
-    <button className={classNames("btn btn-block btn-outline-primary d-flex align-items-center justify-content-between", providerClass)}
-      onClick={onClick}>
+}> = ({onClick, provider, children}) => {
+
+  const providerClass = buttonClass(provider)
+
+  const divClasses = useClassnames(
+    'd-flex justify-content-center my-2',
+    'um-social-button'
+  )
+  const buttonClasses = useClassnames(
+    ["btn btn-block btn-outline-primary d-flex align-items-center justify-content-between", providerClass],
+    `um-social-button um-social-button-${provider}`
+  )
+
+  return <div className={divClasses}>
+    <button className={buttonClasses} onClick={onClick}>
       {children}
     </button>
   </div>
-)
+}
 
-const DefaultGithubButton: SocialButtonType = ({onClick}) => (
-  <SocialLoginButton onClick={onClick} providerClass={buttonClass('github')}>
+const DefaultGithubButton: SocialButtonType = ({onClick}) => {
+  const classes = useClassnames('flex-grow-1 font-weight-bold', 'um-social-button-label')
+  return <SocialLoginButton onClick={onClick} provider='github'>
     <GithubLogo size="2em"/>
-    <div className="flex-grow-1 font-weight-bold">Login with GitHub</div>
+    <div className={classes}>Login with GitHub</div>
   </SocialLoginButton>
-)
+}
 
-const DefaultFacebookButton: SocialButtonType = ({onClick}) => (
-  <SocialLoginButton onClick={onClick} providerClass={buttonClass('facebook')}>
+const DefaultFacebookButton: SocialButtonType = ({onClick}) => {
+  const classes = useClassnames('flex-grow-1 font-weight-bold', 'um-social-button-label')
+  return <SocialLoginButton onClick={onClick} provider='facebook'>
     <FbLogo size="2em"/>
-    <div className="flex-grow-1 font-weight-bold">Login with Facebook</div>
+    <div className={classes}>Login with Facebook</div>
   </SocialLoginButton>
-)
+}
 
-const DefaultGoogleButton: SocialButtonType = ({onClick}) => (
-  <SocialLoginButton onClick={onClick} providerClass={buttonClass('google')}>
+const DefaultGoogleButton: SocialButtonType = ({onClick}) => {
+  const classes = useClassnames('flex-grow-1 font-weight-bold', 'um-social-button-label')
+  return <SocialLoginButton onClick={onClick} provider='google'>
     <GoogleLogo size="2em"/>
-    <div className="flex-grow-1 font-weight-bold">Login with Google</div>
+    <div className={classes}>Login with Google</div>
   </SocialLoginButton>
-)
+}
 
 const DefaultSocialButtonsComponent: SocialButtonComponentType = ({
   githubButton,
   facebookButton,
   googleButton
-}) => (
-  <div className="my-3">
+}) => {
+  const className = useClassnames('my-3', 'um-social-button-container')
+  return <div className={className}>
     <style>{`
         .facebook-login-btn-${socialButtonNonce} {
           color: white !important;
@@ -570,7 +647,7 @@ const DefaultSocialButtonsComponent: SocialButtonComponentType = ({
     { facebookButton }
     { googleButton }
   </div>
-)
+}
 
 const DefaultReauthFormComponent: ReauthFormType = ({
   formProps,
@@ -579,32 +656,39 @@ const DefaultReauthFormComponent: ReauthFormType = ({
   passwordInput,
   submitButton,
   cancelButton
-}) => (
-  <div>
-    <div className="mb-3">
+}) => {
+  const outerClasses = useClassnames('', 'um-reauth-container')
+  const promptClasses = useClassnames('mb-3', 'um-reauth-prompt')
+  const buttonClasses = useClassnames(
+    'd-flex justify-content-between', 'um-reauth-button-container'
+  )
+  return <div className={outerClasses}>
+    <div className={promptClasses}>
       {prompt}
     </div>
     <form {...formProps}>
       {error}
       {passwordInput}
-      <div className="d-flex justify-content-between">
+      <div className={buttonClasses}>
         {submitButton}
         {cancelButton}
       </div>
     </form>
   </div>
-)
+}
 
 const DefaultRecoveryCodeDisplayComponent: RecoveryCodeDisplayType = ({
   codes, error
-}) => (
-  <>
+}) => {
+  const divClasses = useClassnames('p-5', 'um-recovery-codes')
+  const codeClasses = useClassnames('d-flex mt-3 justify-content-center', 'um-recovery-codes-display')
+  return <>
     {error}
     { codes != null &&
-      <div className="p-5">
+      <div className={divClasses}>
         Here are your recovery codes. Treat them like passwords and store them
         somewhere safe.
-        <div className="d-flex justify-content-center">
+        <div className={codeClasses}>
           <pre id="pre-codes">
             { codes.join('\n') }
           </pre>
@@ -614,19 +698,24 @@ const DefaultRecoveryCodeDisplayComponent: RecoveryCodeDisplayType = ({
       </div>
     }
   </>
-)
+}
 
 const DefaultRecoveryCodeRegenerationPromptComponent: RecoveryCodeRegenerationPromptType = ({
   confirmButton
-}) => (
-  <div className="d-flex flex-column align-items-center">
-    <div className="alert alert-warning">
+}) => {
+  const outerClasses = useClassnames(
+    'd-flex flex-column align-items-center',
+    'um-recovery-code-regeneration-prompt'
+  )
+  const innerClasses = useClassnames('alert alert-warning', 'um-warning')
+  return <div className={outerClasses}>
+    <div className={innerClasses}>
       Warning: After you generate new codes, your old codes will no longer
       work. Make sure you store the new codes securely.
     </div>
     {confirmButton}
   </div>
-)
+}
 
 const DefaultEmailVerificationComponent: EmailVerificationType = ({
   error,
@@ -649,10 +738,14 @@ const DefaultEmailVerificationComponent: EmailVerificationType = ({
   }
 }
 
-export const ComponentContext = createContext<FormComponents>({})
+export const ComponentContext = createContext<{
+  useBootstrap: boolean,
+  useUmClasses: boolean,
+  components: FormComponents
+}>({ useBootstrap: true, useUmClasses: false, components: {} })
 
 export const useComponents = (propComponents: FormComponents = {}): DefiniteFormComponents => {
-  const contextComponents = useContext(ComponentContext)
+  const { components: contextComponents } = useContext(ComponentContext)
 
   const mergedComponents = useMemo(() => {
     const merged = {
@@ -748,12 +841,23 @@ export const useComponents = (propComponents: FormComponents = {}): DefiniteForm
 
 export const ComponentProvider: React.FC<{
   components?: FormComponents,
+  bootstrapClasses?: boolean,
+  usermaticClasses?: boolean,
   children: ReactNode
-}> = ({components: propComponents, children}) => {
+}> = ({
+  components: propComponents,
+  bootstrapClasses: useBootstrap = true,
+  usermaticClasses: useUmClasses = false,
+  children
+}) => {
 
   const components = useComponents(propComponents)
+  const value = useMemo(
+    () => ({ components, useBootstrap, useUmClasses }),
+    [components, useBootstrap, useUmClasses]
+  )
 
-  return <ComponentContext.Provider value={components}>
+  return <ComponentContext.Provider value={value}>
     {children}
   </ComponentContext.Provider>
 }

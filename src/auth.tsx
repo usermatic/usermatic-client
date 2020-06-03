@@ -296,6 +296,8 @@ type UsermaticProps = {
   children: ReactNode,
   uri?: string,
   appId: string,
+  useBootstrapClasses?: boolean,
+  useUmClasses?: boolean,
   showDiagnostics?: boolean,
   components?: FormComponents
 }
@@ -305,6 +307,8 @@ export const Usermatic: React.FC<UsermaticProps> = ({
   uri,
   appId,
   components,
+  useBootstrapClasses = true,
+  useUmClasses = false,
   showDiagnostics = false
 }) => (
   <AppIdContext.Provider value={appId}>
@@ -313,7 +317,11 @@ export const Usermatic: React.FC<UsermaticProps> = ({
         <AuthenticatedUserProvider>
           <ReauthCacheProvider>
             <HttpWarning />
-            <ComponentProvider components={components}>
+            <ComponentProvider
+              components={components}
+              bootstrapClasses={useBootstrapClasses}
+              usermaticClasses={useUmClasses}
+            >
               {children}
             </ComponentProvider>
           </ReauthCacheProvider>

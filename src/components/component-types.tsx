@@ -52,11 +52,11 @@ export type ButtonName = 'login'
   | 'cancel-reauth'
   | 'regenerate-recovery-codes'
 
-export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+export type ButtonProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement> & {
   role: ButtonRole
   name: ButtonName
   disabled?: boolean
-}
+}, 'className'>
 
 export type ButtonType = React.FC<ButtonProps>
 

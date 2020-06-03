@@ -27,7 +27,7 @@ exports[`<AddTotpForm> 1`] = `
       }
     >
       <div
-        className="d-flex flex-column align-items-center"
+        className="d-flex flex-column align-items-center um-add-totp-instructions"
       >
         <div>
           1. Scan this QRCode with your authenticator app
@@ -42,7 +42,7 @@ exports[`<AddTotpForm> 1`] = `
           </Component>
         </div>
         <div
-          className="d-flex flex-column align-items-center text-muted"
+          className="d-flex flex-column align-items-center text-muted um-add-totp-manual"
         >
           <div
             onClick={[Function]}
@@ -87,7 +87,7 @@ exports[`<AddTotpForm> 1`] = `
                   <div>
                     <input
                       autoFocus={true}
-                      className="form-control"
+                      className="form-control um-code-input"
                       id="test-totp-code"
                       name="code"
                       onBlur={[Function]}
@@ -147,7 +147,7 @@ exports[`<AddTotpForm> 2`] = `
       }
     >
       <div
-        className="alert alert-success mt-3"
+        className="alert alert-success mt-3 um-add-totp-success"
       >
         Your authenticator app has been successfully configured. You will need your authenticator app in order to log in to your account from now on.
       </div>
@@ -258,7 +258,7 @@ exports[`<ChangePasswordForm> with password 1`] = `
             value="hunter2"
           >
             <div
-              className="form-group"
+              className="form-group um-form-group"
             >
               <label
                 htmlFor="test-change-password-old-password"
@@ -267,7 +267,7 @@ exports[`<ChangePasswordForm> with password 1`] = `
               </label>
               <input
                 autoFocus={true}
-                className="form-control"
+                className="form-control um-form-control"
                 id="test-change-password-old-password"
                 name="oldPassword"
                 onBlur={[Function]}
@@ -292,7 +292,7 @@ exports[`<ChangePasswordForm> with password 1`] = `
             value="hunter3"
           >
             <div
-              className="form-group"
+              className="form-group um-form-group"
             >
               <label
                 htmlFor="test-change-password-new-password"
@@ -301,7 +301,7 @@ exports[`<ChangePasswordForm> with password 1`] = `
               </label>
               <input
                 autoFocus={true}
-                className="form-control"
+                className="form-control um-form-control"
                 id="test-change-password-new-password"
                 name="newPassword"
                 onBlur={[Function]}
@@ -329,7 +329,7 @@ exports[`<ChangePasswordForm> with password 1`] = `
             type="submit"
           >
             <button
-              className="btn btn-primary btn-lg"
+              className="btn btn-primary btn-lg um-btn um-btn-submit um-btn-change-password"
               type="submit"
             >
               Change Password
@@ -445,7 +445,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
             value="bob@bob.com"
           >
             <div
-              className="form-group"
+              className="form-group um-form-group"
             >
               <label
                 htmlFor="test-change-password-email"
@@ -454,7 +454,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
               </label>
               <input
                 autoFocus={true}
-                className="form-control"
+                className="form-control um-form-control"
                 id="test-change-password-email"
                 name="email"
                 onBlur={[Function]}
@@ -479,7 +479,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
             value="hunter3"
           >
             <div
-              className="form-group"
+              className="form-group um-form-group"
             >
               <label
                 htmlFor="test-change-password-new-password"
@@ -488,7 +488,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
               </label>
               <input
                 autoFocus={true}
-                className="form-control"
+                className="form-control um-form-control"
                 id="test-change-password-new-password"
                 name="newPassword"
                 onBlur={[Function]}
@@ -516,7 +516,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
             type="submit"
           >
             <button
-              className="btn btn-primary btn-lg"
+              className="btn btn-primary btn-lg um-btn um-btn-submit um-btn-set-password"
               type="submit"
             >
               Set Password
@@ -605,9 +605,11 @@ exports[`<GenRecoveryCodesForm> 1`] = `
             </DefaultButton>
           }
         >
-          <div>
+          <div
+            className="um-reauth-container"
+          >
             <div
-              className="mb-3"
+              className="mb-3 um-reauth-prompt"
             >
               Please enter your password to generate new account recovery codes.
             </div>
@@ -628,11 +630,11 @@ exports[`<GenRecoveryCodesForm> 1`] = `
                 value=""
               >
                 <div
-                  className="form-group"
+                  className="form-group um-form-group"
                 >
                   <input
                     autoFocus={true}
-                    className="form-control"
+                    className="form-control um-form-control"
                     id="reauth-guard-password"
                     name="password"
                     onBlur={[Function]}
@@ -644,7 +646,7 @@ exports[`<GenRecoveryCodesForm> 1`] = `
                 </div>
               </DefaultInputComponent>
               <div
-                className="d-flex justify-content-between"
+                className="d-flex justify-content-between um-reauth-button-container"
               >
                 <DefaultButton
                   disabled={false}
@@ -653,7 +655,7 @@ exports[`<GenRecoveryCodesForm> 1`] = `
                   type="submit"
                 >
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-primary um-btn um-btn-submit um-btn-submit-reauth"
                     type="submit"
                   >
                     Submit
@@ -666,7 +668,7 @@ exports[`<GenRecoveryCodesForm> 1`] = `
                   role="cancel"
                 >
                   <button
-                    className="btn btn-outline-secondary"
+                    className="btn btn-outline-secondary um-btn um-btn-cancel um-btn-cancel-reauth"
                     onClick={[Function]}
                   >
                     Cancel
@@ -718,10 +720,10 @@ exports[`<GenRecoveryCodesForm> 2`] = `
           }
         >
           <div
-            className="d-flex flex-column align-items-center"
+            className="d-flex flex-column align-items-center um-recovery-code-regeneration-prompt"
           >
             <div
-              className="alert alert-warning"
+              className="alert alert-warning um-warning"
             >
               Warning: After you generate new codes, your old codes will no longer work. Make sure you store the new codes securely.
             </div>
@@ -732,7 +734,7 @@ exports[`<GenRecoveryCodesForm> 2`] = `
               role="danger"
             >
               <button
-                className="btn btn-danger"
+                className="btn btn-danger um-btn um-btn-danger um-btn-regenerate-recovery-codes"
                 id="gen-new-codes-confirm-btn"
                 onClick={[Function]}
               >
@@ -787,11 +789,11 @@ exports[`<GenRecoveryCodesForm> 3`] = `
           }
         >
           <div
-            className="p-5"
+            className="p-5 um-recovery-codes"
           >
             Here are your recovery codes. Treat them like passwords and store them somewhere safe.
             <div
-              className="d-flex justify-content-center"
+              className="d-flex mt-3 justify-content-center um-recovery-codes-display"
             >
               <pre
                 id="pre-codes"
@@ -929,7 +931,7 @@ exports[`<LoginForm> TOTP 1`] = `
             value=""
           >
             <div
-              className="form-group"
+              className="form-group um-form-group"
             >
               <label
                 htmlFor="test-login-email"
@@ -938,7 +940,7 @@ exports[`<LoginForm> TOTP 1`] = `
               </label>
               <input
                 autoFocus={true}
-                className="form-control"
+                className="form-control um-form-control"
                 id="test-login-email"
                 name="email"
                 onBlur={[Function]}
@@ -962,7 +964,7 @@ exports[`<LoginForm> TOTP 1`] = `
             value=""
           >
             <div
-              className="form-group"
+              className="form-group um-form-group"
             >
               <label
                 htmlFor="test-login-password"
@@ -970,7 +972,7 @@ exports[`<LoginForm> TOTP 1`] = `
                 Password
               </label>
               <input
-                className="form-control"
+                className="form-control um-form-control"
                 id="test-login-password"
                 name="password"
                 onBlur={[Function]}
@@ -992,10 +994,10 @@ exports[`<LoginForm> TOTP 1`] = `
             value={false}
           >
             <div
-              className="custom-control custom-checkbox"
+              className="custom-control custom-checkbox um-checkbox-container"
             >
               <input
-                className="custom-control-input"
+                className="custom-control-input um-checkbox-input"
                 id="test-login-stay-logged-in"
                 name="stayLoggedIn"
                 onBlur={[Function]}
@@ -1004,7 +1006,7 @@ exports[`<LoginForm> TOTP 1`] = `
                 value={false}
               />
               <label
-                className="custom-control-label"
+                className="custom-control-label um-checkbox-label"
                 htmlFor="test-login-stay-logged-in"
               >
                 Remember me
@@ -1012,7 +1014,7 @@ exports[`<LoginForm> TOTP 1`] = `
             </div>
           </DefaultCheckboxComponent>
           <div
-            className="mb-3 justify-content-between d-flex"
+            className="mb-3 justify-content-between d-flex um-password-signin-button-container"
           >
             <DefaultButton
               id="login-button"
@@ -1021,7 +1023,7 @@ exports[`<LoginForm> TOTP 1`] = `
               type="submit"
             >
               <button
-                className="btn btn-primary"
+                className="btn btn-primary um-btn um-btn-submit um-btn-login"
                 id="login-button"
                 type="submit"
               >
@@ -1036,7 +1038,7 @@ exports[`<LoginForm> TOTP 1`] = `
               type="button"
             >
               <button
-                className="btn btn-outline-primary"
+                className="btn btn-outline-primary um-btn um-btn-secondary um-btn-forgot-password"
                 id="forgot-pw-button"
                 onClick={[Function]}
                 type="button"
@@ -1107,11 +1109,11 @@ exports[`<LoginForm> TOTP 2`] = `
         }
       >
         <div
-          className="d-flex flex-column align-items-center"
+          className="d-flex flex-column align-items-center um-mfa-container"
         >
           <ErrorMessage />
           <div
-            className="text-muted p-3"
+            className="text-muted p-3 text-center um-mfa-prompt"
           >
             Please enter the 6 digit code from your authenticator app:
           </div>
@@ -1149,7 +1151,7 @@ exports[`<LoginForm> TOTP 2`] = `
                     <div>
                       <input
                         autoFocus={true}
-                        className="form-control"
+                        className="form-control um-code-input"
                         id="test-totp-code"
                         name="code"
                         onBlur={[Function]}
@@ -1171,7 +1173,7 @@ exports[`<LoginForm> TOTP 2`] = `
             role="secondary"
           >
             <button
-              className="btn btn-outline-primary"
+              className="btn btn-outline-primary um-btn um-btn-secondary um-btn-enter-recovery-mode"
               id="test-recovery-code-button"
               onClick={[Function]}
             >
@@ -1239,44 +1241,50 @@ exports[`<LoginForm> TOTP 3`] = `
         }
       >
         <div
-          className="d-flex flex-column align-items-center"
+          className="d-flex flex-column align-items-center um-mfa-container"
         >
           <ErrorMessage />
           <div
-            className="text-muted p-3"
+            className="text-muted p-3 text-center um-mfa-prompt"
           >
             Please enter your recovery code:
           </div>
-          <div
-            className="w-100 d-flex justify-content-center"
+          <RecoveryCodeForm
+            Button={[Function]}
+            InputComponent={[Function]}
+            idPrefix="test"
+            key="1"
+            submit={[Function]}
           >
-            <div
-              className="w-100 d-flex flex-column align-items-center"
+            <Formik
+              initialValues={
+                Object {
+                  "code": "",
+                }
+              }
+              onSubmit={[Function]}
+              validate={[Function]}
             >
-              <RecoveryCodeForm
-                Button={[Function]}
-                InputComponent={[Function]}
-                idPrefix="test"
-                key="1"
-                submit={[Function]}
-              >
-                <Formik
-                  initialValues={
-                    Object {
-                      "code": "",
-                    }
-                  }
+              <Form>
+                <form
+                  action="#"
+                  onReset={[Function]}
                   onSubmit={[Function]}
-                  validate={[Function]}
                 >
-                  <Form>
-                    <form
-                      action="#"
-                      onReset={[Function]}
-                      onSubmit={[Function]}
-                    >
-                      <DefaultCodeInput
+                  <DefaultCodeInput
+                    autoFocus={true}
+                    id="test-recovery-code"
+                    name="code"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    required={true}
+                    type="text"
+                    value=""
+                  >
+                    <div>
+                      <input
                         autoFocus={true}
+                        className="form-control um-code-input"
                         id="test-recovery-code"
                         name="code"
                         onBlur={[Function]}
@@ -1284,39 +1292,25 @@ exports[`<LoginForm> TOTP 3`] = `
                         required={true}
                         type="text"
                         value=""
-                      >
-                        <div>
-                          <input
-                            autoFocus={true}
-                            className="form-control"
-                            id="test-recovery-code"
-                            name="code"
-                            onBlur={[Function]}
-                            onChange={[Function]}
-                            required={true}
-                            type="text"
-                            value=""
-                          />
-                        </div>
-                      </DefaultCodeInput>
-                      <DefaultButton
-                        name="submit-recovery-code"
-                        role="submit"
-                        type="submit"
-                      >
-                        <button
-                          className="btn btn-primary btn-block"
-                          type="submit"
-                        >
-                          Submit Recovery Code
-                        </button>
-                      </DefaultButton>
-                    </form>
-                  </Form>
-                </Formik>
-              </RecoveryCodeForm>
-            </div>
-          </div>
+                      />
+                    </div>
+                  </DefaultCodeInput>
+                  <DefaultButton
+                    name="submit-recovery-code"
+                    role="submit"
+                    type="submit"
+                  >
+                    <button
+                      className="btn btn-primary btn-block um-btn um-btn-submit um-btn-submit-recovery-code"
+                      type="submit"
+                    >
+                      Submit Recovery Code
+                    </button>
+                  </DefaultButton>
+                </form>
+              </Form>
+            </Formik>
+          </RecoveryCodeForm>
           <DefaultButton
             id="test-recovery-code-cancel"
             name="exit-recovery-mode"
@@ -1324,7 +1318,7 @@ exports[`<LoginForm> TOTP 3`] = `
             role="cancel"
           >
             <button
-              className="btn btn-outline-secondary btn-block"
+              className="btn btn-outline-secondary btn-block mt-4 um-btn um-btn-cancel um-btn-exit-recovery-mode"
               id="test-recovery-code-cancel"
               onClick={[Function]}
             >
@@ -1461,7 +1455,7 @@ exports[`<LoginForm> login 1`] = `
             value="bob@bob.com"
           >
             <div
-              className="form-group"
+              className="form-group um-form-group"
             >
               <label
                 htmlFor="test-login-email"
@@ -1470,7 +1464,7 @@ exports[`<LoginForm> login 1`] = `
               </label>
               <input
                 autoFocus={true}
-                className="form-control"
+                className="form-control um-form-control"
                 id="test-login-email"
                 name="email"
                 onBlur={[Function]}
@@ -1494,7 +1488,7 @@ exports[`<LoginForm> login 1`] = `
             value="hunter2"
           >
             <div
-              className="form-group"
+              className="form-group um-form-group"
             >
               <label
                 htmlFor="test-login-password"
@@ -1502,7 +1496,7 @@ exports[`<LoginForm> login 1`] = `
                 Password
               </label>
               <input
-                className="form-control"
+                className="form-control um-form-control"
                 id="test-login-password"
                 name="password"
                 onBlur={[Function]}
@@ -1523,10 +1517,10 @@ exports[`<LoginForm> login 1`] = `
             type="checkbox"
           >
             <div
-              className="custom-control custom-checkbox"
+              className="custom-control custom-checkbox um-checkbox-container"
             >
               <input
-                className="custom-control-input"
+                className="custom-control-input um-checkbox-input"
                 id="test-login-stay-logged-in"
                 name="stayLoggedIn"
                 onBlur={[Function]}
@@ -1534,7 +1528,7 @@ exports[`<LoginForm> login 1`] = `
                 type="checkbox"
               />
               <label
-                className="custom-control-label"
+                className="custom-control-label um-checkbox-label"
                 htmlFor="test-login-stay-logged-in"
               >
                 Remember me
@@ -1542,7 +1536,7 @@ exports[`<LoginForm> login 1`] = `
             </div>
           </DefaultCheckboxComponent>
           <div
-            className="mb-3 justify-content-between d-flex"
+            className="mb-3 justify-content-between d-flex um-password-signin-button-container"
           >
             <DefaultButton
               id="login-button"
@@ -1551,7 +1545,7 @@ exports[`<LoginForm> login 1`] = `
               type="submit"
             >
               <button
-                className="btn btn-primary"
+                className="btn btn-primary um-btn um-btn-submit um-btn-login"
                 id="login-button"
                 type="submit"
               >
@@ -1566,7 +1560,7 @@ exports[`<LoginForm> login 1`] = `
               type="button"
             >
               <button
-                className="btn btn-outline-primary"
+                className="btn btn-outline-primary um-btn um-btn-secondary um-btn-forgot-password"
                 id="forgot-pw-button"
                 onClick={[Function]}
                 type="button"
@@ -1694,7 +1688,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
             value=""
           >
             <div
-              className="form-group"
+              className="form-group um-form-group"
             >
               <label
                 htmlFor="test-login-email"
@@ -1703,7 +1697,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
               </label>
               <input
                 autoFocus={true}
-                className="form-control"
+                className="form-control um-form-control"
                 id="test-login-email"
                 name="email"
                 onBlur={[Function]}
@@ -1727,7 +1721,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
             value=""
           >
             <div
-              className="form-group"
+              className="form-group um-form-group"
             >
               <label
                 htmlFor="test-login-password"
@@ -1735,7 +1729,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
                 Password
               </label>
               <input
-                className="form-control"
+                className="form-control um-form-control"
                 id="test-login-password"
                 name="password"
                 onBlur={[Function]}
@@ -1757,10 +1751,10 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
             value={false}
           >
             <div
-              className="custom-control custom-checkbox"
+              className="custom-control custom-checkbox um-checkbox-container"
             >
               <input
-                className="custom-control-input"
+                className="custom-control-input um-checkbox-input"
                 id="test-login-stay-logged-in"
                 name="stayLoggedIn"
                 onBlur={[Function]}
@@ -1769,7 +1763,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
                 value={false}
               />
               <label
-                className="custom-control-label"
+                className="custom-control-label um-checkbox-label"
                 htmlFor="test-login-stay-logged-in"
               >
                 Remember me
@@ -1777,7 +1771,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
             </div>
           </DefaultCheckboxComponent>
           <div
-            className="mb-3 justify-content-between d-flex"
+            className="mb-3 justify-content-between d-flex um-password-signin-button-container"
           >
             <DefaultButton
               id="login-button"
@@ -1786,7 +1780,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
               type="submit"
             >
               <button
-                className="btn btn-primary"
+                className="btn btn-primary um-btn um-btn-submit um-btn-login"
                 id="login-button"
                 type="submit"
               >
@@ -1801,7 +1795,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
               type="button"
             >
               <button
-                className="btn btn-outline-primary"
+                className="btn btn-outline-primary um-btn um-btn-secondary um-btn-forgot-password"
                 id="forgot-pw-button"
                 onClick={[Function]}
                 type="button"
@@ -1929,7 +1923,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
               value=""
             >
               <div
-                className="form-group"
+                className="form-group um-form-group"
               >
                 <label
                   htmlFor="um3kfiekd-account-creation-email"
@@ -1938,7 +1932,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
                 </label>
                 <input
                   autoFocus={true}
-                  className="form-control"
+                  className="form-control um-form-control"
                   id="um3kfiekd-account-creation-email"
                   name="email"
                   onBlur={[Function]}
@@ -1962,7 +1956,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
               value=""
             >
               <div
-                className="form-group"
+                className="form-group um-form-group"
               >
                 <label
                   htmlFor="um3kfiekd-account-creation-password"
@@ -1970,7 +1964,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
                   Password
                 </label>
                 <input
-                  className="form-control"
+                  className="form-control um-form-control"
                   id="um3kfiekd-account-creation-password"
                   name="password"
                   onBlur={[Function]}
@@ -1992,10 +1986,10 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
               value={false}
             >
               <div
-                className="custom-control custom-checkbox"
+                className="custom-control custom-checkbox um-checkbox-container"
               >
                 <input
-                  className="custom-control-input"
+                  className="custom-control-input um-checkbox-input"
                   id="um3kfiekd-account-creation-stay-logged-in"
                   name="stayLoggedIn"
                   onBlur={[Function]}
@@ -2004,7 +1998,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
                   value={false}
                 />
                 <label
-                  className="custom-control-label"
+                  className="custom-control-label um-checkbox-label"
                   htmlFor="um3kfiekd-account-creation-stay-logged-in"
                 >
                   Remember me
@@ -2020,24 +2014,20 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
                 username=""
               />
             </DebouncedPasswordScore>
-            <div
-              className="mb-3"
+            <DefaultButton
+              id="create-account-button"
+              name="create-account"
+              role="submit"
+              type="submit"
             >
-              <DefaultButton
+              <button
+                className="btn btn-primary um-btn um-btn-submit um-btn-create-account"
                 id="create-account-button"
-                name="create-account"
-                role="submit"
                 type="submit"
               >
-                <button
-                  className="btn btn-primary"
-                  id="create-account-button"
-                  type="submit"
-                >
-                  Create Account
-                </button>
-              </DefaultButton>
-            </div>
+                Create Account
+              </button>
+            </DefaultButton>
           </form>
           <ErrorMessage />
         </DefaultCreateAccountForm>
@@ -2112,8 +2102,12 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
           }
           successMessage={null}
         >
-          <div>
-            <div>
+          <div
+            className="um-forgot-password-container"
+          >
+            <div
+              className="mb-3 um-forgot-password-prompt"
+            >
               Enter your email to get a password reset link.
             </div>
             <ErrorMessage />
@@ -2135,7 +2129,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                 value=""
               >
                 <div
-                  className="form-group"
+                  className="form-group um-form-group"
                 >
                   <label
                     htmlFor="test-request-password-reset-email"
@@ -2144,7 +2138,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                   </label>
                   <input
                     autoFocus={true}
-                    className="form-control"
+                    className="form-control um-form-control"
                     id="test-request-password-reset-email"
                     name="email"
                     onBlur={[Function]}
@@ -2157,7 +2151,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                 </div>
               </DefaultInputComponent>
               <div
-                className="d-flex justify-content-between mb-3"
+                className="d-flex justify-content-between mb-3 um-forgot-password-buttons"
               >
                 <DefaultButton
                   id="request-pw-reset-button"
@@ -2166,7 +2160,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                   type="submit"
                 >
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-primary um-btn um-btn-submit um-btn-request-password-reset"
                     id="request-pw-reset-button"
                     type="submit"
                   >
@@ -2180,7 +2174,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                   type="button"
                 >
                   <button
-                    className="btn btn-outline-secondary"
+                    className="btn btn-outline-secondary um-btn um-btn-cancel um-btn-cancel-password-reset"
                     onClick={[Function]}
                     type="button"
                   >
@@ -2308,7 +2302,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
               value=""
             >
               <div
-                className="form-group"
+                className="form-group um-form-group"
               >
                 <label
                   htmlFor="um3kfiekd-account-creation-email"
@@ -2317,7 +2311,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                 </label>
                 <input
                   autoFocus={true}
-                  className="form-control"
+                  className="form-control um-form-control"
                   id="um3kfiekd-account-creation-email"
                   name="email"
                   onBlur={[Function]}
@@ -2341,7 +2335,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
               value=""
             >
               <div
-                className="form-group"
+                className="form-group um-form-group"
               >
                 <label
                   htmlFor="um3kfiekd-account-creation-password"
@@ -2349,7 +2343,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                   Password
                 </label>
                 <input
-                  className="form-control"
+                  className="form-control um-form-control"
                   id="um3kfiekd-account-creation-password"
                   name="password"
                   onBlur={[Function]}
@@ -2371,10 +2365,10 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
               value={false}
             >
               <div
-                className="custom-control custom-checkbox"
+                className="custom-control custom-checkbox um-checkbox-container"
               >
                 <input
-                  className="custom-control-input"
+                  className="custom-control-input um-checkbox-input"
                   id="um3kfiekd-account-creation-stay-logged-in"
                   name="stayLoggedIn"
                   onBlur={[Function]}
@@ -2383,7 +2377,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                   value={false}
                 />
                 <label
-                  className="custom-control-label"
+                  className="custom-control-label um-checkbox-label"
                   htmlFor="um3kfiekd-account-creation-stay-logged-in"
                 >
                   Remember me
@@ -2399,24 +2393,20 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                 username=""
               />
             </DebouncedPasswordScore>
-            <div
-              className="mb-3"
+            <DefaultButton
+              id="create-account-button"
+              name="create-account"
+              role="submit"
+              type="submit"
             >
-              <DefaultButton
+              <button
+                className="btn btn-primary um-btn um-btn-submit um-btn-create-account"
                 id="create-account-button"
-                name="create-account"
-                role="submit"
                 type="submit"
               >
-                <button
-                  className="btn btn-primary"
-                  id="create-account-button"
-                  type="submit"
-                >
-                  Create Account
-                </button>
-              </DefaultButton>
-            </div>
+                Create Account
+              </button>
+            </DefaultButton>
           </form>
           <ErrorMessage />
         </DefaultCreateAccountForm>
@@ -2457,7 +2447,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
         }
       >
         <div
-          className="my-3"
+          className="my-3 um-social-button-container"
         >
           <style>
             
@@ -2497,13 +2487,13 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
           >
             <SocialLoginButton
               onClick={[Function]}
-              providerClass="github-login-btn-3kdic7az9"
+              provider="github"
             >
               <div
-                className="d-flex justify-content-center my-2"
+                className="d-flex justify-content-center my-2 um-social-button"
               >
                 <button
-                  className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between github-login-btn-3kdic7az9"
+                  className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between github-login-btn-3kdic7az9 um-social-button um-social-button-github"
                   onClick={[Function]}
                 >
                   <GithubLogo
@@ -2573,7 +2563,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                     </Icon>
                   </GithubLogo>
                   <div
-                    className="flex-grow-1 font-weight-bold"
+                    className="flex-grow-1 font-weight-bold um-social-button-label"
                   >
                     Login with GitHub
                   </div>
@@ -2586,13 +2576,13 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
           >
             <SocialLoginButton
               onClick={[Function]}
-              providerClass="facebook-login-btn-3kdic7az9"
+              provider="facebook"
             >
               <div
-                className="d-flex justify-content-center my-2"
+                className="d-flex justify-content-center my-2 um-social-button"
               >
                 <button
-                  className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between facebook-login-btn-3kdic7az9"
+                  className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between facebook-login-btn-3kdic7az9 um-social-button um-social-button-facebook"
                   onClick={[Function]}
                 >
                   <FbLogo
@@ -2662,7 +2652,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                     </Icon>
                   </FbLogo>
                   <div
-                    className="flex-grow-1 font-weight-bold"
+                    className="flex-grow-1 font-weight-bold um-social-button-label"
                   >
                     Login with Facebook
                   </div>
@@ -2675,13 +2665,13 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
           >
             <SocialLoginButton
               onClick={[Function]}
-              providerClass="google-login-btn-3kdic7az9"
+              provider="google"
             >
               <div
-                className="d-flex justify-content-center my-2"
+                className="d-flex justify-content-center my-2 um-social-button"
               >
                 <button
-                  className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between google-login-btn-3kdic7az9"
+                  className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between google-login-btn-3kdic7az9 um-social-button um-social-button-google"
                   onClick={[Function]}
                 >
                   <GoogleLogo
@@ -2751,7 +2741,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                     </Icon>
                   </GoogleLogo>
                   <div
-                    className="flex-grow-1 font-weight-bold"
+                    className="flex-grow-1 font-weight-bold um-social-button-label"
                   >
                     Login with Google
                   </div>
@@ -2858,7 +2848,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
             value=""
           >
             <div
-              className="form-group"
+              className="form-group um-form-group"
             >
               <label
                 htmlFor="um3kfiekd-login-email"
@@ -2867,7 +2857,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
               </label>
               <input
                 autoFocus={true}
-                className="form-control"
+                className="form-control um-form-control"
                 id="um3kfiekd-login-email"
                 name="email"
                 onBlur={[Function]}
@@ -2891,7 +2881,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
             value=""
           >
             <div
-              className="form-group"
+              className="form-group um-form-group"
             >
               <label
                 htmlFor="um3kfiekd-login-password"
@@ -2899,7 +2889,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                 Password
               </label>
               <input
-                className="form-control"
+                className="form-control um-form-control"
                 id="um3kfiekd-login-password"
                 name="password"
                 onBlur={[Function]}
@@ -2921,10 +2911,10 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
             value={false}
           >
             <div
-              className="custom-control custom-checkbox"
+              className="custom-control custom-checkbox um-checkbox-container"
             >
               <input
-                className="custom-control-input"
+                className="custom-control-input um-checkbox-input"
                 id="um3kfiekd-login-stay-logged-in"
                 name="stayLoggedIn"
                 onBlur={[Function]}
@@ -2933,7 +2923,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                 value={false}
               />
               <label
-                className="custom-control-label"
+                className="custom-control-label um-checkbox-label"
                 htmlFor="um3kfiekd-login-stay-logged-in"
               >
                 Remember me
@@ -2941,7 +2931,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
             </div>
           </DefaultCheckboxComponent>
           <div
-            className="mb-3 justify-content-between d-flex"
+            className="mb-3 justify-content-between d-flex um-password-signin-button-container"
           >
             <DefaultButton
               id="login-button"
@@ -2950,7 +2940,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
               type="submit"
             >
               <button
-                className="btn btn-primary"
+                className="btn btn-primary um-btn um-btn-submit um-btn-login"
                 id="login-button"
                 type="submit"
               >
@@ -2965,7 +2955,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
               type="button"
             >
               <button
-                className="btn btn-outline-primary"
+                className="btn btn-outline-primary um-btn um-btn-secondary um-btn-forgot-password"
                 id="forgot-pw-button"
                 onClick={[Function]}
                 type="button"
@@ -3007,7 +2997,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
           }
         >
           <div
-            className="my-3"
+            className="my-3 um-social-button-container"
           >
             <style>
               
@@ -3047,13 +3037,13 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
             >
               <SocialLoginButton
                 onClick={[Function]}
-                providerClass="github-login-btn-3kdic7az9"
+                provider="github"
               >
                 <div
-                  className="d-flex justify-content-center my-2"
+                  className="d-flex justify-content-center my-2 um-social-button"
                 >
                   <button
-                    className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between github-login-btn-3kdic7az9"
+                    className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between github-login-btn-3kdic7az9 um-social-button um-social-button-github"
                     onClick={[Function]}
                   >
                     <GithubLogo
@@ -3123,7 +3113,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                       </Icon>
                     </GithubLogo>
                     <div
-                      className="flex-grow-1 font-weight-bold"
+                      className="flex-grow-1 font-weight-bold um-social-button-label"
                     >
                       Login with GitHub
                     </div>
@@ -3136,13 +3126,13 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
             >
               <SocialLoginButton
                 onClick={[Function]}
-                providerClass="facebook-login-btn-3kdic7az9"
+                provider="facebook"
               >
                 <div
-                  className="d-flex justify-content-center my-2"
+                  className="d-flex justify-content-center my-2 um-social-button"
                 >
                   <button
-                    className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between facebook-login-btn-3kdic7az9"
+                    className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between facebook-login-btn-3kdic7az9 um-social-button um-social-button-facebook"
                     onClick={[Function]}
                   >
                     <FbLogo
@@ -3212,7 +3202,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                       </Icon>
                     </FbLogo>
                     <div
-                      className="flex-grow-1 font-weight-bold"
+                      className="flex-grow-1 font-weight-bold um-social-button-label"
                     >
                       Login with Facebook
                     </div>
@@ -3225,13 +3215,13 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
             >
               <SocialLoginButton
                 onClick={[Function]}
-                providerClass="google-login-btn-3kdic7az9"
+                provider="google"
               >
                 <div
-                  className="d-flex justify-content-center my-2"
+                  className="d-flex justify-content-center my-2 um-social-button"
                 >
                   <button
-                    className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between google-login-btn-3kdic7az9"
+                    className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between google-login-btn-3kdic7az9 um-social-button um-social-button-google"
                     onClick={[Function]}
                   >
                     <GoogleLogo
@@ -3301,7 +3291,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                       </Icon>
                     </GoogleLogo>
                     <div
-                      className="flex-grow-1 font-weight-bold"
+                      className="flex-grow-1 font-weight-bold um-social-button-label"
                     >
                       Login with Google
                     </div>
@@ -3416,7 +3406,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
               value=""
             >
               <div
-                className="form-group"
+                className="form-group um-form-group"
               >
                 <label
                   htmlFor="um3kfiekd-account-creation-email"
@@ -3425,7 +3415,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                 </label>
                 <input
                   autoFocus={true}
-                  className="form-control"
+                  className="form-control um-form-control"
                   id="um3kfiekd-account-creation-email"
                   name="email"
                   onBlur={[Function]}
@@ -3449,7 +3439,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
               value=""
             >
               <div
-                className="form-group"
+                className="form-group um-form-group"
               >
                 <label
                   htmlFor="um3kfiekd-account-creation-password"
@@ -3457,7 +3447,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                   Password
                 </label>
                 <input
-                  className="form-control"
+                  className="form-control um-form-control"
                   id="um3kfiekd-account-creation-password"
                   name="password"
                   onBlur={[Function]}
@@ -3479,10 +3469,10 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
               value={false}
             >
               <div
-                className="custom-control custom-checkbox"
+                className="custom-control custom-checkbox um-checkbox-container"
               >
                 <input
-                  className="custom-control-input"
+                  className="custom-control-input um-checkbox-input"
                   id="um3kfiekd-account-creation-stay-logged-in"
                   name="stayLoggedIn"
                   onBlur={[Function]}
@@ -3491,7 +3481,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                   value={false}
                 />
                 <label
-                  className="custom-control-label"
+                  className="custom-control-label um-checkbox-label"
                   htmlFor="um3kfiekd-account-creation-stay-logged-in"
                 >
                   Remember me
@@ -3507,24 +3497,20 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                 username=""
               />
             </DebouncedPasswordScore>
-            <div
-              className="mb-3"
+            <DefaultButton
+              id="create-account-button"
+              name="create-account"
+              role="submit"
+              type="submit"
             >
-              <DefaultButton
+              <button
+                className="btn btn-primary um-btn um-btn-submit um-btn-create-account"
                 id="create-account-button"
-                name="create-account"
-                role="submit"
                 type="submit"
               >
-                <button
-                  className="btn btn-primary"
-                  id="create-account-button"
-                  type="submit"
-                >
-                  Create Account
-                </button>
-              </DefaultButton>
-            </div>
+                Create Account
+              </button>
+            </DefaultButton>
           </form>
           <ErrorMessage />
         </DefaultCreateAccountForm>
@@ -3597,9 +3583,11 @@ exports[`<ReauthenticateGuard> 1`] = `
           </DefaultButton>
         }
       >
-        <div>
+        <div
+          className="um-reauth-container"
+        >
           <div
-            className="mb-3"
+            className="mb-3 um-reauth-prompt"
           >
             Please enter your password:
           </div>
@@ -3620,11 +3608,11 @@ exports[`<ReauthenticateGuard> 1`] = `
               value=""
             >
               <div
-                className="form-group"
+                className="form-group um-form-group"
               >
                 <input
                   autoFocus={true}
-                  className="form-control"
+                  className="form-control um-form-control"
                   id="reauth-guard-password"
                   name="password"
                   onBlur={[Function]}
@@ -3636,7 +3624,7 @@ exports[`<ReauthenticateGuard> 1`] = `
               </div>
             </DefaultInputComponent>
             <div
-              className="d-flex justify-content-between"
+              className="d-flex justify-content-between um-reauth-button-container"
             >
               <DefaultButton
                 disabled={false}
@@ -3645,7 +3633,7 @@ exports[`<ReauthenticateGuard> 1`] = `
                 type="submit"
               >
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-primary um-btn um-btn-submit um-btn-submit-reauth"
                   type="submit"
                 >
                   Submit
@@ -3658,7 +3646,7 @@ exports[`<ReauthenticateGuard> 1`] = `
                 role="cancel"
               >
                 <button
-                  className="btn btn-outline-secondary"
+                  className="btn btn-outline-secondary um-btn um-btn-cancel um-btn-cancel-reauth"
                   onClick={[Function]}
                 >
                   Cancel
@@ -3792,7 +3780,7 @@ exports[`<ResetPasswordForm> 1`] = `
             value=""
           >
             <div
-              className="form-group"
+              className="form-group um-form-group"
             >
               <label
                 htmlFor="test-reset-password-new-password"
@@ -3801,7 +3789,7 @@ exports[`<ResetPasswordForm> 1`] = `
               </label>
               <input
                 autoFocus={true}
-                className="form-control"
+                className="form-control um-form-control"
                 id="test-reset-password-new-password"
                 name="newPassword"
                 onBlur={[Function]}
@@ -3832,10 +3820,10 @@ exports[`<ResetPasswordForm> 1`] = `
             value={true}
           >
             <div
-              className="custom-control custom-checkbox"
+              className="custom-control custom-checkbox um-checkbox-container"
             >
               <input
-                className="custom-control-input"
+                className="custom-control-input um-checkbox-input"
                 id="test-reset-password-login-after-reset"
                 name="loginAfterReset"
                 onBlur={[Function]}
@@ -3844,7 +3832,7 @@ exports[`<ResetPasswordForm> 1`] = `
                 value={true}
               />
               <label
-                className="custom-control-label"
+                className="custom-control-label um-checkbox-label"
                 htmlFor="test-reset-password-login-after-reset"
               >
                 Log in now?
@@ -3861,10 +3849,10 @@ exports[`<ResetPasswordForm> 1`] = `
             value={false}
           >
             <div
-              className="custom-control custom-checkbox"
+              className="custom-control custom-checkbox um-checkbox-container"
             >
               <input
-                className="custom-control-input"
+                className="custom-control-input um-checkbox-input"
                 id="test-reset-password-stay-logged-in"
                 name="stayLoggedIn"
                 onBlur={[Function]}
@@ -3873,7 +3861,7 @@ exports[`<ResetPasswordForm> 1`] = `
                 value={false}
               />
               <label
-                className="custom-control-label"
+                className="custom-control-label um-checkbox-label"
                 htmlFor="test-reset-password-stay-logged-in"
               >
                 Remember me
@@ -3886,7 +3874,7 @@ exports[`<ResetPasswordForm> 1`] = `
             type="submit"
           >
             <button
-              className="btn btn-primary btn-block"
+              className="btn btn-primary btn-block um-btn um-btn-submit um-btn-reset-password"
               type="submit"
             >
               Reset Password
@@ -4003,7 +3991,7 @@ exports[`<ResetPasswordForm> 2`] = `
           role="success"
         >
           <div
-            className="alert alert-success"
+            className="alert alert-success um-alert um-alert-success"
           >
             Your password has been reset successfully.
           </div>
@@ -4025,7 +4013,7 @@ exports[`<ResetPasswordForm> invalid token 1`] = `
       role="error"
     >
       <div
-        className="alert alert-danger"
+        className="alert alert-danger um-alert um-alert-error"
       >
         Invalid token 
         <pre>

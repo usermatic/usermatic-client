@@ -165,7 +165,7 @@ const TestWrapper: React.FC<{children: ReactNode, mocks: any}> = ({children, moc
   });
 
   return <ApolloProvider client={apolloClient}>
-    <client.Usermatic appId={appId}>
+    <client.Usermatic appId={appId} useBootstrapClasses={true} useUmClasses={true} >
       <CsrfTokenWrapper>
         {children}
       </CsrfTokenWrapper>
