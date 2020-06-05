@@ -123,8 +123,9 @@ const classesForRole = (role: ButtonRole): string => {
 const classesForName = (name: ButtonName): string => {
   switch (name) {
     case 'login':
+      return 'px-5'
+
     case 'logout':
-    case 'create-account':
     case 'forgot-password':
     case 'request-password-reset':
     case 'cancel-password-reset':
@@ -141,6 +142,7 @@ const classesForName = (name: ButtonName): string => {
     case 'exit-recovery-mode':
       return 'btn-block mt-4'
 
+    case 'create-account':
     case 'submit-recovery-code':
     case 'dismiss-2fa-disabled':
     case 'leave-2fa-enabled':
