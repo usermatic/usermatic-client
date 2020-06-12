@@ -21,6 +21,7 @@ export {
   usePrimaryEmail,
   useCredentials,
   usePasswordCredential,
+  useTotpCredential,
   useProfilePhotos,
   isPasswordCredential,
   isOauthCredential,

@@ -10,13 +10,20 @@ import React, {
   useContext
 } from 'react'
 
-import { Icon } from 'react-icons-kit'
-import { google } from 'react-icons-kit/fa/google'
-import { facebookOfficial } from 'react-icons-kit/fa/facebookOfficial'
-import { github } from 'react-icons-kit/fa/github'
+import Modal from 'react-modal'
 
 import {
-  IconProps,
+  OauthCredential
+} from '../user'
+
+import {
+  GoogleLogo,
+  FbLogo,
+  GithubLogo,
+  Check
+} from './logos'
+
+import {
   AlertComponentType,
   LoadingMessageType,
   ErrorCaseType,
@@ -25,6 +32,7 @@ import {
   ButtonName,
   ButtonProps,
   ButtonType,
+  ModalType,
   InputComponentType,
   ResetPasswordFormType,
   AddPasswordFormType,
@@ -43,13 +51,14 @@ import {
   RecoveryCodeDisplayType,
   RecoveryCodeRegenerationPromptType,
   EmailVerificationType,
+  UserAccountSettingsType,
+  EmailStatusType,
+  PersonalDetailType,
+  LoginMethodsType,
+  SecurityInfoType,
   FormComponents,
   DefiniteFormComponents
 } from './component-types'
-
-const GoogleLogo = (props: IconProps) => <Icon icon={google} {...props} />
-const FbLogo = (props: IconProps) => <Icon icon={facebookOfficial} {...props} />
-const GithubLogo = (props: IconProps) => <Icon icon={github} {...props} />
 
 type classNamesArg = Parameters<typeof classNames>[0]
 const useClassnames = (bootstrapClasses: classNamesArg, umClasses: classNamesArg) => {
@@ -133,11 +142,14 @@ const classesForName = (name: ButtonName): string => {
     case 'submit-reauth':
     case 'cancel-reauth':
     case 'regenerate-recovery-codes':
-      return ''
-
+    case 'close-change-password':
+    case 'resend-verification-email':
+    case 'generate-recovery-codes':
+    case 'remove-oauth-credential':
+    case 'configure-totp':
     case 'set-password':
     case 'change-password':
-      return 'btn-lg'
+      return ''
 
     case 'exit-recovery-mode':
       return 'btn-block mt-4'
@@ -740,6 +752,248 @@ const DefaultEmailVerificationComponent: EmailVerificationType = ({
   }
 }
 
+const DefaultUserAccountSettingsComponent: UserAccountSettingsType = ({
+  personalDetails,
+  loginMethods,
+  accountSecurity
+}) => {
+  return <>
+    {personalDetails}
+    {loginMethods}
+    {accountSecurity}
+  </>
+}
+
+const DefaultEmailStatusComponent: EmailStatusType = ({
+  email,
+  emailIsVerified,
+  resendSuccess,
+  resendVerificationEmailButton
+}) => {
+  if (emailIsVerified) {
+    return <ProfileLine>
+      <>Email Verified?</>
+      <><Check/></>
+    </ProfileLine>
+  } else {
+    return <ProfileLine>
+      <>Email is un-verified</>
+      <div>{resendVerificationEmailButton}</div>
+    </ProfileLine>
+  }
+}
+
+const ProfileHeader: React.FC<{children: ReactNode}> = ({children}) => {
+  const classes = useClassnames(
+    'h3 pb-3 mb-3 border-bottom',
+    'um-profile-header'
+  )
+  return <div className={classes}>{children}</div>
+}
+
+const ProfileLine: React.FC<{children: ReactNode, className?: string}> = ({children, className}) => {
+
+  const containerClasses = useClassnames('row mb-3', 'um-profile-line')
+  const leftClasses = useClassnames('col-sm-7', 'um-profile-line-left-col')
+  const rightClasses = useClassnames('col-sm-5', 'um-profile-line-right-col')
+
+  const childArr = React.Children.toArray(children)
+  if (childArr.length != 2) {
+    throw new Error("ProfileLine must have two children!")
+  }
+
+  return <div className={containerClasses}>
+    <div className={leftClasses}>{childArr[0]}</div>
+    <div className={rightClasses}>{childArr[1]}</div>
+  </div>
+}
+
+const Card: React.FC<{id: string, children: ReactNode}> = ({id, children}) => {
+  const cardClasses = useClassnames('card mt-5 d-flex', 'um-card')
+  const cardBodyClasses = useClassnames('card-body p-4', 'um-card-body')
+  return <div id={id} className={cardClasses}>
+    <div className={cardBodyClasses}>
+      {children}
+    </div>
+  </div>
+}
+
+const DefaultPersonalDetailComponent: PersonalDetailType = ({
+  loading,
+  error,
+  name,
+  email,
+  emailVerificationStatus
+}) => (
+  <Card id="personal-detail">
+    <ProfileHeader>Personal Details</ProfileHeader>
+    {loading}
+    {error}
+    <dl>
+      <ProfileLine>
+        <>Name</>
+        <>{name.given}</>
+      </ProfileLine>
+      <ProfileLine>
+        <>Email</>
+        <>{email}</>
+      </ProfileLine>
+      {emailVerificationStatus}
+    </dl>
+  </Card>
+)
+
+const OauthProviderLogo: React.FC<{cred: OauthCredential}> = ({cred}) => {
+  switch (cred.provider) {
+    case 'GITHUB':
+      return <GithubLogo size="2em" />
+    case 'FACEBOOK':
+      return <FbLogo size="2em" />
+    case 'GOOGLE':
+      return <GoogleLogo size="2em" />
+    default:
+      return null
+  }
+}
+
+const capitalize = (str: string) => {
+  return str.toUpperCase().charAt(0) + str.toLowerCase().substr(1)
+}
+
+const OauthInfo: React.FC<{
+  credential: OauthCredential
+}> = ({
+  credential
+}) => (
+  <div className="d-flex align-items-center">
+    <div className="mr-3"><OauthProviderLogo cred={credential}/></div>
+    {capitalize(credential.provider)} login enabled.
+  </div>
+)
+
+const DefaultLoginMethodsComponent: LoginMethodsType = ({
+  passwordCredential,
+  oauthCredentials,
+  changePassword
+}) => (
+  <Card id="login-methods">
+    <ProfileHeader>Login Methods</ProfileHeader>
+    <dl>
+      <ProfileLine>
+        <>Password</>
+        <>
+          {(passwordCredential == null) && 'Not Set'}
+          {changePassword}
+        </>
+      </ProfileLine>
+      {
+        oauthCredentials.map(({ credential, removeButton }, i) => (
+          <ProfileLine key={i}>
+            <OauthInfo credential={credential} />
+            {removeButton}
+          </ProfileLine>
+        ))
+      }
+    </dl>
+  </Card>
+)
+
+const DefaultSecurityInfoComponent: SecurityInfoType = ({
+  totpEnabled,
+  configureTotp,
+  generateNewRecoveryCodes,
+  codeCount
+}) => (
+  <Card id="security-info">
+    <ProfileHeader>Account Security</ProfileHeader>
+    <dl>
+      <ProfileLine>
+        <div className="text-muted">
+          <strong>Authenticator App</strong><br/>
+          { totpEnabled
+            ? 'Your authenticator app is enabled and required for login.'
+            : 'Configure an authenticator app to secure your account.'
+          }
+        </div>
+        <div>
+          {configureTotp}
+        </div>
+      </ProfileLine>
+      <ProfileLine>
+        <div className="text-muted">
+          <strong>Recovery codes</strong><br/>
+          { codeCount > 0
+            ? <>You have <strong>{codeCount}</strong> codes remaining. You can get new ones
+              at any time. Generating new codes invalidates all your old codes</>
+            : <>Prevent yourself from being locked out of your account by
+              generating account recovery codes.</>
+          }
+        </div>
+        <div>
+          {generateNewRecoveryCodes}
+        </div>
+      </ProfileLine>
+    </dl>
+  </Card>
+)
+
+const DefaultModalComponent: ModalType = ({
+  isOpen,
+  onRequestClose,
+  children,
+  title,
+  footer
+}) => {
+  const { useBootstrap, useUmClasses } = useContext(ComponentContext)
+
+  const getClass = (className: string) => {
+    const classes = []
+    if (useBootstrap) { classes.push(className) }
+    if (useUmClasses) { classes.push(`um-${className}`) }
+    return classNames(classes)
+  }
+
+  const close = (e: MouseEvent) => {
+    e.preventDefault()
+    onRequestClose()
+  }
+
+  return <Modal
+    isOpen={isOpen}
+    onRequestClose={onRequestClose}
+    shouldCloseOnOverlayClick
+    className={getClass("modal-dialog")}
+    style={{
+      overlay: {
+        backgroundColor: 'rgba(128, 128, 128, 0.75)',
+      },
+      content: {
+        outline: 'none',
+      }
+    }}
+  >
+    <div className={getClass("modal-content")}>
+      <div className={getClass("modal-header")}>
+        <h5 className={getClass("modal-title")}>
+          {title}
+        </h5>
+        <button type="button" className={getClass("close")}
+                aria-label="Close" onClick={close}>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div className={getClass("modal-body")}>
+        {children}
+      </div>
+      {footer &&
+        <div className={getClass("modal-footer")}>
+          {footer}
+        </div>
+      }
+    </div>
+  </Modal>
+}
+
 export const ComponentContext = createContext<{
   useBootstrap: boolean,
   useUmClasses: boolean,
@@ -764,6 +1018,7 @@ export const useComponents = (propComponents: FormComponents = {}): DefiniteForm
     const ErrorCaseComponent = merged.ErrorCaseComponent ??
       DefaultErrorCaseComponent
 
+    const ModalComponent = merged.ModalComponent ?? DefaultModalComponent
     const Button = merged.Button ?? DefaultButton
     const CreateAccountFormComponent = merged.CreateAccountFormComponent ?? DefaultCreateAccountForm
     const PasswordFormComponent = merged.PasswordFormComponent ?? DefaultPasswordForm
@@ -801,6 +1056,17 @@ export const useComponents = (propComponents: FormComponents = {}): DefiniteForm
     const EmailVerificationComponent = merged.EmailVerificationComponent ??
       DefaultEmailVerificationComponent
 
+    const EmailStatusComponent = merged.EmailStatusComponent ??
+      DefaultEmailStatusComponent
+
+    const UserAccountSettingsComponent = merged.UserAccountSettingsComponent ??
+      DefaultUserAccountSettingsComponent
+    const SecurityInfoComponent = merged.SecurityInfoComponent ?? DefaultSecurityInfoComponent
+    const PersonalDetailComponent = merged.PersonalDetailComponent ??
+      DefaultPersonalDetailComponent
+    const LoginMethodsComponent = merged.LoginMethodsComponent ??
+      DefaultLoginMethodsComponent
+
     return {
       AlertComponent,
       InputComponent,
@@ -809,6 +1075,7 @@ export const useComponents = (propComponents: FormComponents = {}): DefiniteForm
       ErrorMessageComponent,
       ErrorCaseComponent,
       Button,
+      ModalComponent,
       CreateAccountFormComponent,
       PasswordFormComponent,
       MFAFormComponent,
@@ -834,7 +1101,13 @@ export const useComponents = (propComponents: FormComponents = {}): DefiniteForm
       GoogleButton,
 
       ReauthFormComponent,
-      EmailVerificationComponent
+      EmailVerificationComponent,
+
+      EmailStatusComponent,
+      UserAccountSettingsComponent,
+      SecurityInfoComponent,
+      PersonalDetailComponent,
+      LoginMethodsComponent
     }
   }, [contextComponents, propComponents])
 

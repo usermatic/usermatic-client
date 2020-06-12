@@ -3,12 +3,13 @@ import React, {
   ReactNode,
 } from 'react'
 
-import { ZXCVBNResult } from 'zxcvbn'
+import {
+  PasswordCredential,
+  TotpCredential,
+  OauthCredential
+} from '../user'
 
-export type IconProps = {
-  color?: string,
-  size?: string | number
-}
+import { ZXCVBNResult } from 'zxcvbn'
 
 export type AlertComponentType = React.FC<{
   children: ReactNode
@@ -51,6 +52,11 @@ export type ButtonName = 'login'
   | 'submit-reauth'
   | 'cancel-reauth'
   | 'regenerate-recovery-codes'
+  | 'resend-verification-email'
+  | 'close-change-password'
+  | 'generate-recovery-codes'
+  | 'remove-oauth-credential'
+  | 'configure-totp'
 
 export type ButtonProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement> & {
   role: ButtonRole
@@ -59,6 +65,14 @@ export type ButtonProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement> & {
 }, 'className'>
 
 export type ButtonType = React.FC<ButtonProps>
+
+export type ModalType = React.FC<{
+  isOpen: boolean,
+  onRequestClose: () => void,
+  title: ReactNode,
+  footer?: ReactNode,
+  children: ReactNode
+}>
 
 export type InputComponentProps = React.InputHTMLAttributes<HTMLInputElement> & {
   labelText?: ReactNode
@@ -183,10 +197,73 @@ export type RecoveryCodeRegenerationPromptType = React.FC<{
   confirmButton: ReactNode
 }>
 
+export type UserAccountSettingsType = React.FC<{
+  personalDetails: ReactNode,
+  loginMethods: ReactNode,
+  accountSecurity: ReactNode,
+}>
+
 export type EmailVerificationType = React.FC<{
   success: boolean,
   error: ReactNode,
   redirectUri?: string
+}>
+
+export type EmailStatusType = React.FC<{
+  email: string,
+  emailIsVerified: boolean,
+  resendSuccess: boolean,
+  resendVerificationEmailButton: ReactNode
+}>
+
+export type CredentialListType = React.FC<{
+  error: ReactNode,
+  loading: ReactNode,
+  credentials: ReactNode
+}>
+
+export type EmailInfoType = React.FC<{
+  changePassword: ReactNode,
+  credential: PasswordCredential
+}>
+
+export type OauthInfoType = React.FC<{
+  credentials: {
+    credential: OauthCredential,
+    removeButton: ReactNode
+  }[]
+}>
+
+export type TotpInfoType = React.FC<{
+  credential: TotpCredential
+}>
+
+export type SecurityInfoType = React.FC<{
+  totpEnabled: boolean,
+  configureTotp: ReactNode,
+  generateNewRecoveryCodes: ReactNode,
+  codeCount: number
+}>
+
+export type LoginMethodsType = React.FC<{
+  passwordCredential?: PasswordCredential,
+  oauthCredentials: {
+    credential: OauthCredential,
+    removeButton: ReactNode
+  }[],
+  changePassword: ReactNode
+}>
+
+export type PersonalDetailType = React.FC<{
+  loading: ReactNode,
+  error: ReactNode,
+  email: string,
+  name: {
+    family?: string,
+    given?: string,
+    full?: string
+  },
+  emailVerificationStatus: ReactNode,
 }>
 
 export type DefiniteFormComponents = {
@@ -200,6 +277,9 @@ export type DefiniteFormComponents = {
 
   // Default button component.
   Button: ButtonType
+
+  // Default Modal
+  ModalComponent: ModalType
 
   // Loading and error messages.
   LoadingMessageComponent: LoadingMessageType
@@ -270,6 +350,16 @@ export type DefiniteFormComponents = {
   // Layout shown to the user as they are verifying their email via a link
   // sent to their email address.
   EmailVerificationComponent: EmailVerificationType
+
+  UserAccountSettingsComponent: UserAccountSettingsType
+
+  // Layout for displaying a user's email credential,
+  // e.g. is it verified, click here to re-send verification email
+  EmailStatusComponent: EmailStatusType
+
+  SecurityInfoComponent: SecurityInfoType
+  PersonalDetailComponent: PersonalDetailType
+  LoginMethodsComponent: LoginMethodsType
 }
 
 export type FormComponents = Partial<DefiniteFormComponents>

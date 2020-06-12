@@ -87,6 +87,27 @@ const userWithoutPassword = () => ({
   userJwt: jwt.sign({ id: userId }, 'abc')
 })
 
+const userWithPasswordAndOauth = () => ({
+  id: userId,
+  primaryEmail: email,
+  credentials: [
+    {
+      type: 'PASSWORD',
+      id: credentialId,
+      email: email,
+      emailIsVerified: true
+    },
+    {
+      type: 'OAUTH',
+      id: credentialId,
+      provider: 'GOOGLE',
+      providerId: 'abc',
+      photoURL: '/photo'
+    }
+  ],
+  userJwt: jwt.sign({ id: userId }, 'abc')
+})
+
 const configNoOauth = {
   minPasswordStrength: 3,
   githubLoginEnabled: false,
@@ -760,6 +781,39 @@ test('<GenRecoveryCodesForm>', async () => {
   wrapper.find('button#gen-new-codes-confirm-btn').simulate('click')
 
   await waitUntil(wrapper, exists('#pre-codes'))
+
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+})
+
+test('UserAccountSettings', async () => {
+  jest.useFakeTimers()
+
+  const signReauthenticationToken = mockSignReauthenticationToken()
+
+  const recoveryCodesRemaining = jest.fn().mockReturnValue(10)
+
+  const mocks = extendMocks({
+    AppConfig: () => (configNoOauth),
+    User: userWithPasswordAndOauth,
+    Query: () => ({
+      getAuthenticatedUser: () => ({
+        recoveryCodesRemaining
+      })
+    }),
+    Mutation: () => ({
+      signReauthenticationToken,
+    })
+  })
+
+  const wrapper = mount(
+    <TestWrapper mocks={mocks}>
+      <div id="client-test-div">
+        <components.UserAccountSettings />
+      </div>
+    </TestWrapper>
+  )
+
+  await waitUntil(wrapper, exists('#personal-detail'))
 
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 })

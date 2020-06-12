@@ -72,10 +72,12 @@ const GenRecoveryCodesFormInner: React.FC<{
 
 export const GenRecoveryCodesForm: React.FC<{
   onSuccess?: () => void,
-  components?: FormComponents
+  components?: FormComponents,
+  onClose?: () => void
 }> = ({
   onSuccess = () => {},
-  components
+  components,
+  onClose
 }) => {
 
   const { LoadingMessageComponent } = useComponents(components)
@@ -92,6 +94,7 @@ export const GenRecoveryCodesForm: React.FC<{
   return <ReauthenticateGuard
     tokenContents={{ operations: ['gen-recovery-codes'] }}
     prompt={prompt}
+    onClose={onClose}
   >
     <GenRecoveryCodesFormInner codeCount={count} onSuccess={onSuccess}
       components={components}

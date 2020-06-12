@@ -221,7 +221,6 @@ export const AddTotpForm: React.FC<{
   idPrefix?: string,
   onSuccess?: () => void,
   components?: FormComponents
-  inputComponent?: InputComponentType
 }> = ({
   idPrefix,
   onSuccess,

@@ -29,38 +29,15 @@ export {
   GenRecoveryCodesForm
 } from './recoverycodes-components'
 
+export * from './logos'
+
 export {
   ComponentProvider,
   useComponents
 } from './component-lib'
 
 export {
-  AlertComponentType,
-  LoadingMessageType,
-  ErrorCaseType,
-  ErrorMessageType,
-  ButtonRole,
-  ButtonName,
-  ButtonType,
-  InputComponentType,
-  FormProps,
-  ResetPasswordFormType,
-  ChangePasswordFormType,
-  AddPasswordFormType,
-  ForgotPasswordFormType,
-  PasswordFormType,
-  PwScoreRecord,
-  PasswordScoreType,
-  MFAFormType,
-  PostRecoveryCodeType,
-  CreateAccountFormType,
-  AddTotpFormType,
-  SocialButtonComponentType,
-  SocialButtonType,
-  ReauthFormType,
-  RecoveryCodeDisplayType,
-  RecoveryCodeRegenerationPromptType,
-  EmailVerificationType,
-  DefiniteFormComponents,
-  FormComponents,
-} from './component-types'
+  UserAccountSettings
+} from './account-settings-components'
+
+export * from './component-types'

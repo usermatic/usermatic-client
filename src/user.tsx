@@ -104,6 +104,46 @@ export const useCredentials = (): {
   }
 }
 
+export const useTotpCredential = (): {
+  loading: boolean,
+  error?: ApolloError,
+  totpCredential?: TotpCredential
+} => {
+
+  const { loading, error, credentials } = useCredentials()
+
+  if (!loading && !error && credentials) {
+    for (const c of credentials) {
+      if (isTotpCredential(c)) {
+        return { loading, error, totpCredential: c }
+      }
+    }
+  }
+
+  return { loading, error }
+}
+
+export const useOauthCredentials = (): {
+  loading: boolean,
+  error?: ApolloError,
+  oauthCredentials?: OauthCredential[]
+} => {
+  const { loading, error, credentials } = useCredentials()
+
+  if (!loading && !error && credentials) {
+    const oauthCredentials = credentials.filter(
+      (c): c is OauthCredential => isOauthCredential(c)
+    )
+    return {
+      loading,
+      error,
+      oauthCredentials
+    }
+  }
+
+  return { loading, error }
+}
+
 export const usePasswordCredential = (): {
   loading: boolean,
   error?: ApolloError,

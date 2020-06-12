@@ -329,7 +329,7 @@ exports[`<ChangePasswordForm> with password 1`] = `
             type="submit"
           >
             <button
-              className="btn btn-primary btn-lg um-btn um-btn-submit um-btn-change-password"
+              className="btn btn-primary um-btn um-btn-submit um-btn-change-password"
               type="submit"
             >
               Change Password
@@ -516,7 +516,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
             type="submit"
           >
             <button
-              className="btn btn-primary btn-lg um-btn um-btn-submit um-btn-set-password"
+              className="btn btn-primary um-btn um-btn-submit um-btn-set-password"
               type="submit"
             >
               Set Password
@@ -581,6 +581,7 @@ exports[`<GenRecoveryCodesForm> 1`] = `
             <DefaultInputComponent
               autoFocus={true}
               id="reauth-guard-password"
+              labelText="password"
               name="password"
               onBlur={[Function]}
               onChange={[Function]}
@@ -622,6 +623,7 @@ exports[`<GenRecoveryCodesForm> 1`] = `
               <DefaultInputComponent
                 autoFocus={true}
                 id="reauth-guard-password"
+                labelText="password"
                 name="password"
                 onBlur={[Function]}
                 onChange={[Function]}
@@ -632,6 +634,11 @@ exports[`<GenRecoveryCodesForm> 1`] = `
                 <div
                   className="form-group um-form-group"
                 >
+                  <label
+                    htmlFor="reauth-guard-password"
+                  >
+                    password
+                  </label>
                   <input
                     autoFocus={true}
                     className="form-control um-form-control"
@@ -1023,7 +1030,7 @@ exports[`<LoginForm> TOTP 1`] = `
               type="submit"
             >
               <button
-                className="btn btn-primary um-btn um-btn-submit um-btn-login"
+                className="btn btn-primary px-5 um-btn um-btn-submit um-btn-login"
                 id="login-button"
                 type="submit"
               >
@@ -1545,7 +1552,7 @@ exports[`<LoginForm> login 1`] = `
               type="submit"
             >
               <button
-                className="btn btn-primary um-btn um-btn-submit um-btn-login"
+                className="btn btn-primary px-5 um-btn um-btn-submit um-btn-login"
                 id="login-button"
                 type="submit"
               >
@@ -1780,7 +1787,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
               type="submit"
             >
               <button
-                className="btn btn-primary um-btn um-btn-submit um-btn-login"
+                className="btn btn-primary px-5 um-btn um-btn-submit um-btn-login"
                 id="login-button"
                 type="submit"
               >
@@ -2021,7 +2028,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
               type="submit"
             >
               <button
-                className="btn btn-primary um-btn um-btn-submit um-btn-create-account"
+                className="btn btn-primary btn-block um-btn um-btn-submit um-btn-create-account"
                 id="create-account-button"
                 type="submit"
               >
@@ -2400,7 +2407,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
               type="submit"
             >
               <button
-                className="btn btn-primary um-btn um-btn-submit um-btn-create-account"
+                className="btn btn-primary btn-block um-btn um-btn-submit um-btn-create-account"
                 id="create-account-button"
                 type="submit"
               >
@@ -2940,7 +2947,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
               type="submit"
             >
               <button
-                className="btn btn-primary um-btn um-btn-submit um-btn-login"
+                className="btn btn-primary px-5 um-btn um-btn-submit um-btn-login"
                 id="login-button"
                 type="submit"
               >
@@ -3504,7 +3511,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
               type="submit"
             >
               <button
-                className="btn btn-primary um-btn um-btn-submit um-btn-create-account"
+                className="btn btn-primary btn-block um-btn um-btn-submit um-btn-create-account"
                 id="create-account-button"
                 type="submit"
               >
@@ -3559,6 +3566,7 @@ exports[`<ReauthenticateGuard> 1`] = `
           <DefaultInputComponent
             autoFocus={true}
             id="reauth-guard-password"
+            labelText="password"
             name="password"
             onBlur={[Function]}
             onChange={[Function]}
@@ -3600,6 +3608,7 @@ exports[`<ReauthenticateGuard> 1`] = `
             <DefaultInputComponent
               autoFocus={true}
               id="reauth-guard-password"
+              labelText="password"
               name="password"
               onBlur={[Function]}
               onChange={[Function]}
@@ -3610,6 +3619,11 @@ exports[`<ReauthenticateGuard> 1`] = `
               <div
                 className="form-group um-form-group"
               >
+                <label
+                  htmlFor="reauth-guard-password"
+                >
+                  password
+                </label>
                 <input
                   autoFocus={true}
                   className="form-control um-form-control"
@@ -4021,6 +4035,760 @@ exports[`<ResetPasswordForm> invalid token 1`] = `
         </pre>
       </div>
     </DefaultAlertComponent>
+  </Component>
+</div>
+`;
+
+exports[`UserAccountSettings 1`] = `
+<div
+  id="client-test-div"
+>
+  <Component>
+    <Component
+      bootstrapClasses={true}
+      components={
+        Object {
+          "AddPasswordFormComponent": [Function],
+          "AddTotpFormComponent": [Function],
+          "AlertComponent": [Function],
+          "Button": [Function],
+          "ChangePasswordFormComponent": [Function],
+          "CheckboxComponent": [Function],
+          "CreateAccountFormComponent": [Function],
+          "EmailAddressInput": [Function],
+          "EmailStatusComponent": [Function],
+          "EmailVerificationComponent": [Function],
+          "ErrorCaseComponent": [Function],
+          "ErrorMessageComponent": [Function],
+          "FacebookButton": [Function],
+          "ForgotPasswordFormComponent": [Function],
+          "GithubButton": [Function],
+          "GoogleButton": [Function],
+          "InputComponent": [Function],
+          "LoadingMessageComponent": [Function],
+          "LoginMethodsComponent": [Function],
+          "MFAFormComponent": [Function],
+          "ModalComponent": [Function],
+          "PasswordFormComponent": [Function],
+          "PasswordInput": [Function],
+          "PasswordScoreComponent": [Function],
+          "PersonalDetailComponent": [Function],
+          "PostRecoveryCodeFormComponent": [Function],
+          "ReauthFormComponent": [Function],
+          "RecoveryCodeDisplayComponent": [Function],
+          "RecoveryCodeInputComponent": [Function],
+          "RecoveryCodeRegenerationPromptComponent": [Function],
+          "ResetPasswordFormComponent": [Function],
+          "SecurityInfoComponent": [Function],
+          "SocialButtonsComponent": [Function],
+          "StayLoggedInInput": [Function],
+          "TotpInputComponent": [Function],
+          "UserAccountSettingsComponent": [Function],
+        }
+      }
+      usermaticClasses={true}
+    >
+      <DefaultUserAccountSettingsComponent
+        accountSecurity={<SecurityInfo />}
+        loginMethods={<LoginMethods />}
+        personalDetails={<PersonalDetails />}
+      >
+        <PersonalDetails>
+          <DefaultPersonalDetailComponent
+            email="bob@bob.com"
+            emailVerificationStatus={
+              <VerificationStatus
+                cred={
+                  Object {
+                    "email": "bob@bob.com",
+                    "emailIsVerified": true,
+                    "id": "a31d68e6-898f-4998-9e6d-25ef1a62f62c",
+                    "type": "PASSWORD",
+                  }
+                }
+              />
+            }
+            error={<ErrorMessage />}
+            loading={false}
+            name={
+              Object {
+                "family": "Hello World",
+                "full": "Hello World",
+                "given": "Hello World",
+              }
+            }
+          >
+            <Card
+              id="personal-detail"
+            >
+              <div
+                className="card mt-5 d-flex um-card"
+                id="personal-detail"
+              >
+                <div
+                  className="card-body p-4 um-card-body"
+                >
+                  <ProfileHeader>
+                    <div
+                      className="h3 pb-3 mb-3 border-bottom um-profile-header"
+                    >
+                      Personal Details
+                    </div>
+                  </ProfileHeader>
+                  <ErrorMessage />
+                  <dl>
+                    <ProfileLine>
+                      <div
+                        className="row mb-3 um-profile-line"
+                      >
+                        <div
+                          className="col-sm-7 um-profile-line-left-col"
+                        >
+                          Name
+                        </div>
+                        <div
+                          className="col-sm-5 um-profile-line-right-col"
+                        >
+                          Hello World
+                        </div>
+                      </div>
+                    </ProfileLine>
+                    <ProfileLine>
+                      <div
+                        className="row mb-3 um-profile-line"
+                      >
+                        <div
+                          className="col-sm-7 um-profile-line-left-col"
+                        >
+                          Email
+                        </div>
+                        <div
+                          className="col-sm-5 um-profile-line-right-col"
+                        >
+                          bob@bob.com
+                        </div>
+                      </div>
+                    </ProfileLine>
+                    <VerificationStatus
+                      cred={
+                        Object {
+                          "email": "bob@bob.com",
+                          "emailIsVerified": true,
+                          "id": "a31d68e6-898f-4998-9e6d-25ef1a62f62c",
+                          "type": "PASSWORD",
+                        }
+                      }
+                    >
+                      <DefaultEmailStatusComponent
+                        email="bob@bob.com"
+                        emailIsVerified={true}
+                        resendSuccess={false}
+                        resendVerificationEmailButton={
+                          <DefaultButton
+                            disabled={false}
+                            name="resend-verification-email"
+                            onClick={[Function]}
+                            role="submit"
+                          >
+                            Resend Verification Email
+                          </DefaultButton>
+                        }
+                      >
+                        <ProfileLine>
+                          <div
+                            className="row mb-3 um-profile-line"
+                          >
+                            <div
+                              className="col-sm-7 um-profile-line-left-col"
+                            >
+                              Email Verified?
+                            </div>
+                            <div
+                              className="col-sm-5 um-profile-line-right-col"
+                            >
+                              <Check>
+                                <Icon
+                                  fill="currentColor"
+                                  icon={
+                                    Object {
+                                      "children": Array [
+                                        Object {
+                                          "attribs": Object {
+                                            "d": "M1671 566q0 40-28 68l-724 724-136 136q-28 28-68 28t-68-28l-136-136-362-362q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 295 656-657q28-28 68-28t68 28l136 136q28 28 28 68z",
+                                          },
+                                          "name": "path",
+                                        },
+                                      ],
+                                      "viewBox": "0 0 1792 1792",
+                                    }
+                                  }
+                                  size={16}
+                                  tag="i"
+                                >
+                                  <i
+                                    fill="currentColor"
+                                    style={
+                                      Object {
+                                        "display": "inline-block",
+                                      }
+                                    }
+                                  >
+                                    <SvgIcon
+                                      icon={
+                                        Object {
+                                          "children": Array [
+                                            Object {
+                                              "attribs": Object {
+                                                "d": "M1671 566q0 40-28 68l-724 724-136 136q-28 28-68 28t-68-28l-136-136-362-362q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 295 656-657q28-28 68-28t68 28l136 136q28 28 28 68z",
+                                              },
+                                              "name": "path",
+                                            },
+                                          ],
+                                          "viewBox": "0 0 1792 1792",
+                                        }
+                                      }
+                                      size={16}
+                                    >
+                                      <svg
+                                        fill="currentColor"
+                                        height={16}
+                                        style={
+                                          Object {
+                                            "display": "inline-block",
+                                            "verticalAlign": "middle",
+                                          }
+                                        }
+                                        viewBox="0 0 1792 1792"
+                                        width={16}
+                                      >
+                                        <path
+                                          d="M1671 566q0 40-28 68l-724 724-136 136q-28 28-68 28t-68-28l-136-136-362-362q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 295 656-657q28-28 68-28t68 28l136 136q28 28 28 68z"
+                                          key="0"
+                                        />
+                                      </svg>
+                                    </SvgIcon>
+                                  </i>
+                                </Icon>
+                              </Check>
+                            </div>
+                          </div>
+                        </ProfileLine>
+                      </DefaultEmailStatusComponent>
+                    </VerificationStatus>
+                  </dl>
+                </div>
+              </div>
+            </Card>
+          </DefaultPersonalDetailComponent>
+        </PersonalDetails>
+        <LoginMethods>
+          <DefaultLoginMethodsComponent
+            changePassword={<ChangePassword />}
+            oauthCredentials={Array []}
+            passwordCredential={
+              Object {
+                "email": "bob@bob.com",
+                "emailIsVerified": true,
+                "id": "a31d68e6-898f-4998-9e6d-25ef1a62f62c",
+                "type": "PASSWORD",
+              }
+            }
+          >
+            <Card
+              id="login-methods"
+            >
+              <div
+                className="card mt-5 d-flex um-card"
+                id="login-methods"
+              >
+                <div
+                  className="card-body p-4 um-card-body"
+                >
+                  <ProfileHeader>
+                    <div
+                      className="h3 pb-3 mb-3 border-bottom um-profile-header"
+                    >
+                      Login Methods
+                    </div>
+                  </ProfileHeader>
+                  <dl>
+                    <ProfileLine>
+                      <div
+                        className="row mb-3 um-profile-line"
+                      >
+                        <div
+                          className="col-sm-7 um-profile-line-left-col"
+                        >
+                          Password
+                        </div>
+                        <div
+                          className="col-sm-5 um-profile-line-right-col"
+                        >
+                          <ChangePassword>
+                            <DefaultModalComponent
+                              close={[Function]}
+                              footer={
+                                <DefaultButton
+                                  name="close-change-password"
+                                  onClick={[Function]}
+                                  role="cancel"
+                                >
+                                  Close
+                                </DefaultButton>
+                              }
+                              isOpen={false}
+                              key="0"
+                              onRequestClose={[Function]}
+                              open={[Function]}
+                              setKey={[Function]}
+                              title={
+                                <React.Fragment>
+                                  Change Password
+                                </React.Fragment>
+                              }
+                            >
+                              <Modal
+                                ariaHideApp={true}
+                                bodyOpenClassName="ReactModal__Body--open"
+                                className="modal-dialog um-modal-dialog"
+                                closeTimeoutMS={0}
+                                isOpen={false}
+                                onRequestClose={[Function]}
+                                parentSelector={[Function]}
+                                portalClassName="ReactModalPortal"
+                                role="dialog"
+                                shouldCloseOnEsc={true}
+                                shouldCloseOnOverlayClick={true}
+                                shouldFocusAfterRender={true}
+                                shouldReturnFocusAfterClose={true}
+                                style={
+                                  Object {
+                                    "content": Object {
+                                      "outline": "none",
+                                    },
+                                    "overlay": Object {
+                                      "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                    },
+                                  }
+                                }
+                              >
+                                <Portal
+                                  containerInfo={
+                                    <div
+                                      class="ReactModalPortal"
+                                    />
+                                  }
+                                >
+                                  <ModalPortal
+                                    ariaHideApp={true}
+                                    bodyOpenClassName="ReactModal__Body--open"
+                                    className="modal-dialog um-modal-dialog"
+                                    closeTimeoutMS={0}
+                                    defaultStyles={
+                                      Object {
+                                        "content": Object {
+                                          "WebkitOverflowScrolling": "touch",
+                                          "background": "#fff",
+                                          "border": "1px solid #ccc",
+                                          "borderRadius": "4px",
+                                          "bottom": "40px",
+                                          "left": "40px",
+                                          "outline": "none",
+                                          "overflow": "auto",
+                                          "padding": "20px",
+                                          "position": "absolute",
+                                          "right": "40px",
+                                          "top": "40px",
+                                        },
+                                        "overlay": Object {
+                                          "backgroundColor": "rgba(255, 255, 255, 0.75)",
+                                          "bottom": 0,
+                                          "left": 0,
+                                          "position": "fixed",
+                                          "right": 0,
+                                          "top": 0,
+                                        },
+                                      }
+                                    }
+                                    isOpen={false}
+                                    onRequestClose={[Function]}
+                                    parentSelector={[Function]}
+                                    portalClassName="ReactModalPortal"
+                                    role="dialog"
+                                    shouldCloseOnEsc={true}
+                                    shouldCloseOnOverlayClick={true}
+                                    shouldFocusAfterRender={true}
+                                    shouldReturnFocusAfterClose={true}
+                                    style={
+                                      Object {
+                                        "content": Object {
+                                          "outline": "none",
+                                        },
+                                        "overlay": Object {
+                                          "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                        },
+                                      }
+                                    }
+                                  />
+                                </Portal>
+                              </Modal>
+                            </DefaultModalComponent>
+                            <DefaultButton
+                              name="change-password"
+                              onClick={[Function]}
+                              role="submit"
+                            >
+                              <button
+                                className="btn btn-primary um-btn um-btn-submit um-btn-change-password"
+                                onClick={[Function]}
+                              >
+                                Change Password
+                              </button>
+                            </DefaultButton>
+                          </ChangePassword>
+                        </div>
+                      </div>
+                    </ProfileLine>
+                  </dl>
+                </div>
+              </div>
+            </Card>
+          </DefaultLoginMethodsComponent>
+        </LoginMethods>
+        <SecurityInfo>
+          <DefaultSecurityInfoComponent
+            codeCount={10}
+            configureTotp={
+              <ConfigureTotp
+                totpEnabled={false}
+              />
+            }
+            generateNewRecoveryCodes={<GenRecoveryCodes />}
+            totpEnabled={false}
+          >
+            <Card
+              id="security-info"
+            >
+              <div
+                className="card mt-5 d-flex um-card"
+                id="security-info"
+              >
+                <div
+                  className="card-body p-4 um-card-body"
+                >
+                  <ProfileHeader>
+                    <div
+                      className="h3 pb-3 mb-3 border-bottom um-profile-header"
+                    >
+                      Account Security
+                    </div>
+                  </ProfileHeader>
+                  <dl>
+                    <ProfileLine>
+                      <div
+                        className="row mb-3 um-profile-line"
+                      >
+                        <div
+                          className="col-sm-7 um-profile-line-left-col"
+                        >
+                          <div
+                            className="text-muted"
+                            key=".0"
+                          >
+                            <strong>
+                              Authenticator App
+                            </strong>
+                            <br />
+                            Configure an authenticator app to secure your account.
+                          </div>
+                        </div>
+                        <div
+                          className="col-sm-5 um-profile-line-right-col"
+                        >
+                          <div
+                            key=".1"
+                          >
+                            <ConfigureTotp
+                              totpEnabled={false}
+                            >
+                              <DefaultModalComponent
+                                close={[Function]}
+                                footer={
+                                  <DefaultButton
+                                    name="close-change-password"
+                                    onClick={[Function]}
+                                    role="cancel"
+                                  >
+                                    Close
+                                  </DefaultButton>
+                                }
+                                isOpen={false}
+                                key="0"
+                                onRequestClose={[Function]}
+                                open={[Function]}
+                                setKey={[Function]}
+                                title={
+                                  <React.Fragment>
+                                    Configure Authenticator App
+                                  </React.Fragment>
+                                }
+                              >
+                                <Modal
+                                  ariaHideApp={true}
+                                  bodyOpenClassName="ReactModal__Body--open"
+                                  className="modal-dialog um-modal-dialog"
+                                  closeTimeoutMS={0}
+                                  isOpen={false}
+                                  onRequestClose={[Function]}
+                                  parentSelector={[Function]}
+                                  portalClassName="ReactModalPortal"
+                                  role="dialog"
+                                  shouldCloseOnEsc={true}
+                                  shouldCloseOnOverlayClick={true}
+                                  shouldFocusAfterRender={true}
+                                  shouldReturnFocusAfterClose={true}
+                                  style={
+                                    Object {
+                                      "content": Object {
+                                        "outline": "none",
+                                      },
+                                      "overlay": Object {
+                                        "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                      },
+                                    }
+                                  }
+                                >
+                                  <Portal
+                                    containerInfo={
+                                      <div
+                                        class="ReactModalPortal"
+                                      />
+                                    }
+                                  >
+                                    <ModalPortal
+                                      ariaHideApp={true}
+                                      bodyOpenClassName="ReactModal__Body--open"
+                                      className="modal-dialog um-modal-dialog"
+                                      closeTimeoutMS={0}
+                                      defaultStyles={
+                                        Object {
+                                          "content": Object {
+                                            "WebkitOverflowScrolling": "touch",
+                                            "background": "#fff",
+                                            "border": "1px solid #ccc",
+                                            "borderRadius": "4px",
+                                            "bottom": "40px",
+                                            "left": "40px",
+                                            "outline": "none",
+                                            "overflow": "auto",
+                                            "padding": "20px",
+                                            "position": "absolute",
+                                            "right": "40px",
+                                            "top": "40px",
+                                          },
+                                          "overlay": Object {
+                                            "backgroundColor": "rgba(255, 255, 255, 0.75)",
+                                            "bottom": 0,
+                                            "left": 0,
+                                            "position": "fixed",
+                                            "right": 0,
+                                            "top": 0,
+                                          },
+                                        }
+                                      }
+                                      isOpen={false}
+                                      onRequestClose={[Function]}
+                                      parentSelector={[Function]}
+                                      portalClassName="ReactModalPortal"
+                                      role="dialog"
+                                      shouldCloseOnEsc={true}
+                                      shouldCloseOnOverlayClick={true}
+                                      shouldFocusAfterRender={true}
+                                      shouldReturnFocusAfterClose={true}
+                                      style={
+                                        Object {
+                                          "content": Object {
+                                            "outline": "none",
+                                          },
+                                          "overlay": Object {
+                                            "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                          },
+                                        }
+                                      }
+                                    />
+                                  </Portal>
+                                </Modal>
+                              </DefaultModalComponent>
+                              <DefaultButton
+                                name="configure-totp"
+                                onClick={[Function]}
+                                role="submit"
+                              >
+                                <button
+                                  className="btn btn-primary um-btn um-btn-submit um-btn-configure-totp"
+                                  onClick={[Function]}
+                                >
+                                  Configure Authenticator App
+                                </button>
+                              </DefaultButton>
+                            </ConfigureTotp>
+                          </div>
+                        </div>
+                      </div>
+                    </ProfileLine>
+                    <ProfileLine>
+                      <div
+                        className="row mb-3 um-profile-line"
+                      >
+                        <div
+                          className="col-sm-7 um-profile-line-left-col"
+                        >
+                          <div
+                            className="text-muted"
+                            key=".0"
+                          >
+                            <strong>
+                              Recovery codes
+                            </strong>
+                            <br />
+                            You have 
+                            <strong>
+                              10
+                            </strong>
+                             codes remaining. You can get new ones at any time. Generating new codes invalidates all your old codes
+                          </div>
+                        </div>
+                        <div
+                          className="col-sm-5 um-profile-line-right-col"
+                        >
+                          <div
+                            key=".1"
+                          >
+                            <GenRecoveryCodes>
+                              <DefaultModalComponent
+                                close={[Function]}
+                                isOpen={false}
+                                key="0"
+                                onRequestClose={[Function]}
+                                open={[Function]}
+                                setKey={[Function]}
+                                title={
+                                  <React.Fragment>
+                                    Change Password
+                                  </React.Fragment>
+                                }
+                              >
+                                <Modal
+                                  ariaHideApp={true}
+                                  bodyOpenClassName="ReactModal__Body--open"
+                                  className="modal-dialog um-modal-dialog"
+                                  closeTimeoutMS={0}
+                                  isOpen={false}
+                                  onRequestClose={[Function]}
+                                  parentSelector={[Function]}
+                                  portalClassName="ReactModalPortal"
+                                  role="dialog"
+                                  shouldCloseOnEsc={true}
+                                  shouldCloseOnOverlayClick={true}
+                                  shouldFocusAfterRender={true}
+                                  shouldReturnFocusAfterClose={true}
+                                  style={
+                                    Object {
+                                      "content": Object {
+                                        "outline": "none",
+                                      },
+                                      "overlay": Object {
+                                        "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                      },
+                                    }
+                                  }
+                                >
+                                  <Portal
+                                    containerInfo={
+                                      <div
+                                        class="ReactModalPortal"
+                                      />
+                                    }
+                                  >
+                                    <ModalPortal
+                                      ariaHideApp={true}
+                                      bodyOpenClassName="ReactModal__Body--open"
+                                      className="modal-dialog um-modal-dialog"
+                                      closeTimeoutMS={0}
+                                      defaultStyles={
+                                        Object {
+                                          "content": Object {
+                                            "WebkitOverflowScrolling": "touch",
+                                            "background": "#fff",
+                                            "border": "1px solid #ccc",
+                                            "borderRadius": "4px",
+                                            "bottom": "40px",
+                                            "left": "40px",
+                                            "outline": "none",
+                                            "overflow": "auto",
+                                            "padding": "20px",
+                                            "position": "absolute",
+                                            "right": "40px",
+                                            "top": "40px",
+                                          },
+                                          "overlay": Object {
+                                            "backgroundColor": "rgba(255, 255, 255, 0.75)",
+                                            "bottom": 0,
+                                            "left": 0,
+                                            "position": "fixed",
+                                            "right": 0,
+                                            "top": 0,
+                                          },
+                                        }
+                                      }
+                                      isOpen={false}
+                                      onRequestClose={[Function]}
+                                      parentSelector={[Function]}
+                                      portalClassName="ReactModalPortal"
+                                      role="dialog"
+                                      shouldCloseOnEsc={true}
+                                      shouldCloseOnOverlayClick={true}
+                                      shouldFocusAfterRender={true}
+                                      shouldReturnFocusAfterClose={true}
+                                      style={
+                                        Object {
+                                          "content": Object {
+                                            "outline": "none",
+                                          },
+                                          "overlay": Object {
+                                            "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                          },
+                                        }
+                                      }
+                                    />
+                                  </Portal>
+                                </Modal>
+                              </DefaultModalComponent>
+                              <DefaultButton
+                                name="generate-recovery-codes"
+                                onClick={[Function]}
+                                role="submit"
+                              >
+                                <button
+                                  className="btn btn-primary um-btn um-btn-submit um-btn-generate-recovery-codes"
+                                  onClick={[Function]}
+                                >
+                                  Generate New Recovery Codes
+                                </button>
+                              </DefaultButton>
+                            </GenRecoveryCodes>
+                          </div>
+                        </div>
+                      </div>
+                    </ProfileLine>
+                  </dl>
+                </div>
+              </div>
+            </Card>
+          </DefaultSecurityInfoComponent>
+        </SecurityInfo>
+      </DefaultUserAccountSettingsComponent>
+    </Component>
   </Component>
 </div>
 `;

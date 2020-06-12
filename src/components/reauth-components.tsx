@@ -104,6 +104,7 @@ export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
           <PasswordInput type="password"
             id="reauth-guard-password"
             placeholder="password" autoFocus
+            labelText="password"
             {...props.getFieldProps('password')}
           />
         }
