@@ -177,6 +177,16 @@ export const ADD_PW_MUT = gql`
   ${USER_FRAGMENT}
 `
 
+export const REMOVE_OAUTH_CREDENTIAL_MUT = gql`
+  mutation removeOauthCredential($credentialId: ID!, $reauthToken: String!) {
+    removeOauthCredential(credentialId: $credentialId, reauthToken: $reauthToken) {
+      refetch {
+        getAuthenticatedUser { ...UserParts }
+      }
+    }
+  }
+`
+
 export const LOGOUT_MUT = gql`
   mutation logout {
     logout {
