@@ -266,7 +266,7 @@ export type PersonalDetailType = React.FC<{
   emailVerificationStatus: ReactNode,
 }>
 
-export type DefiniteFormComponents = {
+export type DefiniteComponents = {
   // Default component for alert messages.
   AlertComponent: AlertComponentType
 
@@ -362,4 +362,4 @@ export type DefiniteFormComponents = {
   LoginMethodsComponent: LoginMethodsType
 }
 
-export type FormComponents = Partial<DefiniteFormComponents>
+export type Components = Partial<DefiniteComponents>

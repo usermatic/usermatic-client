@@ -9,7 +9,7 @@ import jwtDecode from 'jwt-decode'
 import { useComponents } from './component-lib'
 
 import {
-  FormComponents,
+  Components,
   ButtonType,
   InputComponentType
 } from './component-types'
@@ -146,7 +146,7 @@ export const MFAForm: React.FC<{
   submit: (code: string) => void,
   loading: boolean,
   error?: ApolloError,
-  components?: FormComponents,
+  components?: Components,
   idPrefix?: string
 }> = ({
   submit,
@@ -220,7 +220,7 @@ MFAForm.displayName = 'MFAForm'
 export const AddTotpForm: React.FC<{
   idPrefix?: string,
   onSuccess?: () => void,
-  components?: FormComponents
+  components?: Components
 }> = ({
   idPrefix,
   onSuccess,

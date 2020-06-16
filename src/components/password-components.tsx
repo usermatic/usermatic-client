@@ -9,7 +9,7 @@ import { ErrorMessage } from '../errors'
 import { useDebounce } from '../use-debounce'
 
 import { useComponents } from './component-lib'
-import { FormComponents } from './component-types'
+import { Components } from './component-types'
 
 import {
   usePasswordCredential,
@@ -49,7 +49,7 @@ type ChangePasswordFormProps = {
   onSuccess?: () => void,
   idPrefix?: string,
   labelsFirst?: boolean
-  components?: FormComponents
+  components?: Components
 }
 
 export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
@@ -193,7 +193,7 @@ type ResetPasswordFormProps = {
   // whether to expose the loginAfterReset checkbox
   exposeLoginAfterReset?: boolean
   redirectAfterReset?: boolean
-  components?: FormComponents
+  components?: Components
 }
 
 export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
@@ -350,7 +350,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
 type RequestPasswordResetFormProps = {
   idPrefix?: string,
   onCancel?: () => void,
-  components?: FormComponents
+  components?: Components
 }
 
 export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> = ({
@@ -444,7 +444,7 @@ type PwScoreRecord = ZXCVBNResult
 type PasswordScoreProps = {
   password?: string,
   username?: string,
-  components?: FormComponents
+  components?: Components
 }
 
 export const PasswordScore: React.FC<PasswordScoreProps> = ({

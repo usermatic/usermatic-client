@@ -9,7 +9,7 @@ import { ApolloError } from 'apollo-client'
 import { GraphQLError } from 'graphql'
 
 import { useComponents } from './components/component-lib'
-import { FormComponents } from './components/component-types'
+import { Components } from './components/component-types'
 
 export type ConciseError = {
   code: string
@@ -51,7 +51,7 @@ const ErrorCodeContext = createContext<string[] | undefined>(undefined)
 type ErrorMessageCaseProps = {
   code: string,
   children: ReactNode,
-  components?: FormComponents
+  components?: Components
 }
 
 const ErrorMessageCase: React.FC<ErrorMessageCaseProps> = ({
@@ -74,7 +74,7 @@ const ErrorMessageCase: React.FC<ErrorMessageCaseProps> = ({
 type ErrorProps = {
   error: ApolloError | undefined
   children?: ReactElement[] | ReactElement,
-  components?: FormComponents
+  components?: Components
 }
 
 const ErrorMessage: React.FC<ErrorProps> = ({error, children, components}) => {

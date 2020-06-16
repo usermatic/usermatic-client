@@ -8,7 +8,7 @@ import { Formik, FormikValues, FormikErrors } from 'formik'
 
 import { ErrorMessage } from '../errors'
 import { useComponents } from './component-lib'
-import { FormComponents } from './component-types'
+import { Components } from './component-types'
 
 import {
   useReauthenticate,
@@ -22,7 +22,7 @@ type ReauthenticateGuardProps = {
   maxTokenAge?: string
   onClose?: () => void
   prompt?: ReactNode
-  components?: FormComponents
+  components?: Components
 }
 
 // Hides some other component behind a reauthentication prompt. After the

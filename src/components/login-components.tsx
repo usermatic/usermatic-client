@@ -11,7 +11,7 @@ import { DebouncedPasswordScore, RequestPasswordResetForm } from './password-com
 import { MFAForm } from './totp-components'
 import { useReauthToken } from '../reauth'
 import { useComponents } from './component-lib'
-import { FormComponents } from './component-types'
+import { Components } from './component-types'
 
 import { useClearTotpMutation } from '../../gen/operations'
 
@@ -46,7 +46,7 @@ type LoginFormProps = {
   // in the same page.
   idPrefix?: string
 
-  components?: FormComponents
+  components?: Components
 }
 
 type ChildWindow = {
@@ -160,7 +160,7 @@ const makeLoginFn = (childWindow: ChildWindow, appId: string, url: string) => (
 
 const SocialButtons: React.FC<{
   popupWindow: ChildWindow,
-  components?: FormComponents
+  components?: Components
 }> = ({popupWindow, components}) => {
 
   const {
@@ -296,7 +296,7 @@ type LoginMode = 'login' | 'forgotpw' | 'totp'
 
 const PostRecoveryCode: React.FC<{
   dismiss: () => void,
-  components?: FormComponents
+  components?: Components
 }> = ({dismiss, components}) => {
 
   const {
@@ -564,7 +564,7 @@ type AccountCreationProps = {
   // in the same page.
   idPrefix?: string
 
-  components?: FormComponents
+  components?: Components
 
   // Render labels before inputs in the form (default true)
   labelsFirst?: boolean
@@ -682,7 +682,7 @@ export const AccountCreationForm: React.FC<AccountCreationProps> = ({
 }
 
 export const LogoutButton: React.FC<{
-  components?: FormComponents
+  components?: Components
 }> = ({components}) => {
 
   const {

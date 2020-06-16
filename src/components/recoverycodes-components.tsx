@@ -7,12 +7,12 @@ import { useCreateRecoveryCodes, useGetRecoveryCodeCount } from '../recoverycode
 import { ReauthenticateGuard } from './reauth-components'
 
 import { useComponents } from './component-lib'
-import { FormComponents } from './component-types'
+import { Components } from './component-types'
 
 const GenRecoveryCodesFormInner: React.FC<{
   codeCount: number,
   onSuccess: () => void,
-  components?: FormComponents
+  components?: Components
 }> = ({codeCount, onSuccess, components}) => {
 
   const {
@@ -72,7 +72,7 @@ const GenRecoveryCodesFormInner: React.FC<{
 
 export const GenRecoveryCodesForm: React.FC<{
   onSuccess?: () => void,
-  components?: FormComponents,
+  components?: Components,
   onClose?: () => void
 }> = ({
   onSuccess = () => {},

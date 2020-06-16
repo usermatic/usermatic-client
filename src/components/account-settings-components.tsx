@@ -14,7 +14,7 @@ import { useReauthToken } from '../reauth'
 
 import { ReauthenticateGuard } from './reauth-components'
 import { ComponentContext, ComponentProvider, useComponents } from './component-lib'
-import { FormComponents } from './component-types'
+import { Components } from './component-types'
 import { ErrorMessage } from '../errors'
 import { useModal } from './modal'
 
@@ -273,7 +273,7 @@ const SecurityInfo: React.FC<{}> = () => {
 }
 
 export const UserAccountSettings: React.FC<{
-  components?: FormComponents
+  components?: Components
 }> = ({
   components: propComponents
 }) => {

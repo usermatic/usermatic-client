@@ -56,8 +56,8 @@ import {
   PersonalDetailType,
   LoginMethodsType,
   SecurityInfoType,
-  FormComponents,
-  DefiniteFormComponents
+  Components,
+  DefiniteComponents
 } from './component-types'
 
 type classNamesArg = Parameters<typeof classNames>[0]
@@ -997,10 +997,10 @@ const DefaultModalComponent: ModalType = ({
 export const ComponentContext = createContext<{
   useBootstrap: boolean,
   useUmClasses: boolean,
-  components: FormComponents
+  components: Components
 }>({ useBootstrap: true, useUmClasses: false, components: {} })
 
-export const useComponents = (propComponents: FormComponents = {}): DefiniteFormComponents => {
+export const useComponents = (propComponents: Components = {}): DefiniteComponents => {
   const { components: contextComponents } = useContext(ComponentContext)
 
   const mergedComponents = useMemo(() => {
@@ -1115,7 +1115,7 @@ export const useComponents = (propComponents: FormComponents = {}): DefiniteForm
 }
 
 export const ComponentProvider: React.FC<{
-  components?: FormComponents,
+  components?: Components,
   bootstrapClasses?: boolean,
   usermaticClasses?: boolean,
   children: ReactNode

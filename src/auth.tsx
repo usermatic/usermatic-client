@@ -27,7 +27,7 @@ import {
 } from './components/component-lib'
 
 import {
-  FormComponents
+  Components
 } from './components/component-types'
 
 import {
@@ -299,7 +299,7 @@ type UsermaticProps = {
   useBootstrapClasses?: boolean,
   useUmClasses?: boolean,
   showDiagnostics?: boolean,
-  components?: FormComponents
+  components?: Components
 }
 
 export const Usermatic: React.FC<UsermaticProps> = ({

@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { useCsrfToken } from '../hooks'
 import { ErrorMessage } from '../errors'
 import { useComponents } from './component-lib'
-import { FormComponents } from './component-types'
+import { Components } from './component-types'
 
 import {
   useEmailVerifier
@@ -12,7 +12,7 @@ import {
 
 export const EmailVerifier: React.FC<{
   token: string,
-  components?: FormComponents
+  components?: Components
 }> = ({token, components}) => {
 
   const {
