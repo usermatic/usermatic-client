@@ -944,7 +944,7 @@ const DefaultModalComponent: ModalType = ({
   title,
   footer
 }) => {
-  const { useBootstrap, useUmClasses } = useContext(ComponentContext)
+  const { useBootstrap, useUmClasses, modalAppElement } = useContext(ComponentContext)
 
   const getClass = (className: string) => {
     const classes = []
@@ -963,6 +963,7 @@ const DefaultModalComponent: ModalType = ({
     onRequestClose={onRequestClose}
     shouldCloseOnOverlayClick
     className={getClass("modal-dialog")}
+    appElement={modalAppElement}
     style={{
       overlay: {
         backgroundColor: 'rgba(128, 128, 128, 0.75)',
@@ -997,7 +998,8 @@ const DefaultModalComponent: ModalType = ({
 export const ComponentContext = createContext<{
   useBootstrap: boolean,
   useUmClasses: boolean,
-  components: Components
+  components: Components,
+  modalAppElement?: HTMLElement
 }>({ useBootstrap: true, useUmClasses: false, components: {} })
 
 export const useComponents = (propComponents: Components = {}): DefiniteComponents => {
@@ -1126,10 +1128,17 @@ export const ComponentProvider: React.FC<{
   children
 }) => {
 
+  const modalAppElement = useMemo(() => {
+    if (typeof window === 'undefined') { return }
+    return document.getElementById('__next')
+        || document.getElementById('root')
+        || undefined
+  }, [])
+
   const components = useComponents(propComponents)
   const value = useMemo(
-    () => ({ components, useBootstrap, useUmClasses }),
-    [components, useBootstrap, useUmClasses]
+    () => ({ components, useBootstrap, useUmClasses, modalAppElement }),
+    [components, useBootstrap, useUmClasses, modalAppElement]
   )
 
   return <ComponentContext.Provider value={value}>
