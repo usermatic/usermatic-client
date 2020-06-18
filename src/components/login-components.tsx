@@ -46,7 +46,9 @@ type LoginFormProps = {
   // in the same page.
   idPrefix?: string
 
-  components?: Components
+  components?: Components,
+
+  onChangeMode?: (mode: LoginMode) => void
 }
 
 type ChildWindow = {
@@ -292,7 +294,7 @@ const validateLogin = (values: FormikValues) => {
   return errors
 }
 
-type LoginMode = 'login' | 'forgotpw' | 'totp'
+export type LoginMode = 'login' | 'forgotpw' | 'totp'
 
 const PostRecoveryCode: React.FC<{
   dismiss: () => void,
@@ -353,7 +355,8 @@ const PostRecoveryCode: React.FC<{
 export const LoginForm: React.FC<LoginFormProps> = ({
   onLogin,
   idPrefix,
-  components
+  components,
+  onChangeMode
 }) => {
 
   const {
@@ -365,7 +368,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   } = useComponents(components)
 
   // State
-  const [mode, setMode] = useState<LoginMode>('login')
+  const [mode, setModeState] = useState<LoginMode>('login')
   const [submittedData, setSubmittedData] =
     useState<LoginMutationVariables | undefined>(undefined)
   const [oauthToken, setOauthToken] = useState<string | undefined>()
@@ -385,6 +388,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   }
 
   const { popupWindow } = useGetOauthToken(setOauthToken)
+
+  const setMode = (mode: LoginMode) => {
+    setModeState(mode)
+    onChangeMode?.(mode)
+  }
 
   // derived state...
   const totpRequired = Boolean(error?.graphQLErrors.find(

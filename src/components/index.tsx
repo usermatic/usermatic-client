@@ -2,6 +2,7 @@
 export {
   LoginForm,
   LogoutButton,
+  LoginMode,
   AccountCreationForm,
 } from './login-components'
 
