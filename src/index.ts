@@ -1,6 +1,7 @@
 
 export {
   Usermatic,
+  UsermaticProps,
   useToken,
   useAppId,
   useAppConfig

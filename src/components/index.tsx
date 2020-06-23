@@ -1,9 +1,11 @@
 
 export {
   LoginForm,
+  LoginFormProps,
   LogoutButton,
   LoginMode,
   AccountCreationForm,
+  AccountCreationFormProps,
 } from './login-components'
 
 export {
@@ -34,6 +36,7 @@ export * from './logos'
 
 export {
   ComponentProvider,
+  ComponentContext,
   useComponents
 } from './component-lib'
 

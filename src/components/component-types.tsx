@@ -152,8 +152,14 @@ export type PostRecoveryCodeType = React.FC<{
   dontResetButton: ReactNode
 }>
 
+/**
+ * CreateAccountFormType controls the layout of the account creation form.
+ */
 export type CreateAccountFormType = React.FC<{
   formProps: FormProps,
+  /**
+   * The email input field.
+   */
   emailInput: ReactNode,
   passwordInput: ReactNode,
   stayLoggedInInput: ReactNode,

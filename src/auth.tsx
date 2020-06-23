@@ -97,6 +97,9 @@ export const UMApolloContext = createContext<ClientType | undefined>(undefined)
 
 export const AppIdContext = createContext<string | undefined>(undefined)
 
+/**
+ * Gets the current application ID (as passed to the <Usermatic> component).
+ */
 export const useAppId = (): string => {
   const ret = useContext(AppIdContext)
   if (typeof ret !== 'string') {
@@ -105,6 +108,31 @@ export const useAppId = (): string => {
   return ret
 }
 
+/**
+ * Returns the logged-in user's user id, as well as their signed
+ * authentication token.
+ *
+ * @example
+ *
+ * const { userJwt } = useToken()
+ *
+ * if (userJwt) {
+ *   // Send a query to our backend and include the logged in user's authToken
+ *   fetch('/api/hello', {
+ *     method: 'POST',
+ *     headers: {
+ *       'Content-Type': 'application/json',
+ *       'Accept': 'application/json',
+ *       'Authorization': userJwt
+ *     },
+ *     body: JSON.stringify({query: "{ hello }"})
+ *   }).then((result) => {
+ *     return result.json()
+ *   }).then((json) => {
+ *     setResponse(json)
+ *   })
+ * }
+ */
 export const useToken = (): AuthTokenData => {
   const { data, loading, error } = useAuthenticatedUser()
 
@@ -292,16 +320,46 @@ const UMApolloProvider: React.FC<{
   </UMApolloContext.Provider>
 }
 
-type UsermaticProps = {
+export type UsermaticProps = {
+  /**
+   * The React components within which Usermatic will be used.
+   * (Typically your entire application).
+   */
   children: ReactNode,
+  /**
+   * The URI of the Usermatic API endpoint. For development use only.
+   */
   uri?: string,
+  /**
+   * The ID of the Usermatic Application.
+   */
   appId: string,
+  /**
+   * If true, add bootstrap class names to Usermatic components. Use this
+   * if your application uses bootstrap. Defaults to true.
+   */
   useBootstrapClasses?: boolean,
+  /**
+   * If true, add class names begining with the `um-` prefix to Usermatic
+   * HTML elements, so that you can style Usermatic with your own CSS.
+   * Defaults to false.
+   */
   useUmClasses?: boolean,
+  /**
+   * If true, insert Usermatic diagnostics into your application. Defaults
+   * to false.
+   */
   showDiagnostics?: boolean,
+  /**
+   * Provide custom display components to use when rendering Usermatic
+   * components.
+   */
   components?: Components
 }
 
+/**
+ * Usermatic is the wrapper component for all Usermatic applications.
+ */
 export const Usermatic: React.FC<UsermaticProps> = ({
   children,
   uri,
@@ -331,7 +389,7 @@ export const Usermatic: React.FC<UsermaticProps> = ({
   </AppIdContext.Provider>
 )
 
-export const useAppConfig = () => {
+export const useAppConfig = (): AppConfig => {
   const appId = useAppId()
   const { loading, error, data } = useCsrfQuery(useGetAppConfigQuery, {
     variables: { appId }

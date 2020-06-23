@@ -45,13 +45,22 @@ const getId = (prefix: string | undefined, suffix: string) => {
 
 type UseOrChangeVariables = ChangePwMutationVariables & AddPasswordMutationVariables
 
+/**
+ * Props for ChangePasswordForm
+ */
 type ChangePasswordFormProps = {
+  /**
+   * Function to be called after password is successfully changed.
+   */
   onSuccess?: () => void,
   idPrefix?: string,
   labelsFirst?: boolean
   components?: Components
 }
 
+/**
+ * ChangePasswordForm allows the user to change their password
+ */
 export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
   onSuccess,
   idPrefix,
