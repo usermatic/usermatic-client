@@ -168,6 +168,18 @@ export type CreateAccountFormType = React.FC<{
   error: ReactNode
 }>
 
+export type LoginSuccessType = React.FC<{
+  /**
+   * The email of the newly-created user.
+   */
+  email: string,
+  /**
+   * The application name, as configured in the Usermatic
+   * dashboard.
+   */
+  appName: string
+}>
+
 export type AddTotpFormType = React.FC<{
   qrCode: ReactNode
   textCode: ReactNode
@@ -295,6 +307,11 @@ export type DefiniteComponents = {
   // AccountCreationForm components
   CreateAccountFormComponent: CreateAccountFormType
 
+  /**
+   * Component displayed after successful account creation
+   */
+  CreateAccountSuccessComponent: LoginSuccessType
+
   /////// LoginForm components. ///////////
   // LoginForm is a complex flow involving all possible means of authentication,
   // 2FA, password recovery, etc. Each piece of the flow has a separate layout
@@ -327,7 +344,15 @@ export type DefiniteComponents = {
   // Input for stayLoggedIn
   StayLoggedInInput: InputComponentType
 
-  // Layouts for changing passwords
+  /**
+   * Component displayed after successful login
+   */
+  LoginSuccessComponent: LoginSuccessType
+
+  /**
+   * Component for rendering the old/new password form used by
+   * <ChangePasswordForm>
+   */
   ChangePasswordFormComponent: ChangePasswordFormType
   // Layout for adding a password (e.g. to an Oauth account)
   AddPasswordFormComponent: AddPasswordFormType

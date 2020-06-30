@@ -3,6 +3,7 @@ import React, { ReactNode, useEffect, useState, MouseEvent } from 'react'
 import { Formik, FormikValues, FormikErrors } from 'formik'
 
 import { useToken, useAppConfig, useAppId } from '../auth'
+import { usePrimaryEmail } from '../user'
 import { useCsrfMutation } from '../hooks'
 import { ErrorMessage, ErrorMessageCase } from '../errors'
 import { useGetRecoveryCodeCount } from '../recoverycodes'
@@ -400,8 +401,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     EmailAddressInput,
     PasswordInput,
     StayLoggedInInput,
-    Button
+    Button,
+    LoginSuccessComponent
   } = useComponents(components)
+
+  const config = useAppConfig()
 
   // State
   const [mode, setModeState] = useState<LoginMode>('login')
@@ -414,6 +418,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
   // are we logged in?
   const { id, loading: tokenLoading } = useToken()
+  const { email } = usePrimaryEmail()
 
   // the login mutation
   const [submit, { loading, error, called, success, data }] = useLogin()
@@ -450,24 +455,31 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     }
   }, [oauthToken])
 
+  // We need to wait until the credential context is reporting that we are logged in,
+  // (in addition to waiting for useLogin() mutation to finish). Otherwise there's a window
+  // during which other components might think we aren't logged in, even though we are
+  // about to be.
+  const loginFinished = called && success && id && !tokenLoading &&
+        (!successViaRecoveryCode || successViaRecoveryCodeDismissed)
+
   useEffect(() => {
-    // We need to wait until the credential context is reporting that we are logged in,
-    // (in addition to waiting for useLogin() mutation to finish). Otherwise there's a window
-    // during which other components might think we aren't logged in, even though we are
-    // about to be.
-    if (called && success && id && !tokenLoading && onLogin &&
-        (!successViaRecoveryCode || successViaRecoveryCodeDismissed)) {
+    if (loginFinished && onLogin) {
       onLogin()
     }
-  }, [called, success, id, tokenLoading, onLogin,
-      successViaRecoveryCode, successViaRecoveryCodeDismissed])
-
+  }, [loginFinished, onLogin])
 
   useEffect(() => {
     if (mode !== 'totp' && totpRequired) {
       setMode('totp')
     }
   }, [totpRequired, mode])
+
+  if (loginFinished) {
+    return <LoginSuccessComponent
+      email={email ?? ''}
+      appName={config.appName}
+    />
+  }
 
   if (successViaRecoveryCode) {
     const dismiss = () => {
@@ -656,6 +668,7 @@ export const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
 
   const {
     CreateAccountFormComponent,
+    CreateAccountSuccessComponent,
     EmailAddressInput,
     PasswordInput,
     StayLoggedInInput,
@@ -666,12 +679,15 @@ export const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
 
   const { id } = useToken()
   const [submit, { error, success }] = useCreateAccount()
+  const config = useAppConfig()
+
+  const accountCreated = success && id
 
   useEffect(() => {
-    if (success && id && onLogin) {
+    if (accountCreated && onLogin) {
       onLogin()
     }
-  })
+  }, [accountCreated, onLogin])
 
   const onSubmit = (variables: CreateAccountMutationVariables) => {
     submit(variables)
@@ -692,6 +708,13 @@ export const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
         onSubmit: handleSubmit,
         onReset: handleReset,
         autoComplete: 'off'
+      }
+
+      if (accountCreated) {
+        return <CreateAccountSuccessComponent
+          email={props.values.email}
+          appName={config.appName}
+        />
       }
 
       return <CreateAccountFormComponent

@@ -39,6 +39,7 @@ import {
   ChangePasswordFormType,
   PasswordFormType,
   CreateAccountFormType,
+  LoginSuccessType,
   AddTotpFormType,
   ForgotPasswordFormType,
   PasswordScoreType,
@@ -221,6 +222,16 @@ const DefaultCheckboxComponent: InputComponentType = ({
   </div>
 }
 DefaultCheckboxComponent.displayName = 'DefaultCheckboxComponent'
+
+const DefaultLoginSuccessComponent: LoginSuccessType = ({
+  email,
+  appName
+}) => {
+  const classes = useClassnames('lead', 'um-login-success')
+  return <div className={classes}>
+    You are succesfully logged in to {appName} as {email}
+  </div>
+}
 
 const DefaultCodeInput: InputComponentType = (props) => {
   const className = useClassnames("form-control", 'um-code-input')
@@ -511,6 +522,16 @@ const DefaultCreateAccountForm: CreateAccountFormType = ({
   </form>
   {error}
 </>
+
+const DefaultCreateAccountSuccessComponent: LoginSuccessType = ({
+  email,
+  appName
+}) => {
+  const classes = useClassnames('lead', 'um-create-account-success')
+  return <div className={classes}>
+    Welcome to {appName}, {email}
+  </div>
+}
 
 const DefaultAddTotpFormComponent: AddTotpFormType = ({
   qrCode,
@@ -1023,6 +1044,7 @@ export const useComponents = (propComponents: Components = {}): DefiniteComponen
     const ModalComponent = merged.ModalComponent ?? DefaultModalComponent
     const Button = merged.Button ?? DefaultButton
     const CreateAccountFormComponent = merged.CreateAccountFormComponent ?? DefaultCreateAccountForm
+    const CreateAccountSuccessComponent = merged.CreateAccountSuccessComponent ?? DefaultCreateAccountSuccessComponent
     const PasswordFormComponent = merged.PasswordFormComponent ?? DefaultPasswordForm
     const MFAFormComponent = merged.MFAFormComponent ?? DefaultMFAForm
     const ForgotPasswordFormComponent = merged.ForgotPasswordFormComponent ??
@@ -1079,6 +1101,7 @@ export const useComponents = (propComponents: Components = {}): DefiniteComponen
       Button,
       ModalComponent,
       CreateAccountFormComponent,
+      CreateAccountSuccessComponent,
       PasswordFormComponent,
       MFAFormComponent,
       ForgotPasswordFormComponent,
@@ -1096,6 +1119,7 @@ export const useComponents = (propComponents: Components = {}): DefiniteComponen
       EmailAddressInput: merged.EmailAddressInput ?? InputComponent,
       PasswordInput: merged.PasswordInput ?? InputComponent,
       StayLoggedInInput: merged.StayLoggedInInput ?? CheckboxComponent,
+      LoginSuccessComponent: merged.LoginSuccessComponent ?? DefaultLoginSuccessComponent,
 
       SocialButtonsComponent,
       GithubButton,

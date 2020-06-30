@@ -17,6 +17,7 @@ export const USER_FRAGMENT = gql`
 export const APP_CONFIG_FRAGMENT = gql`
   fragment AppConfigParts on AppConfig {
     __typename
+    appName
     minPasswordStrength
     totpEnabled
     fbLoginEnabled

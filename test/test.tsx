@@ -309,6 +309,7 @@ test('<LoginForm> login', async () => {
 
   await act(async () => { jest.runAllTimers() })
   wrapper.update()
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 
   setInput(wrapper, 'email', 'input#test-login-email', email)
   setInput(wrapper, 'password', 'input#test-login-password', password)

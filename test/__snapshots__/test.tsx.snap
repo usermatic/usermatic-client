@@ -1345,19 +1345,7 @@ exports[`<LoginForm> login 1`] = `
 >
   <Component
     idPrefix="test"
-    onLogin={
-      [MockFunction onLogin] {
-        "calls": Array [
-          Array [],
-        ],
-        "results": Array [
-          Object {
-            "type": "return",
-            "value": undefined,
-          },
-        ],
-      }
-    }
+    onLogin={[MockFunction onLogin]}
   >
     <SocialButtons
       popupWindow={
@@ -1390,7 +1378,7 @@ exports[`<LoginForm> login 1`] = `
             placeholder="Email address"
             required={true}
             type="email"
-            value="bob@bob.com"
+            value=""
           />
         }
         error={<ErrorMessage />}
@@ -1421,7 +1409,7 @@ exports[`<LoginForm> login 1`] = `
             placeholder="Password"
             required={true}
             type="password"
-            value="hunter2"
+            value=""
           />
         }
         signinButton={
@@ -1442,6 +1430,7 @@ exports[`<LoginForm> login 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             type="checkbox"
+            value={false}
           />
         }
       >
@@ -1459,7 +1448,7 @@ exports[`<LoginForm> login 1`] = `
             placeholder="Email address"
             required={true}
             type="email"
-            value="bob@bob.com"
+            value=""
           >
             <div
               className="form-group um-form-group"
@@ -1479,7 +1468,7 @@ exports[`<LoginForm> login 1`] = `
                 placeholder="Email address"
                 required={true}
                 type="email"
-                value="bob@bob.com"
+                value=""
               />
             </div>
           </DefaultInputComponent>
@@ -1492,7 +1481,7 @@ exports[`<LoginForm> login 1`] = `
             placeholder="Password"
             required={true}
             type="password"
-            value="hunter2"
+            value=""
           >
             <div
               className="form-group um-form-group"
@@ -1511,7 +1500,7 @@ exports[`<LoginForm> login 1`] = `
                 placeholder="Password"
                 required={true}
                 type="password"
-                value="hunter2"
+                value=""
               />
             </div>
           </DefaultInputComponent>
@@ -1522,6 +1511,7 @@ exports[`<LoginForm> login 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             type="checkbox"
+            value={false}
           >
             <div
               className="custom-control custom-checkbox um-checkbox-container"
@@ -1533,6 +1523,7 @@ exports[`<LoginForm> login 1`] = `
                 onBlur={[Function]}
                 onChange={[Function]}
                 type="checkbox"
+                value={false}
               />
               <label
                 className="custom-control-label um-checkbox-label"
@@ -1580,6 +1571,43 @@ exports[`<LoginForm> login 1`] = `
         </form>
       </DefaultPasswordForm>
     </Formik>
+  </Component>
+</div>
+`;
+
+exports[`<LoginForm> login 2`] = `
+<div
+  id="client-test-div"
+>
+  <Component
+    idPrefix="test"
+    onLogin={
+      [MockFunction onLogin] {
+        "calls": Array [
+          Array [],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      }
+    }
+  >
+    <DefaultLoginSuccessComponent
+      appName="Hello World"
+      email="bob@bob.com"
+    >
+      <div
+        className="lead um-login-success"
+      >
+        You are succesfully logged in to 
+        Hello World
+         as 
+        bob@bob.com
+      </div>
+    </DefaultLoginSuccessComponent>
   </Component>
 </div>
 `;
@@ -4055,6 +4083,7 @@ exports[`UserAccountSettings 1`] = `
           "ChangePasswordFormComponent": [Function],
           "CheckboxComponent": [Function],
           "CreateAccountFormComponent": [Function],
+          "CreateAccountSuccessComponent": [Function],
           "EmailAddressInput": [Function],
           "EmailStatusComponent": [Function],
           "EmailVerificationComponent": [Function],
@@ -4067,6 +4096,7 @@ exports[`UserAccountSettings 1`] = `
           "InputComponent": [Function],
           "LoadingMessageComponent": [Function],
           "LoginMethodsComponent": [Function],
+          "LoginSuccessComponent": [Function],
           "MFAFormComponent": [Function],
           "ModalComponent": [Function],
           "PasswordFormComponent": [Function],
