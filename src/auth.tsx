@@ -303,7 +303,10 @@ const UMApolloProvider: React.FC<{
   children: ReactNode
 }> = ({uri: uriArg, appId, children}) => {
 
-  const uri = uriArg ?? 'https://api.usermatic.io/graphql'
+  let uri = uriArg ?? 'https://api.usermatic.io/graphql'
+  if (appId === demoAppId) {
+    uri = uri.replace(/graphql$/, 'graphql-demo')
+  }
 
   const apolloVal = useContext(getApolloContext())
 
@@ -319,6 +322,8 @@ const UMApolloProvider: React.FC<{
     {children}
   </UMApolloContext.Provider>
 }
+
+export const demoAppId = 'ffffffff-ffff-ffff-ffff-ffffffffffff'
 
 export type UsermaticProps = {
   /**

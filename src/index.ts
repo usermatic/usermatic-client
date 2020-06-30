@@ -4,7 +4,8 @@ export {
   UsermaticProps,
   useToken,
   useAppId,
-  useAppConfig
+  useAppConfig,
+  demoAppId
 } from './auth'
 
 export {
