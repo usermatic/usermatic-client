@@ -426,8 +426,7 @@ test('<ChangePasswordForm> with password', async () => {
   const wrapper = mount(
     <TestWrapper mocks={mocks}>
       <div id="client-test-div">
-        <components.ChangePasswordForm idPrefix="test" labelsFirst={false}
-                                   onSuccess={onSuccess} />
+        <components.ChangePasswordForm idPrefix="test" onSuccess={onSuccess} />
       </div>
     </TestWrapper>
   )
@@ -469,8 +468,7 @@ test('<ChangePasswordForm> without password', async () => {
   const wrapper = mount(
     <TestWrapper mocks={mocks}>
       <div id="client-test-div">
-        <components.ChangePasswordForm idPrefix="test" labelsFirst={false}
-                                   onSuccess={onSuccess} />
+        <components.ChangePasswordForm idPrefix="test" onSuccess={onSuccess} />
       </div>
     </TestWrapper>
   )

@@ -9,15 +9,18 @@ export {
 } from './login-components'
 
 export {
-  QRCode,
   AddTotpForm
 } from './totp-components'
 
 export {
   RequestPasswordResetForm,
+  RequestPasswordResetFormProps,
   ResetPasswordForm,
+  ResetPasswordFormProps,
   ChangePasswordForm,
-  PasswordScore
+  ChangePasswordFormProps,
+  PasswordScore,
+  PasswordScoreProps,
 } from './password-components'
 
 export {
@@ -25,7 +28,8 @@ export {
 } from './verifyemail-components'
 
 export {
-  ReauthenticateGuard
+  ReauthenticateGuard,
+  ReauthenticateGuardProps
 } from './reauth-components'
 
 export {

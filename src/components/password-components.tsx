@@ -45,21 +45,25 @@ const getId = (prefix: string | undefined, suffix: string) => {
 
 type UseOrChangeVariables = ChangePwMutationVariables & AddPasswordMutationVariables
 
-/**
- * Props for ChangePasswordForm
- */
-type ChangePasswordFormProps = {
+export type ChangePasswordFormProps = {
   /**
    * Function to be called after password is successfully changed.
    */
   onSuccess?: () => void,
   idPrefix?: string,
-  labelsFirst?: boolean
+  /**
+   * Display components for ChangePasswordForm. See 'Customizing Usermatic' for
+   * more information.
+   */
   components?: Components
 }
 
 /**
- * ChangePasswordForm allows the user to change their password
+ * ChangePasswordForm allows the user to change their password.
+ *
+ * @preview
+ *
+ * <ChangePasswordForm/>
  */
 export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
   onSuccess,
@@ -192,19 +196,50 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
   </Formik>
 }
 
-type ResetPasswordFormProps = {
+export type ResetPasswordFormProps = {
   token: string
+  /**
+   * Called after the user is successfully logged in (which will only happen
+   * if the `loginAfterReset` property is true.)
+   */
   onLogin?: () => void
   idPrefix?: string
-  labelsFirst?: boolean
-  // The default value of loginAfterReset checkbox
+  /**
+   * If true, the user will be automatically logged in after resetting their
+   * password. Note: This will not work if the user has enabled MFA on their
+   * account. In that case, they will have to log in via <LoginForm>
+   */
   loginAfterReset?: boolean
-  // whether to expose the loginAfterReset checkbox
+  /**
+   * If true, render the "login after reset" option. If the user checks this
+   * box, it has the same effect as if the `loginAfterReset` property had been
+   * set to true.
+   */
   exposeLoginAfterReset?: boolean
+  /**
+   * If true, the user will be automatically redirected to the URI that has
+   * been configured the Usermatic application settings after resetting
+   * their password.
+   */
   redirectAfterReset?: boolean
+
+  /**
+   * Display components for ResetPasswordForm. See 'Customizing Usermatic' for
+   * more information.
+   */
   components?: Components
 }
 
+/**
+ * <ResetPasswordForm> allows the user to reset their password using a reset
+ * token that they have obtained via email. This component should be placed
+ * at the location pointed to by the Reset Password URI setting in your
+ * Usermatic application settings.
+ *
+ * @preview
+ *
+ * <ResetPasswordForm/>
+ */
 export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   token,
   onLogin,
@@ -356,12 +391,28 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   </Formik>
 }
 
-type RequestPasswordResetFormProps = {
+export type RequestPasswordResetFormProps = {
   idPrefix?: string,
+  /**
+   * Called when the user clicks the cancel button instead of submitting their
+   * email.
+   */
   onCancel?: () => void,
+  /**
+   * Custom display components. See 'Customizing Usermatic' for more information.
+   */
   components?: Components
 }
 
+/**
+ * <RequestPasswordResetForm/> allows the user to request a password reset email.
+ * Normally, you do not need to embed this component directly, as <LoginForm>
+ * will display it when the user clicks "Forgot Password"
+ *
+ * @preview
+ *
+ * <RequestPasswordResetForm/>
+ */
 export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> = ({
   idPrefix,
   onCancel,
@@ -450,12 +501,38 @@ export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> =
 
 type PwScoreRecord = ZXCVBNResult
 
-type PasswordScoreProps = {
+export type PasswordScoreProps = {
+  /**
+   * The user's prospective password.
+   */
   password?: string,
+  /**
+   * The user's email address.
+   */
   username?: string,
+  /**
+   * Custom display components. See 'Customizing Usermatic' for more information.
+   */
   components?: Components
 }
 
+/**
+ * <PasswordScore> estimates the strength of the user's password using zxcvbn
+ * (https://github.com/dropbox/zxcvbn) and displays it using the
+ * customizable <PasswordScoreComponent>
+ *
+ * You generally shouldn't use this form directly. All the relevant form
+ * components (e.g. <AccountCreationForm>, <ChangePasswordForm>, etc) use it
+ * automatically.
+ *
+ * Furthermore, if you do want to use it directly, you should consider using
+ * <DebouncedPasswordScore> for better performance.
+ *
+ * @preview
+ *
+ * <PasswordScore password="hunter2" username="joe@um"/>
+ *
+ */
 export const PasswordScore: React.FC<PasswordScoreProps> = ({
   password, username, components
 }) => {
@@ -506,8 +583,18 @@ export const PasswordScore: React.FC<PasswordScoreProps> = ({
   />
 }
 
-export const DebouncedPasswordScore: React.FC<PasswordScoreProps> = ({password, username}) => {
-  const debouncedPw = useDebounce(password, 300)
+/**
+ * <DebouncedPasswordScore> is exactly like <PasswordScore>, but it
+ * debounces the password input for better performance.
+ *
+ * @preview
+ *
+ * <DebouncedPasswordScore password="hunter2" username="joe@um"/>
+ */
+export const DebouncedPasswordScore: React.FC<PasswordScoreProps & {
+  debounceMs?: number
+}> = ({password, username, debounceMs = 300}) => {
+  const debouncedPw = useDebounce(password, debounceMs)
   return <PasswordScore password={debouncedPw} username={username} />
 }
 DebouncedPasswordScore.displayName = 'DebouncedPasswordScore'

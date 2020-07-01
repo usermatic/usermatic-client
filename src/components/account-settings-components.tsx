@@ -272,7 +272,29 @@ const SecurityInfo: React.FC<{}> = () => {
   />
 }
 
+/**
+ * <UserAccountSettings> is essentially an auto-generated profile page
+ * for your users. Simply include it on some page (perhaps /profile),
+ * and your users will automatically have access to basic functionality
+ * such as password changes, MFA configuration, etc.
+ *
+ * To customize the appearance of <UserAccountSettings>, you can provide
+ * overrides for the following components: UserAccountSettingsComponent,
+ * SecurityInfoComponent, EmailStatusComponent, PersonalDetailComponent,
+ * LoginMethodsComponent.
+ *
+ * See 'Customizing Usermatic' for more information.
+ *
+ * @preview
+ *
+ * <UserAccountSettings/>
+ */
 export const UserAccountSettings: React.FC<{
+  /**
+   * Custom display components for <UserAccountSettings>. See
+   *
+   * 'Customizing Usermatic' for more information.
+   */
   components?: Components
 }> = ({
   components: propComponents

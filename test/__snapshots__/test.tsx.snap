@@ -162,7 +162,6 @@ exports[`<ChangePasswordForm> with password 1`] = `
 >
   <Component
     idPrefix="test"
-    labelsFirst={false}
     onSuccess={
       [MockFunction] {
         "calls": Array [
@@ -349,7 +348,6 @@ exports[`<ChangePasswordForm> without password 1`] = `
 >
   <Component
     idPrefix="test"
-    labelsFirst={false}
     onSuccess={
       [MockFunction] {
         "calls": Array [

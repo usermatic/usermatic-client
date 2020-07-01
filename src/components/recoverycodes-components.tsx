@@ -70,9 +70,33 @@ const GenRecoveryCodesFormInner: React.FC<{
   return null
 }
 
+/**
+ * <GenRecoveryCodesForm> allows the user to generate or re-generate
+ * MFA recovery codes.
+ *
+ * <GenRecoveryCodesForm> is automatically guarded by <ReauthenticateGuard> which
+ * will prompt the user for their password, as generating new recovery codes is
+ * considered a sensitive action.
+ *
+ * @preview
+ *
+ * <GenRecoveryCodesForm>
+ */
 export const GenRecoveryCodesForm: React.FC<{
+  /**
+   * Called after codes have been successfully generated.
+   */
   onSuccess?: () => void,
+  /**
+   * Display components for <GenRecoveryCodesForm>. See 'Customizing Usermatic' for
+   * more information.
+   */
   components?: Components,
+  /**
+   * Called when the user attempts to close or cancel the recovery code generation
+   * process. Use this if you are using this component in a modal or other
+   * conditionally-rendered context.
+   */
   onClose?: () => void
 }> = ({
   onSuccess = () => {},

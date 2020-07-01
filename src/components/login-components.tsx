@@ -370,24 +370,9 @@ const PostRecoveryCode: React.FC<{
  * password and Oauth logins. Oauth login buttons are automatically displayed
  * for any Oauth provider that you have enabled for your Usermatic app.
  *
- * @preview-noinline
+ * @preview
  *
- * // To preview LoginForm, use any email address, plus one of
- * // the following passwords:
- * //  'pass': for immediate success
- * //  'fail': for immediate failure
- * //  'mfa': to be prompted for an MFA step
- * //
- * // When entering a TOTP code or recovery code, any code
- * // starting with 9 will result in failure. Any other code
- * // will result in success.
- *
- * const Login = () => (
- *   <div>
- *     <LoginForm onLogin={() => { setLoggedIn(true) }}/>
- *   </div>
- * )
- * render(<Login/>)
+ * <LoginForm/>
  */
 export const LoginForm: React.FC<LoginFormProps> = ({
   onLogin,

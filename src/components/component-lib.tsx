@@ -853,7 +853,7 @@ const DefaultPersonalDetailComponent: PersonalDetailType = ({
     <dl>
       <ProfileLine>
         <>Name</>
-        <>{name.given}</>
+        <>{name.full}</>
       </ProfileLine>
       <ProfileLine>
         <>Email</>
@@ -1023,6 +1023,13 @@ export const ComponentContext = createContext<{
   modalAppElement?: HTMLElement
 }>({ useBootstrap: true, useUmClasses: false, components: {} })
 
+/**
+ * Get a map of all the currently-active display components.
+ *
+ * Generally, user code will not need to use this hook. It is used internally by
+ * Usermatic components to obtain the correct display components for use in a given
+ * context.
+ */
 export const useComponents = (propComponents: Components = {}): DefiniteComponents => {
   const { components: contextComponents } = useContext(ComponentContext)
 
@@ -1140,10 +1147,67 @@ export const useComponents = (propComponents: Components = {}): DefiniteComponen
   return mergedComponents
 }
 
+/**
+ * <ComponentProvider> allows you to override the default display components used
+ * by Usermatic. For instance if you wish to use a custom text input component
+ * in all Usermatic forms, you can use <ComponentProvider> to do so.
+ *
+ * NB: As a convenience, the <Usermatic> component also accepts all the properties
+ * of <ComponentProvider>. If you wish to use the same custom components everywhere
+ * in your app, you can simply pass them to <Usermatic>
+ *
+ * <ComponentProvider> also allows you to enable or disable the use of bootstrap
+ * classes or usermatic classes (semantic class names beginning
+ * with `um-`) in default components. If you are using customized components,
+ * these settings have no effect.
+ *
+ * See 'Customizing Usermatic' for more information.
+ *
+ * @preview-noinline
+ * const InputComponent = ({
+ *   labelText,
+ *   ...props
+ * }) => {
+ *   return <div style={{
+ *     backgroundColor: 'rgb(228, 27, 27, 0.5)'
+ *   }}>
+ *     { labelText &&
+ *       <label htmlFor={props.id}>
+ *         {labelText}
+ *       </label>
+ *     }
+ *     <input {...props} autoFocus={false} />
+ *   </div>
+ * }
+ *
+ * const components = { InputComponent }
+ *
+ * render(
+ *   <ComponentProvider components={components}>
+ *     <LoginForm/>
+ *   </ComponentProvider>
+ * )
+ */
 export const ComponentProvider: React.FC<{
+  /**
+   * Custom components to be used by all descendents of <ComponentProvider>.
+   * See 'Customizing Usermatic' for more information.
+   */
   components?: Components,
+  /**
+   * If true, add bootstrap classes to default components. Has no effect on custom
+   * components.
+   */
   bootstrapClasses?: boolean,
+  /**
+   * If true, add usermatic class names (semantic class names beginning with `um-`)
+   * to default components. Has no effect on custom components.
+   */
   usermaticClasses?: boolean,
+  /**
+   * The tree of components in which you want the overrides specified by <ComponentProvider>
+   * to have effect.
+   */
   children: ReactNode
 }> = ({
   components: propComponents,

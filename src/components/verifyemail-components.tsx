@@ -10,6 +10,14 @@ import {
   useEmailVerifier
 } from '../verifyemail'
 
+/**
+ * <EmailVerifier> uses a email verification token from the URL to
+ * tell the Usermatic API server that the user's email address is now
+ * verified.
+ *
+ * This component should be placed on the page located at the
+ * "Verification Target URI" setting in your Usermatic application settings.
+ */
 export const EmailVerifier: React.FC<{
   token: string,
   components?: Components

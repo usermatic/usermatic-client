@@ -484,8 +484,17 @@ export type RecoveryCodeRegenerationPromptType = React.FC<{
  *
  */
 export type UserAccountSettingsType = React.FC<{
+  /**
+   * The personal details section, as rendered by <PersonalDetailComponent>
+   */
   personalDetails: ReactNode,
+  /**
+   * The login methods section, as rendered by <LoginMethodsComponent>
+   */
   loginMethods: ReactNode,
+  /**
+   * The account security section, as rendered by <SecurityInfoComponent>
+   */
   accountSecurity: ReactNode,
 }>
 
@@ -498,6 +507,11 @@ export type EmailVerificationType = React.FC<{
    * The error message, if any, as rendered via <ErrorMessageComponent>.
    */
   error: ReactNode,
+  /**
+   * The URI that the user will be redirected to now that verification is
+   * complete. It is passed here so that it can be displayed, e.g. "If you
+   * are not redirected, click here"
+   */
   redirectUri?: string
 }>
 

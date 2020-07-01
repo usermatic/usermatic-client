@@ -217,6 +217,14 @@ export const MFAForm: React.FC<{
 }
 MFAForm.displayName = 'MFAForm'
 
+/**
+ * <AddTotpForm> allows the user to configure time-based one time passwords
+ * (e.g. Google Authenticator) for their account.
+ *
+ * @preview
+ *
+ * <AddTotpForm/>
+ */
 export const AddTotpForm: React.FC<{
   idPrefix?: string,
   onSuccess?: () => void,
