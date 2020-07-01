@@ -516,8 +516,8 @@ const DefaultCreateAccountForm: CreateAccountFormType = ({
   <form {...formProps}>
     {emailInput}
     {passwordInput}
-    {stayLoggedInInput}
     {passwordScore}
+    {stayLoggedInInput}
     {createAccountButton}
   </form>
   {error}

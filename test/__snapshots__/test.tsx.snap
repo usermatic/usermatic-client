@@ -2011,6 +2011,15 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
                 />
               </div>
             </DefaultInputComponent>
+            <DebouncedPasswordScore
+              password=""
+              username=""
+            >
+              <Component
+                password=""
+                username=""
+              />
+            </DebouncedPasswordScore>
             <DefaultCheckboxComponent
               id="um3kfiekd-account-creation-stay-logged-in"
               labelText="Remember me"
@@ -2040,15 +2049,6 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
                 </label>
               </div>
             </DefaultCheckboxComponent>
-            <DebouncedPasswordScore
-              password=""
-              username=""
-            >
-              <Component
-                password=""
-                username=""
-              />
-            </DebouncedPasswordScore>
             <DefaultButton
               id="create-account-button"
               name="create-account"
@@ -2390,6 +2390,15 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                 />
               </div>
             </DefaultInputComponent>
+            <DebouncedPasswordScore
+              password=""
+              username=""
+            >
+              <Component
+                password=""
+                username=""
+              />
+            </DebouncedPasswordScore>
             <DefaultCheckboxComponent
               id="um3kfiekd-account-creation-stay-logged-in"
               labelText="Remember me"
@@ -2419,15 +2428,6 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                 </label>
               </div>
             </DefaultCheckboxComponent>
-            <DebouncedPasswordScore
-              password=""
-              username=""
-            >
-              <Component
-                password=""
-                username=""
-              />
-            </DebouncedPasswordScore>
             <DefaultButton
               id="create-account-button"
               name="create-account"
@@ -3494,6 +3494,15 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                 />
               </div>
             </DefaultInputComponent>
+            <DebouncedPasswordScore
+              password=""
+              username=""
+            >
+              <Component
+                password=""
+                username=""
+              />
+            </DebouncedPasswordScore>
             <DefaultCheckboxComponent
               id="um3kfiekd-account-creation-stay-logged-in"
               labelText="Remember me"
@@ -3523,15 +3532,6 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                 </label>
               </div>
             </DefaultCheckboxComponent>
-            <DebouncedPasswordScore
-              password=""
-              username=""
-            >
-              <Component
-                password=""
-                username=""
-              />
-            </DebouncedPasswordScore>
             <DefaultButton
               id="create-account-button"
               name="create-account"
