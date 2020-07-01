@@ -1,5 +1,5 @@
 
-import url  from 'url'
+import url from 'url'
 import React, {
   ReactNode,
   createContext,
@@ -378,31 +378,45 @@ export const Usermatic: React.FC<UsermaticProps> = ({
   <AppIdContext.Provider value={appId}>
     <UMApolloProvider uri={uri} appId={appId}>
       <CsrfTokenProvider appId={appId} showDiagnostics={showDiagnostics}>
-        <AuthenticatedUserProvider>
-          <ReauthCacheProvider>
-            <HttpWarning />
-            <ComponentProvider
-              components={components}
-              bootstrapClasses={useBootstrapClasses}
-              usermaticClasses={useUmClasses}
-            >
-              {children}
-            </ComponentProvider>
-          </ReauthCacheProvider>
-        </AuthenticatedUserProvider>
+        <AppConfigProvider>
+          <AuthenticatedUserProvider>
+            <ReauthCacheProvider>
+              <HttpWarning />
+              <ComponentProvider
+                components={components}
+                bootstrapClasses={useBootstrapClasses}
+                usermaticClasses={useUmClasses}
+              >
+                {children}
+              </ComponentProvider>
+            </ReauthCacheProvider>
+          </AuthenticatedUserProvider>
+        </AppConfigProvider>
       </CsrfTokenProvider>
     </UMApolloProvider>
   </AppIdContext.Provider>
 )
 
-export const useAppConfig = (): AppConfig => {
+export const AppConfigContext = React.createContext<AppConfig>(defaultAppConfig)
+
+const AppConfigProvider: React.FC<{children: ReactNode}> = ({children}) => {
+
   const appId = useAppId()
+  const { csrfToken } = useCsrfToken()
   const { loading, error, data } = useCsrfQuery(useGetAppConfigQuery, {
+    skip: !csrfToken,
     variables: { appId }
   })
-  if (loading || error || !data) {
-    return defaultAppConfig
-  } else {
-    return data.getAppConfig
-  }
+
+  const value = (loading || error || !data)
+    ? defaultAppConfig
+    : data.getAppConfig
+
+  return <AppConfigContext.Provider value={value}>
+    {children}
+  </AppConfigContext.Provider>
+}
+
+export const useAppConfig = (): AppConfig => {
+  return useContext(AppConfigContext)
 }

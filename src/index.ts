@@ -5,6 +5,7 @@ export {
   useToken,
   useAppId,
   useAppConfig,
+  AppConfigContext,
   demoAppId
 } from './auth'
 
