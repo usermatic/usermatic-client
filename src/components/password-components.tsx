@@ -269,14 +269,14 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   const exposeLoginAfterReset = allowLoginAfterResetArg
   const redirectAfterReset = redirectAfterResetArg
 
-  const [token, setToken] = useState<string | undefined>()
+  const [token, setToken] = useState<string | undefined>(tokenProp)
 
   const [submit, { error, success, data }] = useResetPassword()
 
   const isBrowser = typeof window !== 'undefined'
 
   useEffect(() => {
-    if (!isBrowser) {
+    if (!isBrowser || tokenProp) {
       return
     }
 
@@ -290,7 +290,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
 
   const email = useMemo(() => {
     if (!token) {
-      console.error("No verification token found in url or in EmailVerifier props")
+      console.error("No verification token found in url or in ResetPasswordForm props")
       return
     }
 

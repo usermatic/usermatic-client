@@ -818,10 +818,12 @@ test('UserAccountSettings', async () => {
 })
 
 test('ComponentProvider', async () => {
+  jest.useFakeTimers()
 
   const mocks = extendMocks({
     AppConfig: () => configNoOauth,
     Query: () => ({
+      User: userWithPasswordAndOauth,
       getAuthenticatedUser: () => null
     })
   })
