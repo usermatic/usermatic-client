@@ -8,7 +8,7 @@ import { useCsrfMutation } from '../hooks'
 import { ErrorMessage, ErrorMessageCase } from '../errors'
 import { useGetRecoveryCodeCount } from '../recoverycodes'
 import { ReauthContext } from '../reauth'
-import { DebouncedPasswordScore, RequestPasswordResetForm } from './password-components'
+import { PasswordScore, RequestPasswordResetForm } from './password-components'
 import { MFAForm } from './totp-components'
 import { useReauthToken } from '../reauth'
 import { useComponents } from './component-lib'
@@ -736,7 +736,7 @@ export const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
 
         passwordScore={
           showPasswordScore &&
-          <DebouncedPasswordScore
+          <PasswordScore
             password={props.values.password}
             username={props.values.email}
           />

@@ -147,7 +147,7 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
          {...props.getFieldProps('newPassword')}
       />
 
-      const passwordScore = <DebouncedPasswordScore
+      const passwordScore = <PasswordScore
         password={props.values.newPassword}
         username={email}
       />
@@ -357,7 +357,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
         }
 
         passwordScore={
-          <DebouncedPasswordScore
+          <PasswordScore
             password={props.values.newPassword}
             username={email}
           />
@@ -514,26 +514,13 @@ export type PasswordScoreProps = {
    * Custom display components. See 'Customizing Usermatic' for more information.
    */
   components?: Components
+  /**
+   * Debounce time in ms for both the password and username. Defaults to 300ms.
+   */
+  debounceMs?: number
 }
 
-/**
- * <PasswordScore> estimates the strength of the user's password using zxcvbn
- * (https://github.com/dropbox/zxcvbn) and displays it using the
- * customizable <PasswordScoreComponent>
- *
- * You generally shouldn't use this form directly. All the relevant form
- * components (e.g. <AccountCreationForm>, <ChangePasswordForm>, etc) use it
- * automatically.
- *
- * Furthermore, if you do want to use it directly, you should consider using
- * <DebouncedPasswordScore> for better performance.
- *
- * @preview
- *
- * <PasswordScore password="hunter2" username="joe@um"/>
- *
- */
-export const PasswordScore: React.FC<PasswordScoreProps> = ({
+export const PasswordScoreInner: React.FC<PasswordScoreProps> = ({
   password, username, components
 }) => {
 
@@ -584,17 +571,28 @@ export const PasswordScore: React.FC<PasswordScoreProps> = ({
 }
 
 /**
- * <DebouncedPasswordScore> is exactly like <PasswordScore>, but it
- * debounces the password input for better performance.
+ * <PasswordScore> estimates the strength of the user's password using zxcvbn
+ * (https://github.com/dropbox/zxcvbn) and displays it using the
+ * customizable <PasswordScoreComponent>
+ *
+ * You generally shouldn't use this compoment directly. All the relevant
+ * components (e.g. <AccountCreationForm>, <ChangePasswordForm>, etc) use it
+ * automatically.
+ *
+ * Both the username and password properties are debounced at a default interval
+ * of 300ms.
  *
  * @preview
  *
- * <DebouncedPasswordScore password="hunter2" username="joe@um"/>
+ * <PasswordScore password="hunter2" username="joe@um"/>
  */
-export const DebouncedPasswordScore: React.FC<PasswordScoreProps & {
-  debounceMs?: number
-}> = ({password, username, debounceMs = 300}) => {
+export const PasswordScore: React.FC<PasswordScoreProps> = ({
+  password,
+  username,
+  debounceMs = 300
+}) => {
   const debouncedPw = useDebounce(password, debounceMs)
-  return <PasswordScore password={debouncedPw} username={username} />
+  const debouncedUsername = useDebounce(username, debounceMs)
+  return <PasswordScoreInner password={debouncedPw} username={debouncedUsername} />
 }
-DebouncedPasswordScore.displayName = 'DebouncedPasswordScore'
+PasswordScore.displayName = 'PasswordScore'
