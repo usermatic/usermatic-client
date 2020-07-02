@@ -45,6 +45,15 @@ const getId = (prefix: string | undefined, suffix: string) => {
   }
 }
 
+// Ensure that we only call zxcvbnAsync.load() once.
+let loadingPromise: Promise<any> | undefined = undefined
+const loadZxcvbn = async () => {
+  if (loadingPromise == null) {
+    loadingPromise = zxcvbnAsync.load({})
+  }
+  return loadingPromise
+}
+
 type UseOrChangeVariables = ChangePwMutationVariables & AddPasswordMutationVariables
 
 export type ChangePasswordFormProps = {
@@ -575,7 +584,7 @@ export const PasswordScoreInner: React.FC<PasswordScoreProps> = ({
     let mounted = true
 
     const scorePassword = async () => {
-      const loaded = await zxcvbnAsync.load({})
+      const loaded = await loadZxcvbn()
       if (!mounted) { return }
       const dict = ['usermatic']
       if (username) {
@@ -587,7 +596,7 @@ export const PasswordScoreInner: React.FC<PasswordScoreProps> = ({
     scorePassword()
 
     return () => { mounted = false }
-  }, [password, username])
+  }, [password, username, setPasswordScore])
 
   if (config == null) {
     return null
