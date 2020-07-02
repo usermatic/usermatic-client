@@ -698,6 +698,7 @@ export const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
         emailInput={
           <EmailAddressInput
             type="email"
+            autoComplete="email"
             id={getId(idPrefix, "account-creation-email")}
             placeholder="Email address" required autoFocus
             labelText="Email address"
@@ -708,6 +709,7 @@ export const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
         passwordInput={
           <PasswordInput
              type="password"
+             autoComplete="new-password"
              id={getId(idPrefix, "account-creation-password")}
              placeholder="Password" required
              labelText="Password"

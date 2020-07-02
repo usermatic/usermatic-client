@@ -197,6 +197,7 @@ exports[`<ChangePasswordForm> with password 1`] = `
         }
         newPasswordInput={
           <DefaultInputComponent
+            autoComplete="new-password"
             autoFocus={true}
             id="test-change-password-new-password"
             labelText="New Password"
@@ -211,6 +212,7 @@ exports[`<ChangePasswordForm> with password 1`] = `
         }
         oldPasswordInput={
           <DefaultInputComponent
+            autoComplete="password"
             autoFocus={true}
             id="test-change-password-old-password"
             labelText="Old Password"
@@ -245,6 +247,7 @@ exports[`<ChangePasswordForm> with password 1`] = `
           onSubmit={[Function]}
         >
           <DefaultInputComponent
+            autoComplete="password"
             autoFocus={true}
             id="test-change-password-old-password"
             labelText="Old Password"
@@ -265,6 +268,7 @@ exports[`<ChangePasswordForm> with password 1`] = `
                 Old Password
               </label>
               <input
+                autoComplete="password"
                 autoFocus={true}
                 className="form-control um-form-control"
                 id="test-change-password-old-password"
@@ -279,6 +283,7 @@ exports[`<ChangePasswordForm> with password 1`] = `
             </div>
           </DefaultInputComponent>
           <DefaultInputComponent
+            autoComplete="new-password"
             autoFocus={true}
             id="test-change-password-new-password"
             labelText="New Password"
@@ -299,6 +304,7 @@ exports[`<ChangePasswordForm> with password 1`] = `
                 New Password
               </label>
               <input
+                autoComplete="new-password"
                 autoFocus={true}
                 className="form-control um-form-control"
                 id="test-change-password-new-password"
@@ -397,6 +403,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
         }
         newPasswordInput={
           <DefaultInputComponent
+            autoComplete="new-password"
             autoFocus={true}
             id="test-change-password-new-password"
             labelText="New Password"
@@ -465,6 +472,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
             </div>
           </DefaultInputComponent>
           <DefaultInputComponent
+            autoComplete="new-password"
             autoFocus={true}
             id="test-change-password-new-password"
             labelText="New Password"
@@ -485,6 +493,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
                 New Password
               </label>
               <input
+                autoComplete="new-password"
                 autoFocus={true}
                 className="form-control um-form-control"
                 id="test-change-password-new-password"
@@ -1877,6 +1886,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
           }
           emailInput={
             <DefaultInputComponent
+              autoComplete="email"
               autoFocus={true}
               id="um3kfiekd-account-creation-email"
               labelText="Email address"
@@ -1909,6 +1919,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
           }
           passwordInput={
             <DefaultInputComponent
+              autoComplete="new-password"
               id="um3kfiekd-account-creation-password"
               labelText="Password"
               name="password"
@@ -1944,6 +1955,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
             onSubmit={[Function]}
           >
             <DefaultInputComponent
+              autoComplete="email"
               autoFocus={true}
               id="um3kfiekd-account-creation-email"
               labelText="Email address"
@@ -1964,6 +1976,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
                   Email address
                 </label>
                 <input
+                  autoComplete="email"
                   autoFocus={true}
                   className="form-control um-form-control"
                   id="um3kfiekd-account-creation-email"
@@ -1978,6 +1991,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
               </div>
             </DefaultInputComponent>
             <DefaultInputComponent
+              autoComplete="new-password"
               id="um3kfiekd-account-creation-password"
               labelText="Password"
               name="password"
@@ -1997,6 +2011,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
                   Password
                 </label>
                 <input
+                  autoComplete="new-password"
                   className="form-control um-form-control"
                   id="um3kfiekd-account-creation-password"
                   name="password"
@@ -2256,6 +2271,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
           }
           emailInput={
             <DefaultInputComponent
+              autoComplete="email"
               autoFocus={true}
               id="um3kfiekd-account-creation-email"
               labelText="Email address"
@@ -2288,6 +2304,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
           }
           passwordInput={
             <DefaultInputComponent
+              autoComplete="new-password"
               id="um3kfiekd-account-creation-password"
               labelText="Password"
               name="password"
@@ -2323,6 +2340,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
             onSubmit={[Function]}
           >
             <DefaultInputComponent
+              autoComplete="email"
               autoFocus={true}
               id="um3kfiekd-account-creation-email"
               labelText="Email address"
@@ -2343,6 +2361,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                   Email address
                 </label>
                 <input
+                  autoComplete="email"
                   autoFocus={true}
                   className="form-control um-form-control"
                   id="um3kfiekd-account-creation-email"
@@ -2357,6 +2376,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
               </div>
             </DefaultInputComponent>
             <DefaultInputComponent
+              autoComplete="new-password"
               id="um3kfiekd-account-creation-password"
               labelText="Password"
               name="password"
@@ -2376,6 +2396,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                   Password
                 </label>
                 <input
+                  autoComplete="new-password"
                   className="form-control um-form-control"
                   id="um3kfiekd-account-creation-password"
                   name="password"
@@ -3360,6 +3381,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
           }
           emailInput={
             <DefaultInputComponent
+              autoComplete="email"
               autoFocus={true}
               id="um3kfiekd-account-creation-email"
               labelText="Email address"
@@ -3392,6 +3414,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
           }
           passwordInput={
             <DefaultInputComponent
+              autoComplete="new-password"
               id="um3kfiekd-account-creation-password"
               labelText="Password"
               name="password"
@@ -3427,6 +3450,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
             onSubmit={[Function]}
           >
             <DefaultInputComponent
+              autoComplete="email"
               autoFocus={true}
               id="um3kfiekd-account-creation-email"
               labelText="Email address"
@@ -3447,6 +3471,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                   Email address
                 </label>
                 <input
+                  autoComplete="email"
                   autoFocus={true}
                   className="form-control um-form-control"
                   id="um3kfiekd-account-creation-email"
@@ -3461,6 +3486,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
               </div>
             </DefaultInputComponent>
             <DefaultInputComponent
+              autoComplete="new-password"
               id="um3kfiekd-account-creation-password"
               labelText="Password"
               name="password"
@@ -3480,6 +3506,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                   Password
                 </label>
                 <input
+                  autoComplete="new-password"
                   className="form-control um-form-control"
                   id="um3kfiekd-account-creation-password"
                   name="password"
@@ -3761,6 +3788,7 @@ exports[`<ResetPasswordForm> 1`] = `
         }
         newPasswordInput={
           <DefaultInputComponent
+            autoComplete="new-password"
             autoFocus={true}
             id="test-reset-password-new-password"
             labelText="New Password"
@@ -3808,6 +3836,7 @@ exports[`<ResetPasswordForm> 1`] = `
         >
           <ErrorMessage />
           <DefaultInputComponent
+            autoComplete="new-password"
             autoFocus={true}
             id="test-reset-password-new-password"
             labelText="New Password"
@@ -3828,6 +3857,7 @@ exports[`<ResetPasswordForm> 1`] = `
                 New Password
               </label>
               <input
+                autoComplete="new-password"
                 autoFocus={true}
                 className="form-control um-form-control"
                 id="test-reset-password-new-password"
@@ -3981,6 +4011,7 @@ exports[`<ResetPasswordForm> 2`] = `
         }
         newPasswordInput={
           <DefaultInputComponent
+            autoComplete="new-password"
             autoFocus={true}
             id="test-reset-password-new-password"
             labelText="New Password"

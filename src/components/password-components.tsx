@@ -135,6 +135,7 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
 
       const oldPasswordInput = <PasswordInput
          type="password"
+         autoComplete="password"
          id={getId(idPrefix, "change-password-old-password")}
          placeholder="Old Password" required autoFocus
          labelText="Old Password"
@@ -143,6 +144,7 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
 
       const newPasswordInput = <PasswordInput
          type="password"
+         autoComplete="new-password"
          id={getId(idPrefix, "change-password-new-password")}
          placeholder="New Password" required autoFocus
          labelText="New Password"
@@ -383,6 +385,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
         newPasswordInput={
           <PasswordInput
             type="password"
+            autoComplete="new-password"
             id={getId(idPrefix, "reset-password-new-password")}
             placeholder="New Password"
             labelText="New Password"
