@@ -10,11 +10,6 @@ export {
 } from './auth'
 
 export {
-  useGetTotpKey,
-  useAddTotp
-} from './totp'
-
-export {
   useGetRecoveryCodeCount,
   useCreateRecoveryCodes
 } from './recoverycodes'
@@ -24,6 +19,7 @@ export {
   usePrimaryEmail,
   useCredentials,
   usePasswordCredential,
+  useOauthCredentials,
   useTotpCredential,
   useProfilePhotos,
   isPasswordCredential,
@@ -36,14 +32,13 @@ export {
 } from './user'
 
 export {
-  useLogin,
-  useCreateAccount,
   useLogout
 } from './login'
 
 export {
   useResetPassword,
   useChangePassword,
+  useAddPassword,
   useRequestPasswordResetEmail,
 } from './passwords'
 

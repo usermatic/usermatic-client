@@ -49,7 +49,14 @@ export type AuthTokenData = {
   error?: ApolloError,
   loading: boolean,
 
+  /**
+   * The id of the user to whom this token pertains
+   */
   id?: string,
+  /**
+   * A JWT, signed with the application's secret key, which authenticates
+   * the bearer as the user with the id contained in the token.
+   */
   userJwt?: string,
 }
 
@@ -117,22 +124,36 @@ export const useAppId = (): string => {
  *
  * const { userJwt } = useToken()
  *
- * if (userJwt) {
- *   // Send a query to our backend and include the logged in user's authToken
- *   fetch('/api/hello', {
- *     method: 'POST',
- *     headers: {
- *       'Content-Type': 'application/json',
- *       'Accept': 'application/json',
- *       'Authorization': userJwt
- *     },
- *     body: JSON.stringify({query: "{ hello }"})
- *   }).then((result) => {
- *     return result.json()
- *   }).then((json) => {
- *     setResponse(json)
- *   })
+ * useEffect(() => {
+ *   if (userJwt) {
+ *     // Send a query to our backend and include the logged in user's authToken
+ *     fetch('/api/hello', {
+ *       method: 'POST',
+ *       headers: {
+ *         'Content-Type': 'application/json',
+ *         'Accept': 'application/json',
+ *         'Authorization': userJwt
+ *       },
+ *       body: JSON.stringify({query: "{ hello }"})
+ *     }).then((result) => {
+ *       return result.json()
+ *     }).then((json) => {
+ *       console.log('got response', json)
+ *     })
+ *   }
+ * }, [userJwt])
+ *
+ * @preview-noinline
+ *
+ * function TokenPreview () {
+ *   const { id, userJwt } = useToken()
+ *   return <div>
+ *     <div>id: <code>{id}</code></div>
+ *     <div>userJwt: <code>{userJwt}</code></div>
+ *   </div>
  * }
+ *
+ * render(<TokenPreview/>)
  */
 export const useToken = (): AuthTokenData => {
   const { data, loading, error } = useAuthenticatedUser()
@@ -358,13 +379,55 @@ export type UsermaticProps = {
   showDiagnostics?: boolean,
   /**
    * Provide custom display components to use when rendering Usermatic
-   * components.
+   * components. See "Customizing Usermatic" for more information
    */
   components?: Components
 }
 
 /**
- * Usermatic is the wrapper component for all Usermatic applications.
+ * Usermatic is the wrapper component for all Usermatic applications. Any
+ * part of your application that uses Usermatic components or hooks must
+ * be inside a <Usermatic> component.
+ *
+ * Placing <Usermatic> in your _app.js file is usually the easiest way to
+ * set up Usermatic.
+ *
+ * @example
+ *
+ * // Using Usermatic in a NextJS app.
+ * // File: pages/_app.js
+ *
+ * import { Usermatic } from '@usermatic/client'
+ *
+ * function MyApp({ Component, pageProps }) {
+ *   // Replace appId with your usermatic application id.
+ *   return <Usermatic appId="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+ *     <Component {...pageProps} />
+ *   </Usermatic>
+ * }
+ *
+ * @example
+ *
+ * // Using Usermatic with Create React App.
+ * // File: src/index.js
+ *
+ * import React from 'react';
+ * import ReactDOM from 'react-dom';
+ * import './index.css';
+ * import App from './App';
+ *
+ * import { Usermatic } from '@usermatic/client'
+ *
+ * // Replace appId with your usermatic application id.
+ * ReactDOM.render(
+ *   <React.StrictMode>
+ *     <Usermatic appId="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+ *       <App />
+ *     </Usermatic>
+ *   </React.StrictMode>,
+ *   document.getElementById('root')
+ * );
+ *
  */
 export const Usermatic: React.FC<UsermaticProps> = ({
   children,
@@ -417,6 +480,21 @@ const AppConfigProvider: React.FC<{children: ReactNode}> = ({children}) => {
   </AppConfigContext.Provider>
 }
 
+/**
+ * Returns the publicly visible configuration of the current app.
+ *
+ * May briefly return a hard-coded default config while waiting to load the
+ * correct config from the Usermatic backend.
+ *
+ * @preview-noinline
+ *
+ * function AppConfigPreview () {
+ *   const config = useAppConfig()
+ *   return <pre>{JSON.stringify(config, null, '  ')}</pre>
+ * }
+ *
+ * render(<AppConfigPreview/>)
+ */
 export const useAppConfig = (): AppConfig => {
   return useContext(AppConfigContext)
 }

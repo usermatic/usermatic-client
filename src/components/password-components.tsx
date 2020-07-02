@@ -269,20 +269,22 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   const exposeLoginAfterReset = allowLoginAfterResetArg
   const redirectAfterReset = redirectAfterResetArg
 
+  const [token, setToken] = useState<string | undefined>()
+
   const [submit, { error, success, data }] = useResetPassword()
 
   const isBrowser = typeof window !== 'undefined'
 
-  const token = useMemo(() => {
+  useEffect(() => {
     if (!isBrowser) {
       return
     }
 
     let token = tokenProp ?? url.parse(window.location.href, true).query['token']
     if (Array.isArray(token)) {
-      return token[0]
+      setToken(token[0])
     } else {
-      return token
+      setToken(token)
     }
   }, [isBrowser, tokenProp])
 

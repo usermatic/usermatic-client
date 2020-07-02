@@ -15,6 +15,28 @@ import {
   CreateAccountMutationVariables
 } from '../gen/operations'
 
+/**
+ * Apollo mutation hook for logging out.
+ *
+ * In many cases, you can use <LogoutButton> instead of using this hook directly.
+ *
+ * @preview-noinline
+ *
+ * function LogoutPreview () {
+ *   const [submit, { success }] = useLogout()
+ *   if (success) {
+ *     return <div>You have been logged out</div>
+ *   }
+ *
+ *   return <button
+ *     className="btn btn-primary"
+ *     onClick={(e) => {
+ *       e.preventDefault()
+ *       submit()
+ *     }}
+ *   />
+ * }
+ */
 export const useLogout = () => {
   const [submit, ret] = useCsrfMutation(useLogoutMutation)
 
@@ -25,6 +47,13 @@ export const useLogout = () => {
   return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
+/**
+ * Apollo mutation hook for logging in.
+ *
+ * NB: You should almost certainly use <LoginForm> rather than calling this
+ * hook directly, as correctly logging with anything other than a plain
+ * email/password login is somewhat complicated.
+ */
 export const useLogin = (options: LoginMutationOptions = {}) => {
 
   const [submitLogin, ret] = useCsrfMutation(useLoginMutation, options)
@@ -41,6 +70,12 @@ export const useLogin = (options: LoginMutationOptions = {}) => {
   return [submit, retObj] as [typeof submit, typeof retObj]
 }
 
+/**
+ * Apollo mutation hook for creating an account.
+ *
+ * NB: You should almost certainly use <AccountCreationForm> rather than calling this
+ * hook directly.
+ */
 export const useCreateAccount = (options: CreateAccountMutationOptions = {}) => {
   const [submitCreateAccount, ret] = useCsrfMutation(useCreateAccountMutation, options)
 

@@ -66,7 +66,18 @@ class ReauthTokenCache {
 
 const ReauthCacheContext = createContext<ReauthTokenCache>(new ReauthTokenCache)
 
-export const useCachedReauthToken = (contents: string | object, maxAge?: string) => {
+/**
+ * Return a cached reauthentication token, if one exists, which has the given
+ * contents and is no older than `maxAge`.
+ *
+ * NB: You should usually use <ReauthenticateGuard> instead of using this hook directly.
+ * <ReauthenticateGuard> will check for a cached token before prompting the user
+ * for their password.
+ */
+export const useCachedReauthToken = (
+  contents: string | object,
+  maxAge?: string
+) => {
   const cacheKey = JSON.stringify(contents)
   const cache = useContext(ReauthCacheContext)
   return cache.getToken(cacheKey, maxAge)
@@ -79,6 +90,13 @@ export const ReauthCacheProvider: React.FC<{children: ReactNode}> = ({children})
   </ReauthCacheContext.Provider>
 }
 
+/**
+ * Apollo Mutation hook for obtaining a reauthentication token by submitting
+ * the user's password.
+ *
+ * NB: You should usually use <ReauthenticateGuard> instead of using this hook
+ * directly.
+ */
 export const useReauthenticate = (contentsArg: string | object) => {
   const contents = JSON.stringify(contentsArg)
 
@@ -103,6 +121,16 @@ export const useReauthenticate = (contentsArg: string | object) => {
 
 export const ReauthContext = React.createContext<string | undefined>(undefined)
 
+/**
+ * Obtain the reauthentication token provided by <ReauthenticateGuard>.
+ *
+ * This token can be sent to your application backend in order to guard
+ * sensitive actions, by proving that the user's password was entered within
+ * some recent period of time.
+ *
+ * NB: See the <ReauthenticateGuard> documentation for an example of how to use
+ * this hook.
+ */
 export const useReauthToken = (): string => {
   const ret = useContext(ReauthContext)
   if (ret == null) {

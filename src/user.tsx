@@ -16,6 +16,28 @@ export const useProfile = () => {
   return { loading, profile, error }
 }
 
+/**
+ * Returns the primary email of the currently logged in user.
+ *
+ * If the user has an email/password credential, this will return
+ * that email.
+ *
+ * Otherwise, if they have only OAuth credentials, this will return
+ * the first email from their first OAuth credential.
+ *
+ * @preview-noinline
+ *
+ * function PrimaryEmailPreview () {
+ *   const { loading, email } = usePrimaryEmail()
+ *   if (loading) {
+ *     return <div>Please wait...</div>
+ *   } else {
+ *     return <div>Hello {email}</div>
+ *   }
+ * }
+ *
+ * render(<PrimaryEmailPreview/>)
+ */
 export const usePrimaryEmail = (): {
   loading: boolean,
   error?: ApolloError,
@@ -48,18 +70,43 @@ export type TotpCredential = {
 
 export type Credential = PasswordCredential | OauthCredential | TotpCredential
 
+/**
+ * Type guard function to check if a credential is a password credential
+ */
 export const isPasswordCredential = (c: Credential): c is PasswordCredential => {
   return c.type === 'PASSWORD'
 }
 
+/**
+ * Type guard function to check if a credential is an Oauth credential
+ */
 export const isOauthCredential = (c: Credential): c is OauthCredential => {
   return c.type === 'OAUTH'
 }
 
+/**
+ * Type guard function to check if a credential is a TOTP credential
+ */
 export const isTotpCredential = (c: Credential): c is TotpCredential => {
   return c.type === 'TOTP'
 }
 
+/**
+ * Return all credentials associated with the currently logged-in user.
+ *
+ * @preview-noinline
+ *
+ * function CredentialPreview () {
+ *   const { loading, credentials } = useCredentials()
+ *   if (loading) {
+ *     return <div>Please wait...</div>
+ *   } else {
+ *     return <pre>{JSON.stringify(credentials, null, '  ')}</pre>
+ *   }
+ * }
+ *
+ * render(<CredentialPreview/>)
+ */
 export const useCredentials = (): {
   loading: boolean,
   error?: ApolloError,
@@ -104,6 +151,25 @@ export const useCredentials = (): {
   }
 }
 
+/**
+ * Return the TOTP credential, if any, that is associated with the currently
+ * logged-in user.
+ *
+ * @preview-noinline
+ *
+ * function TotpPreview () {
+ *   const { loading, totpCredential } = useTotpCredential()
+ *   if (loading) {
+ *     return <div>Please wait...</div>
+ *   } else if (!totpCredential) {
+ *     return <div>You have not enabled TOTP</div>
+ *   } else {
+ *     return <pre>{JSON.stringify(credentials, null, '  ')}</pre>
+ *   }
+ * }
+ *
+ * render(<TotpPreview/>)
+ */
 export const useTotpCredential = (): {
   loading: boolean,
   error?: ApolloError,
@@ -123,6 +189,23 @@ export const useTotpCredential = (): {
   return { loading, error }
 }
 
+/**
+ * Return all Oauth credentials that are associated with the currently
+ * logged-in user.
+ *
+ * @preview-noinline
+ *
+ * function OauthPreview () {
+ *   const { loading, oauthCredentials } = useOauthCredentials()
+ *   if (loading) {
+ *     return <div>Please wait...</div>
+ *   } else {
+ *     return <pre>{JSON.stringify(oauthCredentials, null, '  ')}</pre>
+ *   }
+ * }
+ *
+ * render(<OauthPreview/>)
+ */
 export const useOauthCredentials = (): {
   loading: boolean,
   error?: ApolloError,
@@ -144,6 +227,24 @@ export const useOauthCredentials = (): {
   return { loading, error }
 }
 
+/**
+ * Return the password credential, if any, associated with the currently logged-in user.
+ *
+ * @preview-noinline
+ *
+ * function PasswordPreview () {
+ *   const { loading, passwordCredential } = usePasswordCredential()
+ *   if (loading) {
+ *     return <div>Please wait...</div>
+ *   } else if (!passwordCredential) {
+ *     return <div>You have not added a password to this account</div>
+ *   } else {
+ *     return <pre>{JSON.stringify(passwordCredential, null, '  ')}</pre>
+ *   }
+ * }
+ *
+ * render(<PasswordPreview/>)
+ */
 export const usePasswordCredential = (): {
   loading: boolean,
   error?: ApolloError,
@@ -162,6 +263,22 @@ export const usePasswordCredential = (): {
   return { loading, error }
 }
 
+/**
+ * Return the personal details (e.g. name) associated with the currently logged-in user.
+ *
+ * @preview-noinline
+ *
+ * function PersonalDetailsPreview () {
+ *   const { loading, name } = usePersonalDetails()
+ *   if (loading) {
+ *     return <div>Please wait...</div>
+ *   } else {
+ *     return <pre>{JSON.stringify(name, null, '  ')}</pre>
+ *   }
+ * }
+ *
+ * render(<PersonalDetailsPreview/>)
+ */
 export const usePersonalDetails = (): {
   loading: boolean,
   error?: ApolloError,
@@ -170,7 +287,7 @@ export const usePersonalDetails = (): {
     given?: string,
     full?: string
   }
-}  => {
+} => {
 
   const { loading, error, profile } = useProfile()
 
@@ -187,6 +304,27 @@ export const usePersonalDetails = (): {
   }
 }
 
+/**
+ * Return all profile photos from all Oauth credentials associated with the currently
+ * logged-in user.
+ *
+ * @preview-noinline
+ *
+ * function PhotoPreview () {
+ *   const { loading, photos } = useProfilePhotos()
+ *   if (loading) {
+ *     return <div>Please wait...</div>
+ *   } else {
+ *     return <ul>{photos.map((photo, i) =>
+ *       <li key={i}>
+ *          <img src={photo} style={{ width: "64px", height: "64px" }}/>
+ *       </li>
+ *     )}</ul>
+ *   }
+ * }
+ *
+ * render(<PhotoPreview/>)
+ */
 export const useProfilePhotos = (): {
   loading: boolean,
   error?: ApolloError,
