@@ -1,4 +1,6 @@
 
+import url from 'url'
+
 import React, { useState, useEffect, useMemo, MouseEvent } from 'react'
 import { Formik, FormikValues, FormikErrors } from 'formik'
 
@@ -197,7 +199,12 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
 }
 
 export type ResetPasswordFormProps = {
-  token: string
+  /**
+   * The password-reset token, contained in the reset link that was sent to the
+   * user via email. If omitted, ResetPasswordForm attempts to find the token
+   * in window.location.href, in the 'token' query parameter.
+   */
+  token?: string
   /**
    * Called after the user is successfully logged in (which will only happen
    * if the `loginAfterReset` property is true.)
@@ -238,10 +245,10 @@ export type ResetPasswordFormProps = {
  *
  * @preview
  *
- * <ResetPasswordForm/>
+ * <ResetPasswordForm token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAaG9zdC5jb20iLCJjcmVkZW50aWFsSWQiOiJlZGZlZjg3YS03YWViLTRlNjYtYmE3MS0yMGI0MGVmNmRlNWMiLCJpZCI6IjE5ZTFjODA0LTBiMzAtNDYyYS05ODFiLWU1Y2MxZDg1ZWIzZiIsImFwcElkIjoiZDQ0MWZjZWQtNTZjNy00NzVjLThjODctNjE3OWI2NDU2Mzk5IiwiYWN0aW9uIjoiUkVTRVRfUFciLCJpYXQiOjE1OTM3MDIyNzF9.B4jCukSRelG9X4tAGjBhkU2wjhdLwKOj9x2kvDladwg"/>
  */
 export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
-  token,
+  token: tokenProp,
   onLogin,
   idPrefix,
   components,
@@ -264,7 +271,27 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
 
   const [submit, { error, success, data }] = useResetPassword()
 
+  const isBrowser = typeof window !== 'undefined'
+
+  const token = useMemo(() => {
+    if (!isBrowser) {
+      return
+    }
+
+    let token = tokenProp ?? url.parse(window.location.href, true).query['token']
+    if (Array.isArray(token)) {
+      return token[0]
+    } else {
+      return token
+    }
+  }, [isBrowser, tokenProp])
+
   const email = useMemo(() => {
+    if (!token) {
+      console.error("No verification token found in url or in EmailVerifier props")
+      return
+    }
+
     const decoded = jwtDecode(token) as { email?: string }
     if (!decoded || typeof decoded != 'object') {
       console.error("password reset token was invalid")
@@ -273,7 +300,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
     }
 
     return decoded.email
-  }, [token])
+  }, [isBrowser, token])
 
   const redirectUri = data?.resetPassword?.redirectUri
 
@@ -305,6 +332,12 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
       }
     </AlertComponent>
   }, [AlertComponent, success, redirectAfterReset, redirectUri])
+
+  if (token == null) {
+    return <AlertComponent role="error">
+      No reset token found
+    </AlertComponent>
+  }
 
   if (email == null) {
     return <AlertComponent role="error">
