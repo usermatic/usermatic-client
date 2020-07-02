@@ -816,3 +816,38 @@ test('UserAccountSettings', async () => {
 
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 })
+
+test('ComponentProvider', async () => {
+
+  const mocks = extendMocks({
+    AppConfig: () => configNoOauth,
+    Query: () => ({
+      getAuthenticatedUser: () => null
+    })
+  })
+
+  const InputComponent: components.InputComponentType = ({labelText, ...props}) => (
+    <div>
+      This is a custom input component
+      <label htmlFor={props.id}>
+        {labelText}
+      </label>
+      <input {...props} />
+    </div>
+  )
+
+  const customComponents = { InputComponent }
+
+  const wrapper = mount(
+    <components.ComponentProvider components={customComponents}>
+      <TestWrapper mocks={mocks}>
+        <div id="client-test-div">
+          <components.LoginForm />
+        </div>
+      </TestWrapper>
+    </components.ComponentProvider>
+  )
+  await act(async () => { jest.runAllTimers() })
+  wrapper.update()
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+})

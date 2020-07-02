@@ -4065,6 +4065,235 @@ exports[`<ResetPasswordForm> invalid token 1`] = `
 </div>
 `;
 
+exports[`ComponentProvider 1`] = `
+<div
+  id="client-test-div"
+>
+  <Component>
+    <SocialButtons
+      popupWindow={
+        Object {
+          "close": [Function],
+          "open": [Function],
+        }
+      }
+    />
+    <Formik
+      initialValues={
+        Object {
+          "email": "",
+          "password": "",
+          "stayLoggedIn": false,
+        }
+      }
+      onSubmit={[Function]}
+      validate={[Function]}
+    >
+      <DefaultPasswordForm
+        emailInput={
+          <InputComponent
+            autoFocus={true}
+            id="um3kfiekd-login-email"
+            labelText="Email address"
+            name="email"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Email address"
+            required={true}
+            type="email"
+            value=""
+          />
+        }
+        error={<ErrorMessage />}
+        forgotPasswordButton={
+          <DefaultButton
+            id="forgot-pw-button"
+            name="forgot-password"
+            onClick={[Function]}
+            role="secondary"
+            type="button"
+          >
+            Forgot Password?
+          </DefaultButton>
+        }
+        formProps={
+          Object {
+            "onReset": [Function],
+            "onSubmit": [Function],
+          }
+        }
+        passwordInput={
+          <InputComponent
+            id="um3kfiekd-login-password"
+            labelText="Password"
+            name="password"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Password"
+            required={true}
+            type="password"
+            value=""
+          />
+        }
+        signinButton={
+          <DefaultButton
+            id="login-button"
+            name="login"
+            role="submit"
+            type="submit"
+          >
+            Sign in
+          </DefaultButton>
+        }
+        stayLoggedInInput={
+          <DefaultCheckboxComponent
+            id="um3kfiekd-login-stay-logged-in"
+            labelText="Remember me"
+            name="stayLoggedIn"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="checkbox"
+            value={false}
+          />
+        }
+      >
+        <form
+          onReset={[Function]}
+          onSubmit={[Function]}
+        >
+          <InputComponent
+            autoFocus={true}
+            id="um3kfiekd-login-email"
+            labelText="Email address"
+            name="email"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Email address"
+            required={true}
+            type="email"
+            value=""
+          >
+            <div>
+              This is a custom input component
+              <label
+                htmlFor="um3kfiekd-login-email"
+              >
+                Email address
+              </label>
+              <input
+                autoFocus={true}
+                id="um3kfiekd-login-email"
+                name="email"
+                onBlur={[Function]}
+                onChange={[Function]}
+                placeholder="Email address"
+                required={true}
+                type="email"
+                value=""
+              />
+            </div>
+          </InputComponent>
+          <InputComponent
+            id="um3kfiekd-login-password"
+            labelText="Password"
+            name="password"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Password"
+            required={true}
+            type="password"
+            value=""
+          >
+            <div>
+              This is a custom input component
+              <label
+                htmlFor="um3kfiekd-login-password"
+              >
+                Password
+              </label>
+              <input
+                id="um3kfiekd-login-password"
+                name="password"
+                onBlur={[Function]}
+                onChange={[Function]}
+                placeholder="Password"
+                required={true}
+                type="password"
+                value=""
+              />
+            </div>
+          </InputComponent>
+          <DefaultCheckboxComponent
+            id="um3kfiekd-login-stay-logged-in"
+            labelText="Remember me"
+            name="stayLoggedIn"
+            onBlur={[Function]}
+            onChange={[Function]}
+            type="checkbox"
+            value={false}
+          >
+            <div
+              className="custom-control custom-checkbox um-checkbox-container"
+            >
+              <input
+                className="custom-control-input um-checkbox-input"
+                id="um3kfiekd-login-stay-logged-in"
+                name="stayLoggedIn"
+                onBlur={[Function]}
+                onChange={[Function]}
+                type="checkbox"
+                value={false}
+              />
+              <label
+                className="custom-control-label um-checkbox-label"
+                htmlFor="um3kfiekd-login-stay-logged-in"
+              >
+                Remember me
+              </label>
+            </div>
+          </DefaultCheckboxComponent>
+          <div
+            className="mb-3 justify-content-between d-flex um-password-signin-button-container"
+          >
+            <DefaultButton
+              id="login-button"
+              name="login"
+              role="submit"
+              type="submit"
+            >
+              <button
+                className="btn btn-primary px-5 um-btn um-btn-submit um-btn-login"
+                id="login-button"
+                type="submit"
+              >
+                Sign in
+              </button>
+            </DefaultButton>
+            <DefaultButton
+              id="forgot-pw-button"
+              name="forgot-password"
+              onClick={[Function]}
+              role="secondary"
+              type="button"
+            >
+              <button
+                className="btn btn-outline-primary um-btn um-btn-secondary um-btn-forgot-password"
+                id="forgot-pw-button"
+                onClick={[Function]}
+                type="button"
+              >
+                Forgot Password?
+              </button>
+            </DefaultButton>
+          </div>
+          <ErrorMessage />
+        </form>
+      </DefaultPasswordForm>
+    </Formik>
+  </Component>
+</div>
+`;
+
 exports[`UserAccountSettings 1`] = `
 <div
   id="client-test-div"

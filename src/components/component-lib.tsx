@@ -1048,6 +1048,13 @@ export const useComponents = (propComponents: Components = {}): DefiniteComponen
     const ErrorCaseComponent = merged.ErrorCaseComponent ??
       DefaultErrorCaseComponent
 
+    const TotpInputComponent = merged.TotpInputComponent ?? DefaultCodeInput
+    const RecoveryCodeInputComponent = merged.RecoveryCodeInputComponent ?? DefaultCodeInput
+    const EmailAddressInput = merged.EmailAddressInput ?? InputComponent
+    const PasswordInput = merged.PasswordInput ?? InputComponent
+    const StayLoggedInInput = merged.StayLoggedInInput ?? CheckboxComponent
+    const LoginSuccessComponent = merged.LoginSuccessComponent ?? DefaultLoginSuccessComponent
+
     const ModalComponent = merged.ModalComponent ?? DefaultModalComponent
     const Button = merged.Button ?? DefaultButton
     const CreateAccountFormComponent = merged.CreateAccountFormComponent ?? DefaultCreateAccountForm
@@ -1121,12 +1128,12 @@ export const useComponents = (propComponents: Components = {}): DefiniteComponen
       RecoveryCodeDisplayComponent,
       RecoveryCodeRegenerationPromptComponent,
 
-      TotpInputComponent: merged.TotpInputComponent ?? DefaultCodeInput,
-      RecoveryCodeInputComponent: merged.RecoveryCodeInputComponent ?? DefaultCodeInput,
-      EmailAddressInput: merged.EmailAddressInput ?? InputComponent,
-      PasswordInput: merged.PasswordInput ?? InputComponent,
-      StayLoggedInInput: merged.StayLoggedInInput ?? CheckboxComponent,
-      LoginSuccessComponent: merged.LoginSuccessComponent ?? DefaultLoginSuccessComponent,
+      TotpInputComponent,
+      RecoveryCodeInputComponent,
+      EmailAddressInput,
+      PasswordInput,
+      StayLoggedInInput,
+      LoginSuccessComponent,
 
       SocialButtonsComponent,
       GithubButton,
@@ -1211,8 +1218,8 @@ export const ComponentProvider: React.FC<{
   children: ReactNode
 }> = ({
   components: propComponents,
-  bootstrapClasses: useBootstrap = true,
-  usermaticClasses: useUmClasses = false,
+  bootstrapClasses,
+  usermaticClasses,
   children
 }) => {
 
@@ -1223,10 +1230,19 @@ export const ComponentProvider: React.FC<{
         || undefined
   }, [])
 
-  const components = useComponents(propComponents)
+  const { components, useBootstrap, useUmClasses } = useContext(ComponentContext)
   const value = useMemo(
-    () => ({ components, useBootstrap, useUmClasses, modalAppElement }),
-    [components, useBootstrap, useUmClasses, modalAppElement]
+    () => ({
+      components: {
+        ...components,
+        ...propComponents
+      },
+      useBootstrap: bootstrapClasses ?? useBootstrap ?? true,
+      useUmClasses: usermaticClasses ?? useUmClasses ?? false,
+      modalAppElement
+    }),
+    [components, propComponents, useBootstrap, useUmClasses, bootstrapClasses,
+     usermaticClasses, modalAppElement]
   )
 
   return <ComponentContext.Provider value={value}>
