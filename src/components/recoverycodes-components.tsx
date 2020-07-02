@@ -80,7 +80,7 @@ const GenRecoveryCodesFormInner: React.FC<{
  *
  * @preview
  *
- * <GenRecoveryCodesForm>
+ * <GenRecoveryCodesForm/>
  */
 export const GenRecoveryCodesForm: React.FC<{
   /**

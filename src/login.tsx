@@ -34,8 +34,12 @@ import {
  *       e.preventDefault()
  *       submit()
  *     }}
- *   />
+ *   >
+ *    Logout
+ *   </button>
  * }
+ *
+ * render(<LogoutPreview/>)
  */
 export const useLogout = () => {
   const [submit, ret] = useCsrfMutation(useLogoutMutation)

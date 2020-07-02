@@ -466,7 +466,7 @@ export type RecoveryCodeRegenerationPromptType = React.FC<{
  *
  * @preview-noinline
  *
- * const UserAccountSettingsComponent: UserAccountSettingsType = ({
+ * const UserAccountSettingsComponent = ({
  *   personalDetails,
  *   loginMethods,
  *   accountSecurity
