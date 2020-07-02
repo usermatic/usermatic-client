@@ -443,7 +443,7 @@ export type RequestPasswordResetFormProps = {
 }
 
 /**
- * <RequestPasswordResetForm/> allows the user to request a password reset email.
+ * <RequestPasswordResetForm> allows the user to request a password reset email.
  * Normally, you do not need to embed this component directly, as <LoginForm>
  * will display it when the user clicks "Forgot Password"
  *

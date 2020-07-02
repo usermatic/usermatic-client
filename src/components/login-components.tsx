@@ -366,7 +366,7 @@ const PostRecoveryCode: React.FC<{
 }
 
 /**
- * <LoginForm/> allows users to log in to your application. It handles both
+ * <LoginForm> allows users to log in to your application. It handles both
  * password and Oauth logins. Oauth login buttons are automatically displayed
  * for any Oauth provider that you have enabled for your Usermatic app.
  *
