@@ -135,7 +135,7 @@ type BaseAddPasswordFormProps = {
   error: ReactNode
 }
 
-export type ResetPasswordFormProps = BaseAddPasswordFormProps & {
+export type ResetPasswordFormComponentProps = BaseAddPasswordFormProps & {
   /**
    * A checkbox as rendered by <CheckboxComponent>
    */
@@ -158,7 +158,7 @@ export type AddPasswordFormProps = BaseAddPasswordFormProps & {
   emailInput: ReactNode,
 }
 
-export type ChangePasswordFormProps = BaseAddPasswordFormProps & {
+export type ChangePasswordFormComponentProps = BaseAddPasswordFormProps & {
   /**
    * The text input for the email address, as rendered by <PasswordInput>
    * or <InputComponent>
@@ -166,8 +166,10 @@ export type ChangePasswordFormProps = BaseAddPasswordFormProps & {
   oldPasswordInput: ReactNode,
 }
 
-export type ResetPasswordFormType = React.FC<ResetPasswordFormProps>
-export type ChangePasswordFormType = React.FC<ChangePasswordFormProps>
+export type ResetPasswordFormType = React.FC<ResetPasswordFormComponentProps>
+
+export type ChangePasswordFormType = React.FC<ChangePasswordFormComponentProps>
+
 export type AddPasswordFormType = React.FC<AddPasswordFormProps>
 
 export type ForgotPasswordFormType = React.FC<{
