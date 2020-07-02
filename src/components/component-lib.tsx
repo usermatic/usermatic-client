@@ -1154,6 +1154,29 @@ export const useComponents = (propComponents: Components = {}): DefiniteComponen
   return mergedComponents
 }
 
+export type ComponentProviderProps = {
+  /**
+   * Custom components to be used by all descendents of <ComponentProvider>.
+   * See 'Customizing Usermatic' for more information.
+   */
+  components?: Components,
+  /**
+   * If true, add bootstrap classes to default components. Has no effect on custom
+   * components.
+   */
+  bootstrapClasses?: boolean,
+  /**
+   * If true, add usermatic class names (semantic class names beginning with `um-`)
+   * to default components. Has no effect on custom components.
+   */
+  usermaticClasses?: boolean,
+  /**
+   * The tree of components in which you want the overrides specified by <ComponentProvider>
+   * to have effect.
+   */
+  children: ReactNode
+}
+
 /**
  * <ComponentProvider> allows you to override the default display components used
  * by Usermatic. For instance if you wish to use a custom text input component
@@ -1195,28 +1218,7 @@ export const useComponents = (propComponents: Components = {}): DefiniteComponen
  *   </ComponentProvider>
  * )
  */
-export const ComponentProvider: React.FC<{
-  /**
-   * Custom components to be used by all descendents of <ComponentProvider>.
-   * See 'Customizing Usermatic' for more information.
-   */
-  components?: Components,
-  /**
-   * If true, add bootstrap classes to default components. Has no effect on custom
-   * components.
-   */
-  bootstrapClasses?: boolean,
-  /**
-   * If true, add usermatic class names (semantic class names beginning with `um-`)
-   * to default components. Has no effect on custom components.
-   */
-  usermaticClasses?: boolean,
-  /**
-   * The tree of components in which you want the overrides specified by <ComponentProvider>
-   * to have effect.
-   */
-  children: ReactNode
-}> = ({
+export const ComponentProvider: React.FC<ComponentProviderProps> = ({
   components: propComponents,
   bootstrapClasses,
   usermaticClasses,

@@ -40,6 +40,7 @@ export * from './logos'
 
 export {
   ComponentProvider,
+  ComponentProviderProps,
   ComponentContext,
   useComponents
 } from './component-lib'
