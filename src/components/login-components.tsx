@@ -620,10 +620,6 @@ export type AccountCreationFormProps = {
    */
   components?: Components
 
-  // Render labels before inputs in the form (default true)
-  // XXX
-  labelsFirst?: boolean
-
   /**
    * If set, the strength of the user's password is displayed and
    * automatically updated as they modify it.
@@ -647,7 +643,6 @@ export const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
   onLogin,
   idPrefix,
   components,
-  labelsFirst: labelsFirstArg = true,
   showPasswordScore = true
 }) => {
 
