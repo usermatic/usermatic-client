@@ -632,10 +632,6 @@ export type AccountCreationFormProps = {
  *
  * @preview
  *
- * // To preview AccountCreationForm, use any email address, and any
- * // password. If you enter the password 'fail', a simulated failure
- * // will occur.
- *
  * <AccountCreationForm/>
  */
 export const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
