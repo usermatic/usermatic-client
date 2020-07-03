@@ -62,6 +62,12 @@ export type LoginFormProps = {
    * the `'forgotpw'` argument.
    */
   onChangeMode?: (mode: LoginMode) => void
+
+  /**
+   * If true, add the `autoFocus` property to the email input of the login form.
+   * Defaults to false
+   */
+  autoFocus?: boolean
 }
 
 type ChildWindow = {
@@ -378,7 +384,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   onLogin,
   idPrefix,
   components,
-  onChangeMode
+  onChangeMode,
+  autoFocus = false
 }) => {
 
   const {
@@ -541,7 +548,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({
               <EmailAddressInput
                 type="email"
                 id={getId(idPrefix, "login-email")}
-                placeholder="Email address" required autoFocus
+                placeholder="Email address" required
+                autoFocus={autoFocus}
                 labelText="Email address"
                 {...props.getFieldProps('email')}
               />
@@ -625,6 +633,12 @@ export type AccountCreationFormProps = {
    * automatically updated as they modify it.
    */
   showPasswordScore?: boolean
+
+  /**
+   * If true, add the `autoFocus` property to the email input of the login form.
+   * Defaults to false
+   */
+  autoFocus?: boolean
 }
 
 /**
@@ -639,7 +653,8 @@ export const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
   onLogin,
   idPrefix,
   components,
-  showPasswordScore = true
+  showPasswordScore = true,
+  autoFocus = false
 }) => {
 
   const {
@@ -700,7 +715,8 @@ export const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
             type="email"
             autoComplete="email"
             id={getId(idPrefix, "account-creation-email")}
-            placeholder="Email address" required autoFocus
+            placeholder="Email address" required
+            autoFocus={autoFocus}
             labelText="Email address"
             {...props.getFieldProps('email')}
           />

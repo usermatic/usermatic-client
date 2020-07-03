@@ -36,10 +36,12 @@ const TotpTokenForm: React.FC<{
   submit: (code: string) => void,
   InputComponent: InputComponentType,
   idPrefix?: string
+  autoFocus: boolean
 }> = ({
   submit,
   idPrefix,
-  InputComponent
+  InputComponent,
+  autoFocus
 }) => {
 
   const initialValues = {
@@ -72,7 +74,8 @@ const TotpTokenForm: React.FC<{
         <InputComponent
           type="text"
           id={getId(idPrefix, "totp-code")}
-          required autoFocus
+          required
+          autoFocus={autoFocus}
           {...getFieldProps('code')}
           onChange={handleChangeWrapper}
         />
@@ -85,12 +88,14 @@ const RecoveryCodeForm: React.FC<{
   submit: (code: string) => void,
   InputComponent: InputComponentType,
   Button: ButtonType,
-  idPrefix?: string
+  idPrefix?: string,
+  autoFocus: boolean
 }> = ({
   submit,
   idPrefix,
   InputComponent,
-  Button
+  Button,
+  autoFocus
 }) => {
 
   const initialValues = {
@@ -129,7 +134,8 @@ const RecoveryCodeForm: React.FC<{
           <InputComponent
             type="text"
             id={getId(idPrefix, "recovery-code")}
-            required autoFocus
+            required
+            autoFocus={autoFocus}
             {...getFieldProps('code')}
             onChange={handleChangeWrapper}
           />
@@ -147,13 +153,15 @@ export const MFAForm: React.FC<{
   loading: boolean,
   error?: ApolloError,
   components?: Components,
-  idPrefix?: string
+  idPrefix?: string,
+  autoFocus?: boolean
 }> = ({
   submit,
   loading,
   error,
   idPrefix,
-  components
+  components,
+  autoFocus = false
 }) => {
 
   const {
@@ -186,11 +194,13 @@ export const MFAForm: React.FC<{
 
     recoveryCodeInput={
       <RecoveryCodeForm key={stateKey} submit={submit} idPrefix={idPrefix}
+          autoFocus={autoFocus}
           Button={Button}
           InputComponent={RecoveryCodeInputComponent} />
     }
     totpTokenInput={
       <TotpTokenForm key={stateKey} submit={submit} idPrefix={idPrefix}
+          autoFocus={autoFocus}
           InputComponent={TotpInputComponent} />
     }
 
@@ -228,11 +238,13 @@ MFAForm.displayName = 'MFAForm'
 export const AddTotpForm: React.FC<{
   idPrefix?: string,
   onSuccess?: () => void,
-  components?: Components
+  components?: Components,
+  autoFocus?: boolean
 }> = ({
   idPrefix,
   onSuccess,
-  components
+  components,
+  autoFocus = false
 }) => {
 
   const {
@@ -277,6 +289,7 @@ export const AddTotpForm: React.FC<{
         idPrefix={idPrefix}
         InputComponent={TotpInputComponent}
         submit={submitCode}
+        autoFocus={autoFocus}
       />
     }
   />

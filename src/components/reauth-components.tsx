@@ -75,6 +75,12 @@ export type ReauthenticateGuardProps = {
    * more information.
    */
   components?: Components
+
+  /**
+   * If true, add the `autoFocus` property to the email input of the login form.
+   * Defaults to false
+   */
+  autoFocus?: boolean
 }
 
 /**
@@ -129,7 +135,8 @@ export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
   maxTokenAge = "2m",
   onClose,
   components,
-  prompt
+  prompt,
+  autoFocus = false
 }) => {
 
   const {
@@ -196,7 +203,8 @@ export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
         passwordInput={
           <PasswordInput type="password"
             id="reauth-guard-password"
-            placeholder="password" autoFocus
+            placeholder="password"
+            autoFocus={autoFocus}
             labelText="password"
             {...props.getFieldProps('password')}
           />

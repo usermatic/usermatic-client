@@ -67,6 +67,12 @@ export type ChangePasswordFormProps = {
    * more information.
    */
   components?: Components
+
+  /**
+   * If true, add the `autoFocus` property to the email input of the login form.
+   * Defaults to false
+   */
+  autoFocus?: boolean
 }
 
 /**
@@ -79,7 +85,8 @@ export type ChangePasswordFormProps = {
 export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
   onSuccess,
   idPrefix,
-  components
+  components,
+  autoFocus = false
 }) => {
 
   const {
@@ -146,7 +153,8 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
          type="password"
          autoComplete="password"
          id={getId(idPrefix, "change-password-old-password")}
-         placeholder="Old Password" required autoFocus
+         placeholder="Old Password" required
+         autoFocus={autoFocus}
          labelText="Old Password"
          {...props.getFieldProps('oldPassword')}
       />
@@ -155,7 +163,7 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
          type="password"
          autoComplete="new-password"
          id={getId(idPrefix, "change-password-new-password")}
-         placeholder="New Password" required autoFocus
+         placeholder="New Password" required
          labelText="New Password"
          {...props.getFieldProps('newPassword')}
       />
@@ -171,7 +179,8 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
             <EmailAddressInput
                type="email"
                id={getId(idPrefix, "change-password-email")}
-               placeholder="Email" required autoFocus
+               placeholder="Email" required
+               autoFocus={autoFocus}
                labelText="Email"
                {...props.getFieldProps('email')}
             />
@@ -246,6 +255,12 @@ export type ResetPasswordFormProps = {
    * more information.
    */
   components?: Components
+
+  /**
+   * If true, add the `autoFocus` property to the email input of the login form.
+   * Defaults to false
+   */
+  autoFocus?: boolean
 }
 
 /**
@@ -266,6 +281,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   loginAfterReset: loginAfterResetArg = true,
   exposeLoginAfterReset: allowLoginAfterResetArg = true,
   redirectAfterReset: redirectAfterResetArg = false,
+  autoFocus = false
 }) => {
 
   const {
@@ -398,7 +414,8 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
             id={getId(idPrefix, "reset-password-new-password")}
             placeholder="New Password"
             labelText="New Password"
-            required autoFocus
+            required
+            autoFocus={autoFocus}
             {...props.getFieldProps('newPassword')}
           />
         }
@@ -449,6 +466,12 @@ export type RequestPasswordResetFormProps = {
    * Custom display components. See 'Customizing Usermatic' for more information.
    */
   components?: Components
+
+  /**
+   * If true, add the `autoFocus` property to the email input of the login form.
+   * Defaults to false
+   */
+  autoFocus?: boolean
 }
 
 /**
@@ -463,7 +486,8 @@ export type RequestPasswordResetFormProps = {
 export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> = ({
   idPrefix,
   onCancel,
-  components
+  components,
+  autoFocus = false
 }) => {
 
   const {
@@ -512,7 +536,8 @@ export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> =
           <EmailAddressInput
             type="email"
             id={getId(idPrefix, "request-password-reset-email")}
-            placeholder="Email address" required autoFocus
+            placeholder="Email address" required
+            autoFocus={autoFocus}
             labelText="Email address"
             {...props.getFieldProps('email')}
           />
