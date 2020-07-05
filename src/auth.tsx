@@ -406,6 +406,8 @@ export type UsermaticProps = {
  *   </Usermatic>
  * }
  *
+ * export default MyApp
+ *
  * @example
  *
  * // Using Usermatic with Create React App.
