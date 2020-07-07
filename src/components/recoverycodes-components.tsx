@@ -97,11 +97,11 @@ export const GenRecoveryCodesForm: React.FC<{
    * process. Use this if you are using this component in a modal or other
    * conditionally-rendered context.
    */
-  onClose?: () => void
+  onCancel?: () => void
 }> = ({
   onSuccess = () => {},
   components,
-  onClose
+  onCancel
 }) => {
 
   const { LoadingMessageComponent } = useComponents(components)
@@ -118,7 +118,7 @@ export const GenRecoveryCodesForm: React.FC<{
   return <ReauthenticateGuard
     tokenContents={{ operations: ['gen-recovery-codes'] }}
     prompt={prompt}
-    onClose={onClose}
+    onCancel={onCancel}
   >
     <GenRecoveryCodesFormInner codeCount={count} onSuccess={onSuccess}
       components={components}

@@ -191,6 +191,16 @@ exports[`<ChangePasswordForm> with password 1`] = `
       validate={[Function]}
     >
       <DefaultChangePasswordForm
+        cancelButton={
+          <DefaultButton
+            disabled={false}
+            name="cancel-change-password"
+            onClick={[Function]}
+            role="cancel"
+          >
+            Cancel
+          </DefaultButton>
+        }
         error={<ErrorMessage />}
         formProps={
           Object {
@@ -340,6 +350,19 @@ exports[`<ChangePasswordForm> with password 1`] = `
               Change Password
             </button>
           </DefaultButton>
+          <DefaultButton
+            disabled={false}
+            name="cancel-change-password"
+            onClick={[Function]}
+            role="cancel"
+          >
+            <button
+              className="btn btn-outline-secondary um-btn um-btn-cancel um-btn-cancel-change-password"
+              onClick={[Function]}
+            >
+              Cancel
+            </button>
+          </DefaultButton>
           <ErrorMessage />
         </form>
       </DefaultChangePasswordForm>
@@ -380,6 +403,16 @@ exports[`<ChangePasswordForm> without password 1`] = `
       validate={[Function]}
     >
       <DefaultAddPasswordForm
+        cancelButton={
+          <DefaultButton
+            disabled={false}
+            name="cancel-change-password"
+            onClick={[Function]}
+            role="cancel"
+          >
+            Cancel
+          </DefaultButton>
+        }
         emailInput={
           <DefaultInputComponent
             autoFocus={false}
@@ -524,6 +557,19 @@ exports[`<ChangePasswordForm> without password 1`] = `
               type="submit"
             >
               Set Password
+            </button>
+          </DefaultButton>
+          <DefaultButton
+            disabled={false}
+            name="cancel-change-password"
+            onClick={[Function]}
+            role="cancel"
+          >
+            <button
+              className="btn btn-outline-secondary um-btn um-btn-cancel um-btn-cancel-change-password"
+              onClick={[Function]}
+            >
+              Cancel
             </button>
           </DefaultButton>
           <ErrorMessage />
@@ -4630,15 +4676,6 @@ exports[`UserAccountSettings 1`] = `
                           <ChangePassword>
                             <DefaultModalComponent
                               close={[Function]}
-                              footer={
-                                <DefaultButton
-                                  name="close-change-password"
-                                  onClick={[Function]}
-                                  role="cancel"
-                                >
-                                  Close
-                                </DefaultButton>
-                              }
                               isOpen={false}
                               key="0"
                               onRequestClose={[Function]}

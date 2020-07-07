@@ -73,6 +73,13 @@ export type ChangePasswordFormProps = {
    * Defaults to false
    */
   autoFocus?: boolean
+
+  /**
+   * onCancel() can be used to hook ChangePasswordForm up to a modal.
+   * It is called when the user clicks the "Cancel" button displayed by
+   * <ChangePasswordForm>
+   */
+  onCancel?: () => void
 }
 
 /**
@@ -86,6 +93,7 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
   onSuccess,
   idPrefix,
   components,
+  onCancel,
   autoFocus = false
 }) => {
 
@@ -196,6 +204,18 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
             </Button>
           }
 
+          cancelButton={
+            <Button role="cancel" name="cancel-change-password"
+              onClick={(e) => {
+                e.preventDefault()
+                onCancel?.()
+              }}
+              disabled={loading}
+            >
+              Cancel
+            </Button>
+          }
+
           error={<ErrorMessage error={error} />}
         />
       } else {
@@ -208,6 +228,18 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
             <Button role="submit" name="change-password"
               disabled={loading} type="submit">
               { loading ? 'Please wait...' : 'Change Password' }
+            </Button>
+          }
+
+          cancelButton={
+            <Button role="cancel" name="cancel-change-password"
+              onClick={(e) => {
+                e.preventDefault()
+                onCancel?.()
+              }}
+              disabled={loading}
+            >
+              Cancel
             </Button>
           }
 

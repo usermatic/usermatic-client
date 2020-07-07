@@ -150,6 +150,7 @@ const classesForName = (name: ButtonName): string => {
     case 'configure-totp':
     case 'set-password':
     case 'change-password':
+    case 'cancel-change-password':
       return ''
 
     case 'exit-recovery-mode':
@@ -271,6 +272,7 @@ const DefaultChangePasswordForm: ChangePasswordFormType = ({
   newPasswordInput,
   passwordScore,
   submitButton,
+  cancelButton,
   error
 }) => (
   <form {...formProps}>
@@ -278,6 +280,7 @@ const DefaultChangePasswordForm: ChangePasswordFormType = ({
     {newPasswordInput}
     {passwordScore}
     {submitButton}
+    {cancelButton}
     {error}
   </form>
 )
@@ -288,6 +291,7 @@ const DefaultAddPasswordForm: AddPasswordFormType = ({
   newPasswordInput,
   passwordScore,
   submitButton,
+  cancelButton,
   error
 }) => (
   <form {...formProps}>
@@ -295,6 +299,7 @@ const DefaultAddPasswordForm: AddPasswordFormType = ({
     {newPasswordInput}
     {passwordScore}
     {submitButton}
+    {cancelButton}
     {error}
   </form>
 )

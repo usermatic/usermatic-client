@@ -87,13 +87,8 @@ const ChangePassword: React.FC<{}> = () => {
     <ModalComponent
       {...modalProps}
       title={<>Change Password</>}
-      footer={
-        <Button role="cancel" name="close-change-password" onClick={modalProps.close}>
-          Close
-        </Button>
-      }
     >
-      <ChangePasswordForm onSuccess={onSuccess}/>
+      <ChangePasswordForm onSuccess={onSuccess} onCancel={modalProps.close} />
     </ModalComponent>
 
     <Button role="submit" name="change-password" onClick={modalProps.open}>
@@ -143,7 +138,7 @@ const RemoveOauthCredential: React.FC<{cred: OauthCredential}> = ({cred}) => {
       <ReauthenticateGuard
         tokenContents={{ operations: ['gen-recovery-codes'] }}
         prompt={prompt}
-        onClose={modalProps.close}
+        onCancel={modalProps.close}
       >
         <RemoveOauthCredentialInner cred={cred} onSuccess={onSuccess}/>
       </ReauthenticateGuard>
@@ -214,7 +209,7 @@ const GenRecoveryCodes: React.FC<{}> = () => {
       {...modalProps}
       title={<>Change Password</>}
     >
-      <GenRecoveryCodesForm onClose={modalProps.close} />
+      <GenRecoveryCodesForm onCancel={modalProps.close} />
     </ModalComponent>
 
     <Button role="submit" name="generate-recovery-codes" onClick={modalProps.open}>

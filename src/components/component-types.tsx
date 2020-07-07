@@ -67,6 +67,7 @@ export type ButtonName = 'login'
   | 'generate-recovery-codes'
   | 'remove-oauth-credential'
   | 'configure-totp'
+  | 'cancel-change-password'
 
 export type ButtonProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement> & {
   role: ButtonRole
@@ -129,13 +130,19 @@ type BaseAddPasswordFormProps = {
    * The submit button, as rendered via <Button>
    */
   submitButton: ReactNode,
+
+  /**
+   * The cancel button, as rendered via <Button>
+   */
+  cancelButton: ReactNode,
+
   /**
    * The error message, if any, as rendered via <ErrorMessageComponent>.
    */
   error: ReactNode
 }
 
-export type ResetPasswordFormComponentProps = BaseAddPasswordFormProps & {
+export type ResetPasswordFormComponentProps = Omit<BaseAddPasswordFormProps, 'cancelButton'> & {
   /**
    * A checkbox as rendered by <CheckboxComponent>
    */

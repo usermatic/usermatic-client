@@ -61,11 +61,12 @@ export type ReauthenticateGuardProps = {
   maxTokenAge?: string
 
   /**
-   * onClose() can be used to hook ReauthenticateGuard up to a modal.
-   * It is calledl when the user clicks the "Close" button displayed by
+   * onCancel() can be used to hook ReauthenticateGuard up to a modal.
+   * It is called when the user clicks the "Close" button displayed by
    * <ReauthenticateGuard>
    */
-  onClose?: () => void
+  onCancel?: () => void
+
   /**
    * A prompt to diplay above the password input.
    */
@@ -133,7 +134,7 @@ export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
   children,
   tokenContents,
   maxTokenAge = "2m",
-  onClose,
+  onCancel,
   components,
   prompt,
   autoFocus = false
@@ -179,7 +180,7 @@ export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
 
   const onClick = (e: MouseEvent) => {
     e.preventDefault()
-    if (onClose) { onClose() }
+    if (onCancel) { onCancel() }
   }
 
   if (!prompt) {
