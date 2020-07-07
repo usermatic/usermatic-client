@@ -133,7 +133,7 @@ const classesForRole = (role: ButtonRole): string => {
 const classesForName = (name: ButtonName): string => {
   switch (name) {
     case 'login':
-      return 'px-5'
+      return 'px-5 mr-3'
 
     case 'logout':
     case 'forgot-password':
@@ -346,8 +346,8 @@ const DefaultPasswordForm: PasswordFormType = ({
   forgotPasswordButton,
   error
 }) => {
-  const submitClasses = useClassnames(
-    'mb-3 justify-content-between d-flex', 'um-password-signin-button-container'
+  const classes = useClassnames(
+    'my-3 justify-content-between d-flex', 'um-password-signin-button-container'
   )
 
   return <form {...formProps}>
@@ -355,7 +355,7 @@ const DefaultPasswordForm: PasswordFormType = ({
     {passwordInput}
     {stayLoggedInInput}
 
-    <div className={submitClasses}>
+    <div className={classes}>
       {signinButton}
       {forgotPasswordButton}
     </div>
@@ -518,7 +518,9 @@ const DefaultCreateAccountForm: CreateAccountFormType = ({
     {passwordInput}
     {passwordScore}
     {stayLoggedInInput}
-    {createAccountButton}
+    <div className="my-3">
+      {createAccountButton}
+    </div>
   </form>
   {error}
 </>

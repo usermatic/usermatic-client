@@ -373,8 +373,10 @@ export type UsermaticProps = {
    */
   useUmClasses?: boolean,
   /**
-   * If true, insert Usermatic diagnostics into your application. Defaults
-   * to false.
+   * If true, insert Usermatic diagnostics into your application, which can
+   * help you debug mis-configurations more quickly. Generally, you should only
+   * set this to true during development and testing.
+   * Defaults to false.
    */
   showDiagnostics?: boolean,
   /**

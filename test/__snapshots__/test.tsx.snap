@@ -1025,7 +1025,7 @@ exports[`<LoginForm> TOTP 1`] = `
             </div>
           </DefaultCheckboxComponent>
           <div
-            className="mb-3 justify-content-between d-flex um-password-signin-button-container"
+            className="my-3 justify-content-between d-flex um-password-signin-button-container"
           >
             <DefaultButton
               id="login-button"
@@ -1034,7 +1034,7 @@ exports[`<LoginForm> TOTP 1`] = `
               type="submit"
             >
               <button
-                className="btn btn-primary px-5 um-btn um-btn-submit um-btn-login"
+                className="btn btn-primary px-5 mr-3 um-btn um-btn-submit um-btn-login"
                 id="login-button"
                 type="submit"
               >
@@ -1544,7 +1544,7 @@ exports[`<LoginForm> login 1`] = `
             </div>
           </DefaultCheckboxComponent>
           <div
-            className="mb-3 justify-content-between d-flex um-password-signin-button-container"
+            className="my-3 justify-content-between d-flex um-password-signin-button-container"
           >
             <DefaultButton
               id="login-button"
@@ -1553,7 +1553,7 @@ exports[`<LoginForm> login 1`] = `
               type="submit"
             >
               <button
-                className="btn btn-primary px-5 um-btn um-btn-submit um-btn-login"
+                className="btn btn-primary px-5 mr-3 um-btn um-btn-submit um-btn-login"
                 id="login-button"
                 type="submit"
               >
@@ -1816,7 +1816,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
             </div>
           </DefaultCheckboxComponent>
           <div
-            className="mb-3 justify-content-between d-flex um-password-signin-button-container"
+            className="my-3 justify-content-between d-flex um-password-signin-button-container"
           >
             <DefaultButton
               id="login-button"
@@ -1825,7 +1825,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
               type="submit"
             >
               <button
-                className="btn btn-primary px-5 um-btn um-btn-submit um-btn-login"
+                className="btn btn-primary px-5 mr-3 um-btn um-btn-submit um-btn-login"
                 id="login-button"
                 type="submit"
               >
@@ -2065,20 +2065,24 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
                 </label>
               </div>
             </DefaultCheckboxComponent>
-            <DefaultButton
-              id="create-account-button"
-              name="create-account"
-              role="submit"
-              type="submit"
+            <div
+              className="my-3"
             >
-              <button
-                className="btn btn-primary btn-block um-btn um-btn-submit um-btn-create-account"
+              <DefaultButton
                 id="create-account-button"
+                name="create-account"
+                role="submit"
                 type="submit"
               >
-                Create Account
-              </button>
-            </DefaultButton>
+                <button
+                  className="btn btn-primary btn-block um-btn um-btn-submit um-btn-create-account"
+                  id="create-account-button"
+                  type="submit"
+                >
+                  Create Account
+                </button>
+              </DefaultButton>
+            </div>
           </form>
           <ErrorMessage />
         </DefaultCreateAccountForm>
@@ -2450,20 +2454,24 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
                 </label>
               </div>
             </DefaultCheckboxComponent>
-            <DefaultButton
-              id="create-account-button"
-              name="create-account"
-              role="submit"
-              type="submit"
+            <div
+              className="my-3"
             >
-              <button
-                className="btn btn-primary btn-block um-btn um-btn-submit um-btn-create-account"
+              <DefaultButton
                 id="create-account-button"
+                name="create-account"
+                role="submit"
                 type="submit"
               >
-                Create Account
-              </button>
-            </DefaultButton>
+                <button
+                  className="btn btn-primary btn-block um-btn um-btn-submit um-btn-create-account"
+                  id="create-account-button"
+                  type="submit"
+                >
+                  Create Account
+                </button>
+              </DefaultButton>
+            </div>
           </form>
           <ErrorMessage />
         </DefaultCreateAccountForm>
@@ -2988,7 +2996,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
             </div>
           </DefaultCheckboxComponent>
           <div
-            className="mb-3 justify-content-between d-flex um-password-signin-button-container"
+            className="my-3 justify-content-between d-flex um-password-signin-button-container"
           >
             <DefaultButton
               id="login-button"
@@ -2997,7 +3005,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
               type="submit"
             >
               <button
-                className="btn btn-primary px-5 um-btn um-btn-submit um-btn-login"
+                className="btn btn-primary px-5 mr-3 um-btn um-btn-submit um-btn-login"
                 id="login-button"
                 type="submit"
               >
@@ -3560,20 +3568,24 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                 </label>
               </div>
             </DefaultCheckboxComponent>
-            <DefaultButton
-              id="create-account-button"
-              name="create-account"
-              role="submit"
-              type="submit"
+            <div
+              className="my-3"
             >
-              <button
-                className="btn btn-primary btn-block um-btn um-btn-submit um-btn-create-account"
+              <DefaultButton
                 id="create-account-button"
+                name="create-account"
+                role="submit"
                 type="submit"
               >
-                Create Account
-              </button>
-            </DefaultButton>
+                <button
+                  className="btn btn-primary btn-block um-btn um-btn-submit um-btn-create-account"
+                  id="create-account-button"
+                  type="submit"
+                >
+                  Create Account
+                </button>
+              </DefaultButton>
+            </div>
           </form>
           <ErrorMessage />
         </DefaultCreateAccountForm>
@@ -4287,7 +4299,7 @@ exports[`ComponentProvider 1`] = `
             </div>
           </DefaultCheckboxComponent>
           <div
-            className="mb-3 justify-content-between d-flex um-password-signin-button-container"
+            className="my-3 justify-content-between d-flex um-password-signin-button-container"
           >
             <DefaultButton
               id="login-button"
@@ -4296,7 +4308,7 @@ exports[`ComponentProvider 1`] = `
               type="submit"
             >
               <button
-                className="btn btn-primary px-5 um-btn um-btn-submit um-btn-login"
+                className="btn btn-primary px-5 mr-3 um-btn um-btn-submit um-btn-login"
                 id="login-button"
                 type="submit"
               >

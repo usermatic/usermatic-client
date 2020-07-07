@@ -781,8 +781,12 @@ export const LogoutButton: React.FC<{
    * Display components for LogoutButton. See 'Customizing Usermatic' for
    * more information.
    */
-  components?: Components
-}> = ({components}) => {
+  components?: Components,
+  /**
+   * The button text. Defaults to 'Logout'
+   */
+  children?: ReactNode
+}> = ({components, children}) => {
 
   const {
     Button
@@ -796,7 +800,9 @@ export const LogoutButton: React.FC<{
   }
 
   return <>
-    <Button role="secondary" name="logout" onClick={onClick}>Logout</Button>
+    <Button role="secondary" name="logout" onClick={onClick}>
+      { children ?? 'Logout' }
+    </Button>
     <ErrorMessage error={error} />
   </>
 }
