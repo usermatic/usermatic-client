@@ -337,32 +337,36 @@ exports[`<ChangePasswordForm> with password 1`] = `
               username="bob@bob.com"
             />
           </PasswordScore>
-          <DefaultButton
-            disabled={false}
-            name="change-password"
-            role="submit"
-            type="submit"
+          <div
+            className="d-flex justify-content-between um-change-password-footer"
           >
-            <button
-              className="btn btn-primary um-btn um-btn-submit um-btn-change-password"
+            <DefaultButton
+              disabled={false}
+              name="change-password"
+              role="submit"
               type="submit"
             >
-              Change Password
-            </button>
-          </DefaultButton>
-          <DefaultButton
-            disabled={false}
-            name="cancel-change-password"
-            onClick={[Function]}
-            role="cancel"
-          >
-            <button
-              className="btn btn-outline-secondary um-btn um-btn-cancel um-btn-cancel-change-password"
+              <button
+                className="btn btn-primary um-btn um-btn-submit um-btn-change-password"
+                type="submit"
+              >
+                Change Password
+              </button>
+            </DefaultButton>
+            <DefaultButton
+              disabled={false}
+              name="cancel-change-password"
               onClick={[Function]}
+              role="cancel"
             >
-              Cancel
-            </button>
-          </DefaultButton>
+              <button
+                className="btn btn-outline-secondary um-btn um-btn-cancel um-btn-cancel-change-password"
+                onClick={[Function]}
+              >
+                Cancel
+              </button>
+            </DefaultButton>
+          </div>
           <ErrorMessage />
         </form>
       </DefaultChangePasswordForm>
@@ -2112,7 +2116,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
               </div>
             </DefaultCheckboxComponent>
             <div
-              className="my-3"
+              className="my-3 create-account-form-footer"
             >
               <DefaultButton
                 id="create-account-button"
@@ -2501,7 +2505,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
               </div>
             </DefaultCheckboxComponent>
             <div
-              className="my-3"
+              className="my-3 create-account-form-footer"
             >
               <DefaultButton
                 id="create-account-button"
@@ -3615,7 +3619,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
               </div>
             </DefaultCheckboxComponent>
             <div
-              className="my-3"
+              className="my-3 create-account-form-footer"
             >
               <DefaultButton
                 id="create-account-button"

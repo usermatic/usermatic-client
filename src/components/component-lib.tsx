@@ -274,16 +274,19 @@ const DefaultChangePasswordForm: ChangePasswordFormType = ({
   submitButton,
   cancelButton,
   error
-}) => (
-  <form {...formProps}>
+}) => {
+  const classes = useClassnames('d-flex justify-content-between', 'um-change-password-footer')
+  return <form {...formProps}>
     {oldPasswordInput}
     {newPasswordInput}
     {passwordScore}
-    {submitButton}
-    {cancelButton}
+    <div className={classes}>
+      {submitButton}
+      {cancelButton}
+    </div>
     {error}
   </form>
-)
+}
 
 const DefaultAddPasswordForm: AddPasswordFormType = ({
   formProps,
@@ -517,18 +520,21 @@ const DefaultCreateAccountForm: CreateAccountFormType = ({
   passwordScore,
   createAccountButton,
   error
-}) => <>
-  <form {...formProps}>
-    {emailInput}
-    {passwordInput}
-    {passwordScore}
-    {stayLoggedInInput}
-    <div className="my-3">
-      {createAccountButton}
-    </div>
-  </form>
-  {error}
-</>
+}) => {
+  const classes = useClassnames('my-3', 'create-account-form-footer')
+  return <>
+    <form {...formProps}>
+      {emailInput}
+      {passwordInput}
+      {passwordScore}
+      {stayLoggedInInput}
+      <div className={classes}>
+        {createAccountButton}
+      </div>
+    </form>
+    {error}
+  </>
+}
 
 const DefaultCreateAccountSuccessComponent: LoginSuccessType = ({
   email,
