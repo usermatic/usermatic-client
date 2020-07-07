@@ -273,7 +273,22 @@ export const useAuthenticatedUser = () => {
 
 const AuthenticatedUserProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const { csrfToken } = useCsrfToken()
-  const value = useCsrfQuery(useGetAuthenticatedUserQuery, { skip: !csrfToken })
+
+  const response = useCsrfQuery(useGetAuthenticatedUserQuery, {
+    skip: !csrfToken,
+    pollInterval: 5 * 60 * 1000
+  })
+
+  // Cache the response so that in case of an error, we re-use the last-known
+  // good value.
+  const [value, setValue] = useState(response)
+  useEffect(() => {
+    const { loading, error } = response
+    if (!loading && !error) {
+      setValue(response)
+    }
+  }, [response])
+
   return <AuthenticatedUserContext.Provider value={value}>
     {children}
   </AuthenticatedUserContext.Provider>
