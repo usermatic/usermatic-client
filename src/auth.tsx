@@ -274,22 +274,28 @@ export const useAuthenticatedUser = () => {
 const AuthenticatedUserProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const { csrfToken } = useCsrfToken()
 
+  const skip = !csrfToken
   const response = useCsrfQuery(useGetAuthenticatedUserQuery, {
-    skip: !csrfToken,
-    pollInterval: 5 * 60 * 1000
+    skip,
+    pollInterval: 5 * 1000
   })
 
   // Cache the response so that in case of an error, we re-use the last-known
   // good value.
-  const [value, setValue] = useState(response)
+  const [value, setValue] = useState<typeof response>()
+
+  const { loading, error, data } = response
+  // We pull out getAuthenticatedUser as the dependency for useEffect, because
+  // the tests go into an infinite loop if we use `data` directly.
+  const getAuthenticatedUser = data?.getAuthenticatedUser
+  const isError = Boolean(error)
   useEffect(() => {
-    const { loading, error } = response
-    if (!loading && !error) {
+    if (!skip && !loading && !isError) {
       setValue(response)
     }
-  }, [response])
+  }, [skip, loading, isError, getAuthenticatedUser])
 
-  return <AuthenticatedUserContext.Provider value={value}>
+  return <AuthenticatedUserContext.Provider value={value ?? response}>
     {children}
   </AuthenticatedUserContext.Provider>
 }
