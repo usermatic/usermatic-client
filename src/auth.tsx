@@ -277,7 +277,7 @@ const AuthenticatedUserProvider: React.FC<{children: ReactNode}> = ({children}) 
   const skip = !csrfToken
   const response = useCsrfQuery(useGetAuthenticatedUserQuery, {
     skip,
-    pollInterval: 5 * 1000
+    pollInterval: 5 * 60 * 1000
   })
 
   // Cache the response so that in case of an error, we re-use the last-known
