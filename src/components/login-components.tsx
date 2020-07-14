@@ -242,7 +242,7 @@ const useGetOauthToken = (onToken: (token: string) => void) => {
 type OauthLoginProps = LoginFormProps & { children: ReactNode }
 
 const OauthCreateAccount: React.FC<OauthLoginProps> = ({
-  onLogin, children, components
+  onLogin, children, components, idPrefix
 }) => {
 
   const {
@@ -255,6 +255,10 @@ const OauthCreateAccount: React.FC<OauthLoginProps> = ({
   const [oauthToken, setOauthToken] = useState<string | undefined>()
   const { popupWindow } = useGetOauthToken(setOauthToken)
 
+  const totpRequired = Boolean(error?.graphQLErrors.find(
+    e => e.extensions?.exception?.code === 'TOTP_REQUIRED'
+  ))
+
   useEffect(() => {
     if (oauthToken) {
       submit({
@@ -264,7 +268,27 @@ const OauthCreateAccount: React.FC<OauthLoginProps> = ({
     }
   }, [oauthToken])
 
-  if (oauthToken == null) {
+  if (totpRequired) {
+    const submitCode = (totpCode: string) => {
+      if (oauthToken) {
+        submit({
+          credential: { oauthToken, totpCode },
+          stayLoggedIn: false
+        })
+      } else {
+        throw new Error("no oauthToken present")
+      }
+    }
+
+    return <MFAForm
+       submit={submitCode}
+       idPrefix={idPrefix}
+       // Don't display the error message that says we need a code...
+       error={totpRequired ? undefined : error}
+       loading={loading}
+       components={components}
+    />
+  } else if (oauthToken == null) {
     return <>
       <SocialButtons popupWindow={popupWindow} components={components} />
       {children}
