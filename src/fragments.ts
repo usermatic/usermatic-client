@@ -121,6 +121,7 @@ export const LOGIN_MUT = gql`
   ) {
     login(credential: $credential, stayLoggedIn: $stayLoggedIn) {
       user { ...UserParts }
+      accountCreated
       refetch {
         getAuthenticatedUser { id userJwt }
       }
