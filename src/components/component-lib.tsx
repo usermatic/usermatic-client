@@ -914,9 +914,11 @@ const DefaultLoginMethodsComponent: LoginMethodsType = ({
     <ProfileHeader>Login Methods</ProfileHeader>
     <dl>
       <ProfileLine>
-        <>Password</>
+        <>{ passwordCredential == null
+          ? 'No Password Set'
+          : 'Password' }
+        </>
         <>
-          {(passwordCredential == null) && 'Not Set'}
           {changePassword}
         </>
       </ProfileLine>

@@ -79,20 +79,26 @@ const ChangePassword: React.FC<{}> = () => {
   const modalProps = useModal()
   const { Button, ModalComponent } = useComponents({})
 
+  const { passwordCredential } = usePasswordCredential()
+
   const onSuccess = () => {
     modalProps.close()
   }
 
+  const prompt = passwordCredential == null
+    ? 'Add Password'
+    : 'Change Password'
+
   return <>
     <ModalComponent
       {...modalProps}
-      title={<>Change Password</>}
+      title={prompt}
     >
       <ChangePasswordForm onSuccess={onSuccess} onCancel={modalProps.close} />
     </ModalComponent>
 
     <Button role="submit" name="change-password" onClick={modalProps.open}>
-      Change Password
+      {prompt}
     </Button>
   </>
 }

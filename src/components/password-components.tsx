@@ -7,7 +7,7 @@ import { Formik, FormikValues, FormikErrors } from 'formik'
 import jwtDecode from 'jwt-decode'
 
 import { useAppConfig, useToken } from '../auth'
-import { ErrorMessage } from '../errors'
+import { ErrorMessage, ErrorMessageCase } from '../errors'
 import { useDebounce } from '../use-debounce'
 
 import { useComponents } from './component-lib'
@@ -216,7 +216,13 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
             </Button>
           }
 
-          error={<ErrorMessage error={error} />}
+          error={
+            <ErrorMessage error={error}>
+              <ErrorMessageCase code='EMAIL_EXISTS'>
+                The email address {props.values.email} is already in use.
+              </ErrorMessageCase>
+            </ErrorMessage>
+          }
         />
       } else {
         return <ChangePasswordFormComponent formProps={formProps}

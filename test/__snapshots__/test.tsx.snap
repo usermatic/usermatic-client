@@ -431,7 +431,17 @@ exports[`<ChangePasswordForm> without password 1`] = `
             value="bob@bob.com"
           />
         }
-        error={<ErrorMessage />}
+        error={
+          <ErrorMessage>
+            <ErrorMessageCase
+              code="EMAIL_EXISTS"
+            >
+              The email address 
+              bob@bob.com
+               is already in use.
+            </ErrorMessageCase>
+          </ErrorMessage>
+        }
         formProps={
           Object {
             "onReset": [Function],
@@ -4465,9 +4475,9 @@ exports[`UserAccountSettings 1`] = `
             loading={false}
             name={
               Object {
-                "family": "Hello World",
-                "full": "Hello World",
-                "given": "Hello World",
+                "family": undefined,
+                "full": undefined,
+                "given": undefined,
               }
             }
           >
@@ -4501,9 +4511,7 @@ exports[`UserAccountSettings 1`] = `
                         </div>
                         <div
                           className="col-sm-5 um-profile-line-right-col"
-                        >
-                          Hello World
-                        </div>
+                        />
                       </div>
                     </ProfileLine>
                     <ProfileLine>
@@ -4685,11 +4693,7 @@ exports[`UserAccountSettings 1`] = `
                               onRequestClose={[Function]}
                               open={[Function]}
                               setKey={[Function]}
-                              title={
-                                <React.Fragment>
-                                  Change Password
-                                </React.Fragment>
-                              }
+                              title="Change Password"
                             >
                               <Modal
                                 ariaHideApp={true}
