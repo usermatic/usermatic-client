@@ -68,6 +68,8 @@ export type ButtonName = 'login'
   | 'remove-oauth-credential'
   | 'configure-totp'
   | 'cancel-change-password'
+  | 'submit-edit-name'
+  | 'cancel-edit-name'
 
 export type ButtonProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement> & {
   role: ButtonRole
@@ -561,8 +563,21 @@ export type TotpInfoType = React.FC<{
 }>
 
 export type SecurityInfoType = React.FC<{
+  /**
+   * True if the user has enabled TOTP.
+   */
   totpEnabled: boolean,
+
+  /**
+   * A button that opens a modal that the user can click to configure TOTP
+   * for their account
+   */
   configureTotp: ReactNode,
+
+  /**
+   * A button which opens a modal that the user can click to configure TOTP
+   * for their account
+   */
   generateNewRecoveryCodes: ReactNode,
   codeCount: number
 }>
@@ -576,6 +591,58 @@ export type LoginMethodsType = React.FC<{
   changePassword: ReactNode
 }>
 
+export type NameDisplayType = React.FC<{
+  /**
+   * The user's first and last name.
+   */
+  name: {
+    first?: string,
+    last?: string,
+  },
+
+  /**
+   * editName can be called to open the name editing modal.
+   */
+  editName: () => void
+}>
+
+export type EditNameFormType = React.FC<{
+  /**
+   * Properties which must be passed into a <form> element by this component.
+   *
+   * @example
+   * <form {...formProps}>...</form>
+   */
+  formProps: FormProps,
+
+  /**
+   * The input for the first name.
+   */
+  firstNameInput: ReactNode,
+  /**
+   * The input for the last name.
+   */
+  lastNameInput: ReactNode,
+  /**
+   * Form submission button
+   */
+  submitButton: ReactNode,
+  /**
+   * Form cancel button
+   */
+  cancelButton: ReactNode
+
+  /**
+   * The error message, if any, as rendered via <ErrorMessageComponent>.
+   */
+  error: ReactNode
+
+  /**
+   * True if the name form submission is in progress
+   */
+  loading: boolean
+}>
+
 export type PersonalDetailType = React.FC<{
   /**
    * The message displayed while waiting for asynchronous actions (e.g. form
@@ -586,12 +653,21 @@ export type PersonalDetailType = React.FC<{
    * The error message, if any, as rendered via <ErrorMessageComponent>.
    */
   error: ReactNode,
+
+  /**
+   * The user's email address
+   */
   email: string,
-  name: {
-    family?: string,
-    given?: string,
-    full?: string
-  },
+
+  /**
+   * The name display/editing component. (See EditNameFormComponent)
+   */
+  name: ReactNode,
+
+  /**
+   * Shows whether the email address is verified, and allows user to request
+   * an additional verification email. (See EmailVerificationComponent)
+   */
   emailVerificationStatus: ReactNode,
 }>
 
@@ -798,6 +874,17 @@ export type DefiniteComponents = {
    * settings, including recovery code generation.
    */
   SecurityInfoComponent: SecurityInfoType
+
+  /**
+   * Component to display user's name, used by <UserAccountSettings>
+   */
+  NameDisplayComponent: NameDisplayType
+
+  /**
+   * Form component used by <UserAccountSettings> for displaying and editing
+   * the user's name.
+   */
+  EditNameFormComponent: EditNameFormType
 
   /**
    * Component used by <UserAccountSettings> for displaying a user's

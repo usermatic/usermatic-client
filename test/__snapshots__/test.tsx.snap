@@ -4417,6 +4417,7 @@ exports[`UserAccountSettings 1`] = `
           "CheckboxComponent": [Function],
           "CreateAccountFormComponent": [Function],
           "CreateAccountSuccessComponent": [Function],
+          "EditNameFormComponent": [Function],
           "EmailAddressInput": [Function],
           "EmailStatusComponent": [Function],
           "EmailVerificationComponent": [Function],
@@ -4432,6 +4433,7 @@ exports[`UserAccountSettings 1`] = `
           "LoginSuccessComponent": [Function],
           "MFAFormComponent": [Function],
           "ModalComponent": [Function],
+          "NameDisplayComponent": [Function],
           "PasswordFormComponent": [Function],
           "PasswordInput": [Function],
           "PasswordScoreComponent": [Function],
@@ -4474,11 +4476,14 @@ exports[`UserAccountSettings 1`] = `
             error={<ErrorMessage />}
             loading={false}
             name={
-              Object {
-                "family": undefined,
-                "full": undefined,
-                "given": undefined,
-              }
+              <Name
+                name={
+                  Object {
+                    "first": "Hello World",
+                    "last": "Hello World",
+                  }
+                }
+              />
             }
           >
             <Card
@@ -4511,7 +4516,132 @@ exports[`UserAccountSettings 1`] = `
                         </div>
                         <div
                           className="col-sm-5 um-profile-line-right-col"
-                        />
+                        >
+                          <Name
+                            name={
+                              Object {
+                                "first": "Hello World",
+                                "last": "Hello World",
+                              }
+                            }
+                          >
+                            <DefaultModalComponent
+                              close={[Function]}
+                              isOpen={false}
+                              key="0"
+                              onRequestClose={[Function]}
+                              open={[Function]}
+                              setKey={[Function]}
+                              title={
+                                <React.Fragment>
+                                  Edit Name
+                                </React.Fragment>
+                              }
+                            >
+                              <Modal
+                                ariaHideApp={true}
+                                bodyOpenClassName="ReactModal__Body--open"
+                                className="modal-dialog um-modal-dialog"
+                                closeTimeoutMS={0}
+                                isOpen={false}
+                                onRequestClose={[Function]}
+                                parentSelector={[Function]}
+                                portalClassName="ReactModalPortal"
+                                role="dialog"
+                                shouldCloseOnEsc={true}
+                                shouldCloseOnOverlayClick={true}
+                                shouldFocusAfterRender={true}
+                                shouldReturnFocusAfterClose={true}
+                                style={
+                                  Object {
+                                    "content": Object {
+                                      "outline": "none",
+                                    },
+                                    "overlay": Object {
+                                      "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                    },
+                                  }
+                                }
+                              >
+                                <Portal
+                                  containerInfo={
+                                    <div
+                                      class="ReactModalPortal"
+                                    />
+                                  }
+                                >
+                                  <ModalPortal
+                                    ariaHideApp={true}
+                                    bodyOpenClassName="ReactModal__Body--open"
+                                    className="modal-dialog um-modal-dialog"
+                                    closeTimeoutMS={0}
+                                    defaultStyles={
+                                      Object {
+                                        "content": Object {
+                                          "WebkitOverflowScrolling": "touch",
+                                          "background": "#fff",
+                                          "border": "1px solid #ccc",
+                                          "borderRadius": "4px",
+                                          "bottom": "40px",
+                                          "left": "40px",
+                                          "outline": "none",
+                                          "overflow": "auto",
+                                          "padding": "20px",
+                                          "position": "absolute",
+                                          "right": "40px",
+                                          "top": "40px",
+                                        },
+                                        "overlay": Object {
+                                          "backgroundColor": "rgba(255, 255, 255, 0.75)",
+                                          "bottom": 0,
+                                          "left": 0,
+                                          "position": "fixed",
+                                          "right": 0,
+                                          "top": 0,
+                                        },
+                                      }
+                                    }
+                                    isOpen={false}
+                                    onRequestClose={[Function]}
+                                    parentSelector={[Function]}
+                                    portalClassName="ReactModalPortal"
+                                    role="dialog"
+                                    shouldCloseOnEsc={true}
+                                    shouldCloseOnOverlayClick={true}
+                                    shouldFocusAfterRender={true}
+                                    shouldReturnFocusAfterClose={true}
+                                    style={
+                                      Object {
+                                        "content": Object {
+                                          "outline": "none",
+                                        },
+                                        "overlay": Object {
+                                          "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                        },
+                                      }
+                                    }
+                                  />
+                                </Portal>
+                              </Modal>
+                            </DefaultModalComponent>
+                            <DefaultNameDisplayComponent
+                              editName={[Function]}
+                              name={
+                                Object {
+                                  "first": "Hello World",
+                                  "last": "Hello World",
+                                }
+                              }
+                            >
+                              <div
+                                className="d-inline-block border rounded px-2 um-profile-display-name"
+                                onClick={[Function]}
+                              >
+                                Hello World Hello World
+                              </div>
+                            </DefaultNameDisplayComponent>
+                          </Name>
+                        </div>
                       </div>
                     </ProfileLine>
                     <ProfileLine>

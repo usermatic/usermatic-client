@@ -1,11 +1,13 @@
 
-import React, { MouseEvent, useContext, useEffect } from 'react'
+import React, { MouseEvent, useContext, useMemo, useCallback, useEffect } from 'react'
+import { Formik, FormikValues } from 'formik'
 
 import {
   usePersonalDetails,
   usePrimaryEmail,
   usePasswordCredential,
   useOauthCredentials,
+  useUpdateProfile,
   OauthCredential
 } from '../user'
 
@@ -175,6 +177,96 @@ const LoginMethods: React.FC<{}> = () => {
   />
 }
 
+const Name: React.FC<{
+  name: {
+    first?: string,
+    last?: string,
+  }
+}> = ({name}) => {
+
+  const {
+    ModalComponent,
+    Button,
+    EditNameFormComponent,
+    NameDisplayComponent,
+    InputComponent
+  } = useComponents({})
+
+  const modalProps = useModal()
+
+  const [submit, { loading, error }] = useUpdateProfile({
+    onCompleted: () => {
+      modalProps.close()
+    }
+  })
+
+  const initialValues = useMemo(() => ({
+    first: name.first,
+    last: name.last
+  }), [name.first, name.last])
+
+  const onSubmit = useCallback((values: FormikValues) => {
+    const { first, last } = values
+    const variables = { name: { last, first } }
+    submit(variables)
+  }, [submit])
+
+  return <>
+    <ModalComponent
+      {...modalProps}
+      title={<>Edit Name</>}
+    >
+      <Formik initialValues={initialValues} onSubmit={onSubmit}>
+        {(props) => {
+          const { handleReset, handleSubmit } = props
+          const formProps = {
+            onSubmit: handleSubmit,
+            onReset: handleReset,
+          }
+          return <EditNameFormComponent
+            formProps={formProps}
+            firstNameInput={
+              <InputComponent
+                type="text"
+                id="first-name"
+                labelText="First"
+                {...props.getFieldProps('first')}
+              />
+            }
+
+            lastNameInput={
+              <InputComponent
+                type="text"
+                id="last-name"
+                labelText="Last"
+                {...props.getFieldProps('last')}
+              />
+            }
+
+            submitButton={
+              <Button role="submit" name="submit-edit-name" id="submit-edit-name-button" type="submit">
+                Submit
+              </Button>
+            }
+
+            cancelButton={
+              <Button role="cancel" name="cancel-edit-name" id="cancel-edit-name-button" type="button"
+                onClick={modalProps.close}>
+                Cancel
+              </Button>
+            }
+
+            error={<ErrorMessage error={error}/>}
+            loading={loading}
+          />
+        }}
+      </Formik>
+    </ModalComponent>
+
+    <NameDisplayComponent name={name} editName={modalProps.open}/>
+  </>
+}
+
 const PersonalDetails: React.FC<{}> = () => {
   const {
     PersonalDetailComponent,
@@ -189,7 +281,7 @@ const PersonalDetails: React.FC<{}> = () => {
   return <PersonalDetailComponent
     loading={loading && <LoadingMessageComponent/>}
     error={<ErrorMessage error={error}/>}
-    name={name}
+    name={<Name name={name}/>}
     email={email ?? ''}
     emailVerificationStatus={
       passwordCredential && <VerificationStatus cred={passwordCredential}/>

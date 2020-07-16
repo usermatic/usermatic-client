@@ -54,6 +54,8 @@ import {
   EmailVerificationType,
   UserAccountSettingsType,
   EmailStatusType,
+  NameDisplayType,
+  EditNameFormType,
   PersonalDetailType,
   LoginMethodsType,
   SecurityInfoType,
@@ -151,6 +153,8 @@ const classesForName = (name: ButtonName): string => {
     case 'set-password':
     case 'change-password':
     case 'cancel-change-password':
+    case 'submit-edit-name':
+    case 'cancel-edit-name':
       return ''
 
     case 'exit-recovery-mode':
@@ -866,7 +870,7 @@ const DefaultPersonalDetailComponent: PersonalDetailType = ({
     <dl>
       <ProfileLine>
         <>Name</>
-        <>{name.full}</>
+        <>{name}</>
       </ProfileLine>
       <ProfileLine>
         <>Email</>
@@ -972,6 +976,46 @@ const DefaultSecurityInfoComponent: SecurityInfoType = ({
     </dl>
   </Card>
 )
+
+const DefaultNameDisplayComponent: NameDisplayType = ({
+  name,
+  editName
+}) => {
+  const nameUnset = !(name.first || name.last)
+  const display = nameUnset ? 'Click to set name' : `${name.first} ${name.last}`
+
+  const classes = useClassnames(
+    classNames(nameUnset && 'text-muted', 'd-inline-block border rounded px-2'),
+    classNames(nameUnset && 'um-profile-display-name-unset', 'um-profile-display-name')
+  )
+
+  return <div className={classes} onClick={editName}>
+    {display}
+  </div>
+}
+
+const DefaultEditNameFormComponent: EditNameFormType = ({
+  formProps,
+  firstNameInput,
+  lastNameInput,
+  submitButton,
+  cancelButton,
+  error,
+  loading
+}) => {
+  const classes = useClassnames('d-flex justify-content-between', 'um-change-password-footer')
+  return <>
+    <form {...formProps}>
+      {firstNameInput}
+      {lastNameInput}
+      <div className={classes}>
+        {submitButton}
+        {cancelButton}
+      </div>
+    </form>
+    {error}
+  </>
+}
 
 const DefaultModalComponent: ModalType = ({
   isOpen,
@@ -1115,6 +1159,8 @@ export const useComponents = (propComponents: Components = {}): DefiniteComponen
     const UserAccountSettingsComponent = merged.UserAccountSettingsComponent ??
       DefaultUserAccountSettingsComponent
     const SecurityInfoComponent = merged.SecurityInfoComponent ?? DefaultSecurityInfoComponent
+    const NameDisplayComponent = merged.NameDisplayComponent ?? DefaultNameDisplayComponent
+    const EditNameFormComponent = merged.EditNameFormComponent ?? DefaultEditNameFormComponent
     const PersonalDetailComponent = merged.PersonalDetailComponent ??
       DefaultPersonalDetailComponent
     const LoginMethodsComponent = merged.LoginMethodsComponent ??
@@ -1161,6 +1207,8 @@ export const useComponents = (propComponents: Components = {}): DefiniteComponen
       EmailStatusComponent,
       UserAccountSettingsComponent,
       SecurityInfoComponent,
+      NameDisplayComponent,
+      EditNameFormComponent,
       PersonalDetailComponent,
       LoginMethodsComponent
     }

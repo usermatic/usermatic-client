@@ -5,6 +5,14 @@ import { ApolloError } from 'apollo-client'
 
 import { useAuthenticatedUser } from './auth'
 
+import { useCsrfMutation } from './hooks'
+
+import {
+  useUpdateUserProfileMutation,
+  UpdateUserProfileMutationOptions,
+  UpdateUserProfileMutationVariables
+} from '../gen/operations'
+
 export const useProfile = () => {
   const ret = useAuthenticatedUser()
 
@@ -283,9 +291,8 @@ export const usePersonalDetails = (): {
   loading: boolean,
   error?: ApolloError,
   name: {
-    family?: string,
-    given?: string,
-    full?: string
+    last?: string,
+    first?: string,
   }
 } => {
 
@@ -297,9 +304,8 @@ export const usePersonalDetails = (): {
     loading,
     error,
     name: {
-      family: name.family ?? undefined,
-      given: name.given ?? undefined,
-      full: name.full ?? undefined
+      last: name.last ?? undefined,
+      first: name.first ?? undefined,
     }
   }
 }
@@ -338,4 +344,18 @@ export const useProfilePhotos = (): {
     .filter((c?: string): c is string => c != null)
 
   return { loading, error, photos }
+}
+
+export const useUpdateProfile = (options: UpdateUserProfileMutationOptions = {}) => {
+  const [submitUpdate, ret] = useCsrfMutation(useUpdateUserProfileMutation, options)
+
+  const submit = (variables: UpdateUserProfileMutationVariables) => {
+    submitUpdate({ variables })
+  }
+
+  const { loading, error, data } = ret
+  const success = Boolean(!loading && !error && data)
+  const retObj = { ...ret, success }
+
+  return [submit, retObj] as [typeof submit, typeof retObj]
 }

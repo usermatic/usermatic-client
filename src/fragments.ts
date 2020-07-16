@@ -6,7 +6,7 @@ export const USER_FRAGMENT = gql`
     __typename
     id
     primaryEmail
-    name { given family full }
+    name { first last }
     credentials { id type email emailIsVerified provider providerID photoURL }
     recoveryCodesRemaining
     userJwt
@@ -227,6 +227,17 @@ export const SEND_VERIFICATION_EMAIL_MUT = gql`
   mutation sendVerificationEmail($email: String!) {
     sendVerificationEmail(email: $email) {
       success
+    }
+  }
+`
+
+export const UPDATE_PROFILE_MUT = gql`
+  mutation updateUserProfile($name: NameInput) {
+    updateUserProfile(name: $name) {
+      success
+      refetch {
+        getAuthenticatedUser { ...UserParts }
+      }
     }
   }
 `
