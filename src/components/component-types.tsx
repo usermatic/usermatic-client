@@ -533,19 +533,6 @@ export type EmailStatusType = React.FC<{
   resendVerificationEmailButton: ReactNode
 }>
 
-export type CredentialListType = React.FC<{
-  /**
-   * The error message, if any, as rendered via <ErrorMessageComponent>.
-   */
-  error: ReactNode,
-  /**
-   * The message displayed while waiting for asynchronous actions (e.g. form
-   * submission) to complete, as rendered by <LoadingMessageComponent>
-   */
-  loading: ReactNode,
-  credentials: ReactNode
-}>
-
 export type EmailInfoType = React.FC<{
   changePassword: ReactNode,
   credential: PasswordCredential
