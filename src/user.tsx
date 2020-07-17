@@ -122,41 +122,42 @@ export const useCredentials = (): {
 } => {
   const { loading, error, profile } = useProfile()
 
-  const profileCredentials = profile?.credentials
+  return useMemo(() => {
+    const profileCredentials = profile?.credentials
 
-  const credentials = useMemo(() => (
-    profileCredentials == null
-    ? undefined
-    : profileCredentials.map((c): Credential => {
-        if (c.type === 'PASSWORD') {
-          return {
-            type: c.type,
-            id: c.id,
-            email: c.email ?? '<unknown>',
-            emailIsVerified: Boolean(c.emailIsVerified)
-          }
-        } else {
-          return {
-            type: c.type,
-            id: c.id,
-            provider: c.provider ?? '<unknown>',
-            providerID: c.providerID ?? '<unknown>',
-            photoURL: (c.photoURL != null) ? c.photoURL : undefined,
-            email: (c.email != null) ? c.email : undefined,
-          }
-        }
-    })
-  ), [profileCredentials])
+    if (loading || error || !profileCredentials) {
+      return { loading, error }
+    }
 
-  if (!loading && !error && profile) {
+    const credentials =
+      profileCredentials == null
+      ? undefined
+      : profileCredentials.map((c): Credential => {
+          if (c.type === 'PASSWORD') {
+            return {
+              type: c.type,
+              id: c.id,
+              email: c.email ?? '<unknown>',
+              emailIsVerified: Boolean(c.emailIsVerified)
+            }
+          } else {
+            return {
+              type: c.type,
+              id: c.id,
+              provider: c.provider ?? '<unknown>',
+              providerID: c.providerID ?? '<unknown>',
+              photoURL: (c.photoURL != null) ? c.photoURL : undefined,
+              email: (c.email != null) ? c.email : undefined,
+            }
+          }
+      })
+
     return {
       loading,
       error,
       credentials
     }
-  } else {
-    return { loading, error }
-  }
+  }, [loading, error, profile])
 }
 
 /**
