@@ -1,5 +1,5 @@
 
-import React, { MouseEvent, useContext, useMemo, useCallback, useEffect } from 'react'
+import React, { MouseEvent, useContext, useMemo, useCallback, useEffect, useState } from 'react'
 import { Formik, FormikValues } from 'formik'
 
 import {
@@ -13,10 +13,11 @@ import {
 
 import { useRemoveOauthCredential } from '../oauth'
 import { useReauthToken } from '../reauth'
+import { useRecommendations } from '../recommendations'
 
 import { ReauthenticateGuard } from './reauth-components'
 import { ComponentContext, ComponentProvider, useComponents } from './component-lib'
-import { Components } from './component-types'
+import { ButtonRole, Components } from './component-types'
 import { ErrorMessage } from '../errors'
 import { useModal } from './modal'
 
@@ -76,7 +77,10 @@ const VerificationStatus: React.FC<{cred: PasswordCredential}> = ({cred}) => {
   />
 }
 
-const ChangePassword: React.FC<{}> = () => {
+const ChangePassword: React.FC<{
+  buttonRole?: ButtonRole,
+  finished?: () => void
+}> = ({finished, buttonRole = 'submit'}) => {
 
   const modalProps = useModal()
   const { Button, ModalComponent } = useComponents({})
@@ -85,6 +89,7 @@ const ChangePassword: React.FC<{}> = () => {
 
   const onSuccess = () => {
     modalProps.close()
+    finished?.()
   }
 
   const prompt = passwordCredential == null
@@ -99,7 +104,7 @@ const ChangePassword: React.FC<{}> = () => {
       <ChangePasswordForm onSuccess={onSuccess} onCancel={modalProps.close} />
     </ModalComponent>
 
-    <Button role="submit" name="change-password" onClick={modalProps.open}>
+    <Button role={buttonRole} name="change-password" onClick={modalProps.open}>
       {prompt}
     </Button>
   </>
@@ -289,7 +294,10 @@ const PersonalDetails: React.FC<{}> = () => {
   />
 }
 
-const GenRecoveryCodes: React.FC<{}> = () => {
+const GenRecoveryCodes: React.FC<{
+  buttonRole?: ButtonRole
+  finished?: () => void
+}> = ({finished, buttonRole = 'submit'}) => {
 
   const {
     Button,
@@ -297,26 +305,46 @@ const GenRecoveryCodes: React.FC<{}> = () => {
   } = useComponents({})
 
   const modalProps = useModal()
+  const [success, setSuccess] = useState(false)
 
   const { count } = useGetRecoveryCodeCount()
 
   const hasCodes = count != null && count > 0
 
+  const close = (e?: MouseEvent) => {
+    setSuccess(false)
+    modalProps.close()
+    finished?.()
+  }
+
+  const onSuccess = () => { setSuccess(true) }
+
   return <>
     <ModalComponent
       {...modalProps}
-      title={<>Change Password</>}
+      onRequestClose={close}
+      title={<>Generate Recovery Codes</>}
+      footer={
+        success &&
+        <Button role="secondary" name="regenerate-recovery-codes-dismiss" onClick={close}>
+          Dismiss
+        </Button>
+      }
     >
-      <GenRecoveryCodesForm onCancel={modalProps.close} />
+      <GenRecoveryCodesForm onSuccess={onSuccess} onCancel={modalProps.close} />
     </ModalComponent>
 
-    <Button role="submit" name="generate-recovery-codes" onClick={modalProps.open}>
-      { hasCodes ? 'Generate New Recovery Codes' : 'Generate Recovery Codes' }
+    <Button role={buttonRole} name="generate-recovery-codes" onClick={modalProps.open}>
+      { hasCodes ? 'Generate New Recovery Codes' : 'Get Recovery Codes' }
     </Button>
   </>
 }
 
-const ConfigureTotp: React.FC<{totpEnabled: boolean}> = ({totpEnabled}) => {
+const ConfigureTotp: React.FC<{
+  totpEnabled: boolean,
+  buttonRole?: ButtonRole,
+  finished?: () => void
+}> = ({totpEnabled, buttonRole = 'submit', finished}) => {
 
   const {
     Button,
@@ -325,12 +353,18 @@ const ConfigureTotp: React.FC<{totpEnabled: boolean}> = ({totpEnabled}) => {
 
   const modalProps = useModal()
 
+  const close = () => {
+    modalProps.close()
+    finished?.()
+  }
+
   return <>
     <ModalComponent
       {...modalProps}
+      onRequestClose={close}
       title={<>Configure Authenticator App</>}
       footer={
-        <Button role="cancel" name="close-change-password" onClick={modalProps.close}>
+        <Button role="cancel" name="close-change-password" onClick={close}>
           Close
         </Button>
       }
@@ -338,8 +372,8 @@ const ConfigureTotp: React.FC<{totpEnabled: boolean}> = ({totpEnabled}) => {
       <AddTotpForm />
     </ModalComponent>
 
-    <Button role="submit" name="configure-totp" onClick={modalProps.open}>
-      { totpEnabled ? 'Re-configure Authenticator App' : 'Configure Authenticator App' }
+    <Button role={buttonRole} name="configure-totp" onClick={modalProps.open}>
+      { totpEnabled ? 'Re-configure 2FA App' : 'Configure 2FA App' }
     </Button>
   </>
 }
@@ -363,6 +397,59 @@ const SecurityInfo: React.FC<{}> = () => {
     codeCount={count}
     generateNewRecoveryCodes={<GenRecoveryCodes/>}
   />
+}
+
+// Since the various recommendations modals are rendered by components that
+// are only rendered if the given recommendation is active, they would
+// disappear instantly after addressing the recommendation. useEnabled helps
+// keep the modals alive until they are actually dismissed.
+const useEnabled = (enabledProp: boolean) => {
+  const [enabled, setEnabled] = useState<boolean>(false)
+
+  // the prop can make us go from disabled to enabled, but we only go back
+  // to disabled when the disable() function is called.
+  useEffect(() => {
+    if (enabledProp && !enabled) {
+      setEnabled(true)
+    }
+  }, [enabledProp, enabled])
+
+  const disable = () => {
+    setEnabled(false)
+  }
+
+  return { enabled, disable }
+}
+
+//type EnableProps = ReturnType<typeof useEnabled>
+
+export const Recommendations: React.FC<{}> = () => {
+
+  const {
+    RecommendationsComponent
+  } = useComponents({})
+
+  const recommendations = useRecommendations()
+
+  const pwEnabled = useEnabled(!!recommendations.setPassword)
+  const recEnabled = useEnabled(!!recommendations.recoveryCodes)
+  const totpEnabled = useEnabled(!!recommendations.addTotp)
+
+  if (pwEnabled.enabled || recEnabled.enabled || totpEnabled.enabled) {
+    return <RecommendationsComponent
+      addPassword={pwEnabled.enabled &&
+        <ChangePassword finished={pwEnabled.disable} buttonRole="urgent"/>
+      }
+      addRecoveryCodes={recEnabled.enabled &&
+        <GenRecoveryCodes finished={recEnabled.disable} buttonRole="urgent"/>
+      }
+      addTotp={totpEnabled.enabled &&
+        <ConfigureTotp totpEnabled={false} finished={totpEnabled.disable} buttonRole="urgent"/>
+      }
+    />
+  }
+
+  return null
 }
 
 /**
@@ -406,6 +493,7 @@ export const UserAccountSettings: React.FC<{
     usermaticClasses={useUmClasses}
   >
     <UserAccountSettingsComponent
+      recommendations={<Recommendations/>}
       personalDetails={<PersonalDetails/>}
       loginMethods={<LoginMethods/>}
       accountSecurity={<SecurityInfo/>}

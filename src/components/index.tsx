@@ -46,6 +46,7 @@ export {
 } from './component-lib'
 
 export {
+  Recommendations,
   UserAccountSettings
 } from './account-settings-components'
 

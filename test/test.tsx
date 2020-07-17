@@ -108,6 +108,20 @@ const userWithPasswordAndOauth = () => ({
   userJwt: jwt.sign({ id: userId }, 'abc')
 })
 
+const userWithPasswordAndOauthAndTotp = () => {
+  const user = userWithPasswordAndOauth()
+  return {
+    ...user,
+    credentials: [
+      ...user.credentials,
+      {
+        type: 'TOTP',
+        id: credentialId
+      }
+    ]
+  }
+}
+
 const configNoOauth = {
   minPasswordStrength: 3,
   githubLoginEnabled: false,
@@ -792,10 +806,14 @@ test('UserAccountSettings', async () => {
   const recoveryCodesRemaining = jest.fn().mockReturnValue(10)
 
   const mocks = extendMocks({
-    AppConfig: () => (configNoOauth),
-    User: userWithPasswordAndOauth,
+    AppConfig: () => ({
+      ...configNoOauth,
+      totpEnabled: false
+    }),
+    User: userWithPasswordAndOauthAndTotp,
     Query: () => ({
       getAuthenticatedUser: () => ({
+        ...userWithPasswordAndOauthAndTotp(),
         recoveryCodesRemaining
       })
     }),
@@ -813,6 +831,42 @@ test('UserAccountSettings', async () => {
   )
 
   await waitUntil(wrapper, exists('#personal-detail'))
+
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+})
+
+test('Recommendations', async () => {
+  jest.useFakeTimers()
+
+  const signReauthenticationToken = mockSignReauthenticationToken()
+
+  const recoveryCodesRemaining = jest.fn().mockReturnValue(0)
+
+  const mocks = extendMocks({
+    AppConfig: () => ({
+      ...configNoOauth,
+      totpEnabled: true
+    }),
+    User: userWithoutPassword,
+    Query: () => ({
+      getAuthenticatedUser: () => ({
+        recoveryCodesRemaining
+      })
+    }),
+    Mutation: () => ({
+      signReauthenticationToken,
+    })
+  })
+
+  const wrapper = mount(
+    <TestWrapper mocks={mocks}>
+      <div id="client-test-div">
+        <components.Recommendations />
+      </div>
+    </TestWrapper>
+  )
+
+  await waitUntil(wrapper, exists('#security-recommendations'))
 
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 })

@@ -52,3 +52,7 @@ export {
   useCachedReauthToken,
   useReauthenticate
 } from './reauth'
+
+export {
+  useRecommendations
+} from './recommendations'

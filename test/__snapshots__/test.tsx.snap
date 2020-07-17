@@ -4400,6 +4400,470 @@ exports[`ComponentProvider 1`] = `
 </div>
 `;
 
+exports[`Recommendations 1`] = `
+<div
+  id="client-test-div"
+>
+  <Component>
+    <DefaultRecommendationsComponent
+      addPassword={
+        <ChangePassword
+          buttonRole="urgent"
+          finished={[Function]}
+        />
+      }
+      addRecoveryCodes={
+        <GenRecoveryCodes
+          buttonRole="urgent"
+          finished={[Function]}
+        />
+      }
+      addTotp={
+        <ConfigureTotp
+          buttonRole="urgent"
+          finished={[Function]}
+          totpEnabled={false}
+        />
+      }
+    >
+      <Card
+        id="security-recommendations"
+        role="alert"
+      >
+        <div
+          className="card mt-5 d-flex border border-warning um-card um-card-alert"
+          id="security-recommendations"
+        >
+          <div
+            className="card-body p-4 um-card-body"
+          >
+            <ProfileHeader>
+              <div
+                className="h3 pb-3 mb-3 border-bottom um-profile-header"
+              >
+                Security Recommendations
+              </div>
+            </ProfileHeader>
+            <RecommendationLine>
+              <div
+                className="row mb-3 um-recommendation-line"
+              >
+                <div
+                  className="col-sm-5 um-recommendation-line-left-col"
+                >
+                  <ChangePassword
+                    buttonRole="urgent"
+                    finished={[Function]}
+                  >
+                    <DefaultModalComponent
+                      close={[Function]}
+                      isOpen={false}
+                      key="0"
+                      onRequestClose={[Function]}
+                      open={[Function]}
+                      setKey={[Function]}
+                      title="Add Password"
+                    >
+                      <Modal
+                        ariaHideApp={true}
+                        bodyOpenClassName="ReactModal__Body--open"
+                        className="modal-dialog um-modal-dialog"
+                        closeTimeoutMS={0}
+                        isOpen={false}
+                        onRequestClose={[Function]}
+                        parentSelector={[Function]}
+                        portalClassName="ReactModalPortal"
+                        role="dialog"
+                        shouldCloseOnEsc={true}
+                        shouldCloseOnOverlayClick={true}
+                        shouldFocusAfterRender={true}
+                        shouldReturnFocusAfterClose={true}
+                        style={
+                          Object {
+                            "content": Object {
+                              "outline": "none",
+                            },
+                            "overlay": Object {
+                              "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                            },
+                          }
+                        }
+                      >
+                        <Portal
+                          containerInfo={
+                            <div
+                              class="ReactModalPortal"
+                            />
+                          }
+                        >
+                          <ModalPortal
+                            ariaHideApp={true}
+                            bodyOpenClassName="ReactModal__Body--open"
+                            className="modal-dialog um-modal-dialog"
+                            closeTimeoutMS={0}
+                            defaultStyles={
+                              Object {
+                                "content": Object {
+                                  "WebkitOverflowScrolling": "touch",
+                                  "background": "#fff",
+                                  "border": "1px solid #ccc",
+                                  "borderRadius": "4px",
+                                  "bottom": "40px",
+                                  "left": "40px",
+                                  "outline": "none",
+                                  "overflow": "auto",
+                                  "padding": "20px",
+                                  "position": "absolute",
+                                  "right": "40px",
+                                  "top": "40px",
+                                },
+                                "overlay": Object {
+                                  "backgroundColor": "rgba(255, 255, 255, 0.75)",
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "position": "fixed",
+                                  "right": 0,
+                                  "top": 0,
+                                },
+                              }
+                            }
+                            isOpen={false}
+                            onRequestClose={[Function]}
+                            parentSelector={[Function]}
+                            portalClassName="ReactModalPortal"
+                            role="dialog"
+                            shouldCloseOnEsc={true}
+                            shouldCloseOnOverlayClick={true}
+                            shouldFocusAfterRender={true}
+                            shouldReturnFocusAfterClose={true}
+                            style={
+                              Object {
+                                "content": Object {
+                                  "outline": "none",
+                                },
+                                "overlay": Object {
+                                  "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                },
+                              }
+                            }
+                          />
+                        </Portal>
+                      </Modal>
+                    </DefaultModalComponent>
+                    <DefaultButton
+                      name="change-password"
+                      onClick={[Function]}
+                      role="urgent"
+                    >
+                      <button
+                        className="btn btn-outline-danger um-btn um-btn-urgent um-btn-change-password"
+                        onClick={[Function]}
+                      >
+                        Add Password
+                      </button>
+                    </DefaultButton>
+                  </ChangePassword>
+                </div>
+                <div
+                  className="col-sm-7 um-recommendation-line-right-col"
+                >
+                  <span
+                    className="text-muted"
+                  >
+                    Secure your account by adding a password. You can continue logging in via your preferred Oauth provider, but by setting a password, we'll be able to ask for it if you try to delete any apps or download your user data (among other things).
+                  </span>
+                </div>
+              </div>
+            </RecommendationLine>
+            <RecommendationLine>
+              <div
+                className="row mb-3 um-recommendation-line"
+              >
+                <div
+                  className="col-sm-5 um-recommendation-line-left-col"
+                >
+                  <GenRecoveryCodes
+                    buttonRole="urgent"
+                    finished={[Function]}
+                  >
+                    <DefaultModalComponent
+                      close={[Function]}
+                      footer={false}
+                      isOpen={false}
+                      key="0"
+                      onRequestClose={[Function]}
+                      open={[Function]}
+                      setKey={[Function]}
+                      title={
+                        <React.Fragment>
+                          Generate Recovery Codes
+                        </React.Fragment>
+                      }
+                    >
+                      <Modal
+                        ariaHideApp={true}
+                        bodyOpenClassName="ReactModal__Body--open"
+                        className="modal-dialog um-modal-dialog"
+                        closeTimeoutMS={0}
+                        isOpen={false}
+                        onRequestClose={[Function]}
+                        parentSelector={[Function]}
+                        portalClassName="ReactModalPortal"
+                        role="dialog"
+                        shouldCloseOnEsc={true}
+                        shouldCloseOnOverlayClick={true}
+                        shouldFocusAfterRender={true}
+                        shouldReturnFocusAfterClose={true}
+                        style={
+                          Object {
+                            "content": Object {
+                              "outline": "none",
+                            },
+                            "overlay": Object {
+                              "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                            },
+                          }
+                        }
+                      >
+                        <Portal
+                          containerInfo={
+                            <div
+                              class="ReactModalPortal"
+                            />
+                          }
+                        >
+                          <ModalPortal
+                            ariaHideApp={true}
+                            bodyOpenClassName="ReactModal__Body--open"
+                            className="modal-dialog um-modal-dialog"
+                            closeTimeoutMS={0}
+                            defaultStyles={
+                              Object {
+                                "content": Object {
+                                  "WebkitOverflowScrolling": "touch",
+                                  "background": "#fff",
+                                  "border": "1px solid #ccc",
+                                  "borderRadius": "4px",
+                                  "bottom": "40px",
+                                  "left": "40px",
+                                  "outline": "none",
+                                  "overflow": "auto",
+                                  "padding": "20px",
+                                  "position": "absolute",
+                                  "right": "40px",
+                                  "top": "40px",
+                                },
+                                "overlay": Object {
+                                  "backgroundColor": "rgba(255, 255, 255, 0.75)",
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "position": "fixed",
+                                  "right": 0,
+                                  "top": 0,
+                                },
+                              }
+                            }
+                            isOpen={false}
+                            onRequestClose={[Function]}
+                            parentSelector={[Function]}
+                            portalClassName="ReactModalPortal"
+                            role="dialog"
+                            shouldCloseOnEsc={true}
+                            shouldCloseOnOverlayClick={true}
+                            shouldFocusAfterRender={true}
+                            shouldReturnFocusAfterClose={true}
+                            style={
+                              Object {
+                                "content": Object {
+                                  "outline": "none",
+                                },
+                                "overlay": Object {
+                                  "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                },
+                              }
+                            }
+                          />
+                        </Portal>
+                      </Modal>
+                    </DefaultModalComponent>
+                    <DefaultButton
+                      name="generate-recovery-codes"
+                      onClick={[Function]}
+                      role="urgent"
+                    >
+                      <button
+                        className="btn btn-outline-danger um-btn um-btn-urgent um-btn-generate-recovery-codes"
+                        onClick={[Function]}
+                      >
+                        Get Recovery Codes
+                      </button>
+                    </DefaultButton>
+                  </GenRecoveryCodes>
+                </div>
+                <div
+                  className="col-sm-7 um-recommendation-line-right-col"
+                >
+                  <span
+                    className="text-muted"
+                  >
+                    Prevent yourself from being locked out of your account by generating account recovery codes.
+                  </span>
+                </div>
+              </div>
+            </RecommendationLine>
+            <RecommendationLine>
+              <div
+                className="row mb-3 um-recommendation-line"
+              >
+                <div
+                  className="col-sm-5 um-recommendation-line-left-col"
+                >
+                  <ConfigureTotp
+                    buttonRole="urgent"
+                    finished={[Function]}
+                    totpEnabled={false}
+                  >
+                    <DefaultModalComponent
+                      close={[Function]}
+                      footer={
+                        <DefaultButton
+                          name="close-change-password"
+                          onClick={[Function]}
+                          role="cancel"
+                        >
+                          Close
+                        </DefaultButton>
+                      }
+                      isOpen={false}
+                      key="0"
+                      onRequestClose={[Function]}
+                      open={[Function]}
+                      setKey={[Function]}
+                      title={
+                        <React.Fragment>
+                          Configure Authenticator App
+                        </React.Fragment>
+                      }
+                    >
+                      <Modal
+                        ariaHideApp={true}
+                        bodyOpenClassName="ReactModal__Body--open"
+                        className="modal-dialog um-modal-dialog"
+                        closeTimeoutMS={0}
+                        isOpen={false}
+                        onRequestClose={[Function]}
+                        parentSelector={[Function]}
+                        portalClassName="ReactModalPortal"
+                        role="dialog"
+                        shouldCloseOnEsc={true}
+                        shouldCloseOnOverlayClick={true}
+                        shouldFocusAfterRender={true}
+                        shouldReturnFocusAfterClose={true}
+                        style={
+                          Object {
+                            "content": Object {
+                              "outline": "none",
+                            },
+                            "overlay": Object {
+                              "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                            },
+                          }
+                        }
+                      >
+                        <Portal
+                          containerInfo={
+                            <div
+                              class="ReactModalPortal"
+                            />
+                          }
+                        >
+                          <ModalPortal
+                            ariaHideApp={true}
+                            bodyOpenClassName="ReactModal__Body--open"
+                            className="modal-dialog um-modal-dialog"
+                            closeTimeoutMS={0}
+                            defaultStyles={
+                              Object {
+                                "content": Object {
+                                  "WebkitOverflowScrolling": "touch",
+                                  "background": "#fff",
+                                  "border": "1px solid #ccc",
+                                  "borderRadius": "4px",
+                                  "bottom": "40px",
+                                  "left": "40px",
+                                  "outline": "none",
+                                  "overflow": "auto",
+                                  "padding": "20px",
+                                  "position": "absolute",
+                                  "right": "40px",
+                                  "top": "40px",
+                                },
+                                "overlay": Object {
+                                  "backgroundColor": "rgba(255, 255, 255, 0.75)",
+                                  "bottom": 0,
+                                  "left": 0,
+                                  "position": "fixed",
+                                  "right": 0,
+                                  "top": 0,
+                                },
+                              }
+                            }
+                            isOpen={false}
+                            onRequestClose={[Function]}
+                            parentSelector={[Function]}
+                            portalClassName="ReactModalPortal"
+                            role="dialog"
+                            shouldCloseOnEsc={true}
+                            shouldCloseOnOverlayClick={true}
+                            shouldFocusAfterRender={true}
+                            shouldReturnFocusAfterClose={true}
+                            style={
+                              Object {
+                                "content": Object {
+                                  "outline": "none",
+                                },
+                                "overlay": Object {
+                                  "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                },
+                              }
+                            }
+                          />
+                        </Portal>
+                      </Modal>
+                    </DefaultModalComponent>
+                    <DefaultButton
+                      name="configure-totp"
+                      onClick={[Function]}
+                      role="urgent"
+                    >
+                      <button
+                        className="btn btn-outline-danger um-btn um-btn-urgent um-btn-configure-totp"
+                        onClick={[Function]}
+                      >
+                        Configure 2FA App
+                      </button>
+                    </DefaultButton>
+                  </ConfigureTotp>
+                </div>
+                <div
+                  className="col-sm-7 um-recommendation-line-right-col"
+                >
+                  <span
+                    className="text-muted"
+                  >
+                    Further secure your account by configuring an authenticator app such as Google Authenticator.
+                  </span>
+                </div>
+              </div>
+            </RecommendationLine>
+          </div>
+        </div>
+      </Card>
+    </DefaultRecommendationsComponent>
+  </Component>
+</div>
+`;
+
 exports[`UserAccountSettings 1`] = `
 <div
   id="client-test-div"
@@ -4440,6 +4904,7 @@ exports[`UserAccountSettings 1`] = `
           "PersonalDetailComponent": [Function],
           "PostRecoveryCodeFormComponent": [Function],
           "ReauthFormComponent": [Function],
+          "RecommendationsComponent": [Function],
           "RecoveryCodeDisplayComponent": [Function],
           "RecoveryCodeInputComponent": [Function],
           "RecoveryCodeRegenerationPromptComponent": [Function],
@@ -4457,7 +4922,9 @@ exports[`UserAccountSettings 1`] = `
         accountSecurity={<SecurityInfo />}
         loginMethods={<LoginMethods />}
         personalDetails={<PersonalDetails />}
+        recommendations={<Unknown />}
       >
+        <Component />
         <PersonalDetails>
           <DefaultPersonalDetailComponent
             email="bob@bob.com"
@@ -5106,7 +5573,7 @@ exports[`UserAccountSettings 1`] = `
                                   className="btn btn-primary um-btn um-btn-submit um-btn-configure-totp"
                                   onClick={[Function]}
                                 >
-                                  Configure Authenticator App
+                                  Configure 2FA App
                                 </button>
                               </DefaultButton>
                             </ConfigureTotp>
@@ -5145,6 +5612,7 @@ exports[`UserAccountSettings 1`] = `
                             <GenRecoveryCodes>
                               <DefaultModalComponent
                                 close={[Function]}
+                                footer={false}
                                 isOpen={false}
                                 key="0"
                                 onRequestClose={[Function]}
@@ -5152,7 +5620,7 @@ exports[`UserAccountSettings 1`] = `
                                 setKey={[Function]}
                                 title={
                                   <React.Fragment>
-                                    Change Password
+                                    Generate Recovery Codes
                                   </React.Fragment>
                                 }
                               >

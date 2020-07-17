@@ -33,6 +33,7 @@ import {
   ButtonProps,
   ButtonType,
   ModalType,
+  RecommendationsType,
   InputComponentType,
   ResetPasswordFormType,
   AddPasswordFormType,
@@ -129,6 +130,8 @@ const classesForRole = (role: ButtonRole): string => {
       return 'btn-outline-primary'
     case 'danger':
       return 'btn-danger'
+    case 'urgent':
+      return 'btn-outline-danger'
   }
 }
 
@@ -145,6 +148,7 @@ const classesForName = (name: ButtonName): string => {
     case 'submit-reauth':
     case 'cancel-reauth':
     case 'regenerate-recovery-codes':
+    case 'regenerate-recovery-codes-dismiss':
     case 'close-change-password':
     case 'resend-verification-email':
     case 'generate-recovery-codes':
@@ -791,11 +795,13 @@ const DefaultEmailVerificationComponent: EmailVerificationType = ({
 }
 
 const DefaultUserAccountSettingsComponent: UserAccountSettingsType = ({
+  recommendations,
   personalDetails,
   loginMethods,
   accountSecurity
 }) => {
   return <>
+    {recommendations}
     {personalDetails}
     {loginMethods}
     {accountSecurity}
@@ -829,7 +835,7 @@ const ProfileHeader: React.FC<{children: ReactNode}> = ({children}) => {
   return <div className={classes}>{children}</div>
 }
 
-const ProfileLine: React.FC<{children: ReactNode, className?: string}> = ({children, className}) => {
+const ProfileLine: React.FC<{children: ReactNode}> = ({children}) => {
 
   const containerClasses = useClassnames('row mb-3', 'um-profile-line')
   const leftClasses = useClassnames('col-sm-7', 'um-profile-line-left-col')
@@ -846,8 +852,17 @@ const ProfileLine: React.FC<{children: ReactNode, className?: string}> = ({child
   </div>
 }
 
-const Card: React.FC<{id: string, children: ReactNode}> = ({id, children}) => {
-  const cardClasses = useClassnames('card mt-5 d-flex', 'um-card')
+const Card: React.FC<{
+  id: string,
+  role?: 'alert',
+  children: ReactNode
+}> = ({id, role, children}) => {
+  const isAlert = role === 'alert'
+
+  const cardClasses = useClassnames(
+    classNames('card mt-5 d-flex', isAlert && 'border border-warning'),
+    classNames('um-card', isAlert && 'um-card-alert')
+  )
   const cardBodyClasses = useClassnames('card-body p-4', 'um-card-body')
   return <div id={id} className={cardClasses}>
     <div className={cardBodyClasses}>
@@ -1017,6 +1032,80 @@ const DefaultEditNameFormComponent: EditNameFormType = ({
   </>
 }
 
+const RecommendationLine: React.FC<{children: ReactNode}> = ({children}) => {
+
+  const containerClasses = useClassnames('row mb-3', 'um-recommendation-line')
+  const leftClasses = useClassnames('col-sm-5', 'um-recommendation-line-left-col')
+  const rightClasses = useClassnames('col-sm-7', 'um-recommendation-line-right-col')
+
+  const childArr = React.Children.toArray(children)
+  if (childArr.length != 2) {
+    throw new Error("RecommendationLine must have two children!")
+  }
+
+  return <div className={containerClasses}>
+    <div className={leftClasses}>{childArr[0]}</div>
+    <div className={rightClasses}>{childArr[1]}</div>
+  </div>
+}
+
+const DefaultRecommendationsComponent: RecommendationsType = ({
+  addPassword,
+  addRecoveryCodes,
+  addTotp,
+  recoveryCodesCount
+}) => {
+  return <Card id='security-recommendations' role="alert">
+    <ProfileHeader>Security Recommendations</ProfileHeader>
+    { addPassword &&
+      <RecommendationLine>
+        <>
+          {addPassword}
+        </>
+        <>
+          <span className="text-muted">
+            Secure your account by adding a password. You can continue logging
+            in via your preferred Oauth provider, but by setting a password,
+            we'll be able to ask for it if you try to delete any apps or
+            download your user data (among other things).
+          </span>
+        </>
+      </RecommendationLine>
+    }
+
+
+    { addRecoveryCodes &&
+      <RecommendationLine>
+        <>
+          {addRecoveryCodes}
+        </>
+        <>
+          <span className="text-muted">
+            Prevent yourself from being locked out of your account by generating
+            account recovery codes.
+            { recoveryCodesCount != null && recoveryCodesCount > 0 &&
+              <>{' '}You currently have have { recoveryCodesCount } codes remaining.</> }
+          </span>
+        </>
+      </RecommendationLine>
+    }
+
+    { addTotp &&
+      <RecommendationLine>
+        <>
+          {addTotp}
+        </>
+        <>
+          <span className="text-muted">
+            Further secure your account by configuring an
+            authenticator app such as Google Authenticator.
+          </span>
+        </>
+      </RecommendationLine>
+    }
+  </Card>
+}
+
 const DefaultModalComponent: ModalType = ({
   isOpen,
   onRequestClose,
@@ -1161,6 +1250,7 @@ export const useComponents = (propComponents: Components = {}): DefiniteComponen
     const SecurityInfoComponent = merged.SecurityInfoComponent ?? DefaultSecurityInfoComponent
     const NameDisplayComponent = merged.NameDisplayComponent ?? DefaultNameDisplayComponent
     const EditNameFormComponent = merged.EditNameFormComponent ?? DefaultEditNameFormComponent
+    const RecommendationsComponent = merged.RecommendationsComponent ?? DefaultRecommendationsComponent
     const PersonalDetailComponent = merged.PersonalDetailComponent ??
       DefaultPersonalDetailComponent
     const LoginMethodsComponent = merged.LoginMethodsComponent ??
@@ -1209,6 +1299,7 @@ export const useComponents = (propComponents: Components = {}): DefiniteComponen
       SecurityInfoComponent,
       NameDisplayComponent,
       EditNameFormComponent,
+      RecommendationsComponent,
       PersonalDetailComponent,
       LoginMethodsComponent
     }

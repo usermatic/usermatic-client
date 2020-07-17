@@ -37,7 +37,7 @@ export type ErrorMessageType = React.FC<{
  * Semantic role of button. Used by the default Button component to
  * choose the button style.
  */
-export type ButtonRole = 'submit' | 'secondary' | 'cancel' | 'dismiss' | 'danger'
+export type ButtonRole = 'submit' | 'secondary' | 'cancel' | 'dismiss' | 'danger' | 'urgent'
 
 /**
  * Exact name of button. Used to identify specific uses of <Button> throughout
@@ -62,6 +62,7 @@ export type ButtonName = 'login'
   | 'submit-reauth'
   | 'cancel-reauth'
   | 'regenerate-recovery-codes'
+  | 'regenerate-recovery-codes-dismiss'
   | 'resend-verification-email'
   | 'close-change-password'
   | 'generate-recovery-codes'
@@ -78,6 +79,27 @@ export type ButtonProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement> & {
 }, 'className'>
 
 export type ButtonType = React.FC<ButtonProps>
+
+export type RecommendationsType = React.FC<{
+  /**
+   * Button to open the add password dialog
+   */
+  addPassword: ReactNode,
+  /**
+   * Button to open the add recovery codes dialog
+   */
+  addRecoveryCodes: ReactNode,
+  /**
+   * Button to open the totp configuration dialog
+   */
+  addTotp: ReactNode,
+
+  /**
+   * Number of active recovery codes the user currently has
+   * (e.g. so that you can display "You have X recovery codes remaining")
+   */
+  recoveryCodesCount?: number
+}>
 
 export type ModalType = React.FC<{
   /**
@@ -496,6 +518,11 @@ export type RecoveryCodeRegenerationPromptType = React.FC<{
  */
 export type UserAccountSettingsType = React.FC<{
   /**
+   * Security recommendations (e.g. add password), if any, as rendered by
+   * <RecommendationsComponent>
+   */
+  recommendations: ReactNode,
+  /**
    * The personal details section, as rendered by <PersonalDetailComponent>
    */
   personalDetails: ReactNode,
@@ -872,6 +899,12 @@ export type DefiniteComponents = {
    * the user's name.
    */
   EditNameFormComponent: EditNameFormType
+
+  /**
+   * Component used by <UserAccountSettings> to display recommended actions
+   * (e.g. set up security codes)
+   */
+  RecommendationsComponent: RecommendationsType
 
   /**
    * Component used by <UserAccountSettings> for displaying a user's
