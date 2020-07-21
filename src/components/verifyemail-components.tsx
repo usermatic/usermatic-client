@@ -70,7 +70,7 @@ export const EmailVerifier: React.FC<{
     }
   }, [isBrowser, called, csrfToken, success, data, submit, tokenProp])
 
-  if (loading) {
+  if (!called || loading) {
     return <LoadingMessageComponent/>
   }
 
