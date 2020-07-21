@@ -50,6 +50,7 @@ import {
   SocialButtonComponentType,
   SocialButtonType,
   ReauthFormType,
+  ReauthAddPasswordType,
   RecoveryCodeDisplayType,
   RecoveryCodeRegenerationPromptType,
   EmailVerificationType,
@@ -314,6 +315,14 @@ const DefaultAddPasswordForm: AddPasswordFormType = ({
     {error}
   </form>
 )
+
+const DefaultReauthAddPasswordComponent: ReauthAddPasswordType = ({
+  prompt,
+  addPassword
+}) => <>
+  <div className="alert alert-warning">{prompt}</div>
+  {addPassword}
+</>
 
 const DefaultForgotPasswordForm: ForgotPasswordFormType = ({
   formProps,
@@ -1239,6 +1248,9 @@ export const useComponents = (propComponents: Components = {}): DefiniteComponen
     const ReauthFormComponent = merged.ReauthFormComponent ??
       DefaultReauthFormComponent
 
+    const ReauthAddPasswordComponent = merged.ReauthAddPasswordComponent ??
+      DefaultReauthAddPasswordComponent
+
     const EmailVerificationComponent = merged.EmailVerificationComponent ??
       DefaultEmailVerificationComponent
 
@@ -1292,6 +1304,7 @@ export const useComponents = (propComponents: Components = {}): DefiniteComponen
       GoogleButton,
 
       ReauthFormComponent,
+      ReauthAddPasswordComponent,
       EmailVerificationComponent,
 
       EmailStatusComponent,

@@ -10,6 +10,10 @@ import { ErrorMessage } from '../errors'
 import { useComponents } from './component-lib'
 import { Components } from './component-types'
 
+import { usePasswordCredential } from '../user'
+
+import { ChangePasswordForm } from './password-components'
+
 import {
   useReauthenticate,
   useCachedReauthToken,
@@ -143,11 +147,24 @@ export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
   const {
     Button,
     PasswordInput,
-    ReauthFormComponent
+    ReauthFormComponent,
+    ReauthAddPasswordComponent
   } = useComponents(components)
 
   const [submit, { data, called, loading, error }] = useReauthenticate(tokenContents)
   const cachedToken = useCachedReauthToken(tokenContents, maxTokenAge)
+  const { loading: passwordLoading, passwordCredential } = usePasswordCredential()
+
+  if (!passwordLoading && passwordCredential == null) {
+    // the user doesn't have a password, so they can't get a reauth token.
+    return <ReauthAddPasswordComponent
+      prompt={<>
+        Please add a password to your account. It will be used to protect
+        sensitive operations (such as this one) in the future.
+      </>}
+      addPassword={<ChangePasswordForm/>}
+    />
+  }
 
   const token = cachedToken != null
     ? cachedToken

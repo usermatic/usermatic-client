@@ -475,6 +475,17 @@ export type ReauthFormType = React.FC<{
   cancelButton: ReactNode
 }>
 
+export type ReauthAddPasswordType = React.FC<{
+  /**
+   * The text of the prompt to be displayed
+   */
+  prompt: ReactNode,
+  /**
+   * The <ChangePasswordForm> component.
+   */
+  addPassword: ReactNode
+}>
+
 export type RecoveryCodeDisplayType = React.FC<{
   codes?: string[]
   /**
@@ -863,6 +874,13 @@ export type DefiniteComponents = {
    * to obtain a user's password before sensitive actions are performed.
    */
   ReauthFormComponent: ReauthFormType
+
+  /**
+   * Component that ReauthenticateGuard uses to prompt the user to add a password
+   * if they attempt to reauthenticate without having a password set on their
+   * account.
+   */
+  ReauthAddPasswordComponent: ReauthAddPasswordType
 
   /**
    * Component used by <EmailVerifier> when users are verifying their email

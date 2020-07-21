@@ -4903,6 +4903,7 @@ exports[`UserAccountSettings 1`] = `
           "PasswordScoreComponent": [Function],
           "PersonalDetailComponent": [Function],
           "PostRecoveryCodeFormComponent": [Function],
+          "ReauthAddPasswordComponent": [Function],
           "ReauthFormComponent": [Function],
           "RecommendationsComponent": [Function],
           "RecoveryCodeDisplayComponent": [Function],
