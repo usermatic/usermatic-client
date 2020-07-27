@@ -20,7 +20,6 @@ import {
 } from 'apollo-cache-inmemory'
 
 import { ApolloError } from 'apollo-client'
-import { getApolloContext } from '@apollo/react-common'
 
 import {
   ComponentProvider
@@ -343,23 +342,26 @@ const CsrfTokenProvider: React.FC<{
 const UMApolloProvider: React.FC<{
   uri?: string,
   appId: string,
+  apolloClient?: ClientType,
   children: ReactNode
-}> = ({uri: uriArg, appId, children}) => {
+}> = ({uri: uriArg, appId, apolloClient, children}) => {
+
+  if (apolloClient && uriArg) {
+    throw new Error("`uri` and `apolloClient` properties cannot both be set")
+  }
 
   let uri = uriArg ?? 'https://api.usermatic.io/graphql'
   if (appId === demoAppId) {
     uri = uri.replace(/graphql$/, 'graphql-demo')
   }
 
-  const apolloVal = useContext(getApolloContext())
-
   const client = useMemo(() => {
-    if (apolloVal.client) {
-      return apolloVal.client
+    if (apolloClient != null) {
+      return apolloClient
     } else {
       return makeClient(uri, appId)
     }
-  }, [apolloVal, uri, appId])
+  }, [apolloClient, uri, appId])
 
   return <UMApolloContext.Provider value={client}>
     {children}
@@ -382,6 +384,12 @@ export type UsermaticProps = {
    * The ID of the Usermatic Application.
    */
   appId: string,
+  /**
+   * Provide a pre-constructed apollo client to connect to the Usermatic API.
+   * If this setting is provided, the `uri` parameter is ignored.
+   * (This is mainly intended for use by the tests)
+   */
+  apolloClient?: ClientType,
   /**
    * If true, add bootstrap class names to Usermatic components. Use this
    * if your application uses bootstrap. Defaults to true.
@@ -458,13 +466,14 @@ export const Usermatic: React.FC<UsermaticProps> = ({
   children,
   uri,
   appId,
+  apolloClient,
   components,
   useBootstrapClasses = true,
   useUmClasses = false,
   showDiagnostics = false
 }) => (
   <AppIdContext.Provider value={appId}>
-    <UMApolloProvider uri={uri} appId={appId}>
+    <UMApolloProvider uri={uri} apolloClient={apolloClient} appId={appId}>
       <CsrfTokenProvider appId={appId} showDiagnostics={showDiagnostics}>
         <AppConfigProvider>
           <AuthenticatedUserProvider>

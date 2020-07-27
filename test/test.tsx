@@ -19,7 +19,6 @@ import { GraphQLError } from 'graphql'
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory'
 import { SchemaLink } from 'apollo-link-schema'
-import { ApolloProvider } from '@apollo/react-common'
 
 // Import the schema object from previous code snippet above
 // @ts-ignore
@@ -199,13 +198,16 @@ const TestWrapper: React.FC<{children: ReactNode, mocks: any}> = ({children, moc
     link: new SchemaLink({ schema })
   });
 
-  return <ApolloProvider client={apolloClient}>
-    <client.Usermatic appId={appId} useBootstrapClasses={true} useUmClasses={true} >
-      <CsrfTokenWrapper>
-        {children}
-      </CsrfTokenWrapper>
-    </client.Usermatic>
-  </ApolloProvider>
+  return <client.Usermatic
+    appId={appId}
+    useBootstrapClasses={true}
+    useUmClasses={true}
+    apolloClient={apolloClient}
+  >
+    <CsrfTokenWrapper>
+      {children}
+    </CsrfTokenWrapper>
+  </client.Usermatic>
 }
 
 test('<LoginForm>/<AccountCreationForm> forgot password', async () => {
