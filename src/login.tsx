@@ -1,6 +1,6 @@
 
 import urllib from 'url'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback, useMemo } from 'react'
 import jwtDecode from 'jwt-decode'
 
 import { useCsrfMutation } from './hooks'
@@ -64,14 +64,15 @@ export const useLogin = (options: LoginMutationOptions = {}) => {
 
   const { loading, error, data } = ret
 
-  const submit = (variables: LoginMutationVariables) => {
+  const submit = useCallback((variables: LoginMutationVariables) => {
     submitLogin({ variables })
-  }
+  }, [submitLogin])
 
   const success = Boolean(!loading && !error && data)
-  const retObj = { ...ret, success }
-  // typescript can't infer tuples :(
-  return [submit, retObj] as [typeof submit, typeof retObj]
+  return useMemo(() => {
+    const retObj = { ...ret, success }
+    return [submit, retObj] as [typeof submit, typeof retObj]
+  }, [ret, success, submit])
 }
 
 /**

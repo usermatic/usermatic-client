@@ -1,5 +1,5 @@
 
-import { createContext, useContext } from 'react'
+import { createContext, useContext, useMemo } from 'react'
 import {
   MutationTuple,
   MutationHookOptions,
@@ -27,14 +27,20 @@ export const useCsrfMutation = <TData, TVar> (
   if (options.context) {
     throw new Error("TODO: merge context object")
   }
-  const ret = operation({
-    client,
-    onError: (e) => {},
-    ...options,
-    context: {
-      headers: { 'x-csrf-token': csrfToken }
+
+  const args = useMemo(() => {
+    const ret: MutationHookOptions<TData, TVar> = {
+      client,
+      onError: (e) => {},
+      ...options,
+      context: {
+        headers: { 'x-csrf-token': csrfToken }
+      }
     }
-  })
+    return ret
+  }, [client, options, csrfToken])
+
+  const ret = operation(args)
 
   if (ret[1].called && !csrfToken) {
     console.warn("csrf mutation was called before csrfToken was ready")
@@ -58,16 +64,22 @@ export const useCsrfQuery = <TData, TVar> (
   }
 
   const skip = !csrfToken || options.skip
-  const ret = operation({
-    client,
-    onError: (e) => {},
-    ...options,
-    // Once the crsfToken is ready, the query will be fired.
-    skip,
-    context: {
-      headers: { 'x-csrf-token': csrfToken }
-    }
-  })
 
-  return { ...ret, loading: !csrfToken || ret.loading }
+  const args = useMemo(() => {
+    const ret: QueryHookOptions<TData, TVar> = {
+      client,
+      onError: (e) => {},
+      ...options,
+      // Once the crsfToken is ready, the query will be fired.
+      skip,
+      context: {
+        headers: { 'x-csrf-token': csrfToken }
+      }
+    }
+    return ret
+  }, [client, options, skip, csrfToken])
+
+  const ret = operation(args)
+  const loading = !csrfToken || ret.loading
+  return useMemo(() => ({ ...ret, loading }), [ret, loading ])
 }

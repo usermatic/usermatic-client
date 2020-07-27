@@ -22,6 +22,7 @@ export {
   useOauthCredentials,
   useTotpCredential,
   useProfilePhotos,
+  usePersonalDetails,
   isPasswordCredential,
   isOauthCredential,
   isTotpCredential,
@@ -32,7 +33,8 @@ export {
 } from './user'
 
 export {
-  useLogout
+  useLogout,
+  useLogin
 } from './login'
 
 export {
