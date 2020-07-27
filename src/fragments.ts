@@ -123,7 +123,7 @@ export const LOGIN_MUT = gql`
       user { ...UserParts }
       accountCreated
       refetch {
-        getAuthenticatedUser { id userJwt }
+        getAuthenticatedUser { ...UserParts }
       }
     }
   }
