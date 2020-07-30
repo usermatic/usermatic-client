@@ -33,6 +33,7 @@ import {
   ButtonProps,
   ButtonType,
   ModalType,
+  ModalContentsType,
   RecommendationsType,
   InputComponentType,
   ResetPasswordFormType,
@@ -1115,14 +1116,18 @@ const DefaultRecommendationsComponent: RecommendationsType = ({
   </Card>
 }
 
-const DefaultModalComponent: ModalType = ({
-  isOpen,
-  onRequestClose,
-  children,
+const DefaultModalContentsComponent: ModalContentsType = ({
   title,
-  footer
+  footer,
+  children,
+  onRequestClose,
 }) => {
-  const { useBootstrap, useUmClasses, modalAppElement } = useContext(ComponentContext)
+  const { useBootstrap, useUmClasses } = useContext(ComponentContext)
+
+  const close = (e: MouseEvent) => {
+    e.preventDefault()
+    onRequestClose()
+  }
 
   const getClass = (className: string) => {
     const classes = []
@@ -1131,9 +1136,39 @@ const DefaultModalComponent: ModalType = ({
     return classNames(classes)
   }
 
-  const close = (e: MouseEvent) => {
-    e.preventDefault()
-    onRequestClose()
+  return <div className={getClass("modal-content")}>
+    <div className={getClass("modal-header")}>
+      <h5 className={getClass("modal-title")}>
+        {title}
+      </h5>
+      <button type="button" className={getClass("close")}
+              aria-label="Close" onClick={close}>
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div className={getClass("modal-body")}>
+      {children}
+    </div>
+    {footer &&
+      <div className={getClass("modal-footer")}>
+        {footer}
+      </div>
+    }
+  </div>
+}
+
+const DefaultModalComponent: ModalType = ({
+  isOpen,
+  onRequestClose,
+  children,
+}) => {
+  const { useBootstrap, useUmClasses, modalAppElement } = useContext(ComponentContext)
+
+  const getClass = (className: string) => {
+    const classes = []
+    if (useBootstrap) { classes.push(className) }
+    if (useUmClasses) { classes.push(`um-${className}`) }
+    return classNames(classes)
   }
 
   return <Modal
@@ -1151,25 +1186,7 @@ const DefaultModalComponent: ModalType = ({
       }
     }}
   >
-    <div className={getClass("modal-content")}>
-      <div className={getClass("modal-header")}>
-        <h5 className={getClass("modal-title")}>
-          {title}
-        </h5>
-        <button type="button" className={getClass("close")}
-                aria-label="Close" onClick={close}>
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div className={getClass("modal-body")}>
-        {children}
-      </div>
-      {footer &&
-        <div className={getClass("modal-footer")}>
-          {footer}
-        </div>
-      }
-    </div>
+    {children}
   </Modal>
 }
 
@@ -1213,6 +1230,7 @@ export const useComponents = (propComponents: Components = {}): DefiniteComponen
     const LoginSuccessComponent = merged.LoginSuccessComponent ?? DefaultLoginSuccessComponent
 
     const ModalComponent = merged.ModalComponent ?? DefaultModalComponent
+    const ModalContentsComponent = merged.ModalContentsComponent ?? DefaultModalContentsComponent
     const Button = merged.Button ?? DefaultButton
     const CreateAccountFormComponent = merged.CreateAccountFormComponent ?? DefaultCreateAccountForm
     const CreateAccountSuccessComponent = merged.CreateAccountSuccessComponent ?? DefaultCreateAccountSuccessComponent
@@ -1277,6 +1295,7 @@ export const useComponents = (propComponents: Components = {}): DefiniteComponen
       ErrorCaseComponent,
       Button,
       ModalComponent,
+      ModalContentsComponent,
       CreateAccountFormComponent,
       CreateAccountSuccessComponent,
       PasswordFormComponent,

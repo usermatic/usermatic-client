@@ -101,14 +101,14 @@ export type RecommendationsType = React.FC<{
   recoveryCodesCount?: number
 }>
 
-export type ModalType = React.FC<{
+/**
+ * Component for rendering the contents of a modal dialog. This component does
+ * not render the modal overlay or the modal itself, only the contents.
+ */
+export type ModalContentsType = React.FC<{
   /**
-   * If true, the modal will be rendered and the rest of the page content obscured.
-   */
-  isOpen: boolean,
-  /**
-   * Must be called whenever the user attempts to close the modal, e.g. by clicking
-   * outside of it, hitting esc, etc.
+   * Must be called whenever the user attempts to close the modal, e.g. by click a
+   * 'close' button.
    */
   onRequestClose: () => void,
 
@@ -120,6 +120,27 @@ export type ModalType = React.FC<{
    * Text and other elements to display in the Modal's footer area.
    */
   footer?: ReactNode,
+  /**
+   * The body of the modal.
+   */
+  children: ReactNode
+}>
+
+/**
+ * Component for rendering a modal dialog.
+ */
+export type ModalType = React.FC<{
+  /**
+   * If true, the modal will be rendered and the rest of the page content obscured.
+   */
+  isOpen: boolean,
+
+  /**
+   * Must be called whenever the user attempts to close the modal, e.g. by clicking
+   * outside of it, hitting esc, etc.
+   */
+  onRequestClose: () => void,
+
   /**
    * The body of the modal.
    */
@@ -718,7 +739,17 @@ export type DefiniteComponents = {
   Button: ButtonType
 
   /**
-   * Component for rendering Modal dialogs.
+   * Component for rendering the interior of a Modal dialog. Override this component
+   * to change the layout of the interior of a modal.
+   */
+  ModalContentsComponent: ModalContentsType
+
+  /**
+   * Component for rendering the overlay and outermost container of Modal dialogs.
+   * Responsible for showing/hiding the modal. Override this component to use a
+   * different modal system (the default implementation uses
+   * (react-modal)[https://www.npmjs.com/package/react-modal]), to change the
+   * overlay.
    */
   ModalComponent: ModalType
 

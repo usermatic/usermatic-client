@@ -405,6 +405,18 @@ const PostRecoveryCode: React.FC<{
  * @preview
  *
  * <LoginForm/>
+ *
+ * @customization
+ *
+ * <LoginForm> uses the following layout components for customization:
+ *
+ * - PasswordFormComponent
+ * - EmailAddressInput
+ * - PasswordInput
+ * - StayLoggedInInput
+ * - Button
+ * - LoginSuccessComponent
+ *
  */
 export const LoginForm: React.FC<LoginFormProps> = ({
   onLogin,

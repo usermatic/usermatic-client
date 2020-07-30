@@ -4455,7 +4455,7 @@ exports[`Recommendations 1`] = `
                     buttonRole="urgent"
                     finished={[Function]}
                   >
-                    <DefaultModalComponent
+                    <Component
                       close={[Function]}
                       isOpen={false}
                       key="0"
@@ -4464,92 +4464,97 @@ exports[`Recommendations 1`] = `
                       setKey={[Function]}
                       title="Add Password"
                     >
-                      <Modal
-                        ariaHideApp={true}
-                        bodyOpenClassName="ReactModal__Body--open"
-                        className="modal-dialog um-modal-dialog"
-                        closeTimeoutMS={0}
+                      <DefaultModalComponent
                         isOpen={false}
                         onRequestClose={[Function]}
-                        parentSelector={[Function]}
-                        portalClassName="ReactModalPortal"
-                        role="dialog"
-                        shouldCloseOnEsc={true}
-                        shouldCloseOnOverlayClick={true}
-                        shouldFocusAfterRender={true}
-                        shouldReturnFocusAfterClose={true}
-                        style={
-                          Object {
-                            "content": Object {
-                              "outline": "none",
-                            },
-                            "overlay": Object {
-                              "backgroundColor": "rgba(128, 128, 128, 0.75)",
-                            },
-                          }
-                        }
                       >
-                        <Portal
-                          containerInfo={
-                            <div
-                              class="ReactModalPortal"
-                            />
+                        <Modal
+                          ariaHideApp={true}
+                          bodyOpenClassName="ReactModal__Body--open"
+                          className="modal-dialog um-modal-dialog"
+                          closeTimeoutMS={0}
+                          isOpen={false}
+                          onRequestClose={[Function]}
+                          parentSelector={[Function]}
+                          portalClassName="ReactModalPortal"
+                          role="dialog"
+                          shouldCloseOnEsc={true}
+                          shouldCloseOnOverlayClick={true}
+                          shouldFocusAfterRender={true}
+                          shouldReturnFocusAfterClose={true}
+                          style={
+                            Object {
+                              "content": Object {
+                                "outline": "none",
+                              },
+                              "overlay": Object {
+                                "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                              },
+                            }
                           }
                         >
-                          <ModalPortal
-                            ariaHideApp={true}
-                            bodyOpenClassName="ReactModal__Body--open"
-                            className="modal-dialog um-modal-dialog"
-                            closeTimeoutMS={0}
-                            defaultStyles={
-                              Object {
-                                "content": Object {
-                                  "WebkitOverflowScrolling": "touch",
-                                  "background": "#fff",
-                                  "border": "1px solid #ccc",
-                                  "borderRadius": "4px",
-                                  "bottom": "40px",
-                                  "left": "40px",
-                                  "outline": "none",
-                                  "overflow": "auto",
-                                  "padding": "20px",
-                                  "position": "absolute",
-                                  "right": "40px",
-                                  "top": "40px",
-                                },
-                                "overlay": Object {
-                                  "backgroundColor": "rgba(255, 255, 255, 0.75)",
-                                  "bottom": 0,
-                                  "left": 0,
-                                  "position": "fixed",
-                                  "right": 0,
-                                  "top": 0,
-                                },
-                              }
+                          <Portal
+                            containerInfo={
+                              <div
+                                class="ReactModalPortal"
+                              />
                             }
-                            isOpen={false}
-                            onRequestClose={[Function]}
-                            parentSelector={[Function]}
-                            portalClassName="ReactModalPortal"
-                            role="dialog"
-                            shouldCloseOnEsc={true}
-                            shouldCloseOnOverlayClick={true}
-                            shouldFocusAfterRender={true}
-                            shouldReturnFocusAfterClose={true}
-                            style={
-                              Object {
-                                "content": Object {
-                                  "outline": "none",
-                                },
-                                "overlay": Object {
-                                  "backgroundColor": "rgba(128, 128, 128, 0.75)",
-                                },
+                          >
+                            <ModalPortal
+                              ariaHideApp={true}
+                              bodyOpenClassName="ReactModal__Body--open"
+                              className="modal-dialog um-modal-dialog"
+                              closeTimeoutMS={0}
+                              defaultStyles={
+                                Object {
+                                  "content": Object {
+                                    "WebkitOverflowScrolling": "touch",
+                                    "background": "#fff",
+                                    "border": "1px solid #ccc",
+                                    "borderRadius": "4px",
+                                    "bottom": "40px",
+                                    "left": "40px",
+                                    "outline": "none",
+                                    "overflow": "auto",
+                                    "padding": "20px",
+                                    "position": "absolute",
+                                    "right": "40px",
+                                    "top": "40px",
+                                  },
+                                  "overlay": Object {
+                                    "backgroundColor": "rgba(255, 255, 255, 0.75)",
+                                    "bottom": 0,
+                                    "left": 0,
+                                    "position": "fixed",
+                                    "right": 0,
+                                    "top": 0,
+                                  },
+                                }
                               }
-                            }
-                          />
-                        </Portal>
-                      </Modal>
-                    </DefaultModalComponent>
+                              isOpen={false}
+                              onRequestClose={[Function]}
+                              parentSelector={[Function]}
+                              portalClassName="ReactModalPortal"
+                              role="dialog"
+                              shouldCloseOnEsc={true}
+                              shouldCloseOnOverlayClick={true}
+                              shouldFocusAfterRender={true}
+                              shouldReturnFocusAfterClose={true}
+                              style={
+                                Object {
+                                  "content": Object {
+                                    "outline": "none",
+                                  },
+                                  "overlay": Object {
+                                    "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                  },
+                                }
+                              }
+                            />
+                          </Portal>
+                        </Modal>
+                      </DefaultModalComponent>
+                    </Component>
                     <DefaultButton
                       name="change-password"
                       onClick={[Function]}
@@ -4586,7 +4591,7 @@ exports[`Recommendations 1`] = `
                     buttonRole="urgent"
                     finished={[Function]}
                   >
-                    <DefaultModalComponent
+                    <Component
                       close={[Function]}
                       footer={false}
                       isOpen={false}
@@ -4600,92 +4605,97 @@ exports[`Recommendations 1`] = `
                         </React.Fragment>
                       }
                     >
-                      <Modal
-                        ariaHideApp={true}
-                        bodyOpenClassName="ReactModal__Body--open"
-                        className="modal-dialog um-modal-dialog"
-                        closeTimeoutMS={0}
+                      <DefaultModalComponent
                         isOpen={false}
                         onRequestClose={[Function]}
-                        parentSelector={[Function]}
-                        portalClassName="ReactModalPortal"
-                        role="dialog"
-                        shouldCloseOnEsc={true}
-                        shouldCloseOnOverlayClick={true}
-                        shouldFocusAfterRender={true}
-                        shouldReturnFocusAfterClose={true}
-                        style={
-                          Object {
-                            "content": Object {
-                              "outline": "none",
-                            },
-                            "overlay": Object {
-                              "backgroundColor": "rgba(128, 128, 128, 0.75)",
-                            },
-                          }
-                        }
                       >
-                        <Portal
-                          containerInfo={
-                            <div
-                              class="ReactModalPortal"
-                            />
+                        <Modal
+                          ariaHideApp={true}
+                          bodyOpenClassName="ReactModal__Body--open"
+                          className="modal-dialog um-modal-dialog"
+                          closeTimeoutMS={0}
+                          isOpen={false}
+                          onRequestClose={[Function]}
+                          parentSelector={[Function]}
+                          portalClassName="ReactModalPortal"
+                          role="dialog"
+                          shouldCloseOnEsc={true}
+                          shouldCloseOnOverlayClick={true}
+                          shouldFocusAfterRender={true}
+                          shouldReturnFocusAfterClose={true}
+                          style={
+                            Object {
+                              "content": Object {
+                                "outline": "none",
+                              },
+                              "overlay": Object {
+                                "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                              },
+                            }
                           }
                         >
-                          <ModalPortal
-                            ariaHideApp={true}
-                            bodyOpenClassName="ReactModal__Body--open"
-                            className="modal-dialog um-modal-dialog"
-                            closeTimeoutMS={0}
-                            defaultStyles={
-                              Object {
-                                "content": Object {
-                                  "WebkitOverflowScrolling": "touch",
-                                  "background": "#fff",
-                                  "border": "1px solid #ccc",
-                                  "borderRadius": "4px",
-                                  "bottom": "40px",
-                                  "left": "40px",
-                                  "outline": "none",
-                                  "overflow": "auto",
-                                  "padding": "20px",
-                                  "position": "absolute",
-                                  "right": "40px",
-                                  "top": "40px",
-                                },
-                                "overlay": Object {
-                                  "backgroundColor": "rgba(255, 255, 255, 0.75)",
-                                  "bottom": 0,
-                                  "left": 0,
-                                  "position": "fixed",
-                                  "right": 0,
-                                  "top": 0,
-                                },
-                              }
+                          <Portal
+                            containerInfo={
+                              <div
+                                class="ReactModalPortal"
+                              />
                             }
-                            isOpen={false}
-                            onRequestClose={[Function]}
-                            parentSelector={[Function]}
-                            portalClassName="ReactModalPortal"
-                            role="dialog"
-                            shouldCloseOnEsc={true}
-                            shouldCloseOnOverlayClick={true}
-                            shouldFocusAfterRender={true}
-                            shouldReturnFocusAfterClose={true}
-                            style={
-                              Object {
-                                "content": Object {
-                                  "outline": "none",
-                                },
-                                "overlay": Object {
-                                  "backgroundColor": "rgba(128, 128, 128, 0.75)",
-                                },
+                          >
+                            <ModalPortal
+                              ariaHideApp={true}
+                              bodyOpenClassName="ReactModal__Body--open"
+                              className="modal-dialog um-modal-dialog"
+                              closeTimeoutMS={0}
+                              defaultStyles={
+                                Object {
+                                  "content": Object {
+                                    "WebkitOverflowScrolling": "touch",
+                                    "background": "#fff",
+                                    "border": "1px solid #ccc",
+                                    "borderRadius": "4px",
+                                    "bottom": "40px",
+                                    "left": "40px",
+                                    "outline": "none",
+                                    "overflow": "auto",
+                                    "padding": "20px",
+                                    "position": "absolute",
+                                    "right": "40px",
+                                    "top": "40px",
+                                  },
+                                  "overlay": Object {
+                                    "backgroundColor": "rgba(255, 255, 255, 0.75)",
+                                    "bottom": 0,
+                                    "left": 0,
+                                    "position": "fixed",
+                                    "right": 0,
+                                    "top": 0,
+                                  },
+                                }
                               }
-                            }
-                          />
-                        </Portal>
-                      </Modal>
-                    </DefaultModalComponent>
+                              isOpen={false}
+                              onRequestClose={[Function]}
+                              parentSelector={[Function]}
+                              portalClassName="ReactModalPortal"
+                              role="dialog"
+                              shouldCloseOnEsc={true}
+                              shouldCloseOnOverlayClick={true}
+                              shouldFocusAfterRender={true}
+                              shouldReturnFocusAfterClose={true}
+                              style={
+                                Object {
+                                  "content": Object {
+                                    "outline": "none",
+                                  },
+                                  "overlay": Object {
+                                    "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                  },
+                                }
+                              }
+                            />
+                          </Portal>
+                        </Modal>
+                      </DefaultModalComponent>
+                    </Component>
                     <DefaultButton
                       name="generate-recovery-codes"
                       onClick={[Function]}
@@ -4723,7 +4733,7 @@ exports[`Recommendations 1`] = `
                     finished={[Function]}
                     totpEnabled={false}
                   >
-                    <DefaultModalComponent
+                    <Component
                       close={[Function]}
                       footer={
                         <DefaultButton
@@ -4745,92 +4755,97 @@ exports[`Recommendations 1`] = `
                         </React.Fragment>
                       }
                     >
-                      <Modal
-                        ariaHideApp={true}
-                        bodyOpenClassName="ReactModal__Body--open"
-                        className="modal-dialog um-modal-dialog"
-                        closeTimeoutMS={0}
+                      <DefaultModalComponent
                         isOpen={false}
                         onRequestClose={[Function]}
-                        parentSelector={[Function]}
-                        portalClassName="ReactModalPortal"
-                        role="dialog"
-                        shouldCloseOnEsc={true}
-                        shouldCloseOnOverlayClick={true}
-                        shouldFocusAfterRender={true}
-                        shouldReturnFocusAfterClose={true}
-                        style={
-                          Object {
-                            "content": Object {
-                              "outline": "none",
-                            },
-                            "overlay": Object {
-                              "backgroundColor": "rgba(128, 128, 128, 0.75)",
-                            },
-                          }
-                        }
                       >
-                        <Portal
-                          containerInfo={
-                            <div
-                              class="ReactModalPortal"
-                            />
+                        <Modal
+                          ariaHideApp={true}
+                          bodyOpenClassName="ReactModal__Body--open"
+                          className="modal-dialog um-modal-dialog"
+                          closeTimeoutMS={0}
+                          isOpen={false}
+                          onRequestClose={[Function]}
+                          parentSelector={[Function]}
+                          portalClassName="ReactModalPortal"
+                          role="dialog"
+                          shouldCloseOnEsc={true}
+                          shouldCloseOnOverlayClick={true}
+                          shouldFocusAfterRender={true}
+                          shouldReturnFocusAfterClose={true}
+                          style={
+                            Object {
+                              "content": Object {
+                                "outline": "none",
+                              },
+                              "overlay": Object {
+                                "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                              },
+                            }
                           }
                         >
-                          <ModalPortal
-                            ariaHideApp={true}
-                            bodyOpenClassName="ReactModal__Body--open"
-                            className="modal-dialog um-modal-dialog"
-                            closeTimeoutMS={0}
-                            defaultStyles={
-                              Object {
-                                "content": Object {
-                                  "WebkitOverflowScrolling": "touch",
-                                  "background": "#fff",
-                                  "border": "1px solid #ccc",
-                                  "borderRadius": "4px",
-                                  "bottom": "40px",
-                                  "left": "40px",
-                                  "outline": "none",
-                                  "overflow": "auto",
-                                  "padding": "20px",
-                                  "position": "absolute",
-                                  "right": "40px",
-                                  "top": "40px",
-                                },
-                                "overlay": Object {
-                                  "backgroundColor": "rgba(255, 255, 255, 0.75)",
-                                  "bottom": 0,
-                                  "left": 0,
-                                  "position": "fixed",
-                                  "right": 0,
-                                  "top": 0,
-                                },
-                              }
+                          <Portal
+                            containerInfo={
+                              <div
+                                class="ReactModalPortal"
+                              />
                             }
-                            isOpen={false}
-                            onRequestClose={[Function]}
-                            parentSelector={[Function]}
-                            portalClassName="ReactModalPortal"
-                            role="dialog"
-                            shouldCloseOnEsc={true}
-                            shouldCloseOnOverlayClick={true}
-                            shouldFocusAfterRender={true}
-                            shouldReturnFocusAfterClose={true}
-                            style={
-                              Object {
-                                "content": Object {
-                                  "outline": "none",
-                                },
-                                "overlay": Object {
-                                  "backgroundColor": "rgba(128, 128, 128, 0.75)",
-                                },
+                          >
+                            <ModalPortal
+                              ariaHideApp={true}
+                              bodyOpenClassName="ReactModal__Body--open"
+                              className="modal-dialog um-modal-dialog"
+                              closeTimeoutMS={0}
+                              defaultStyles={
+                                Object {
+                                  "content": Object {
+                                    "WebkitOverflowScrolling": "touch",
+                                    "background": "#fff",
+                                    "border": "1px solid #ccc",
+                                    "borderRadius": "4px",
+                                    "bottom": "40px",
+                                    "left": "40px",
+                                    "outline": "none",
+                                    "overflow": "auto",
+                                    "padding": "20px",
+                                    "position": "absolute",
+                                    "right": "40px",
+                                    "top": "40px",
+                                  },
+                                  "overlay": Object {
+                                    "backgroundColor": "rgba(255, 255, 255, 0.75)",
+                                    "bottom": 0,
+                                    "left": 0,
+                                    "position": "fixed",
+                                    "right": 0,
+                                    "top": 0,
+                                  },
+                                }
                               }
-                            }
-                          />
-                        </Portal>
-                      </Modal>
-                    </DefaultModalComponent>
+                              isOpen={false}
+                              onRequestClose={[Function]}
+                              parentSelector={[Function]}
+                              portalClassName="ReactModalPortal"
+                              role="dialog"
+                              shouldCloseOnEsc={true}
+                              shouldCloseOnOverlayClick={true}
+                              shouldFocusAfterRender={true}
+                              shouldReturnFocusAfterClose={true}
+                              style={
+                                Object {
+                                  "content": Object {
+                                    "outline": "none",
+                                  },
+                                  "overlay": Object {
+                                    "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                  },
+                                }
+                              }
+                            />
+                          </Portal>
+                        </Modal>
+                      </DefaultModalComponent>
+                    </Component>
                     <DefaultButton
                       name="configure-totp"
                       onClick={[Function]}
@@ -4897,6 +4912,7 @@ exports[`UserAccountSettings 1`] = `
           "LoginSuccessComponent": [Function],
           "MFAFormComponent": [Function],
           "ModalComponent": [Function],
+          "ModalContentsComponent": [Function],
           "NameDisplayComponent": [Function],
           "PasswordFormComponent": [Function],
           "PasswordInput": [Function],
@@ -4993,7 +5009,7 @@ exports[`UserAccountSettings 1`] = `
                               }
                             }
                           >
-                            <DefaultModalComponent
+                            <Component
                               close={[Function]}
                               isOpen={false}
                               key="0"
@@ -5006,92 +5022,97 @@ exports[`UserAccountSettings 1`] = `
                                 </React.Fragment>
                               }
                             >
-                              <Modal
-                                ariaHideApp={true}
-                                bodyOpenClassName="ReactModal__Body--open"
-                                className="modal-dialog um-modal-dialog"
-                                closeTimeoutMS={0}
+                              <DefaultModalComponent
                                 isOpen={false}
                                 onRequestClose={[Function]}
-                                parentSelector={[Function]}
-                                portalClassName="ReactModalPortal"
-                                role="dialog"
-                                shouldCloseOnEsc={true}
-                                shouldCloseOnOverlayClick={true}
-                                shouldFocusAfterRender={true}
-                                shouldReturnFocusAfterClose={true}
-                                style={
-                                  Object {
-                                    "content": Object {
-                                      "outline": "none",
-                                    },
-                                    "overlay": Object {
-                                      "backgroundColor": "rgba(128, 128, 128, 0.75)",
-                                    },
-                                  }
-                                }
                               >
-                                <Portal
-                                  containerInfo={
-                                    <div
-                                      class="ReactModalPortal"
-                                    />
+                                <Modal
+                                  ariaHideApp={true}
+                                  bodyOpenClassName="ReactModal__Body--open"
+                                  className="modal-dialog um-modal-dialog"
+                                  closeTimeoutMS={0}
+                                  isOpen={false}
+                                  onRequestClose={[Function]}
+                                  parentSelector={[Function]}
+                                  portalClassName="ReactModalPortal"
+                                  role="dialog"
+                                  shouldCloseOnEsc={true}
+                                  shouldCloseOnOverlayClick={true}
+                                  shouldFocusAfterRender={true}
+                                  shouldReturnFocusAfterClose={true}
+                                  style={
+                                    Object {
+                                      "content": Object {
+                                        "outline": "none",
+                                      },
+                                      "overlay": Object {
+                                        "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                      },
+                                    }
                                   }
                                 >
-                                  <ModalPortal
-                                    ariaHideApp={true}
-                                    bodyOpenClassName="ReactModal__Body--open"
-                                    className="modal-dialog um-modal-dialog"
-                                    closeTimeoutMS={0}
-                                    defaultStyles={
-                                      Object {
-                                        "content": Object {
-                                          "WebkitOverflowScrolling": "touch",
-                                          "background": "#fff",
-                                          "border": "1px solid #ccc",
-                                          "borderRadius": "4px",
-                                          "bottom": "40px",
-                                          "left": "40px",
-                                          "outline": "none",
-                                          "overflow": "auto",
-                                          "padding": "20px",
-                                          "position": "absolute",
-                                          "right": "40px",
-                                          "top": "40px",
-                                        },
-                                        "overlay": Object {
-                                          "backgroundColor": "rgba(255, 255, 255, 0.75)",
-                                          "bottom": 0,
-                                          "left": 0,
-                                          "position": "fixed",
-                                          "right": 0,
-                                          "top": 0,
-                                        },
-                                      }
+                                  <Portal
+                                    containerInfo={
+                                      <div
+                                        class="ReactModalPortal"
+                                      />
                                     }
-                                    isOpen={false}
-                                    onRequestClose={[Function]}
-                                    parentSelector={[Function]}
-                                    portalClassName="ReactModalPortal"
-                                    role="dialog"
-                                    shouldCloseOnEsc={true}
-                                    shouldCloseOnOverlayClick={true}
-                                    shouldFocusAfterRender={true}
-                                    shouldReturnFocusAfterClose={true}
-                                    style={
-                                      Object {
-                                        "content": Object {
-                                          "outline": "none",
-                                        },
-                                        "overlay": Object {
-                                          "backgroundColor": "rgba(128, 128, 128, 0.75)",
-                                        },
+                                  >
+                                    <ModalPortal
+                                      ariaHideApp={true}
+                                      bodyOpenClassName="ReactModal__Body--open"
+                                      className="modal-dialog um-modal-dialog"
+                                      closeTimeoutMS={0}
+                                      defaultStyles={
+                                        Object {
+                                          "content": Object {
+                                            "WebkitOverflowScrolling": "touch",
+                                            "background": "#fff",
+                                            "border": "1px solid #ccc",
+                                            "borderRadius": "4px",
+                                            "bottom": "40px",
+                                            "left": "40px",
+                                            "outline": "none",
+                                            "overflow": "auto",
+                                            "padding": "20px",
+                                            "position": "absolute",
+                                            "right": "40px",
+                                            "top": "40px",
+                                          },
+                                          "overlay": Object {
+                                            "backgroundColor": "rgba(255, 255, 255, 0.75)",
+                                            "bottom": 0,
+                                            "left": 0,
+                                            "position": "fixed",
+                                            "right": 0,
+                                            "top": 0,
+                                          },
+                                        }
                                       }
-                                    }
-                                  />
-                                </Portal>
-                              </Modal>
-                            </DefaultModalComponent>
+                                      isOpen={false}
+                                      onRequestClose={[Function]}
+                                      parentSelector={[Function]}
+                                      portalClassName="ReactModalPortal"
+                                      role="dialog"
+                                      shouldCloseOnEsc={true}
+                                      shouldCloseOnOverlayClick={true}
+                                      shouldFocusAfterRender={true}
+                                      shouldReturnFocusAfterClose={true}
+                                      style={
+                                        Object {
+                                          "content": Object {
+                                            "outline": "none",
+                                          },
+                                          "overlay": Object {
+                                            "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                          },
+                                        }
+                                      }
+                                    />
+                                  </Portal>
+                                </Modal>
+                              </DefaultModalComponent>
+                            </Component>
                             <DefaultNameDisplayComponent
                               editName={[Function]}
                               name={
@@ -5284,7 +5305,7 @@ exports[`UserAccountSettings 1`] = `
                           className="col-sm-5 um-profile-line-right-col"
                         >
                           <ChangePassword>
-                            <DefaultModalComponent
+                            <Component
                               close={[Function]}
                               isOpen={false}
                               key="0"
@@ -5293,92 +5314,97 @@ exports[`UserAccountSettings 1`] = `
                               setKey={[Function]}
                               title="Change Password"
                             >
-                              <Modal
-                                ariaHideApp={true}
-                                bodyOpenClassName="ReactModal__Body--open"
-                                className="modal-dialog um-modal-dialog"
-                                closeTimeoutMS={0}
+                              <DefaultModalComponent
                                 isOpen={false}
                                 onRequestClose={[Function]}
-                                parentSelector={[Function]}
-                                portalClassName="ReactModalPortal"
-                                role="dialog"
-                                shouldCloseOnEsc={true}
-                                shouldCloseOnOverlayClick={true}
-                                shouldFocusAfterRender={true}
-                                shouldReturnFocusAfterClose={true}
-                                style={
-                                  Object {
-                                    "content": Object {
-                                      "outline": "none",
-                                    },
-                                    "overlay": Object {
-                                      "backgroundColor": "rgba(128, 128, 128, 0.75)",
-                                    },
-                                  }
-                                }
                               >
-                                <Portal
-                                  containerInfo={
-                                    <div
-                                      class="ReactModalPortal"
-                                    />
+                                <Modal
+                                  ariaHideApp={true}
+                                  bodyOpenClassName="ReactModal__Body--open"
+                                  className="modal-dialog um-modal-dialog"
+                                  closeTimeoutMS={0}
+                                  isOpen={false}
+                                  onRequestClose={[Function]}
+                                  parentSelector={[Function]}
+                                  portalClassName="ReactModalPortal"
+                                  role="dialog"
+                                  shouldCloseOnEsc={true}
+                                  shouldCloseOnOverlayClick={true}
+                                  shouldFocusAfterRender={true}
+                                  shouldReturnFocusAfterClose={true}
+                                  style={
+                                    Object {
+                                      "content": Object {
+                                        "outline": "none",
+                                      },
+                                      "overlay": Object {
+                                        "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                      },
+                                    }
                                   }
                                 >
-                                  <ModalPortal
-                                    ariaHideApp={true}
-                                    bodyOpenClassName="ReactModal__Body--open"
-                                    className="modal-dialog um-modal-dialog"
-                                    closeTimeoutMS={0}
-                                    defaultStyles={
-                                      Object {
-                                        "content": Object {
-                                          "WebkitOverflowScrolling": "touch",
-                                          "background": "#fff",
-                                          "border": "1px solid #ccc",
-                                          "borderRadius": "4px",
-                                          "bottom": "40px",
-                                          "left": "40px",
-                                          "outline": "none",
-                                          "overflow": "auto",
-                                          "padding": "20px",
-                                          "position": "absolute",
-                                          "right": "40px",
-                                          "top": "40px",
-                                        },
-                                        "overlay": Object {
-                                          "backgroundColor": "rgba(255, 255, 255, 0.75)",
-                                          "bottom": 0,
-                                          "left": 0,
-                                          "position": "fixed",
-                                          "right": 0,
-                                          "top": 0,
-                                        },
-                                      }
+                                  <Portal
+                                    containerInfo={
+                                      <div
+                                        class="ReactModalPortal"
+                                      />
                                     }
-                                    isOpen={false}
-                                    onRequestClose={[Function]}
-                                    parentSelector={[Function]}
-                                    portalClassName="ReactModalPortal"
-                                    role="dialog"
-                                    shouldCloseOnEsc={true}
-                                    shouldCloseOnOverlayClick={true}
-                                    shouldFocusAfterRender={true}
-                                    shouldReturnFocusAfterClose={true}
-                                    style={
-                                      Object {
-                                        "content": Object {
-                                          "outline": "none",
-                                        },
-                                        "overlay": Object {
-                                          "backgroundColor": "rgba(128, 128, 128, 0.75)",
-                                        },
+                                  >
+                                    <ModalPortal
+                                      ariaHideApp={true}
+                                      bodyOpenClassName="ReactModal__Body--open"
+                                      className="modal-dialog um-modal-dialog"
+                                      closeTimeoutMS={0}
+                                      defaultStyles={
+                                        Object {
+                                          "content": Object {
+                                            "WebkitOverflowScrolling": "touch",
+                                            "background": "#fff",
+                                            "border": "1px solid #ccc",
+                                            "borderRadius": "4px",
+                                            "bottom": "40px",
+                                            "left": "40px",
+                                            "outline": "none",
+                                            "overflow": "auto",
+                                            "padding": "20px",
+                                            "position": "absolute",
+                                            "right": "40px",
+                                            "top": "40px",
+                                          },
+                                          "overlay": Object {
+                                            "backgroundColor": "rgba(255, 255, 255, 0.75)",
+                                            "bottom": 0,
+                                            "left": 0,
+                                            "position": "fixed",
+                                            "right": 0,
+                                            "top": 0,
+                                          },
+                                        }
                                       }
-                                    }
-                                  />
-                                </Portal>
-                              </Modal>
-                            </DefaultModalComponent>
+                                      isOpen={false}
+                                      onRequestClose={[Function]}
+                                      parentSelector={[Function]}
+                                      portalClassName="ReactModalPortal"
+                                      role="dialog"
+                                      shouldCloseOnEsc={true}
+                                      shouldCloseOnOverlayClick={true}
+                                      shouldFocusAfterRender={true}
+                                      shouldReturnFocusAfterClose={true}
+                                      style={
+                                        Object {
+                                          "content": Object {
+                                            "outline": "none",
+                                          },
+                                          "overlay": Object {
+                                            "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                          },
+                                        }
+                                      }
+                                    />
+                                  </Portal>
+                                </Modal>
+                              </DefaultModalComponent>
+                            </Component>
                             <DefaultButton
                               name="change-password"
                               onClick={[Function]}
@@ -5457,7 +5483,7 @@ exports[`UserAccountSettings 1`] = `
                             <ConfigureTotp
                               totpEnabled={false}
                             >
-                              <DefaultModalComponent
+                              <Component
                                 close={[Function]}
                                 footer={
                                   <DefaultButton
@@ -5479,92 +5505,97 @@ exports[`UserAccountSettings 1`] = `
                                   </React.Fragment>
                                 }
                               >
-                                <Modal
-                                  ariaHideApp={true}
-                                  bodyOpenClassName="ReactModal__Body--open"
-                                  className="modal-dialog um-modal-dialog"
-                                  closeTimeoutMS={0}
+                                <DefaultModalComponent
                                   isOpen={false}
                                   onRequestClose={[Function]}
-                                  parentSelector={[Function]}
-                                  portalClassName="ReactModalPortal"
-                                  role="dialog"
-                                  shouldCloseOnEsc={true}
-                                  shouldCloseOnOverlayClick={true}
-                                  shouldFocusAfterRender={true}
-                                  shouldReturnFocusAfterClose={true}
-                                  style={
-                                    Object {
-                                      "content": Object {
-                                        "outline": "none",
-                                      },
-                                      "overlay": Object {
-                                        "backgroundColor": "rgba(128, 128, 128, 0.75)",
-                                      },
-                                    }
-                                  }
                                 >
-                                  <Portal
-                                    containerInfo={
-                                      <div
-                                        class="ReactModalPortal"
-                                      />
+                                  <Modal
+                                    ariaHideApp={true}
+                                    bodyOpenClassName="ReactModal__Body--open"
+                                    className="modal-dialog um-modal-dialog"
+                                    closeTimeoutMS={0}
+                                    isOpen={false}
+                                    onRequestClose={[Function]}
+                                    parentSelector={[Function]}
+                                    portalClassName="ReactModalPortal"
+                                    role="dialog"
+                                    shouldCloseOnEsc={true}
+                                    shouldCloseOnOverlayClick={true}
+                                    shouldFocusAfterRender={true}
+                                    shouldReturnFocusAfterClose={true}
+                                    style={
+                                      Object {
+                                        "content": Object {
+                                          "outline": "none",
+                                        },
+                                        "overlay": Object {
+                                          "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                        },
+                                      }
                                     }
                                   >
-                                    <ModalPortal
-                                      ariaHideApp={true}
-                                      bodyOpenClassName="ReactModal__Body--open"
-                                      className="modal-dialog um-modal-dialog"
-                                      closeTimeoutMS={0}
-                                      defaultStyles={
-                                        Object {
-                                          "content": Object {
-                                            "WebkitOverflowScrolling": "touch",
-                                            "background": "#fff",
-                                            "border": "1px solid #ccc",
-                                            "borderRadius": "4px",
-                                            "bottom": "40px",
-                                            "left": "40px",
-                                            "outline": "none",
-                                            "overflow": "auto",
-                                            "padding": "20px",
-                                            "position": "absolute",
-                                            "right": "40px",
-                                            "top": "40px",
-                                          },
-                                          "overlay": Object {
-                                            "backgroundColor": "rgba(255, 255, 255, 0.75)",
-                                            "bottom": 0,
-                                            "left": 0,
-                                            "position": "fixed",
-                                            "right": 0,
-                                            "top": 0,
-                                          },
-                                        }
+                                    <Portal
+                                      containerInfo={
+                                        <div
+                                          class="ReactModalPortal"
+                                        />
                                       }
-                                      isOpen={false}
-                                      onRequestClose={[Function]}
-                                      parentSelector={[Function]}
-                                      portalClassName="ReactModalPortal"
-                                      role="dialog"
-                                      shouldCloseOnEsc={true}
-                                      shouldCloseOnOverlayClick={true}
-                                      shouldFocusAfterRender={true}
-                                      shouldReturnFocusAfterClose={true}
-                                      style={
-                                        Object {
-                                          "content": Object {
-                                            "outline": "none",
-                                          },
-                                          "overlay": Object {
-                                            "backgroundColor": "rgba(128, 128, 128, 0.75)",
-                                          },
+                                    >
+                                      <ModalPortal
+                                        ariaHideApp={true}
+                                        bodyOpenClassName="ReactModal__Body--open"
+                                        className="modal-dialog um-modal-dialog"
+                                        closeTimeoutMS={0}
+                                        defaultStyles={
+                                          Object {
+                                            "content": Object {
+                                              "WebkitOverflowScrolling": "touch",
+                                              "background": "#fff",
+                                              "border": "1px solid #ccc",
+                                              "borderRadius": "4px",
+                                              "bottom": "40px",
+                                              "left": "40px",
+                                              "outline": "none",
+                                              "overflow": "auto",
+                                              "padding": "20px",
+                                              "position": "absolute",
+                                              "right": "40px",
+                                              "top": "40px",
+                                            },
+                                            "overlay": Object {
+                                              "backgroundColor": "rgba(255, 255, 255, 0.75)",
+                                              "bottom": 0,
+                                              "left": 0,
+                                              "position": "fixed",
+                                              "right": 0,
+                                              "top": 0,
+                                            },
+                                          }
                                         }
-                                      }
-                                    />
-                                  </Portal>
-                                </Modal>
-                              </DefaultModalComponent>
+                                        isOpen={false}
+                                        onRequestClose={[Function]}
+                                        parentSelector={[Function]}
+                                        portalClassName="ReactModalPortal"
+                                        role="dialog"
+                                        shouldCloseOnEsc={true}
+                                        shouldCloseOnOverlayClick={true}
+                                        shouldFocusAfterRender={true}
+                                        shouldReturnFocusAfterClose={true}
+                                        style={
+                                          Object {
+                                            "content": Object {
+                                              "outline": "none",
+                                            },
+                                            "overlay": Object {
+                                              "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                            },
+                                          }
+                                        }
+                                      />
+                                    </Portal>
+                                  </Modal>
+                                </DefaultModalComponent>
+                              </Component>
                               <DefaultButton
                                 name="configure-totp"
                                 onClick={[Function]}
@@ -5611,7 +5642,7 @@ exports[`UserAccountSettings 1`] = `
                             key=".1"
                           >
                             <GenRecoveryCodes>
-                              <DefaultModalComponent
+                              <Component
                                 close={[Function]}
                                 footer={false}
                                 isOpen={false}
@@ -5625,92 +5656,97 @@ exports[`UserAccountSettings 1`] = `
                                   </React.Fragment>
                                 }
                               >
-                                <Modal
-                                  ariaHideApp={true}
-                                  bodyOpenClassName="ReactModal__Body--open"
-                                  className="modal-dialog um-modal-dialog"
-                                  closeTimeoutMS={0}
+                                <DefaultModalComponent
                                   isOpen={false}
                                   onRequestClose={[Function]}
-                                  parentSelector={[Function]}
-                                  portalClassName="ReactModalPortal"
-                                  role="dialog"
-                                  shouldCloseOnEsc={true}
-                                  shouldCloseOnOverlayClick={true}
-                                  shouldFocusAfterRender={true}
-                                  shouldReturnFocusAfterClose={true}
-                                  style={
-                                    Object {
-                                      "content": Object {
-                                        "outline": "none",
-                                      },
-                                      "overlay": Object {
-                                        "backgroundColor": "rgba(128, 128, 128, 0.75)",
-                                      },
-                                    }
-                                  }
                                 >
-                                  <Portal
-                                    containerInfo={
-                                      <div
-                                        class="ReactModalPortal"
-                                      />
+                                  <Modal
+                                    ariaHideApp={true}
+                                    bodyOpenClassName="ReactModal__Body--open"
+                                    className="modal-dialog um-modal-dialog"
+                                    closeTimeoutMS={0}
+                                    isOpen={false}
+                                    onRequestClose={[Function]}
+                                    parentSelector={[Function]}
+                                    portalClassName="ReactModalPortal"
+                                    role="dialog"
+                                    shouldCloseOnEsc={true}
+                                    shouldCloseOnOverlayClick={true}
+                                    shouldFocusAfterRender={true}
+                                    shouldReturnFocusAfterClose={true}
+                                    style={
+                                      Object {
+                                        "content": Object {
+                                          "outline": "none",
+                                        },
+                                        "overlay": Object {
+                                          "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                        },
+                                      }
                                     }
                                   >
-                                    <ModalPortal
-                                      ariaHideApp={true}
-                                      bodyOpenClassName="ReactModal__Body--open"
-                                      className="modal-dialog um-modal-dialog"
-                                      closeTimeoutMS={0}
-                                      defaultStyles={
-                                        Object {
-                                          "content": Object {
-                                            "WebkitOverflowScrolling": "touch",
-                                            "background": "#fff",
-                                            "border": "1px solid #ccc",
-                                            "borderRadius": "4px",
-                                            "bottom": "40px",
-                                            "left": "40px",
-                                            "outline": "none",
-                                            "overflow": "auto",
-                                            "padding": "20px",
-                                            "position": "absolute",
-                                            "right": "40px",
-                                            "top": "40px",
-                                          },
-                                          "overlay": Object {
-                                            "backgroundColor": "rgba(255, 255, 255, 0.75)",
-                                            "bottom": 0,
-                                            "left": 0,
-                                            "position": "fixed",
-                                            "right": 0,
-                                            "top": 0,
-                                          },
-                                        }
+                                    <Portal
+                                      containerInfo={
+                                        <div
+                                          class="ReactModalPortal"
+                                        />
                                       }
-                                      isOpen={false}
-                                      onRequestClose={[Function]}
-                                      parentSelector={[Function]}
-                                      portalClassName="ReactModalPortal"
-                                      role="dialog"
-                                      shouldCloseOnEsc={true}
-                                      shouldCloseOnOverlayClick={true}
-                                      shouldFocusAfterRender={true}
-                                      shouldReturnFocusAfterClose={true}
-                                      style={
-                                        Object {
-                                          "content": Object {
-                                            "outline": "none",
-                                          },
-                                          "overlay": Object {
-                                            "backgroundColor": "rgba(128, 128, 128, 0.75)",
-                                          },
+                                    >
+                                      <ModalPortal
+                                        ariaHideApp={true}
+                                        bodyOpenClassName="ReactModal__Body--open"
+                                        className="modal-dialog um-modal-dialog"
+                                        closeTimeoutMS={0}
+                                        defaultStyles={
+                                          Object {
+                                            "content": Object {
+                                              "WebkitOverflowScrolling": "touch",
+                                              "background": "#fff",
+                                              "border": "1px solid #ccc",
+                                              "borderRadius": "4px",
+                                              "bottom": "40px",
+                                              "left": "40px",
+                                              "outline": "none",
+                                              "overflow": "auto",
+                                              "padding": "20px",
+                                              "position": "absolute",
+                                              "right": "40px",
+                                              "top": "40px",
+                                            },
+                                            "overlay": Object {
+                                              "backgroundColor": "rgba(255, 255, 255, 0.75)",
+                                              "bottom": 0,
+                                              "left": 0,
+                                              "position": "fixed",
+                                              "right": 0,
+                                              "top": 0,
+                                            },
+                                          }
                                         }
-                                      }
-                                    />
-                                  </Portal>
-                                </Modal>
-                              </DefaultModalComponent>
+                                        isOpen={false}
+                                        onRequestClose={[Function]}
+                                        parentSelector={[Function]}
+                                        portalClassName="ReactModalPortal"
+                                        role="dialog"
+                                        shouldCloseOnEsc={true}
+                                        shouldCloseOnOverlayClick={true}
+                                        shouldFocusAfterRender={true}
+                                        shouldReturnFocusAfterClose={true}
+                                        style={
+                                          Object {
+                                            "content": Object {
+                                              "outline": "none",
+                                            },
+                                            "overlay": Object {
+                                              "backgroundColor": "rgba(128, 128, 128, 0.75)",
+                                            },
+                                          }
+                                        }
+                                      />
+                                    </Portal>
+                                  </Modal>
+                                </DefaultModalComponent>
+                              </Component>
                               <DefaultButton
                                 name="generate-recovery-codes"
                                 onClick={[Function]}

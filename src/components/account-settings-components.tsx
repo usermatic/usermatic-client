@@ -19,7 +19,7 @@ import { ReauthenticateGuard } from './reauth-components'
 import { ComponentContext, ComponentProvider, useComponents } from './component-lib'
 import { ButtonRole, Components } from './component-types'
 import { ErrorMessage } from '../errors'
-import { useModal } from './modal'
+import { useModal, Modal } from './modal'
 
 import {
   ChangePasswordForm
@@ -83,7 +83,7 @@ const ChangePassword: React.FC<{
 }> = ({finished, buttonRole = 'submit'}) => {
 
   const modalProps = useModal()
-  const { Button, ModalComponent } = useComponents({})
+  const { Button } = useComponents({})
 
   const { passwordCredential } = usePasswordCredential()
 
@@ -97,12 +97,9 @@ const ChangePassword: React.FC<{
     : 'Change Password'
 
   return <>
-    <ModalComponent
-      {...modalProps}
-      title={prompt}
-    >
+    <Modal {...modalProps} title={prompt}>
       <ChangePasswordForm onSuccess={onSuccess} onCancel={modalProps.close} />
-    </ModalComponent>
+    </Modal>
 
     <Button role={buttonRole} name="change-password" onClick={modalProps.open}>
       {prompt}
@@ -133,7 +130,7 @@ const RemoveOauthCredentialInner: React.FC<{
 
 const RemoveOauthCredential: React.FC<{cred: OauthCredential}> = ({cred}) => {
   const modalProps = useModal()
-  const { Button, ModalComponent } = useComponents({})
+  const { Button } = useComponents({})
 
   const onSuccess = () => {
     modalProps.close()
@@ -144,10 +141,7 @@ const RemoveOauthCredential: React.FC<{cred: OauthCredential}> = ({cred}) => {
   </>
 
   return <>
-    <ModalComponent
-      {...modalProps}
-      title={<>Remove Oauth Login</>}
-    >
+    <Modal {...modalProps} title={<>Remove Oauth Login</>}>
       <ReauthenticateGuard
         tokenContents={{ operations: ['gen-recovery-codes'] }}
         prompt={prompt}
@@ -155,7 +149,7 @@ const RemoveOauthCredential: React.FC<{cred: OauthCredential}> = ({cred}) => {
       >
         <RemoveOauthCredentialInner cred={cred} onSuccess={onSuccess}/>
       </ReauthenticateGuard>
-    </ModalComponent>
+    </Modal>
 
     <Button role="danger" name="remove-oauth-credential" onClick={modalProps.open}>
       Remove
@@ -190,7 +184,6 @@ const Name: React.FC<{
 }> = ({name}) => {
 
   const {
-    ModalComponent,
     Button,
     EditNameFormComponent,
     NameDisplayComponent,
@@ -217,10 +210,7 @@ const Name: React.FC<{
   }, [submit])
 
   return <>
-    <ModalComponent
-      {...modalProps}
-      title={<>Edit Name</>}
-    >
+    <Modal {...modalProps} title={<>Edit Name</>}>
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {(props) => {
           const { handleReset, handleSubmit } = props
@@ -266,7 +256,7 @@ const Name: React.FC<{
           />
         }}
       </Formik>
-    </ModalComponent>
+    </Modal>
 
     <NameDisplayComponent name={name} editName={modalProps.open}/>
   </>
@@ -299,10 +289,7 @@ const GenRecoveryCodes: React.FC<{
   finished?: () => void
 }> = ({finished, buttonRole = 'submit'}) => {
 
-  const {
-    Button,
-    ModalComponent
-  } = useComponents({})
+  const { Button } = useComponents({})
 
   const modalProps = useModal()
   const [success, setSuccess] = useState(false)
@@ -320,7 +307,7 @@ const GenRecoveryCodes: React.FC<{
   const onSuccess = () => { setSuccess(true) }
 
   return <>
-    <ModalComponent
+    <Modal
       {...modalProps}
       onRequestClose={close}
       title={<>Generate Recovery Codes</>}
@@ -332,7 +319,7 @@ const GenRecoveryCodes: React.FC<{
       }
     >
       <GenRecoveryCodesForm onSuccess={onSuccess} onCancel={modalProps.close} />
-    </ModalComponent>
+    </Modal>
 
     <Button role={buttonRole} name="generate-recovery-codes" onClick={modalProps.open}>
       { hasCodes ? 'Generate New Recovery Codes' : 'Get Recovery Codes' }
@@ -346,10 +333,7 @@ const ConfigureTotp: React.FC<{
   finished?: () => void
 }> = ({totpEnabled, buttonRole = 'submit', finished}) => {
 
-  const {
-    Button,
-    ModalComponent
-  } = useComponents({})
+  const { Button } = useComponents({})
 
   const modalProps = useModal()
 
@@ -359,7 +343,7 @@ const ConfigureTotp: React.FC<{
   }
 
   return <>
-    <ModalComponent
+    <Modal
       {...modalProps}
       onRequestClose={close}
       title={<>Configure Authenticator App</>}
@@ -370,7 +354,7 @@ const ConfigureTotp: React.FC<{
       }
     >
       <AddTotpForm />
-    </ModalComponent>
+    </Modal>
 
     <Button role={buttonRole} name="configure-totp" onClick={modalProps.open}>
       { totpEnabled ? 'Re-configure 2FA App' : 'Configure 2FA App' }

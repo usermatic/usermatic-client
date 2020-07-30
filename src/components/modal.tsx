@@ -1,5 +1,8 @@
 
-import { MouseEvent, useState } from 'react'
+import React, { MouseEvent, useState } from 'react'
+
+import { useComponents } from './component-lib'
+import { ModalType, ModalContentsType } from './component-types'
 
 type ModalOptions = {
   initialState?: boolean,
@@ -27,3 +30,24 @@ export const useModal = ({
   return { isOpen, open, close, onRequestClose: close, key, setKey }
 }
 
+
+export const Modal: React.FC<
+  React.ComponentProps<ModalType> & React.ComponentProps<ModalContentsType>
+> = ({
+  isOpen,
+  onRequestClose,
+  title,
+  footer,
+  children,
+}) => {
+  const { ModalComponent, ModalContentsComponent } = useComponents({})
+
+  return <ModalComponent
+    isOpen={isOpen}
+    onRequestClose={onRequestClose}
+  >
+    <ModalContentsComponent onRequestClose={onRequestClose} title={title} footer={footer}>
+      {children}
+    </ModalContentsComponent>
+  </ModalComponent>
+}
