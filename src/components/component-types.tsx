@@ -11,8 +11,17 @@ import {
 
 import { ZXCVBNResult } from 'zxcvbn'
 
+/**
+ * Component for rendering an alert.
+ */
 export type AlertComponentType = React.FC<{
+  /**
+   * The alert message.
+   */
   children: ReactNode
+  /**
+   * The role of the alert.
+   */
   role: 'success' | 'info' | 'warning' | 'error'
 }>
 
@@ -73,13 +82,29 @@ export type ButtonName = 'login'
   | 'cancel-edit-name'
 
 export type ButtonProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  /**
+   * The role of the button.
+   */
   role: ButtonRole
+  /**
+   * The unique name of the button (use the value of this property if you need to
+   * special-case the rendering of a particular button).
+   */
   name: ButtonName
+  /**
+   * If true, the button should not be clickable.
+   */
   disabled?: boolean
 }, 'className'>
 
+/**
+ * Component type for rendering buttons.
+ */
 export type ButtonType = React.FC<ButtonProps>
 
+/**
+ * Component type for rendering security recommendations.
+ */
 export type RecommendationsType = React.FC<{
   /**
    * Button to open the add password dialog
@@ -150,6 +175,21 @@ export type ModalType = React.FC<{
 export type InputComponentProps = React.InputHTMLAttributes<HTMLInputElement> & {
   labelText?: ReactNode
 }
+
+/**
+ * Component for rendering a form input. Takes all properties that an HTML input
+ * element does, as well as an additional `labelText` property, which would typically
+ * be rendered in a <label> element. An Input component must pass all other properties
+ * along to an underlying <input> component.
+ *
+ * @example
+ *
+ * const InputComponent: InputComponentType = ({labelText, ...props}) => (<>
+ *   <label htmlFor={props.id}>{labelText}</label>
+ *   <input {...props} />
+ * </>)
+ *
+ */
 export type InputComponentType = React.FC<InputComponentProps>
 
 export type FormProps = React.ComponentPropsWithoutRef<'form'>;
@@ -218,12 +258,26 @@ export type ChangePasswordFormComponentProps = BaseAddPasswordFormProps & {
   oldPasswordInput: ReactNode,
 }
 
+/**
+ * Layout component type used <ResetPasswordForm>
+ */
 export type ResetPasswordFormType = React.FC<ResetPasswordFormComponentProps>
 
+/**
+ * Layout component type used by <ChangePasswordForm>, when used to change a password.
+ */
 export type ChangePasswordFormType = React.FC<ChangePasswordFormComponentProps>
 
+/**
+ * Layout component type used by <ChangePasswordForm>, when used to add a password.
+ * (i.e., when the user does not already have a password on their account).
+ */
 export type AddPasswordFormType = React.FC<AddPasswordFormProps>
 
+/**
+ * Layout component type used by <RequestPasswordResetForm>. Also used by <LoginForm>
+ * when user clicks "forgot password".
+ */
 export type ForgotPasswordFormType = React.FC<{
   /**
    * Properties which must be passed into a <form> element.
@@ -255,6 +309,9 @@ export type ForgotPasswordFormType = React.FC<{
   error: ReactNode
 }>
 
+/**
+ * Layout component type used by <LoginForm> for password entry.
+ */
 export type PasswordFormType = React.FC<{
   /**
    * Properties which must be passed into a <form> element.
@@ -296,6 +353,10 @@ export type PasswordFormType = React.FC<{
  */
 export type PwScoreRecord = ZXCVBNResult
 
+/**
+ * Layout component type used to display the score of a prospective password (i.e.
+ * one being entered into <AccountCreationForm>, <ChangePasswordForm>, etc.)
+ */
 export type PasswordScoreType = React.FC<{
   /**
    * The current score of the password.
@@ -309,6 +370,10 @@ export type PasswordScoreType = React.FC<{
   minPasswordStrength: number
 }>
 
+/**
+ * Layout component type used for 2FA. This component handles entry of both 2FA
+ * codes and recovery codes.
+ */
 export type MFAFormType = React.FC<{
   /**
    * The error message, if any, as rendered via <ErrorMessageComponent>.
@@ -345,6 +410,9 @@ export type MFAFormType = React.FC<{
   exitRecoveryModeButton: ReactNode
 }>
 
+/**
+ * Layout component type used after a 2FA recovery code has been entered.
+ */
 export type PostRecoveryCodeType = React.FC<{
   /**
    * True if the user chose to disable MFA after entering their
@@ -414,6 +482,9 @@ export type CreateAccountFormType = React.FC<{
   error: ReactNode
 }>
 
+/**
+ * Layout component for the success message shown after a successful login.
+ */
 export type LoginSuccessType = React.FC<{
   /**
    * The email of the newly-created user.
@@ -426,6 +497,9 @@ export type LoginSuccessType = React.FC<{
   appName: string
 }>
 
+/**
+ * Layout component for the success message shown after a successful login.
+ */
 export type AddTotpFormType = React.FC<{
   /**
    * An <img> element using a dataURI to display the QR code containing
