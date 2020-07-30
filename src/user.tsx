@@ -335,14 +335,14 @@ export const usePersonalDetails = (): {
 export const useProfilePhotos = (): {
   loading: boolean,
   error?: ApolloError,
-  photos?: string[]
+  photos: string[]
 } => {
 
   const { loading, error, credentials } = useCredentials()
 
   const photos = credentials?.filter((c): c is OauthCredential => isOauthCredential(c))
     .map((c: OauthCredential) => c.photoURL)
-    .filter((c?: string): c is string => c != null)
+    .filter((c?: string): c is string => c != null) ?? []
 
   return { loading, error, photos }
 }
