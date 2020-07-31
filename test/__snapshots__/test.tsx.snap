@@ -332,7 +332,7 @@ exports[`<ChangePasswordForm> with password 1`] = `
             password="hunter3"
             username="bob@bob.com"
           >
-            <Component
+            <PasswordScoreInner
               password="hunter3"
               username="bob@bob.com"
             />
@@ -555,7 +555,7 @@ exports[`<ChangePasswordForm> without password 1`] = `
             password="hunter3"
             username="bob@bob.com"
           >
-            <Component
+            <PasswordScoreInner
               password="hunter3"
               username="bob@bob.com"
             />
@@ -2091,7 +2091,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 1`] = `
               password=""
               username=""
             >
-              <Component
+              <PasswordScoreInner
                 password=""
                 username=""
               />
@@ -2480,7 +2480,7 @@ exports[`<LoginForm>/<AccountCreationForm> forgot password 2`] = `
               password=""
               username=""
             >
-              <Component
+              <PasswordScoreInner
                 password=""
                 username=""
               />
@@ -3594,7 +3594,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
               password=""
               username=""
             >
-              <Component
+              <PasswordScoreInner
                 password=""
                 username=""
               />
@@ -3950,7 +3950,7 @@ exports[`<ResetPasswordForm> 1`] = `
             password=""
             username="bob@bob.com"
           >
-            <Component
+            <PasswordScoreInner
               password=""
               username="bob@bob.com"
             />

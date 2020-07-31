@@ -452,6 +452,27 @@ export const Recommendations: React.FC<{}> = () => {
  * @preview
  *
  * <UserAccountSettings/>
+ *
+ * @customization
+ *
+ * <UserAccountSettings> uses the following layout components for customization:
+ *
+ * For the top-level container:
+ * - [UserAccountSettingsComponent](/apiref#UserAccountSettingsType)
+ *
+ * For the different sections:
+ * - [PersonalDetailComponent](/apiref#InputComponentType)
+ * - [EditNameFormComponent](/apiref#InputComponentType)
+ * - [NameDisplayComponent](/apiref#InputComponentType)
+ * - [LoginMethodsComponent](/apiref#InputComponentType)
+ * - [SecurityInfoComponent](/apiref#InputComponentType)
+ * - [RecommendationsComponent](/apiref#InputComponentType)
+ *
+ * Miscellaneous:
+ * - [Button](/apiref#InputComponentType)
+ * - [InputComponent](/apiref#InputComponentType)
+ * - [LoadingMessageComponent](/apiref#InputComponentType)
+ *
  */
 export const UserAccountSettings: React.FC<{
   /**

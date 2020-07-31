@@ -234,6 +234,15 @@ MFAForm.displayName = 'MFAForm'
  * @preview
  *
  * <AddTotpForm/>
+ *
+ * @customization
+ *
+ * <AddTotpForm> uses the following layout components for customization:
+ *
+ * - [AddTotpFormComponent](/apiref#AddTotpFormType)
+ * - [TotpInputComponent](/apiref#InputComponentType)
+ * - [LoadingMessageComponent](/apiref#LoadingMessageType)
+ *
  */
 export const AddTotpForm: React.FC<{
   idPrefix?: string,

@@ -88,6 +88,16 @@ export type ChangePasswordFormProps = {
  * @preview
  *
  * <ChangePasswordForm/>
+ *
+ * @customization
+ *
+ * <ChangePasswordForm> uses the following layout components for customization:
+ * - [AddPasswordFormComponent](/apiref#AddPasswordFormType)
+ * - [ChangePasswordFormComponent](/apiref#ChangePasswordFormType)
+ * - [EmailAddressInput](/apiref#InputComponentType) (Defaults to InputComponent)
+ * - [PasswordInput](/apiref#InputComponentType) (Defaults to InputComponent)
+ * - [Button](/apiref#ButtonType)
+ *
  */
 export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
   onSuccess,
@@ -310,6 +320,16 @@ export type ResetPasswordFormProps = {
  * @preview
  *
  * <ResetPasswordForm token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAaG9zdC5jb20iLCJjcmVkZW50aWFsSWQiOiJlZGZlZjg3YS03YWViLTRlNjYtYmE3MS0yMGI0MGVmNmRlNWMiLCJpZCI6IjE5ZTFjODA0LTBiMzAtNDYyYS05ODFiLWU1Y2MxZDg1ZWIzZiIsImFwcElkIjoiZDQ0MWZjZWQtNTZjNy00NzVjLThjODctNjE3OWI2NDU2Mzk5IiwiYWN0aW9uIjoiUkVTRVRfUFciLCJpYXQiOjE1OTM3MDIyNzF9.B4jCukSRelG9X4tAGjBhkU2wjhdLwKOj9x2kvDladwg"/>
+ *
+ * @customization
+ *
+ * <ResetPasswordForm> uses the following layout components for customization:
+ *
+ * - [AlertComponent](/apiref#AlertComponentType)
+ * - [Button](/apiref#ButtonType)
+ * - [PasswordInput](/apiref#InputComponentType) (Defaults to InputComponent)
+ * - [CheckboxComponent](/apiref#InputComponentType)
+ * - [ResetPasswordFormComponent](/apiref#ResetPasswordFormType)
  */
 export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   token: tokenProp,
@@ -520,6 +540,14 @@ export type RequestPasswordResetFormProps = {
  * @preview
  *
  * <RequestPasswordResetForm/>
+ *
+ * @customization
+ *
+ * <RequestPasswordResetForm> uses the following layout components for customization:
+ *
+ * - [EmailAddressInput](/apiref#InputComponentType)
+ * - [Button](/apiref#ButtonType)
+ * - [ForgotPasswordFormComponent](/apiref#ForgotPasswordFormType)
  */
 export const RequestPasswordResetForm: React.FC<RequestPasswordResetFormProps> = ({
   idPrefix,
@@ -630,7 +658,7 @@ export type PasswordScoreProps = {
   debounceMs?: number
 }
 
-export const PasswordScoreInner: React.FC<PasswordScoreProps> = ({
+const PasswordScoreInner: React.FC<PasswordScoreProps> = ({
   password, username, components
 }) => {
 
@@ -695,14 +723,24 @@ export const PasswordScoreInner: React.FC<PasswordScoreProps> = ({
  * @preview
  *
  * <PasswordScore password="hunter2" username="joe@um"/>
+ *
+ * @customization
+ *
+ * <PasswordScore> uses the following layout components for customization:
+ *
+ * - [PasswordScoreComponent](/apiref#PasswordScoreType)
+ *
  */
 export const PasswordScore: React.FC<PasswordScoreProps> = ({
   password,
   username,
+  components,
   debounceMs = 300
 }) => {
   const debouncedPw = useDebounce(password, debounceMs)
   const debouncedUsername = useDebounce(username, debounceMs)
-  return <PasswordScoreInner password={debouncedPw} username={debouncedUsername} />
+  return <PasswordScoreInner
+    components={components} password={debouncedPw} username={debouncedUsername}
+  />
 }
 PasswordScore.displayName = 'PasswordScore'

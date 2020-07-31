@@ -132,6 +132,15 @@ export type ReauthenticateGuardProps = {
  *     <GuardedComponent/>
  *   </ReauthenticateGuard>
  * )
+ *
+ * @customization
+ *
+ * <ReauthenticateGuard> uses the following layout components for customization:
+ *
+ * - [Button](/apiref#ButtonType)
+ * - [PasswordInput](/apiref#InputComponentType)
+ * - [ReauthFormComponent](/apiref#ReauthFormType)
+ * - [ReauthAddPasswordComponent](/apiref#ReauthAddPasswordType)
  */
 export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
 ({

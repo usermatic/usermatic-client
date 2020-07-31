@@ -81,6 +81,15 @@ const GenRecoveryCodesFormInner: React.FC<{
  * @preview
  *
  * <GenRecoveryCodesForm/>
+ *
+ * @customization
+ *
+ * <GenRecoveryCodesForm> uses the following layout components for customization:
+ *
+ * - [LoadingMessageComponent](/apiref#LoadingMessageType)
+ * - [Button](/apiref#ButtonType)
+ * - [RecoveryCodeDisplayComponent](/apiref#RecoveryCodeDisplayType)
+ * - [RecoveryCodeRegenerationPromptComponent](/apiref#RecoveryCodeRegenerationPromptType)
  */
 export const GenRecoveryCodesForm: React.FC<{
   /**

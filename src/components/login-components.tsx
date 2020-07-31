@@ -410,12 +410,33 @@ const PostRecoveryCode: React.FC<{
  *
  * <LoginForm> uses the following layout components for customization:
  *
- * - PasswordFormComponent
- * - EmailAddressInput
- * - PasswordInput
- * - StayLoggedInInput
- * - Button
- * - LoginSuccessComponent
+ * For the email/password input form:
+ * - [PasswordFormComponent](/apiref#PasswordFormType)
+ * - [EmailAddressInput](/apiref#InputComponentType) (Defaults to InputComponent)
+ * - [PasswordInput](/apiref#InputComponentType) (Defaults to InputComponent)
+ * - [StayLoggedInInput](/apiref#InputComponentType) (Defaults to CheckboxComponent)
+ * - [LoginSuccessComponent](/apiref#LoginSuccessType)
+ * - [PostRecoveryCodeFormComponent](/apiref#PostRecoveryCodeType)
+ *
+ * For the social login buttons:
+ * - [SocialButtonsComponent](/apiref#SocialButtonComponentType)
+ * - [GithubButton](/apiref#SocialButtonType)
+ * - [FacebookButton](/apiref#SocialButtonType)
+ * - [GoogleButton](/apiref#SocialButtonType)
+ *
+ * For the MFA input and recovery code components:
+ * - [MFAFormComponent](/apiref#MFAFormType)
+ * - [TotpInputComponent](/apiref#InputComponentType)
+ * - [RecoveryCodeInputComponent](/apiref#InputComponentType)
+ *
+ * For general use throughout:
+ * - [Button](/apiref#ButtonType)
+ * - [LoadingMessageComponent](/apiref#LoadingMessageType)
+ *
+ * <LoginForm> also uses the following components as needed, each of which
+ * can be customized as well.
+ *
+ * - <RequestPasswordResetForm>
  *
  */
 export const LoginForm: React.FC<LoginFormProps> = ({
@@ -690,6 +711,18 @@ export type AccountCreationFormProps = {
  * @preview
  *
  * <AccountCreationForm/>
+ *
+ * @customization
+ *
+ * <AccountCreationForm> uses the following layout components for customization:
+ *
+ * For the email/password input form:
+ * - [CreateAccountFormComponent](/apiref#CreateAccountFormType)
+ * - [EmailAddressInput](/apiref#InputComponentType) (Defaults to InputComponent)
+ * - [PasswordInput](/apiref#InputComponentType) (Defaults to InputComponent)
+ * - [StayLoggedInInput](/apiref#InputComponentType) (Defaults to CheckboxComponent)
+ * - [Button](/apiref#ButtonType)
+ *
  */
 export const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
   loginAfterCreation: loginAfterCreationArg = true,
@@ -818,6 +851,13 @@ export const AccountCreationForm: React.FC<AccountCreationFormProps> = ({
  *
  * @preview
  * <LogoutButton/>
+ *
+ * @customization
+ *
+ * <LogoutButton> uses the following layout components for customization:
+ *
+ * - [Button](/apiref#ButtonType)
+ * - [ErrorMessageComponent](/apiref#ErrorMessageType)
  */
 export const LogoutButton: React.FC<{
   /**

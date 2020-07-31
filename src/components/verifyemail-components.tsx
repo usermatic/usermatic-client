@@ -19,6 +19,14 @@ import {
  *
  * This component should be placed on the page located at the
  * "Verification Target URI" setting in your Usermatic application settings.
+ *
+ * @customization
+ *
+ * <EmailVerifier> uses the following layout components for customization:
+ *
+ * - [EmailVerificationComponent](/apiref#EmailVerificationType)
+ * - [LoadingMessageComponent](/apiref#LoadingMessageType)
+ *
  */
 export const EmailVerifier: React.FC<{
   /**
