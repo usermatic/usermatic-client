@@ -560,32 +560,36 @@ exports[`<ChangePasswordForm> without password 1`] = `
               username="bob@bob.com"
             />
           </PasswordScore>
-          <DefaultButton
-            disabled={false}
-            name="set-password"
-            role="submit"
-            type="submit"
+          <div
+            className="d-flex justify-content-between um-add-password-footer"
           >
-            <button
-              className="btn btn-primary um-btn um-btn-submit um-btn-set-password"
+            <DefaultButton
+              disabled={false}
+              name="set-password"
+              role="submit"
               type="submit"
             >
-              Set Password
-            </button>
-          </DefaultButton>
-          <DefaultButton
-            disabled={false}
-            name="cancel-change-password"
-            onClick={[Function]}
-            role="cancel"
-          >
-            <button
-              className="btn btn-outline-secondary um-btn um-btn-cancel um-btn-cancel-change-password"
+              <button
+                className="btn btn-primary um-btn um-btn-submit um-btn-set-password"
+                type="submit"
+              >
+                Set Password
+              </button>
+            </DefaultButton>
+            <DefaultButton
+              disabled={false}
+              name="cancel-change-password"
               onClick={[Function]}
+              role="cancel"
             >
-              Cancel
-            </button>
-          </DefaultButton>
+              <button
+                className="btn btn-outline-secondary um-btn um-btn-cancel um-btn-cancel-change-password"
+                onClick={[Function]}
+              >
+                Cancel
+              </button>
+            </DefaultButton>
+          </div>
           <ErrorMessage />
         </form>
       </DefaultAddPasswordForm>

@@ -110,15 +110,16 @@ const DefaultErrorCaseComponent: ErrorCaseType = ({children}) => (
   </DefaultAlertComponent>
 )
 
-const DefaultErrorMessageComponent: ErrorMessageType = ({errors}) => (
-  <div>
+const DefaultErrorMessageComponent: ErrorMessageType = ({errors}) => {
+  const classes = useClassnames('mt-3', 'um-error-message')
+  return <div className={classes}>
     {errors.map((e, i) =>
       <DefaultErrorCaseComponent key={i}>
         {e.message}
       </DefaultErrorCaseComponent>
     )}
   </div>
-)
+}
 
 const classesForRole = (role: ButtonRole): string => {
   switch (role) {
@@ -306,16 +307,19 @@ const DefaultAddPasswordForm: AddPasswordFormType = ({
   submitButton,
   cancelButton,
   error
-}) => (
-  <form {...formProps}>
+}) => {
+  const classes = useClassnames('d-flex justify-content-between', 'um-add-password-footer')
+  return <form {...formProps}>
     {emailInput}
     {newPasswordInput}
     {passwordScore}
-    {submitButton}
-    {cancelButton}
+    <div className={classes}>
+      {submitButton}
+      {cancelButton}
+    </div>
     {error}
   </form>
-)
+}
 
 const DefaultReauthAddPasswordComponent: ReauthAddPasswordType = ({
   prompt,
