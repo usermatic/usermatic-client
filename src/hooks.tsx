@@ -18,11 +18,15 @@ export const useCsrfToken = () => {
   return useContext(CsrfContext)
 }
 
+// For providing additional headers on api requests.
+export const UMHeaderContext = createContext<Record<string, string>>({})
+
 export const useCsrfMutation = <TData, TVar> (
   operation: (opts?: MutationHookOptions<TData, TVar>) => MutationTuple<TData, TVar>,
   options: MutationHookOptions<TData, TVar> = {}
 ) => {
   const client = useContext(UMApolloContext)
+  const headers = useContext(UMHeaderContext)
   const { csrfToken } = useCsrfToken()
   if (options.context) {
     throw new Error("TODO: merge context object")
@@ -34,7 +38,7 @@ export const useCsrfMutation = <TData, TVar> (
       onError: (e) => {},
       ...options,
       context: {
-        headers: { 'x-csrf-token': csrfToken }
+        headers: { ...headers, 'x-csrf-token': csrfToken }
       }
     }
     return ret
@@ -54,6 +58,7 @@ export const useCsrfQuery = <TData, TVar> (
   options: QueryHookOptions<TData, TVar> = {}
 ) => {
   const client = useContext(UMApolloContext)
+  const headers = useContext(UMHeaderContext)
   const { csrfToken } = useCsrfToken()
   if (!csrfToken && !options.skip) {
     console.warn("calling csrf query before csrfToken is ready")
@@ -73,7 +78,7 @@ export const useCsrfQuery = <TData, TVar> (
       // Once the crsfToken is ready, the query will be fired.
       skip,
       context: {
-        headers: { 'x-csrf-token': csrfToken }
+        headers: { ...headers, 'x-csrf-token': csrfToken }
       }
     }
     return ret

@@ -38,7 +38,7 @@ import {
 
 import { ReauthCacheProvider } from './reauth'
 import { ErrorMessage } from './errors'
-import { CsrfContext, useCsrfQuery, useCsrfToken } from './hooks'
+import { CsrfContext, UMHeaderContext, useCsrfQuery, useCsrfToken } from './hooks'
 
 export type ClientType =
   ApolloClient<NormalizedCacheObject> |
@@ -70,7 +70,7 @@ const defaultAppConfig: AppConfig = {
   githubLoginUrl: 'https://usermatic.io/auth/github',
 }
 
-const makeClient = (uri: string, appId: string): ClientType => {
+const makeClient = (uri: string, appId: string, headers: Record<string, string> = {}): ClientType => {
   const parsed = url.parse(uri, true)
   delete parsed.search
   parsed.query.appId = appId
@@ -91,7 +91,10 @@ const makeClient = (uri: string, appId: string): ClientType => {
       uri: finalUri,
       fetch,
       credentials: 'include',
-      headers: { 'X-Usermatic': 'Usermatic' }
+      headers: {
+        'X-Usermatic': 'Usermatic',
+        ...headers
+      }
     }),
     cache
   })
@@ -306,10 +309,14 @@ const CsrfTokenProvider: React.FC<{
 }> = ({appId, showDiagnostics, children}) => {
 
   const client = useContext(UMApolloContext)
+  const headers = useContext(UMHeaderContext)
 
-  const [submit, {data, error, loading}] = useGetSessionJwtMutation(
-    { client }
-  )
+  const [submit, {data, error, loading}] = useGetSessionJwtMutation({
+    client,
+    context: {
+      headers
+    }
+  })
 
   useEffect(() => {
     submit({ variables: { appId } })

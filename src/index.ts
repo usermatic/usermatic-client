@@ -10,6 +10,10 @@ export {
 } from './auth'
 
 export {
+  UMHeaderContext
+} from './hooks'
+
+export {
   useGetRecoveryCodeCount,
   useCreateRecoveryCodes
 } from './recoverycodes'

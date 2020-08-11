@@ -57,14 +57,6 @@ ${APP_CONFIG_FRAGMENT}
 ${USER_FRAGMENT}
 `
 
-// TODO: delete this after getting rid of the last few refetchQueries users
-export const PROFILE_QUERY = gql`
-  query getProfile {
-    getAuthenticatedUser { ...UserParts }
-  }
-  ${USER_FRAGMENT}
-`
-
 export const AUTHENTICATED_USER_QUERY = gql`
   query getAuthenticatedUser {
     getAuthenticatedUser { ...UserParts }
