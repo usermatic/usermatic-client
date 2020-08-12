@@ -1170,6 +1170,7 @@ exports[`<LoginForm> TOTP 2`] = `
           <RecoveryCodeForm
             Button={[Function]}
             InputComponent={[Function]}
+            RecoveryCodeFormComponent={[Function]}
             autoFocus={false}
             idPrefix="test"
             submit={[Function]}
@@ -1194,70 +1195,78 @@ exports[`<LoginForm> TOTP 2`] = `
           >
             Please enter the 6 digit code from your authenticator app:
           </div>
-          <TotpTokenForm
-            InputComponent={[Function]}
-            autoFocus={false}
-            idPrefix="test"
-            key="0"
-            submit={[Function]}
+          <div
+            className="mt-3 um-code-input-container"
           >
-            <Formik
-              initialValues={
-                Object {
-                  "code": "",
+            <TotpTokenForm
+              InputComponent={[Function]}
+              autoFocus={false}
+              idPrefix="test"
+              key="0"
+              submit={[Function]}
+            >
+              <Formik
+                initialValues={
+                  Object {
+                    "code": "",
+                  }
                 }
-              }
-              onSubmit={[Function]}
-              validate={[Function]}
-            >
-              <Form>
-                <form
-                  action="#"
-                  onReset={[Function]}
-                  onSubmit={[Function]}
-                >
-                  <DefaultCodeInput
-                    autoFocus={false}
-                    id="test-totp-code"
-                    name="code"
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    required={true}
-                    type="text"
-                    value=""
+                onSubmit={[Function]}
+                validate={[Function]}
+              >
+                <Form>
+                  <form
+                    action="#"
+                    onReset={[Function]}
+                    onSubmit={[Function]}
                   >
-                    <div>
-                      <input
-                        autoFocus={false}
-                        className="form-control um-code-input"
-                        id="test-totp-code"
-                        name="code"
-                        onBlur={[Function]}
-                        onChange={[Function]}
-                        required={true}
-                        type="text"
-                        value=""
-                      />
-                    </div>
-                  </DefaultCodeInput>
-                </form>
-              </Form>
-            </Formik>
-          </TotpTokenForm>
-          <DefaultButton
-            id="test-recovery-code-button"
-            name="enter-recovery-mode"
-            onClick={[Function]}
-            role="secondary"
+                    <DefaultCodeInput
+                      autoFocus={false}
+                      id="test-totp-code"
+                      name="code"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      required={true}
+                      type="text"
+                      value=""
+                    >
+                      <div>
+                        <input
+                          autoFocus={false}
+                          className="form-control um-code-input"
+                          id="test-totp-code"
+                          name="code"
+                          onBlur={[Function]}
+                          onChange={[Function]}
+                          required={true}
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </DefaultCodeInput>
+                  </form>
+                </Form>
+              </Formik>
+            </TotpTokenForm>
+          </div>
+          <div
+            className="mt-3 um-recovery-button-container"
           >
-            <button
-              className="btn btn-outline-primary um-btn um-btn-secondary um-btn-enter-recovery-mode"
+            <DefaultButton
               id="test-recovery-code-button"
+              name="enter-recovery-mode"
               onClick={[Function]}
+              role="secondary"
             >
-              I need to use a 2FA recovery code
-            </button>
-          </DefaultButton>
+              <button
+                className="btn btn-outline-primary um-btn um-btn-secondary um-btn-enter-recovery-mode"
+                id="test-recovery-code-button"
+                onClick={[Function]}
+              >
+                I need to use a 2FA recovery code
+              </button>
+            </DefaultButton>
+          </div>
         </div>
       </DefaultMFAForm>
     </MFAForm>
@@ -1305,6 +1314,7 @@ exports[`<LoginForm> TOTP 3`] = `
           <RecoveryCodeForm
             Button={[Function]}
             InputComponent={[Function]}
+            RecoveryCodeFormComponent={[Function]}
             autoFocus={false}
             idPrefix="test"
             submit={[Function]}
@@ -1329,83 +1339,119 @@ exports[`<LoginForm> TOTP 3`] = `
           >
             Please enter your recovery code:
           </div>
-          <RecoveryCodeForm
-            Button={[Function]}
-            InputComponent={[Function]}
-            autoFocus={false}
-            idPrefix="test"
-            key="1"
-            submit={[Function]}
+          <div
+            className="mt-3 um-code-input-container"
           >
-            <Formik
-              initialValues={
-                Object {
-                  "code": "",
-                }
-              }
-              onSubmit={[Function]}
-              validate={[Function]}
+            <RecoveryCodeForm
+              Button={[Function]}
+              InputComponent={[Function]}
+              RecoveryCodeFormComponent={[Function]}
+              autoFocus={false}
+              idPrefix="test"
+              key="1"
+              submit={[Function]}
             >
-              <Form>
-                <form
-                  action="#"
-                  onReset={[Function]}
-                  onSubmit={[Function]}
-                >
-                  <DefaultCodeInput
-                    autoFocus={false}
-                    id="test-recovery-code"
-                    name="code"
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    required={true}
-                    type="text"
-                    value=""
-                  >
-                    <div>
-                      <input
-                        autoFocus={false}
-                        className="form-control um-code-input"
-                        id="test-recovery-code"
-                        name="code"
-                        onBlur={[Function]}
-                        onChange={[Function]}
-                        required={true}
-                        type="text"
-                        value=""
-                      />
-                    </div>
-                  </DefaultCodeInput>
-                  <DefaultButton
-                    name="submit-recovery-code"
-                    role="submit"
-                    type="submit"
-                  >
-                    <button
-                      className="btn btn-primary btn-block um-btn um-btn-submit um-btn-submit-recovery-code"
+              <Formik
+                initialValues={
+                  Object {
+                    "code": "",
+                  }
+                }
+                onSubmit={[Function]}
+                validate={[Function]}
+              >
+                <DefaultRecoveryCodeFormComponent
+                  formProps={
+                    Object {
+                      "onReset": [Function],
+                      "onSubmit": [Function],
+                    }
+                  }
+                  recoveryCodeInput={
+                    <DefaultCodeInput
+                      autoFocus={false}
+                      id="test-recovery-code"
+                      name="code"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      required={true}
+                      type="text"
+                      value=""
+                    />
+                  }
+                  submitButton={
+                    <DefaultButton
+                      name="submit-recovery-code"
+                      role="submit"
                       type="submit"
                     >
                       Submit Recovery Code
-                    </button>
-                  </DefaultButton>
-                </form>
-              </Form>
-            </Formik>
-          </RecoveryCodeForm>
-          <DefaultButton
-            id="test-recovery-code-cancel"
-            name="exit-recovery-mode"
-            onClick={[Function]}
-            role="cancel"
+                    </DefaultButton>
+                  }
+                >
+                  <form
+                    onReset={[Function]}
+                    onSubmit={[Function]}
+                  >
+                    <DefaultCodeInput
+                      autoFocus={false}
+                      id="test-recovery-code"
+                      name="code"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      required={true}
+                      type="text"
+                      value=""
+                    >
+                      <div>
+                        <input
+                          autoFocus={false}
+                          className="form-control um-code-input"
+                          id="test-recovery-code"
+                          name="code"
+                          onBlur={[Function]}
+                          onChange={[Function]}
+                          required={true}
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </DefaultCodeInput>
+                    <DefaultButton
+                      name="submit-recovery-code"
+                      role="submit"
+                      type="submit"
+                    >
+                      <button
+                        className="btn btn-primary btn-block mt-3 um-btn um-btn-submit um-btn-submit-recovery-code"
+                        type="submit"
+                      >
+                        Submit Recovery Code
+                      </button>
+                    </DefaultButton>
+                  </form>
+                </DefaultRecoveryCodeFormComponent>
+              </Formik>
+            </RecoveryCodeForm>
+          </div>
+          <div
+            className="mt-3 um-recovery-button-container"
           >
-            <button
-              className="btn btn-outline-secondary btn-block mt-4 um-btn um-btn-cancel um-btn-exit-recovery-mode"
+            <DefaultButton
               id="test-recovery-code-cancel"
+              name="exit-recovery-mode"
               onClick={[Function]}
+              role="cancel"
             >
-              Cancel
-            </button>
-          </DefaultButton>
+              <button
+                className="btn btn-outline-secondary btn-block mt-4 um-btn um-btn-cancel um-btn-exit-recovery-mode"
+                id="test-recovery-code-cancel"
+                onClick={[Function]}
+              >
+                Cancel
+              </button>
+            </DefaultButton>
+          </div>
         </div>
       </DefaultMFAForm>
     </MFAForm>
@@ -4927,6 +4973,7 @@ exports[`UserAccountSettings 1`] = `
           "ReauthFormComponent": [Function],
           "RecommendationsComponent": [Function],
           "RecoveryCodeDisplayComponent": [Function],
+          "RecoveryCodeFormComponent": [Function],
           "RecoveryCodeInputComponent": [Function],
           "RecoveryCodeRegenerationPromptComponent": [Function],
           "ResetPasswordFormComponent": [Function],

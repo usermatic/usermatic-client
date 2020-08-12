@@ -11,7 +11,8 @@ import { useComponents } from './component-lib'
 import {
   Components,
   ButtonType,
-  InputComponentType
+  InputComponentType,
+  RecoveryCodeFormType
 } from './component-types'
 
 import { ErrorMessage } from '../errors'
@@ -86,6 +87,7 @@ const TotpTokenForm: React.FC<{
 
 const RecoveryCodeForm: React.FC<{
   submit: (code: string) => void,
+  RecoveryCodeFormComponent: RecoveryCodeFormType,
   InputComponent: InputComponentType,
   Button: ButtonType,
   idPrefix?: string,
@@ -94,6 +96,7 @@ const RecoveryCodeForm: React.FC<{
   submit,
   idPrefix,
   InputComponent,
+  RecoveryCodeFormComponent,
   Button,
   autoFocus
 }) => {
@@ -114,7 +117,11 @@ const RecoveryCodeForm: React.FC<{
   }
 
   return <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
-    {({values, handleChange, submitForm, resetForm, getFieldProps}) => {
+    {({values, handleChange, handleSubmit, handleReset, submitForm, resetForm, getFieldProps}) => {
+      const formProps = {
+        onSubmit: handleSubmit,
+        onReset: handleReset,
+      }
       const handleChangeWrapper = (e: ChangeEvent<HTMLInputElement>) => {
         const { selectionStart, selectionEnd } = e.target
         const upper = e.target.value.toUpperCase()
@@ -129,8 +136,10 @@ const RecoveryCodeForm: React.FC<{
           handleChange(e)
         }
       }
-      return <>
-        <Form>
+
+      return <RecoveryCodeFormComponent
+        formProps={formProps}
+        recoveryCodeInput={
           <InputComponent
             type="text"
             id={getId(idPrefix, "recovery-code")}
@@ -139,11 +148,13 @@ const RecoveryCodeForm: React.FC<{
             {...getFieldProps('code')}
             onChange={handleChangeWrapper}
           />
+        }
+        submitButton={
           <Button role="submit" name="submit-recovery-code" type="submit">
             Submit Recovery Code
           </Button>
-        </Form>
-      </>
+        }
+      />
     }}
   </Formik>
 }
@@ -168,6 +179,7 @@ export const MFAForm: React.FC<{
     LoadingMessageComponent,
     MFAFormComponent,
     TotpInputComponent,
+    RecoveryCodeFormComponent,
     RecoveryCodeInputComponent,
     Button
   } = useComponents(components)
@@ -194,9 +206,11 @@ export const MFAForm: React.FC<{
 
     recoveryCodeInput={
       <RecoveryCodeForm key={stateKey} submit={submit} idPrefix={idPrefix}
-          autoFocus={autoFocus}
-          Button={Button}
-          InputComponent={RecoveryCodeInputComponent} />
+        autoFocus={autoFocus}
+        Button={Button}
+        InputComponent={RecoveryCodeInputComponent}
+        RecoveryCodeFormComponent={RecoveryCodeFormComponent}
+      />
     }
     totpTokenInput={
       <TotpTokenForm key={stateKey} submit={submit} idPrefix={idPrefix}

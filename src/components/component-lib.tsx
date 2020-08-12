@@ -47,6 +47,7 @@ import {
   PasswordScoreType,
   PwScoreRecord,
   MFAFormType,
+  RecoveryCodeFormType,
   PostRecoveryCodeType,
   SocialButtonComponentType,
   SocialButtonType,
@@ -167,8 +168,10 @@ const classesForName = (name: ButtonName): string => {
     case 'exit-recovery-mode':
       return 'btn-block mt-4'
 
-    case 'create-account':
     case 'submit-recovery-code':
+      return 'btn-block mt-3'
+
+    case 'create-account':
     case 'dismiss-2fa-disabled':
     case 'leave-2fa-enabled':
     case 'reset-2fa':
@@ -478,6 +481,8 @@ const DefaultMFAForm: MFAFormType = ({
     'um-mfa-container'
   )
   const promptClasses = useClassnames('text-muted p-3 text-center', 'um-mfa-prompt')
+  const inputClasses = useClassnames('mt-3', 'um-code-input-container')
+  const buttonClasses = useClassnames('mt-3', 'um-recovery-button-container')
   return <div className={outerClasses}>
     {error}
     <div className={promptClasses}>
@@ -486,8 +491,12 @@ const DefaultMFAForm: MFAFormType = ({
         : <>Please enter the 6 digit code from your authenticator app:</>
       }
     </div>
-    { recoveryMode ? recoveryCodeInput : totpTokenInput }
-    {recoveryMode ? exitRecoveryModeButton : enterRecoveryModeButton}
+    <div className={inputClasses}>
+      { recoveryMode ? recoveryCodeInput : totpTokenInput }
+    </div>
+    <div className={buttonClasses}>
+      { recoveryMode ? exitRecoveryModeButton : enterRecoveryModeButton }
+    </div>
     {loading}
   </div>
 }
@@ -618,6 +627,17 @@ const DefaultAddTotpFormComponent: AddTotpFormType = ({
     </div>
   }
 }
+
+const DefaultRecoveryCodeFormComponent: RecoveryCodeFormType = ({
+  formProps,
+  recoveryCodeInput,
+  submitButton
+}) => (
+  <form {...formProps}>
+    {recoveryCodeInput}
+    {submitButton}
+  </form>
+)
 
 // poor man's name mangling... We just need to avoid
 // conflicting with apps that use this library.
@@ -1253,6 +1273,8 @@ export const useComponents = (propComponents: Components = {}): DefiniteComponen
 
     const AddTotpFormComponent = merged.AddTotpFormComponent ??
       DefaultAddTotpFormComponent
+    const RecoveryCodeFormComponent = merged.RecoveryCodeFormComponent ??
+      DefaultRecoveryCodeFormComponent
     const PostRecoveryCodeFormComponent = merged.PostRecoveryCodeFormComponent ??
       DefaultPostRecoveryCodeForm
     const RecoveryCodeDisplayComponent = merged.RecoveryCodeDisplayComponent ??
@@ -1310,6 +1332,7 @@ export const useComponents = (propComponents: Components = {}): DefiniteComponen
       AddPasswordFormComponent,
       PasswordScoreComponent,
       AddTotpFormComponent,
+      RecoveryCodeFormComponent,
       PostRecoveryCodeFormComponent,
       RecoveryCodeDisplayComponent,
       RecoveryCodeRegenerationPromptComponent,

@@ -411,6 +411,28 @@ export type MFAFormType = React.FC<{
 }>
 
 /**
+ * Layout component used by MFAForm when the user needs to enter a recovery code.
+ */
+export type RecoveryCodeFormType = React.FC<{
+  /**
+   * Properties which must be passed into a <form> element.
+   *
+   * @example
+   * <form {...formProps}>...</form>
+   */
+  formProps: FormProps,
+
+  /**
+   * The input component for the recovery code.
+   */
+  recoveryCodeInput: ReactNode,
+  /**
+   * The submit button.
+   */
+  submitButton: ReactNode,
+}>
+
+/**
  * Layout component type used after a 2FA recovery code has been entered.
  */
 export type PostRecoveryCodeType = React.FC<{
@@ -907,6 +929,12 @@ export type DefiniteComponents = {
    * Component for rendering the text input for 2FA recovery codes.
    */
   RecoveryCodeInputComponent: InputComponentType
+
+  /**
+   * Component for rendering the form for recovery code input, used by
+   * <MFAForm>.
+   */
+  RecoveryCodeFormComponent: RecoveryCodeFormType
 
   /**
    * Component for rendering the email address input in <LoginForm> and
