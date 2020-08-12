@@ -4069,7 +4069,7 @@ exports[`<ResetPasswordForm> 1`] = `
             type="submit"
           >
             <button
-              className="btn btn-primary btn-block um-btn um-btn-submit um-btn-reset-password"
+              className="btn btn-primary btn-block mt-3 um-btn um-btn-submit um-btn-reset-password"
               type="submit"
             >
               Reset Password

@@ -175,8 +175,10 @@ const classesForName = (name: ButtonName): string => {
     case 'dismiss-2fa-disabled':
     case 'leave-2fa-enabled':
     case 'reset-2fa':
-    case 'reset-password':
       return 'btn-block'
+
+    case 'reset-password':
+      return 'btn-block mt-3'
   }
 }
 
