@@ -255,11 +255,18 @@ const OauthCreateAccount: React.FC<OauthCreateAccountProps> = ({
     }
   })
   const [oauthToken, setOauthToken] = useState<string | undefined>()
+  const [totpRequired, setTotpRequired] = useState(false)
   const { popupWindow } = useGetOauthToken(setOauthToken)
 
-  const totpRequired = Boolean(error?.graphQLErrors.find(
+  const totpError = Boolean(error?.graphQLErrors.find(
     e => e.extensions?.exception?.code === 'TOTP_REQUIRED'
   ))
+
+  useEffect(() => {
+    if (totpError) {
+      setTotpRequired(true)
+    }
+  }, [totpError])
 
   useEffect(() => {
     if (oauthToken) {
@@ -286,7 +293,7 @@ const OauthCreateAccount: React.FC<OauthCreateAccountProps> = ({
        submit={submitCode}
        idPrefix={idPrefix}
        // Don't display the error message that says we need a code...
-       error={totpRequired ? undefined : error}
+       error={totpError ? undefined : error}
        loading={loading}
        components={components}
     />
