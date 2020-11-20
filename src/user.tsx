@@ -226,19 +226,20 @@ export const useOauthCredentials = (): {
   oauthCredentials?: OauthCredential[]
 } => {
   const { loading, error, credentials } = useCredentials()
-
-  if (!loading && !error && credentials) {
-    const oauthCredentials = credentials.filter(
-      (c): c is OauthCredential => isOauthCredential(c)
-    )
-    return {
-      loading,
-      error,
-      oauthCredentials
+  return useMemo(() => {
+    if (!loading && !error && credentials) {
+      const oauthCredentials = credentials.filter(
+        (c): c is OauthCredential => isOauthCredential(c)
+      )
+      return {
+        loading,
+        error,
+        oauthCredentials
+      }
     }
-  }
 
-  return { loading, error }
+    return { loading, error }
+  }, [loading, error, credentials])
 }
 
 type OauthAccessTokenMap = Record<string, { accessToken?: string, refreshToken?: string }>
@@ -249,17 +250,19 @@ export const useOauthAccessTokens = (): {
   accessTokens?: OauthAccessTokenMap
 } => {
   const { loading, error, oauthCredentials } = useOauthCredentials()
-  if (!loading && !error && oauthCredentials) {
-    const accessTokens: OauthAccessTokenMap = {}
-    for (const cred of oauthCredentials) {
-      accessTokens[cred.provider] = {
-        accessToken: cred.accessToken,
-        refreshToken: cred.refreshToken,
+  return useMemo(() => {
+    if (!loading && !error && oauthCredentials) {
+      const accessTokens: OauthAccessTokenMap = {}
+      for (const cred of oauthCredentials) {
+        accessTokens[cred.provider] = {
+          accessToken: cred.accessToken,
+          refreshToken: cred.refreshToken,
+        }
       }
+      return { loading, error, accessTokens }
     }
-    return { loading, error, accessTokens }
-  }
-  return { loading, error }
+    return { loading, error }
+  }, [loading, error, oauthCredentials])
 }
 
 /**
