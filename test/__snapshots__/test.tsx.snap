@@ -3705,6 +3705,23 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
 </div>
 `;
 
+exports[`<OauthTokensTest> 1`] = `
+<div
+  id="client-test-div"
+>
+  <OauthAccessTokenComponent>
+    <div>
+      {
+  "GOOGLE": {
+    "accessToken": "adfadfad;lkajdf;lakdfja",
+    "refreshToken": "a89awefaey8923lk23j4kj"
+  }
+}
+    </div>
+  </OauthAccessTokenComponent>
+</div>
+`;
+
 exports[`<ReauthenticateGuard> 1`] = `
 <div
   id="client-test-div"

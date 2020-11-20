@@ -80,7 +80,9 @@ const userWithoutPassword = () => ({
       id: credentialId,
       provider: 'GOOGLE',
       providerId: 'abc',
-      photoURL: '/photo'
+      photoURL: '/photo',
+      accessToken: 'adfadfad;lkajdf;lakdfja',
+      refreshToken: 'a89awefaey8923lk23j4kj',
     }
   ],
   userJwt: jwt.sign({ id: userId }, 'abc')
@@ -909,3 +911,34 @@ test('ComponentProvider', async () => {
   wrapper.update()
   expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
 })
+
+test('<OauthTokensTest>', async () => {
+  jest.useFakeTimers()
+
+  const mocks = extendMocks({
+    AppConfig: () => (configNoOauth),
+    User: userWithoutPassword,
+  })
+
+  const OauthAccessTokenComponent: React.FC<{}> = () => {
+    const { accessTokens } = client.useOauthAccessTokens()
+
+    return <div>
+      { accessTokens && JSON.stringify(accessTokens, null, '  ') }
+    </div>
+  }
+
+  const wrapper = mount(
+    <TestWrapper mocks={mocks}>
+      <div id="client-test-div">
+        <OauthAccessTokenComponent/>
+      </div>
+    </TestWrapper>
+  )
+
+  await act(async () => { jest.runAllTimers() })
+  wrapper.update()
+
+  expect(toJSON(wrapper.find('#client-test-div'))).toMatchSnapshot()
+})
+

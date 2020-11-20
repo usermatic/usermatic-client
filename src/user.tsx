@@ -68,7 +68,10 @@ export type OauthCredential = {
   provider: string,
   providerID: string,
   photoURL?: string,
-  email?: string
+  email?: string,
+
+  accessToken?: string,
+  refreshToken?: string,
 }
 
 export type TotpCredential = {
@@ -148,6 +151,8 @@ export const useCredentials = (): {
               providerID: c.providerID ?? '<unknown>',
               photoURL: (c.photoURL != null) ? c.photoURL : undefined,
               email: (c.email != null) ? c.email : undefined,
+              accessToken: c.accessToken ?? undefined,
+              refreshToken: c.refreshToken ?? undefined,
             }
           }
       })
@@ -233,6 +238,27 @@ export const useOauthCredentials = (): {
     }
   }
 
+  return { loading, error }
+}
+
+type OauthAccessTokenMap = Record<string, { accessToken?: string, refreshToken?: string }>
+
+export const useOauthAccessTokens = (): {
+  loading: boolean,
+  error?: ApolloError,
+  accessTokens?: OauthAccessTokenMap
+} => {
+  const { loading, error, oauthCredentials } = useOauthCredentials()
+  if (!loading && !error && oauthCredentials) {
+    const accessTokens: OauthAccessTokenMap = {}
+    for (const cred of oauthCredentials) {
+      accessTokens[cred.provider] = {
+        accessToken: cred.accessToken,
+        refreshToken: cred.refreshToken,
+      }
+    }
+    return { loading, error, accessTokens }
+  }
   return { loading, error }
 }
 

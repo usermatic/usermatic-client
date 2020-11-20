@@ -7,7 +7,7 @@ export const USER_FRAGMENT = gql`
     id
     primaryEmail
     name { first last }
-    credentials { id type email emailIsVerified provider providerID photoURL }
+    credentials { id type email emailIsVerified provider providerID photoURL accessToken refreshToken }
     recoveryCodesRemaining
     userJwt
     reauthToken

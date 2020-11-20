@@ -24,6 +24,7 @@ export {
   useCredentials,
   usePasswordCredential,
   useOauthCredentials,
+  useOauthAccessTokens,
   useTotpCredential,
   useProfilePhotos,
   usePersonalDetails,
