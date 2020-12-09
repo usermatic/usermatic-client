@@ -2668,7 +2668,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                 className="d-flex justify-content-center my-2 um-social-button"
               >
                 <button
-                  className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between github-login-btn-3kdic7az9 um-social-button um-social-button-github"
+                  className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between um-social-button um-social-button-github github-login-btn-3kdic7az9"
                   onClick={[Function]}
                 >
                   <GithubLogo
@@ -2757,7 +2757,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                 className="d-flex justify-content-center my-2 um-social-button"
               >
                 <button
-                  className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between facebook-login-btn-3kdic7az9 um-social-button um-social-button-facebook"
+                  className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between um-social-button um-social-button-facebook facebook-login-btn-3kdic7az9"
                   onClick={[Function]}
                 >
                   <FbLogo
@@ -2846,7 +2846,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                 className="d-flex justify-content-center my-2 um-social-button"
               >
                 <button
-                  className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between google-login-btn-3kdic7az9 um-social-button um-social-button-google"
+                  className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between um-social-button um-social-button-google google-login-btn-3kdic7az9"
                   onClick={[Function]}
                 >
                   <GoogleLogo
@@ -3218,7 +3218,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                   className="d-flex justify-content-center my-2 um-social-button"
                 >
                   <button
-                    className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between github-login-btn-3kdic7az9 um-social-button um-social-button-github"
+                    className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between um-social-button um-social-button-github github-login-btn-3kdic7az9"
                     onClick={[Function]}
                   >
                     <GithubLogo
@@ -3307,7 +3307,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                   className="d-flex justify-content-center my-2 um-social-button"
                 >
                   <button
-                    className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between facebook-login-btn-3kdic7az9 um-social-button um-social-button-facebook"
+                    className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between um-social-button um-social-button-facebook facebook-login-btn-3kdic7az9"
                     onClick={[Function]}
                   >
                     <FbLogo
@@ -3396,7 +3396,7 @@ exports[`<LoginForm>/<AccountCreationForm> oauth 1`] = `
                   className="d-flex justify-content-center my-2 um-social-button"
                 >
                   <button
-                    className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between google-login-btn-3kdic7az9 um-social-button um-social-button-google"
+                    className="btn btn-block btn-outline-primary d-flex align-items-center justify-content-between um-social-button um-social-button-google google-login-btn-3kdic7az9"
                     onClick={[Function]}
                   >
                     <GoogleLogo

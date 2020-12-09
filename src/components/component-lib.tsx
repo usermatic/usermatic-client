@@ -662,12 +662,12 @@ const SocialLoginButton: React.FC<{
     'um-social-button'
   )
   const buttonClasses = useClassnames(
-    ["btn btn-block btn-outline-primary d-flex align-items-center justify-content-between", providerClass],
+    "btn btn-block btn-outline-primary d-flex align-items-center justify-content-between",
     `um-social-button um-social-button-${provider}`
   )
 
   return <div className={divClasses}>
-    <button className={buttonClasses} onClick={onClick}>
+    <button className={classNames(buttonClasses, providerClass)} onClick={onClick}>
       {children}
     </button>
   </div>
