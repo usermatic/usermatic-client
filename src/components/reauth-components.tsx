@@ -171,7 +171,7 @@ export const ReauthenticateGuard: React.FC<ReauthenticateGuardProps> =
         Please add a password to your account. It will be used to protect
         sensitive operations (such as this one) in the future.
       </>}
-      addPassword={<ChangePasswordForm/>}
+      addPassword={<ChangePasswordForm onCancel={onCancel}/>}
     />
   }
 
