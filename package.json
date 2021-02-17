@@ -10,7 +10,8 @@
   "private": false,
   "files": [
     "dist",
-    "components"
+    "components",
+    "testutil"
   ],
   "scripts": {
     "build": "yarn codegen && yarn tsc",

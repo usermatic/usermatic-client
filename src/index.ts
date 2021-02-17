@@ -38,6 +38,10 @@ export {
 } from './user'
 
 export {
+  CredentialType
+} from '../gen/operations'
+
+export {
   useLogout,
   useLogin
 } from './login'

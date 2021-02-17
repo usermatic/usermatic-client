@@ -59,7 +59,7 @@ export type AuthTokenData = {
   userJwt?: string,
 }
 
-const defaultAppConfig: AppConfig = {
+export const defaultAppConfig: AppConfig = {
   appName: '',
   totpEnabled: false,
   fbLoginEnabled: false,
@@ -195,7 +195,7 @@ const isValidAppId = (appId: string | undefined) => {
   return re.test(appId)
 }
 
-const HttpWarning: React.FC<{}> = ({}) => {
+export const HttpWarning: React.FC<{}> = ({}) => {
   const [dismissed, setDismissed] = useState<boolean | null>(null)
 
   useEffect(() => {
@@ -261,9 +261,12 @@ const Diagnostics: React.FC<{appId?: string, error?: ApolloError}> = ({appId, er
   </div>
 }
 
-export const AuthenticatedUserContext = React.createContext<
-  ReturnType<typeof useGetAuthenticatedUserQuery> | undefined
->(undefined)
+export type AuthUserData = Pick<
+  ReturnType<typeof useGetAuthenticatedUserQuery>,
+  'data' | 'loading' | 'error' | 'called'
+>
+
+export const AuthenticatedUserContext = React.createContext<AuthUserData | undefined>(undefined)
 
 export const useAuthenticatedUser = () => {
   const ret = useContext(AuthenticatedUserContext)

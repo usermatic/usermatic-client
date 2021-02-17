@@ -1,0 +1,5 @@
+{
+  "sideEffects": false,
+  "types": "../dist/src/testutil/index.d.ts",
+  "module": "../dist/src/testutil/index.js"
+}
